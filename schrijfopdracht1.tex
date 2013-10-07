@@ -1,0 +1,44 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                                     %%%
+%%%   LaTeX template voor P&O: Computerwetenschappen.   %%%
+%%%                                                     %%%
+%%%   Schrijfopdracht 1                                 %%%
+%%%                                                     %%%
+%%%   7 oktober 2013                                    %%%
+%%%   Versie 1.1                                        %%%
+%%%                                                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{peno-opdracht1}
+
+\team{Indigo} % teamkleur
+
+\begin{document}
+
+\maketitle
+
+Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. Via de QR-codes kunnen bepaalde opdrachten aangeroepen worden.
+
+Fysisch ontwerp: 2 grote ronde heliumballonnen vastgemaakt aan een houten frame. Dit frame bevat een afstandssensor (naar onder gericht), een camera (naar voren gericht) en de Raspberry Pi. De zeppelin bevat ook 2 propellers om horizontale bewegingen te maken en 1 propeller om verticale bewegingen te maken.
+
+Software ontwerp: Er zijn 3 belangrijke delen die gerealiseerd moeten worden: de GUI, de communicatie tussen GUI en Raspberry Pi alsook de interne programmatie op de Pi (verwerking van de gegevens van de sensoren en aansturen van de motoren).
+
+De GUI zal in Java gemaakt worden. De communicatie tussen GUI en de Raspberry Pi zal gebeuren via een Java server-client model. Hierbij geeft de gebruiker via de GUI objecten door van klasses die opdrachten voor de Pi voorstellen (bijvoorbeeld de linkse motor gedurende 2 seconden actief).
+
+Een alternatief idee dat we hadden, was om via een webinterface met de Pi te communiceren. Dit idee hebben we voorlopig aan de kant geschoven, omdat we hierover nog niet voldoende informatie hebben. Indien we hier meer over vinden, kunnen we nog omschakelen naar deze strategie.
+
+Planning
+Tegen volgende week: Uitlezen van de afstandssensor en basisontwerp van de GUI. Aangezien we nog geen volledig beeld hebben van alle onderdelen en opties, zal er telkens een nieuwe en aangepaste planning worden gemaakt.
+
+De week van 21 oktober zullen we starten met eenvoudige testen, dan hebben we nog ruime tijd om eventuele problemen op te lossen.
+
+De camera zal tegen de tussentijdse demo nog niet gebruikt en gemonteerd zijn, zo kunnen we ons volledig concentreren op de afstandssensor.
+
+Taakverdeling voor de softwareonderdelen\\
+GUI: Dimitri Jonckers \& Wander Bavin\\
+Communicatie: Sunil Tandan\\
+Verwerking gegevens: Vince Goossens \& Wout Vekemans\\
+Fysiek ontwerp: Wordt nog bepaald.\\
+
+
+\end{document}
