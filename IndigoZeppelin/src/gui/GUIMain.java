@@ -532,7 +532,6 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_setHeightBtnActionPerformed
 
     private void setImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setImageActionPerformed
-    	System.out.println("YES");
     	ImageIcon image = new ImageIcon("C:\\Users\\Study\\Pictures\\img-thing.jpg");
     	tab1window1Lbl.setIcon(image);
     }//GEN-LAST:event_setImageActionPerformed

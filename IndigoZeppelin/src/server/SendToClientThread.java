@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
@@ -47,7 +48,8 @@ class SendToClientThread implements Runnable
 				exit= true;
 			}
 			if(readString.equalsIgnoreCase("image")){
-				ImageIcon image = new ImageIcon("./resources/Smalle.jpg");
+				System.out.println("Give the URL of image");
+				ImageIcon image = new ImageIcon((input.readLine()));//get message to send to client);
 				information.setImage(image);
 			}
 			//pwPrintWriter.println(msgToClientString);//send message to client with PrintWriter
