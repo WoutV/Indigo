@@ -20,7 +20,7 @@ public class DistanceSensor {
 
 	private final static float SOUND_SPEED = 340.29f; // speed of sound in m/s
 
-	private final static int TRIG_DURATION_IN_MICROS = 10; // trigger duration
+	private final static int TRIG_DURATION_IN_MICROS = 450000; // trigger duration
 															// of 10 micro s
 
 	private final static int TIMEOUT = 2100;
