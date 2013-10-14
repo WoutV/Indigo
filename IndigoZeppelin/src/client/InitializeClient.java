@@ -58,7 +58,7 @@ public class InitializeClient {
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 		} catch (Exception e) {System.out.println(e.getMessage());} 
 	}
-	static String serverIP="192.168.137.40";
+	static String serverIP="192.168.137.82";
 	static boolean ipSet=true;
 	public static void setIp(){
 		while(!ipSet){
