@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import javax.swing.ImageIcon;
+
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
 
@@ -43,6 +45,10 @@ class SendToClientThread implements Runnable
 			if(readString.equalsIgnoreCase("exit") || readString.equalsIgnoreCase("close")){
 				information.setType(TransferType.EXIT);
 				exit= true;
+			}
+			if(readString.equalsIgnoreCase("image")){
+				ImageIcon image = new ImageIcon("./resources/Smalle.jpg");
+				information.setImage(image);
 			}
 			//pwPrintWriter.println(msgToClientString);//send message to client with PrintWriter
 			//pwPrintWriter.flush();//flush the PrintWriter

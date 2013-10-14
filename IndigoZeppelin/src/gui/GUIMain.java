@@ -532,7 +532,8 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_setHeightBtnActionPerformed
 
     private void setImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setImageActionPerformed
-    	ImageIcon image = new ImageIcon("./resources/Smalle.jpg");
+    	System.out.println("YES");
+    	ImageIcon image = new ImageIcon("C:\\Users\\Study\\Pictures\\img-thing.jpg");
     	tab1window1Lbl.setIcon(image);
     }//GEN-LAST:event_setImageActionPerformed
 
@@ -557,7 +558,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JButton setImage;
     private javax.swing.JLayeredPane tab1;
     private javax.swing.JPanel tab1window1;
-    private javax.swing.JLabel tab1window1Lbl;
+    public javax.swing.JLabel tab1window1Lbl;
     private javax.swing.JPanel tab1window2;
     private javax.swing.JPanel tab1window3;
     private javax.swing.JPanel tab2;

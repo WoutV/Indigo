@@ -3,6 +3,8 @@ package transfer;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
+
 public class Transfer implements Serializable {
 	/**
 	 * 
@@ -16,6 +18,7 @@ public class Transfer implements Serializable {
 	private double height;
 	private KeyEvent keyevent;
 	private String message;
+	private ImageIcon image;
 	public Transfer(){
 	
 	}
@@ -76,5 +79,12 @@ public class Transfer implements Serializable {
 		this.message = message;
 	}
 
-	
+	public void setImage(ImageIcon image){
+		this.type= Transfer.TransferType.IMAGE;
+		this.image= image;
+		this.message= "Sending Image";
+	}
+	public ImageIcon getImage(){
+		return image;
+	}
 }

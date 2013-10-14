@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import transfer.Transfer;
+import transfer.Transfer.TransferType;
 
 class RecieveThread implements Runnable
 {
@@ -31,6 +32,9 @@ class RecieveThread implements Runnable
 				}
 				if(transferRecieved.getTransferType()==Transfer.TransferType.MESSAGE){
 					gui.showMessage(transferRecieved.getMessage());
+				}
+				if(transferRecieved.getTransferType()==TransferType.IMAGE){
+					gui.tab1window1Lbl.setIcon(transferRecieved.getImage());
 				}
 				//What should the system do if it gets information?
 		
