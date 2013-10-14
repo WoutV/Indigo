@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{peno-opdracht2}
-\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
 \setlength\parindent{0pt}
 \team{Indigo} % teamkleur
 
@@ -24,7 +24,7 @@ Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop wo
 
 Om het geheel in de lucht te houden, worden er 2 ballonnen gebruikt. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. Door deze rechtstreeks aan het frame te bevestigen en niet vast te maken via koordjes, blijft de zeppelin in balans.\\
 \\
-De zeppelin wordt aangestuurd door een Raspberry Pi model A. Deze heeft volgende specificaties: 
+De zeppelin wordt aangestuurd door een Raspberry Pi model A. (zie Figuur \ref{Pi}) Deze heeft volgende specificaties: 
 \begin{itemize}
 	\item \emph{Processor:} 700MHz ARM
 	\item \emph{Geheugen:} 256MB 
@@ -39,14 +39,13 @@ Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 \begin{itemize}
 	\item De camera laat toe foto's te nemen met een maximum resolutie van 5 MP. Hiermee kunnen we onder andere beelden maken van QR-codes. Daarnaast kan de camera video's maken aan 640x480p. 
 	\item De afstandssensor kan worden gebruikt om de afstand te meten tussen de zeppelin en de grond of muur.\\
-\end{itemize} ~\\
+\end{itemize}
 
-\begin{figure}
-
-\begin{center}
-\includegraphics[scale=0.6]{raspb.png}
-\end{center}
+\begin{figure}[ht!]
+\centering
+\includegraphics[height=30mm]{raspb.jpg}
 \caption{Raspberry Pi}
+\label{Pi}
 \end{figure}
 
 \end{document}
