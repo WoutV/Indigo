@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  14 OCT 2013 18:07
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  14 OCT 2013 18:37
 entering extended mode
 **schrijfopdracht2.tex
 ("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.tex"
@@ -244,25 +244,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 56--57
 
  []
 
-[2] ("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.aux") ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+
+ []
+
+<GUI.png, id=12, 609.77812pt x 480.29437pt>
+File: GUI.png Graphic file (type png)
+ <use GUI.png>
+Package pdftex.def Info: GUI.png used on input line 64.
+(pdftex.def)             Requested size: 144.48885pt x 113.81102pt.
+ [2 <C:/Users/Wout/Desktop/Indigo/Schrijfopdracht 2/templatex/GUI.png>] ("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2
+\templatex\schrijfopdracht2.aux") ) 
 Here is how much of TeX's memory you used:
- 2063 strings out of 493921
- 28588 string characters out of 3144879
- 93661 words of memory out of 3000000
- 5353 multiletter control sequences out of 15000+200000
+ 2070 strings out of 493921
+ 28651 string characters out of 3144879
+ 93669 words of memory out of 3000000
+ 5358 multiletter control sequences out of 15000+200000
  7636 words of font info for 27 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  32i,8n,31p,352b,228s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb
-><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on schrijfopdracht2.pdf (2 pages, 389564 bytes).
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmr7.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+
+Output written on schrijfopdracht2.pdf (2 pages, 583789 bytes).
 PDF statistics:
- 46 PDF objects out of 1000 (max. 8388607)
+ 49 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
