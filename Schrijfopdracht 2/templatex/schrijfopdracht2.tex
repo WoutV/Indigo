@@ -1,0 +1,52 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                                     %%%
+%%%   LaTeX template voor P&O: Computerwetenschappen.   %%%
+%%%                                                     %%%
+%%%   Schrijfopdracht 2                                 %%%
+%%%                                                     %%%
+%%%   9 oktober 2013                                    %%%
+%%%   Versie 1.1                                        %%%
+%%%                                                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{peno-opdracht2}
+\usepackage[pdftex]{graphicx}
+\setlength\parindent{0pt}
+\team{Indigo} % teamkleur
+
+\begin{document}
+
+\maketitle
+
+Nu de opdracht en planning van dit project duidelijk is, zullen we in detail treden over de hardware- en softwarecomponenten. 
+\paragraph{Hardware} ~\\
+Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellors bevestigd. Hiervan worden er twee gebruikt om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propellor dient om de zeppelin te laten stijgen. ~\\
+
+Om het geheel in de lucht te houden, worden er 2 ballonnen gebruikt. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. Door deze rechtstreeks aan het frame te bevestigen en niet vast te maken via koordjes, blijft de zeppelin in balans.\\
+\\
+De zeppelin wordt aangestuurd door een Raspberry Pi model A. Deze heeft volgende specificaties: 
+\begin{itemize}
+	\item \emph{Processor:} 700MHz ARM
+	\item \emph{Geheugen:} 256MB 
+	\item \emph{Poorten:} 1 USB 2.0, HDMI, audio out, RCA video
+	\item \emph{Voeding:} Micro USB
+	\item GPIO-pinnen om de hardware aan te sturen
+\end{itemize}
+
+In de Raspberry Pi zit een SD-kaart van 4 GB. Op de USB-poort is een USB hub aangesloten, zodat het mogelijk is meerdere onderdelen aan te sluiten. Deze gebruiken we voor een toetsenbord, muis en WiFi dongle. \\
+
+Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
+\begin{itemize}
+	\item De camera laat toe foto's te nemen met een maximum resolutie van 5 MP. Hiermee kunnen we onder andere beelden maken van QR-codes. Daarnaast kan de camera video's maken aan 640x480p. 
+	\item De afstandssensor kan worden gebruikt om de afstand te meten tussen de zeppelin en de grond of muur.\\
+\end{itemize} ~\\
+
+\begin{figure}
+
+\begin{center}
+\includegraphics[scale=0.6]{raspb.png}
+\end{center}
+\caption{Raspberry Pi}
+\end{figure}
+
+\end{document}
