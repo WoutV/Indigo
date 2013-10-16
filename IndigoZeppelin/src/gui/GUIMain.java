@@ -101,26 +101,31 @@ public class GUIMain extends javax.swing.JFrame {
     		if(arg0.getKeyCode() == KeyEvent.VK_UP) {
     			if(!up) {
     				upPressed();
+    				guic.sendKeyPressed(arg0);
     			}
     		}
     		else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
     			if(!left) {
     				leftPressed();
+    				guic.sendKeyPressed(arg0);
     			}
     		}
     		else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
     			if(!right) {
     				rightPressed();
+    				guic.sendKeyPressed(arg0);
     			}
     		}
     		else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
     			if(!down) {
     				downPressed();
+    				guic.sendKeyPressed(arg0);
     			}
     		}
     		else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
     			if(!elevate) {
     				elevatePressed();
+    				guic.sendKeyPressed(arg0);
     			}
     		}
     	}
@@ -129,18 +134,23 @@ public class GUIMain extends javax.swing.JFrame {
 		public void keyReleased(KeyEvent arg0) {
 			if(arg0.getKeyCode() == KeyEvent.VK_UP) {
     			upUnpressed();
+    			guic.sendKeyUnpressed(arg0);
     		}
 			else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
     			leftUnpressed();
+    			guic.sendKeyUnpressed(arg0);
     		}
 			else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
     			rightUnpressed();
+    			guic.sendKeyUnpressed(arg0);
     		}
 			else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
     			downUnpressed();
+    			guic.sendKeyUnpressed(arg0);
     		}
 			else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
 				elevateUnpressed();
+				guic.sendKeyUnpressed(arg0);
     		}
 		}
 
@@ -155,6 +165,7 @@ public class GUIMain extends javax.swing.JFrame {
     	upButton.setSelected(true);
 		
 		fullCommandList.setText(fullCommandList.getText()+ "\n" + "-Up pressed!");
+		
 		
     }
     
@@ -221,7 +232,7 @@ public class GUIMain extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	guic= new GuiCommands(this);
         jTabbedPane = new javax.swing.JTabbedPane();
         tab1 = new javax.swing.JLayeredPane();
         tab1window1 = new javax.swing.JPanel();
@@ -522,14 +533,14 @@ public class GUIMain extends javax.swing.JFrame {
         	elevateUnpressed();
     }//GEN-LAST:event_elevateButtonActionPerformed
 
-    double hooogtee=0;
+    
     private void setHeightBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setHeightBtnActionPerformed
         String height = JOptionPane.showInputDialog(this, "Go to height (cm)");
         double heightgetal = 0;
         try {
         	if(height != null){
         		heightgetal = Double.parseDouble(height);
-        		hooogtee=heightgetal;
+        		guic.sendHeightZep(heightgetal);
         	}
         	else
         		return;
@@ -547,7 +558,7 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_setImageActionPerformed
 
     private void setHoogteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setHoogteActionPerformed
-    	setHoogteLabel(hooogtee);
+    	setHoogteLabel(5);
     }//GEN-LAST:event_setHoogteActionPerformed
 
 
@@ -574,6 +585,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JToggleButton upButton;
+    private GuiCommands guic;
     // End of variables declaration//GEN-END:variables
     
     public void setHoogteLabel(double hoogte){
@@ -584,5 +596,7 @@ public class GUIMain extends javax.swing.JFrame {
     	labelCommandsDisplay.setText(message);
     }
     
-    
+    public void setImageDisplay(ImageIcon image){
+    	tab1window1Lbl.setIcon(image);
+    }
 }
