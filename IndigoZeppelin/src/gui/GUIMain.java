@@ -7,6 +7,7 @@ package gui;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -41,7 +42,7 @@ public class GUIMain extends javax.swing.JFrame {
     	jTabbedPane.addChangeListener(new TabChangeListener());
         
         jTabbedPane.setTitleAt(0, "main");
-        jTabbedPane.setTitleAt(1, "2");
+        jTabbedPane.setTitleAt(1, "Full command list!");
         jTabbedPane.setTitleAt(2, "credits");
         
         //functies van de pijltjes met een keylistener
@@ -152,61 +153,64 @@ public class GUIMain extends javax.swing.JFrame {
     private void upPressed() {
     	up = true;
     	upButton.setSelected(true);
-		System.out.println("up pressed");
+		
+		fullCommandList.setText(fullCommandList.getText()+ "\n" + "-Up pressed!");
+		
     }
     
     private void upUnpressed() {
     	up = false;
     	upButton.setSelected(false);
-		System.out.println("up unpressed");
+		
+		fullCommandList.setText(fullCommandList.getText() + "\n" + "-Up unpressed!");
     }
     
     private void leftPressed() {
     	left = true;
     	leftButton.setSelected(true);
-		System.out.println("left pressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Left pressed!");
     }
     
     private void leftUnpressed() {
     	left = false;
     	leftButton.setSelected(false);
-		System.out.println("left unpressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Left unpressed!");
     }
     
     private void rightPressed() {
     	right = true;
     	rightButton.setSelected(true);
-		System.out.println("right pressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Right pressed!");
     }
     
     private void rightUnpressed() {
     	right = false;
     	rightButton.setSelected(false);
-		System.out.println("right unpressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Right unpressed!");
     }
     
     private void downPressed() {
     	down = true;
     	downButton.setSelected(true);
-		System.out.println("down pressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Down pressed!");
     }
     
     private void downUnpressed() {
     	down = false;
     	downButton.setSelected(false);
-		System.out.println("down unpressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Down unpressed!");
     }
     
     private void elevatePressed() {
     	elevate = true;
     	elevateButton.setSelected(true);
-		System.out.println("elevate pressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Elevate pressed!");
     }
     
     private void elevateUnpressed() {
     	elevate = false;
     	elevateButton.setSelected(false);
-		System.out.println("elevate unpressed");
+    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Elevate unpressed!");
     }
 
     /**
@@ -237,7 +241,8 @@ public class GUIMain extends javax.swing.JFrame {
         elevateButton = new javax.swing.JToggleButton();
         setHeightBtn = new javax.swing.JButton();
         tab2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        fullCommandList = new javax.swing.JTextArea();
         tab3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -275,11 +280,12 @@ public class GUIMain extends javax.swing.JFrame {
         labelHoogteDisplay.setOpaque(true);
 
         labelCommandsTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelCommandsTxt.setText("Commands");
+        labelCommandsTxt.setText("Commands :");
         labelCommandsTxt.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         labelCommandsDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelCommandsDisplay.setText("Lijst commandos");
+        labelCommandsDisplay.setHorizontalAlignment(SwingConstants.LEFT);
         labelCommandsDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         labelHoogteTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -431,20 +437,24 @@ public class GUIMain extends javax.swing.JFrame {
 
         jTabbedPane.addTab("tab1", tab1);
 
+        fullCommandList.setColumns(20);
+        fullCommandList.setRows(5);
+        jScrollPane2.setViewportView(fullCommandList);
+
         javax.swing.GroupLayout tab2Layout = new javax.swing.GroupLayout(tab2);
         tab2.setLayout(tab2Layout);
         tab2Layout.setHorizontalGroup(
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
                 .addContainerGap())
         );
         tab2Layout.setVerticalGroup(
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -532,7 +542,7 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_setHeightBtnActionPerformed
 
     private void setImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setImageActionPerformed
-    	ImageIcon image = new ImageIcon("C:\\Users\\Study\\Pictures\\img-thing.jpg");
+    	ImageIcon image = new ImageIcon("resources\\Smalle.jpg");
     	tab1window1Lbl.setIcon(image);
     }//GEN-LAST:event_setImageActionPerformed
 
@@ -541,10 +551,11 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_setHoogteActionPerformed
 
 
-       // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton downButton;
     private javax.swing.JToggleButton elevateButton;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea fullCommandList;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JLabel labelCommandsDisplay;
     private javax.swing.JLabel labelCommandsTxt;
@@ -557,7 +568,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JButton setImage;
     private javax.swing.JLayeredPane tab1;
     private javax.swing.JPanel tab1window1;
-    public javax.swing.JLabel tab1window1Lbl;
+    private javax.swing.JLabel tab1window1Lbl;
     private javax.swing.JPanel tab1window2;
     private javax.swing.JPanel tab1window3;
     private javax.swing.JPanel tab2;
