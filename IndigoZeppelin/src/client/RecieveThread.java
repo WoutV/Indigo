@@ -34,7 +34,7 @@ class RecieveThread implements Runnable
 					gui.showMessage(transferRecieved.getMessage());
 				}
 				if(transferRecieved.getTransferType()==TransferType.IMAGE){
-					gui.tab1window1Lbl.setIcon(transferRecieved.getImage());
+					gui.setImageDisplay(transferRecieved.getImage());
 				}
 				//What should the system do if it gets information?
 		
