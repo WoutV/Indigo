@@ -362,28 +362,28 @@ public class GUIMain extends javax.swing.JFrame {
         tab1window2.setBounds(500, 0, 290, 570);
         tab1.add(tab1window2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        upButton.setText("Z");
+        upButton.setText("\u2191");
         upButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 upButtonActionPerformed(evt);
             }
         });
 
-        downButton.setText("S");
+        downButton.setText("\u2193");
         downButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downButtonActionPerformed(evt);
             }
         });
 
-        leftButton.setText("Q");
+        leftButton.setText("\u2190");
         leftButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftButtonActionPerformed(evt);
             }
         });
 
-        rightButton.setText("D");
+        rightButton.setText("\u2192");
         rightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightButtonActionPerformed(evt);
