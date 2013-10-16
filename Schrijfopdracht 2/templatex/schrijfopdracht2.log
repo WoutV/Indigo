@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  14 OCT 2013 18:37
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  15 OCT 2013 16:53
 entering extended mode
 **schrijfopdracht2.tex
-("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.tex"
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, arabic, armenian, assamese, basque, bengali
 , bokmal, bulgarian, catalan, coptic, croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, galic
@@ -10,15 +10,15 @@ ian, german, german-x-2012-05-30, greek, gujarati, hindi, hungarian, icelandic, 
 -x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, romanian, russian, sanskrit, serbian, slovak, sloven
 ian, spanish, swedish, swissgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usenglishmax, w
 elsh, loaded.
-("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2\templatex\peno-opdracht2.cls"
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 2\templatex\peno-opdracht2.cls"
 
 LaTeX Warning: You have requested document class `peno-opdracht2',
                but the document class provides `peno'.
 
 Document Class: peno 2012/09/25 v1.0 P&O verslag document class
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\article.cls"
+(F:\MiKTeX\tex\latex\base\article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\size10.clo"
+(F:\MiKTeX\tex\latex\base\size10.clo
 File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -32,64 +32,55 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\babel.sty"
+) (F:\MiKTeX\tex\generic\babel\babel.sty
 Package: babel 2008/07/08 v3.8m The Babel package
 
 *************************************
 * Local config file bblopts.cfg used
 *
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\bblopts.cfg"
+(F:\MiKTeX\tex\latex\00miktex\bblopts.cfg
 File: bblopts.cfg 2006/07/31 v1.0 MiKTeX 'babel' configuration
-)
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\dutch.ldf"
+) (F:\MiKTeX\tex\generic\babel\dutch.ldf
 Language: dutch 2005/03/30 v3.8i Dutch support from the babel system
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\babel.def"
+ (F:\MiKTeX\tex\generic\babel\babel.def
 File: babel.def 2008/07/08 v3.8m Babel common definitions
 \babel@savecnt=\count87
 \U@D=\dimen103
 )
 Package babel Info: Making " an active character on input line 132.
-))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty"
+)) (F:\MiKTeX\tex\latex\graphics\color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
+ (F:\MiKTeX\tex\latex\00miktex\color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+(F:\MiKTeX\tex\latex\pdftex-def\pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+ (F:\MiKTeX\tex\generic\oberdiek\infwarerr.sty
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+(F:\MiKTeX\tex\generic\oberdiek\ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count88
-))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\everypage\everypage.sty"
+)) (F:\MiKTeX\tex\latex\everypage\everypage.sty
 Package: everypage 2007/06/20 1.1 Hooks to run on every page
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
+(F:\MiKTeX\tex\latex\geometry\geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+ (F:\MiKTeX\tex\latex\graphics\keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+(F:\MiKTeX\tex\generic\oberdiek\ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
+) (F:\MiKTeX\tex\generic\oberdiek\ifvtex.sty
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
+(F:\MiKTeX\tex\generic\ifxetex\ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count89
@@ -104,18 +95,15 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layouthoffset=\dimen110
 \Gm@layoutvoffset=\dimen111
 \Gm@dimlist=\toks15
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+ (F:\MiKTeX\tex\latex\geometry\geometry.cfg))
+(F:\MiKTeX\tex\latex\graphics\graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+ (F:\MiKTeX\tex\latex\graphics\graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+(F:\MiKTeX\tex\latex\graphics\trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
-)
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+) (F:\MiKTeX\tex\latex\00miktex\graphics.cfg
 File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
@@ -123,7 +111,7 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 ))
-("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.aux")
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.aux")
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
@@ -137,7 +125,7 @@ LaTeX Font Info:    ... okay on input line 17.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+(F:\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count92
 \scratchdimen=\dimen114
@@ -202,7 +190,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--28
  []
 
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 29.
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+(F:\MiKTeX\tex\latex\base\omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
@@ -233,8 +221,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 51--53
 
 [1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/Users/Wout/Desktop/Indigo/Schrijfopdracht 2/templatex/raspb.jpg
->]
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/Schrijfopdracht 2/temp
+latex/raspb.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 54--55
 
  []
@@ -249,29 +237,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 58--59
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
+
+ []
+
 <GUI.png, id=12, 609.77812pt x 480.29437pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
-Package pdftex.def Info: GUI.png used on input line 64.
+Package pdftex.def Info: GUI.png used on input line 66.
 (pdftex.def)             Requested size: 144.48885pt x 113.81102pt.
- [2 <C:/Users/Wout/Desktop/Indigo/Schrijfopdracht 2/templatex/GUI.png>] ("C:\Users\Wout\Desktop\Indigo\Schrijfopdracht 2
-\templatex\schrijfopdracht2.aux") ) 
+ [2 <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/Schrijfopdracht 2/templatex/GUI.png>] ("G:\Burgerlijk Ingenieur\3 CwsEl
+t\P&O\Indigo\Schrijfopdracht 2\templatex\schrijfopdracht2.aux") ) 
 Here is how much of TeX's memory you used:
  2070 strings out of 493921
- 28651 string characters out of 3144879
+ 27466 string characters out of 3154503
  93669 words of memory out of 3000000
  5358 multiletter control sequences out of 15000+200000
  7636 words of font info for 27 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  32i,8n,31p,352b,228s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmr7.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-
-Output written on schrijfopdracht2.pdf (2 pages, 583789 bytes).
+<F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><F
+:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><F:/MiKTeX/fonts/
+type1/public/amsfonts/cm/cmr17.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><F:/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmr7.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on schrijfopdracht2.pdf (2 pages, 584135 bytes).
 PDF statistics:
  49 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
