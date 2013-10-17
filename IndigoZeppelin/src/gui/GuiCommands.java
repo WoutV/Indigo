@@ -2,10 +2,16 @@ package gui;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
+/**
+ * Klasse om de client / de GUI te linken met de zeppelin.
+ * Communicatie van GUI naar zeppelin: send..
+ * Communicatie van zeppelin naar GUI: receive..
+ */
 public class GuiCommands {
-
-	private double hoogte;
+	
+	//TEMP: dit wordt een soort arraylist/andere collectie van een Klasse Command
 	private  ArrayList<String> newcommands;
 	private GUIMain gui;
 	
@@ -26,22 +32,78 @@ public class GuiCommands {
 //		gui.setHoogteLabel(hoogte);
 //	}
 	
-	//De raspberry stuurt via hier de hoogte door, deze wordt dan op de gui weergegeven.
-	public void getHeightZep(double hoogte){
+	/**
+	 * Via deze methode stuurt de zeppelin zijn huidige hoogte door.
+	 * Deze wordt dan in de GUI weergegeven
+	 * @param hoogte
+	 * 			De huidige hoogte in cm
+	 */
+	public void receiveHeight(double hoogte){
 		gui.setHoogteLabel(hoogte);
 	}
 	
-	//methode die de hoogte doorstuurt naar de raspberry, die moet dan naar de doorgestuurde hoogte gaan.
+	/**
+	 * Enum die de 3 verschillende propellors aangeeft.
+	 */
+	//voorlopig via enum
+	//dit evt aanpassen adhv interne werking
+	public enum Propellor{
+		LEFT,RIGHT,UP
+	}
+	
+	/**
+	 * Via deze methode stuurt de zeppelin de staat van één van zijn propellors door.
+	 * @param prop
+	 * 			De propellor waarvan de staat wordt doorgestuurd
+	 * 			!! voorlopig met enum, dit evt veranderen adhv interne werking zeppelin
+	 * @param running
+	 * 			true = propellor aan
+	 * 			false = propellor uit
+	 */
+	public void receivePropellorState(Propellor prop,boolean running) {
+		if(running)
+			gui.propellorActive(prop);
+		else
+			gui.propellorNotActive(prop);
+	}
+	
+	//TEMP!?
+	//geeft de ontvangen afbeelding weer in GUI
+	public void receiveImage(ImageIcon image) {
+		gui.setImageDisplay(image);
+	}
+	
+	/**
+	 * Methode die een hoogte (in cm) doorstuurt naar de zeppelin
+	 * De zeppelin moet dan naar deze hoogte gaan
+	 * Wordt opgeroepen door GUIMain.
+	 * @param hoogte
+	 * 			hoogte in cm
+	 */
 	public void sendHeightZep(double hoogte){
 		
 	}
 	
+	/**
+	 * Enum die de verschillende keys aangeeft.
+	 */
+	public enum Key{
+		LEFT,RIGHT,UP,DOWN,ELEVATE;
+	}
 	
-	public void sendKeyPressed(KeyEvent evt){
+	/**
+	 * Methode die een Key doorstuurt van de button die wordt ingedrukt.
+	 * Wordt opgeroepen door GUIMain.
+	 */
+	public void sendKeyPressed(Key key){
 		
 	}
 	
-	public void sendKeyUnpressed(KeyEvent evt){
+	/**
+	 * Methode die een Key doorstuurt van een button die wordt losgelaten (was ingedrukt)
+	 * Wordt opgeroepen door GUIMain.
+	 */
+	public void sendKeyReleased(Key key){
 		
 	}
 }

@@ -10,16 +10,16 @@ import java.net.Socket;
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
 
-class RecieveThread implements Runnable
+class ReceiveThread implements Runnable
 {
 	Socket sock;
 	private ObjectInputStream input;
 	GUIMain gui;
 	
 	
-	private void handleRecieved(Transfer transferRecieved) {
+	private void handleReceived(Transfer transferReceived) {
 		//Closing the socket if it is EXIT type
-				if(transferRecieved.getTransferType() == Transfer.TransferType.EXIT )
+				if(transferReceived.getTransferType() == Transfer.TransferType.EXIT )
 				{
 					try {
 						this.sock.close();
@@ -30,11 +30,11 @@ class RecieveThread implements Runnable
 					}
 					System.exit(0);
 				}
-				if(transferRecieved.getTransferType()==Transfer.TransferType.MESSAGE){
-					gui.showMessage(transferRecieved.getMessage());
+				if(transferReceived.getTransferType()==Transfer.TransferType.MESSAGE){
+					gui.showMessage(transferReceived.getMessage());
 				}
-				if(transferRecieved.getTransferType()==TransferType.IMAGE){
-					gui.setImageDisplay(transferRecieved.getImage());
+				if(transferReceived.getTransferType()==TransferType.IMAGE){
+					gui.setImageDisplay(transferReceived.getImage());
 				}
 				//What should the system do if it gets information?
 		
@@ -42,7 +42,7 @@ class RecieveThread implements Runnable
 	
 	
 	
-	public RecieveThread(Socket sock, GUIMain gui) {
+	public ReceiveThread(Socket sock, GUIMain gui) {
 		this.sock = sock;
 		this.gui = gui;
 		try {
@@ -57,7 +57,7 @@ class RecieveThread implements Runnable
 			while(true){
 				Transfer transferRecieved = null;
 				while((transferRecieved = ( Transfer) input.readObject())!= null){
-					handleRecieved(transferRecieved);
+					handleReceived(transferRecieved);
 				}
 			}
 		

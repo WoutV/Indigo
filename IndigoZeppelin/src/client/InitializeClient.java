@@ -15,13 +15,8 @@ public class InitializeClient {
 	
 	
 	public static void main(String[] args)
-	{
-		
+	{	
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -38,9 +33,9 @@ public class InitializeClient {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        final GUIMain gui = new GUIMain();
         /* Create and display the form */
+        final GUIMain gui = new GUIMain();
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 gui.setVisible(true);
@@ -54,7 +49,7 @@ public class InitializeClient {
 			Socket sock = new Socket(serverIP,6789);
 			SendThread sendThread = new SendThread(sock,gui);
 			Thread thread = new Thread(sendThread);thread.start();
-			RecieveThread recieveThread = new RecieveThread(sock,gui);
+			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 		} catch (Exception e) {System.out.println(e.getMessage());} 
 	}

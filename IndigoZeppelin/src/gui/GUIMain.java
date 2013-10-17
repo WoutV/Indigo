@@ -6,7 +6,6 @@ package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -39,7 +38,7 @@ public class GUIMain extends javax.swing.JFrame {
 		jTabbedPane.addChangeListener(new TabChangeListener());
 
 		jTabbedPane.setTitleAt(0, "main");
-		jTabbedPane.setTitleAt(1, "Full command list!");
+		jTabbedPane.setTitleAt(1, "command list");
 		jTabbedPane.setTitleAt(2, "credits");
 
 		//functies van de pijltjes met een keylistener
@@ -66,9 +65,9 @@ public class GUIMain extends javax.swing.JFrame {
 		rightButton.setText("\u2192");
 		
 		//TEMP!!
-		propellorActive(1);
-		propellorNotActive(2);
-		propellorActive(3);
+		propellorActive(GuiCommands.Propellor.LEFT);
+		propellorNotActive(GuiCommands.Propellor.UP);
+		propellorActive(GuiCommands.Propellor.RIGHT);
 	}
 
 	/**
@@ -102,31 +101,26 @@ public class GUIMain extends javax.swing.JFrame {
 			if(arg0.getKeyCode() == KeyEvent.VK_UP) {
 				if(!up) {
 					upPressed();
-					guic.sendKeyPressed(arg0);
 				}
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
 				if(!left) {
 					leftPressed();
-					guic.sendKeyPressed(arg0);
 				}
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
 				if(!right) {
 					rightPressed();
-					guic.sendKeyPressed(arg0);
 				}
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
 				if(!down) {
 					downPressed();
-					guic.sendKeyPressed(arg0);
 				}
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
 				if(!elevate) {
 					elevatePressed();
-					guic.sendKeyPressed(arg0);
 				}
 			}
 		}
@@ -135,23 +129,18 @@ public class GUIMain extends javax.swing.JFrame {
 		public void keyReleased(KeyEvent arg0) {
 			if(arg0.getKeyCode() == KeyEvent.VK_UP) {
 				upUnpressed();
-				guic.sendKeyUnpressed(arg0);
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftUnpressed();
-				guic.sendKeyUnpressed(arg0);
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightUnpressed();
-				guic.sendKeyUnpressed(arg0);
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
 				downUnpressed();
-				guic.sendKeyUnpressed(arg0);
 			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
 				elevateUnpressed();
-				guic.sendKeyUnpressed(arg0);
 			}
 		}
 
@@ -170,6 +159,7 @@ public class GUIMain extends javax.swing.JFrame {
 		upButton.setSelected(true);
 
 		addToCommandList("-Up pressed!");
+		guic.sendKeyPressed(GuiCommands.Key.UP);
 	}
 
 	private void upUnpressed() {
@@ -177,54 +167,63 @@ public class GUIMain extends javax.swing.JFrame {
 		upButton.setSelected(false);
 
 		addToCommandList("-Up unpressed!");
+		guic.sendKeyReleased(GuiCommands.Key.UP);
 	}
 
 	private void leftPressed() {
 		left = true;
 		leftButton.setSelected(true);
 		addToCommandList("-Left pressed!");
+		guic.sendKeyPressed(GuiCommands.Key.LEFT);
 	}
 
 	private void leftUnpressed() {
 		left = false;
 		leftButton.setSelected(false);
 		addToCommandList("-Left unpressed!");
+		guic.sendKeyReleased(GuiCommands.Key.LEFT);
 	}
 
 	private void rightPressed() {
 		right = true;
 		rightButton.setSelected(true);
 		addToCommandList("-Right pressed!");
+		guic.sendKeyPressed(GuiCommands.Key.RIGHT);
 	}
 
 	private void rightUnpressed() {
 		right = false;
 		rightButton.setSelected(false);
 		addToCommandList("-Right unpressed!");
+		guic.sendKeyReleased(GuiCommands.Key.RIGHT);
 	}
 
 	private void downPressed() {
 		down = true;
 		downButton.setSelected(true);
 		addToCommandList("-Down pressed!");
+		guic.sendKeyPressed(GuiCommands.Key.DOWN);
 	}
 
 	private void downUnpressed() {
 		down = false;
 		downButton.setSelected(false);
 		addToCommandList("-Down unpressed!");
+		guic.sendKeyPressed(GuiCommands.Key.DOWN);
 	}
 
 	private void elevatePressed() {
 		elevate = true;
 		elevateButton.setSelected(true);
 		addToCommandList("-Elevate pressed!");
+		guic.sendKeyPressed(GuiCommands.Key.ELEVATE);
 	}
 
 	private void elevateUnpressed() {
 		elevate = false;
 		elevateButton.setSelected(false);
 		addToCommandList("-Elevate unpressed!");
+		guic.sendKeyReleased(GuiCommands.Key.ELEVATE);
 	}
 
 	/**
@@ -614,20 +613,20 @@ public class GUIMain extends javax.swing.JFrame {
 		tab1window1Lbl.setIcon(image);
 	}
 
-	public void propellorActive(int nbPropellor){
-		if(nbPropellor==1){
+	public void propellorActive(GuiCommands.Propellor nbPropellor){
+		if(nbPropellor==GuiCommands.Propellor.LEFT){
 			propellor1.setIcon(propact);
-		}else if(nbPropellor==2){
+		}else if(nbPropellor==GuiCommands.Propellor.UP){
 			propellor2.setIcon(propact);
 		}else{
 			propellor3.setIcon(propact);
 		}
 	}
 
-	public void propellorNotActive(int nbPropellor){
-		if(nbPropellor==1){
+	public void propellorNotActive(GuiCommands.Propellor nbPropellor){
+		if(nbPropellor==GuiCommands.Propellor.LEFT){
 			propellor1.setIcon(propnotact);
-		}else if(nbPropellor==2){
+		}else if(nbPropellor==GuiCommands.Propellor.UP){
 			propellor2.setIcon(propnotact);
 		}else{
 			propellor3.setIcon(propnotact);
