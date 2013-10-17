@@ -52,6 +52,7 @@ public class GUIMain extends javax.swing.JFrame {
 		elevateButton.setFocusable(false);
 		setHeightBtn.setFocusable(false);
 
+		//program icon
 		ImageIcon image = new ImageIcon("./resources/ballon.jpg");
 		Image img = image.getImage();
 		this.setIconImage(img);
@@ -59,6 +60,7 @@ public class GUIMain extends javax.swing.JFrame {
 		tab1window1Lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		tab1window1Lbl.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
 
+		//pijltjes afb
 		upButton.setText("\u2191");
 		downButton.setText("\u2193");
 		leftButton.setText("\u2190");
