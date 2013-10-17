@@ -242,8 +242,6 @@ public class GUIMain extends javax.swing.JFrame {
         labelCommandsTxt = new javax.swing.JLabel();
         labelCommandsDisplay = new javax.swing.JLabel();
         labelHoogteTxt = new javax.swing.JLabel();
-        setImage = new javax.swing.JButton();
-        setHoogte = new javax.swing.JButton();
         tab1window3 = new javax.swing.JPanel();
         upButton = new javax.swing.JToggleButton();
         downButton = new javax.swing.JToggleButton();
@@ -255,6 +253,11 @@ public class GUIMain extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         fullCommandList = new javax.swing.JTextArea();
         tab3 = new javax.swing.JPanel();
+        propellor1=new javax.swing.JLabel();
+        propellor2=new javax.swing.JLabel();
+        propellor3=new javax.swing.JLabel();
+        propact=new ImageIcon("resources\\propelloractive.jpg");
+        propnotact= new ImageIcon("resources\\propellornotactive.jpg");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Zeppelin GUI");
@@ -302,22 +305,24 @@ public class GUIMain extends javax.swing.JFrame {
         labelHoogteTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelHoogteTxt.setText("Hoogte :");
         labelHoogteTxt.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        
+        propellorActive(1);
+        propellor1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        propellor1.setMaximumSize(new java.awt.Dimension(51, 44));
+        propellor1.setMinimumSize(new java.awt.Dimension(51, 44));
+        propellor1.setPreferredSize(new java.awt.Dimension(51, 44));
 
-        setImage.setText("set Image temp");
-        setImage.setFocusable(false);
-        setImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setImageActionPerformed(evt);
-            }
-        });
+        propellorNotActive(2);
+        propellor2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        propellor2.setMaximumSize(new java.awt.Dimension(51, 44));
+        propellor2.setMinimumSize(new java.awt.Dimension(51, 44));
+        propellor2.setPreferredSize(new java.awt.Dimension(51, 44));
 
-        setHoogte.setText("set Hoogte temp");
-        setHoogte.setFocusable(false);
-        setHoogte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setHoogteActionPerformed(evt);
-            }
-        });
+        propellorActive(3);
+        propellor3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        propellor3.setMaximumSize(new java.awt.Dimension(51, 44));
+        propellor3.setMinimumSize(new java.awt.Dimension(51, 44));
+        propellor3.setPreferredSize(new java.awt.Dimension(51, 44));
 
         javax.swing.GroupLayout tab1window2Layout = new javax.swing.GroupLayout(tab1window2);
         tab1window2.setLayout(tab1window2Layout);
@@ -331,15 +336,15 @@ public class GUIMain extends javax.swing.JFrame {
                         .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelHoogteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelCommandsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(tab1window2Layout.createSequentialGroup()
+                                .addComponent(propellor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(propellor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(propellor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 50, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(tab1window2Layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(setHoogte, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(setImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tab1window2Layout.setVerticalGroup(
             tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,12 +357,17 @@ public class GUIMain extends javax.swing.JFrame {
                 .addComponent(labelCommandsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(labelCommandsDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
-                .addComponent(setImage, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(setHoogte, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(83, 83, 83)
+                .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(propellor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(propellor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(propellor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
+
+        propellor1.getAccessibleContext().setAccessibleName("propellor1");
+        propellor2.getAccessibleContext().setAccessibleName("propellor2");
+        propellor3.getAccessibleContext().setAccessibleName("propellor3");
 
         tab1window2.setBounds(500, 0, 290, 570);
         tab1.add(tab1window2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -552,17 +562,15 @@ public class GUIMain extends javax.swing.JFrame {
         
     }//GEN-LAST:event_setHeightBtnActionPerformed
 
-    private void setImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setImageActionPerformed
-    	ImageIcon image = new ImageIcon("resources\\Smalle.jpg");
-    	tab1window1Lbl.setIcon(image);
-    }//GEN-LAST:event_setImageActionPerformed
-
-    private void setHoogteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setHoogteActionPerformed
-    	setHoogteLabel(5);
-    }//GEN-LAST:event_setHoogteActionPerformed
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private ImageIcon propact;
+    private ImageIcon propnotact;
+    private javax.swing.JLabel propellor1;
+    private javax.swing.JLabel propellor2;
+    private javax.swing.JLabel propellor3;
     private javax.swing.JToggleButton downButton;
     private javax.swing.JToggleButton elevateButton;
     private javax.swing.JTextArea fullCommandList;
@@ -575,8 +583,6 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JToggleButton leftButton;
     private javax.swing.JToggleButton rightButton;
     private javax.swing.JButton setHeightBtn;
-    private javax.swing.JButton setHoogte;
-    private javax.swing.JButton setImage;
     private javax.swing.JLayeredPane tab1;
     private javax.swing.JPanel tab1window1;
     private javax.swing.JLabel tab1window1Lbl;
@@ -598,5 +604,25 @@ public class GUIMain extends javax.swing.JFrame {
     
     public void setImageDisplay(ImageIcon image){
     	tab1window1Lbl.setIcon(image);
+    }
+    
+    public void propellorActive(int nbPropellor){
+    	if(nbPropellor==1){
+    		propellor1.setIcon(propact);
+    	}else if(nbPropellor==2){
+    		propellor2.setIcon(propact);
+    	}else{
+    		propellor3.setIcon(propact);
+    	}
+    }
+    
+    public void propellorNotActive(int nbPropellor){
+    	if(nbPropellor==1){
+    		propellor1.setIcon(propnotact);
+    	}else if(nbPropellor==2){
+    		propellor2.setIcon(propnotact);
+    	}else{
+    		propellor3.setIcon(propnotact);
+    	}
     }
 }
