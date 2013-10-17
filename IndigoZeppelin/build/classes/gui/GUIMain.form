@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.8" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Zeppelin GUI"/>
@@ -108,11 +108,11 @@
                                       <Component id="labelCommandsTxt" min="-2" pref="104" max="-2" attributes="0"/>
                                       <Component id="labelHoogteDisplay" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="propellor1" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <Component id="propellor2" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="propellor3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="0" pref="50" max="32767" attributes="0"/>
@@ -135,9 +135,9 @@
                           <Component id="labelCommandsDisplay" min="-2" pref="210" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="propellor2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="propellor1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="propellor3" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="72" max="32767" attributes="0"/>
                       </Group>
@@ -196,9 +196,8 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel1">
+                <Component class="javax.swing.JLabel" name="propellor1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel1"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                         <LineBorder roundedCorners="true"/>
@@ -218,9 +217,8 @@
                     <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="propellor1"/>
                   </AccessibilityProperties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="javax.swing.JLabel" name="propellor2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel2"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                         <LineBorder roundedCorners="true"/>
@@ -240,9 +238,8 @@
                     <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="propellor2"/>
                   </AccessibilityProperties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel3">
+                <Component class="javax.swing.JLabel" name="propellor3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel3"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                         <LineBorder roundedCorners="true"/>
@@ -322,33 +319,21 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JToggleButton" name="upButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Z"/>
-                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="upButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="downButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="S"/>
-                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="downButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="leftButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Q"/>
-                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leftButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="rightButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="D"/>
-                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rightButtonActionPerformed"/>
                   </Events>

@@ -5,234 +5,237 @@
 package gui;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- *
- * @author user
+ *	Hoofdklasse voor weergave en reacties van de GUI
  */
 public class GUIMain extends javax.swing.JFrame {
-	
+
 	//enkel wanneer voor het eerste wordt ingedrukt een signaal geven (indien ingedrukt blijft: niks)
 	//alternatief: constant sturen (booleans niet nodig)
 	private boolean up,left,right,down,elevate;
 
-    /**
-     * Creates new form GUIMain
-     */
-    public GUIMain() {
-        initComponents();
-        init2();
-    }
-    
-    private void init2() {
-    	
-    	//zorgt er voor dat de focus goed blijft wanneer van tab wordt gewisseld
-    	//voorlopig: focus op tab1window2 in tab1, voor de pijltjes
-    	jTabbedPane.addChangeListener(new TabChangeListener());
-        
-        jTabbedPane.setTitleAt(0, "main");
-        jTabbedPane.setTitleAt(1, "Full command list!");
-        jTabbedPane.setTitleAt(2, "credits");
-        
-        //functies van de pijltjes met een keylistener
-        tab1window3.addKeyListener(new MotorListener());
-    	tab1window3.requestFocusInWindow(); //voor arrow keys: focus vragen, voor andere keys automatisch goed
-    	
-    	//alternatief: keybindings (ook focus nodig)
-    	//tab1window2.getActionMap().put("up", new upAction());
-        //tab1window2.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");
-        /*jPanel5.getInputMap().put(KeyStroke.getKeyStroke("F2"),
-                            "button");
-        jPanel5.getActionMap().put("button",
-                             new upAction());
-    */
-       // tab1window1.registerKeyboardAction(new upAction(),KeyStroke.getKeyStroke("UP"),JComponent.WHEN_IN_FOCUSED_WINDOW);
-       upButton.setFocusable(false);
-       downButton.setFocusable(false);
-       rightButton.setFocusable(false);
-       leftButton.setFocusable(false);
-       elevateButton.setFocusable(false);
-       setHeightBtn.setFocusable(false);
-       
-       
-       ImageIcon image = new ImageIcon("./resources/ballon.jpg");
-       Image img = image.getImage();
-       this.setIconImage(img);
-       
-       tab1window1Lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-       tab1window1Lbl.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-       
-    }
-    
-    class TabChangeListener implements ChangeListener {
-    	@Override
+	/**
+	 * Creates new form GUIMain
+	 */
+	public GUIMain() {
+		initComponents();
+		init2();
+	}
+
+	private void init2() {
+
+		//zorgt er voor dat de focus goed blijft wanneer van tab wordt gewisseld
+		//voorlopig: focus op tab1window2 in tab1, voor de pijltjes
+		jTabbedPane.addChangeListener(new TabChangeListener());
+
+		jTabbedPane.setTitleAt(0, "main");
+		jTabbedPane.setTitleAt(1, "Full command list!");
+		jTabbedPane.setTitleAt(2, "credits");
+
+		//functies van de pijltjes met een keylistener
+		tab1window3.addKeyListener(new MotorListener());
+		tab1window3.requestFocusInWindow(); //voor arrow keys: focus vragen, voor andere keys automatisch goed
+
+		upButton.setFocusable(false);
+		downButton.setFocusable(false);
+		rightButton.setFocusable(false);
+		leftButton.setFocusable(false);
+		elevateButton.setFocusable(false);
+		setHeightBtn.setFocusable(false);
+
+		ImageIcon image = new ImageIcon("./resources/ballon.jpg");
+		Image img = image.getImage();
+		this.setIconImage(img);
+
+		tab1window1Lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		tab1window1Lbl.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+
+		upButton.setText("\u2191");
+		downButton.setText("\u2193");
+		leftButton.setText("\u2190");
+		rightButton.setText("\u2192");
+		
+		//TEMP!!
+		propellorActive(1);
+		propellorNotActive(2);
+		propellorActive(3);
+	}
+
+	/**
+	 * Deze ChangeListener zorgt ervoor dat de focus in tab 1 gaat naar tab1window3,
+	 * zodat de pijltjestoetsen reageren.
+	 *
+	 */
+	class TabChangeListener implements ChangeListener {
+		@Override
 		public void stateChanged(ChangeEvent arg0) {
 			Component comp = jTabbedPane.getSelectedComponent();
-            if (comp.equals(tab1))
-            {
-              	tab1window3.requestFocusInWindow();
-            }
+			if (comp.equals(tab1))
+			{
+				tab1window3.requestFocusInWindow();
+			}
 		}
-    }
-    
-    /**
-     * Keylistener voor de besturingen om de motoren te besturen.
-     *	UP: vooruit
-     *	LEFT: links
-     *	RIGHT: rechts
-     *	DOWN: achteruit
-     *	SPACE: omhoog
-     */
-    class MotorListener implements KeyListener {
-    	
-    	@Override
-    	public void keyPressed(KeyEvent arg0) {
-    		if(arg0.getKeyCode() == KeyEvent.VK_UP) {
-    			if(!up) {
-    				upPressed();
-    				guic.sendKeyPressed(arg0);
-    			}
-    		}
-    		else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
-    			if(!left) {
-    				leftPressed();
-    				guic.sendKeyPressed(arg0);
-    			}
-    		}
-    		else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
-    			if(!right) {
-    				rightPressed();
-    				guic.sendKeyPressed(arg0);
-    			}
-    		}
-    		else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
-    			if(!down) {
-    				downPressed();
-    				guic.sendKeyPressed(arg0);
-    			}
-    		}
-    		else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
-    			if(!elevate) {
-    				elevatePressed();
-    				guic.sendKeyPressed(arg0);
-    			}
-    		}
-    	}
+	}
+
+	/**
+	 * Keylistener voor de pijltjes om de motoren te besturen.
+	 *	UP: vooruit
+	 *	LEFT: links
+	 *	RIGHT: rechts
+	 *	DOWN: achteruit
+	 *	SPACE: omhoog
+	 */
+	class MotorListener implements KeyListener {
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if(arg0.getKeyCode() == KeyEvent.VK_UP) {
+				if(!up) {
+					upPressed();
+					guic.sendKeyPressed(arg0);
+				}
+			}
+			else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+				if(!left) {
+					leftPressed();
+					guic.sendKeyPressed(arg0);
+				}
+			}
+			else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+				if(!right) {
+					rightPressed();
+					guic.sendKeyPressed(arg0);
+				}
+			}
+			else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(!down) {
+					downPressed();
+					guic.sendKeyPressed(arg0);
+				}
+			}
+			else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+				if(!elevate) {
+					elevatePressed();
+					guic.sendKeyPressed(arg0);
+				}
+			}
+		}
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
 			if(arg0.getKeyCode() == KeyEvent.VK_UP) {
-    			upUnpressed();
-    			guic.sendKeyUnpressed(arg0);
-    		}
+				upUnpressed();
+				guic.sendKeyUnpressed(arg0);
+			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_LEFT) {
-    			leftUnpressed();
-    			guic.sendKeyUnpressed(arg0);
-    		}
+				leftUnpressed();
+				guic.sendKeyUnpressed(arg0);
+			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
-    			rightUnpressed();
-    			guic.sendKeyUnpressed(arg0);
-    		}
+				rightUnpressed();
+				guic.sendKeyUnpressed(arg0);
+			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_DOWN) {
-    			downUnpressed();
-    			guic.sendKeyUnpressed(arg0);
-    		}
+				downUnpressed();
+				guic.sendKeyUnpressed(arg0);
+			}
 			else if(arg0.getKeyCode() == KeyEvent.VK_SPACE) {
 				elevateUnpressed();
 				guic.sendKeyUnpressed(arg0);
-    		}
+			}
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
 		}
-    }
-    
-    //wanneer een toets ingedrukt
-    private void upPressed() {
-    	up = true;
-    	upButton.setSelected(true);
-		
-		fullCommandList.setText(fullCommandList.getText()+ "\n" + "-Up pressed!");
-		
-		
-    }
-    
-    private void upUnpressed() {
-    	up = false;
-    	upButton.setSelected(false);
-		
-		fullCommandList.setText(fullCommandList.getText() + "\n" + "-Up unpressed!");
-    }
-    
-    private void leftPressed() {
-    	left = true;
-    	leftButton.setSelected(true);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Left pressed!");
-    }
-    
-    private void leftUnpressed() {
-    	left = false;
-    	leftButton.setSelected(false);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Left unpressed!");
-    }
-    
-    private void rightPressed() {
-    	right = true;
-    	rightButton.setSelected(true);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Right pressed!");
-    }
-    
-    private void rightUnpressed() {
-    	right = false;
-    	rightButton.setSelected(false);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Right unpressed!");
-    }
-    
-    private void downPressed() {
-    	down = true;
-    	downButton.setSelected(true);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Down pressed!");
-    }
-    
-    private void downUnpressed() {
-    	down = false;
-    	downButton.setSelected(false);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Down unpressed!");
-    }
-    
-    private void elevatePressed() {
-    	elevate = true;
-    	elevateButton.setSelected(true);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Elevate pressed!");
-    }
-    
-    private void elevateUnpressed() {
-    	elevate = false;
-    	elevateButton.setSelected(false);
-    	fullCommandList.setText(fullCommandList.getText() + "\n" + "-Elevate unpressed!");
-    }
+	}
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+	private void addToCommandList(String s) {
+		fullCommandList.setText(fullCommandList.getText() + "\n" + s);
+	}
+	
+	//wanneer een toets ingedrukt
+	private void upPressed() {
+		up = true;
+		upButton.setSelected(true);
+
+		addToCommandList("-Up pressed!");
+	}
+
+	private void upUnpressed() {
+		up = false;
+		upButton.setSelected(false);
+
+		addToCommandList("-Up unpressed!");
+	}
+
+	private void leftPressed() {
+		left = true;
+		leftButton.setSelected(true);
+		addToCommandList("-Left pressed!");
+	}
+
+	private void leftUnpressed() {
+		left = false;
+		leftButton.setSelected(false);
+		addToCommandList("-Left unpressed!");
+	}
+
+	private void rightPressed() {
+		right = true;
+		rightButton.setSelected(true);
+		addToCommandList("-Right pressed!");
+	}
+
+	private void rightUnpressed() {
+		right = false;
+		rightButton.setSelected(false);
+		addToCommandList("-Right unpressed!");
+	}
+
+	private void downPressed() {
+		down = true;
+		downButton.setSelected(true);
+		addToCommandList("-Down pressed!");
+	}
+
+	private void downUnpressed() {
+		down = false;
+		downButton.setSelected(false);
+		addToCommandList("-Down unpressed!");
+	}
+
+	private void elevatePressed() {
+		elevate = true;
+		elevateButton.setSelected(true);
+		addToCommandList("-Elevate pressed!");
+	}
+
+	private void elevateUnpressed() {
+		elevate = false;
+		elevateButton.setSelected(false);
+		addToCommandList("-Elevate unpressed!");
+	}
+
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-    	guic= new GuiCommands(this);
+
         jTabbedPane = new javax.swing.JTabbedPane();
         tab1 = new javax.swing.JLayeredPane();
         tab1window1 = new javax.swing.JPanel();
@@ -242,6 +245,9 @@ public class GUIMain extends javax.swing.JFrame {
         labelCommandsTxt = new javax.swing.JLabel();
         labelCommandsDisplay = new javax.swing.JLabel();
         labelHoogteTxt = new javax.swing.JLabel();
+        propellor1 = new javax.swing.JLabel();
+        propellor2 = new javax.swing.JLabel();
+        propellor3 = new javax.swing.JLabel();
         tab1window3 = new javax.swing.JPanel();
         upButton = new javax.swing.JToggleButton();
         downButton = new javax.swing.JToggleButton();
@@ -253,11 +259,6 @@ public class GUIMain extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         fullCommandList = new javax.swing.JTextArea();
         tab3 = new javax.swing.JPanel();
-        propellor1=new javax.swing.JLabel();
-        propellor2=new javax.swing.JLabel();
-        propellor3=new javax.swing.JLabel();
-        propact=new ImageIcon("resources\\propelloractive.jpg");
-        propnotact= new ImageIcon("resources\\propellornotactive.jpg");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Zeppelin GUI");
@@ -294,31 +295,27 @@ public class GUIMain extends javax.swing.JFrame {
         labelHoogteDisplay.setOpaque(true);
 
         labelCommandsTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelCommandsTxt.setText("Commands :");
+        labelCommandsTxt.setText("Commands");
         labelCommandsTxt.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         labelCommandsDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelCommandsDisplay.setText("Lijst commandos");
-        labelCommandsDisplay.setHorizontalAlignment(SwingConstants.LEFT);
         labelCommandsDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         labelHoogteTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelHoogteTxt.setText("Hoogte :");
         labelHoogteTxt.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        
-        propellorActive(1);
+
         propellor1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         propellor1.setMaximumSize(new java.awt.Dimension(51, 44));
         propellor1.setMinimumSize(new java.awt.Dimension(51, 44));
         propellor1.setPreferredSize(new java.awt.Dimension(51, 44));
 
-        propellorNotActive(2);
         propellor2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         propellor2.setMaximumSize(new java.awt.Dimension(51, 44));
         propellor2.setMinimumSize(new java.awt.Dimension(51, 44));
         propellor2.setPreferredSize(new java.awt.Dimension(51, 44));
 
-        propellorActive(3);
         propellor3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         propellor3.setMaximumSize(new java.awt.Dimension(51, 44));
         propellor3.setMinimumSize(new java.awt.Dimension(51, 44));
@@ -372,28 +369,24 @@ public class GUIMain extends javax.swing.JFrame {
         tab1window2.setBounds(500, 0, 290, 570);
         tab1.add(tab1window2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        upButton.setText("\u2191");
         upButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 upButtonActionPerformed(evt);
             }
         });
 
-        downButton.setText("\u2193");
         downButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downButtonActionPerformed(evt);
             }
         });
 
-        leftButton.setText("\u2190");
         leftButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftButtonActionPerformed(evt);
             }
         });
 
-        rightButton.setText("\u2192");
         rightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightButtonActionPerformed(evt);
@@ -508,69 +501,78 @@ public class GUIMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
-        if(upButton.isSelected())
-        	upPressed();
-        else
-        	upUnpressed();
-    }//GEN-LAST:event_upButtonActionPerformed
+	/**
+	 * Actie wanneer de up-button wordt aangeklikt
+	 */
+	private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
+		if(upButton.isSelected())
+			upPressed();
+		else
+			upUnpressed();
+	}//GEN-LAST:event_upButtonActionPerformed
 
-    private void leftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftButtonActionPerformed
-    	if(leftButton.isSelected())
-        	leftPressed();
-        else
-        	leftUnpressed();
-    }//GEN-LAST:event_leftButtonActionPerformed
+	/**
+	 * Actie wanneer de left-button wordt aangeklikt
+	 */
+	private void leftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftButtonActionPerformed
+		if(leftButton.isSelected())
+			leftPressed();
+		else
+			leftUnpressed();
+	}//GEN-LAST:event_leftButtonActionPerformed
 
-    private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
-    	if(downButton.isSelected())
-        	downPressed();
-        else
-        	downUnpressed();
-    }//GEN-LAST:event_downButtonActionPerformed
+	/**
+	 * Actie wanneer de down-button wordt aangeklikt
+	 */
+	private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
+		if(downButton.isSelected())
+			downPressed();
+		else
+			downUnpressed();
+	}//GEN-LAST:event_downButtonActionPerformed
 
-    private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
-    	if(rightButton.isSelected())
-        	rightPressed();
-        else
-        	rightUnpressed();
-    }//GEN-LAST:event_rightButtonActionPerformed
+	/**
+	 * Actie wanneer de right-button wordt aangeklikt
+	 */
+	private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
+		if(rightButton.isSelected())
+			rightPressed();
+		else
+			rightUnpressed();
+	}//GEN-LAST:event_rightButtonActionPerformed
 
-    private void elevateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_elevateButtonActionPerformed
-    	if(elevateButton.isSelected())
-        	elevatePressed();
-        else
-        	elevateUnpressed();
-    }//GEN-LAST:event_elevateButtonActionPerformed
+	/**
+	 * Actie wanneer de elevate-button wordt aangeklikt
+	 */
+	private void elevateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_elevateButtonActionPerformed
+		if(elevateButton.isSelected())
+			elevatePressed();
+		else
+			elevateUnpressed();
+	}//GEN-LAST:event_elevateButtonActionPerformed
 
-    
-    private void setHeightBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setHeightBtnActionPerformed
-        String height = JOptionPane.showInputDialog(this, "Go to height (cm)");
-        double heightgetal = 0;
-        try {
-        	if(height != null){
-        		heightgetal = Double.parseDouble(height);
-        		guic.sendHeightZep(heightgetal);
-        	}
-        	else
-        		return;
-        }
-        catch (NumberFormatException e) {
-        	JOptionPane.showMessageDialog(this, "Ongeldige hoogte");
-        	return;
-        }
-        
-    }//GEN-LAST:event_setHeightBtnActionPerformed
+	/**
+	 * Actie wanneer de set height button wordt aangeklikt
+	 */
+	private void setHeightBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setHeightBtnActionPerformed
+		String height = JOptionPane.showInputDialog(this, "Go to height (cm)");
+		double heightgetal = 0;
+		try {
+			if(height != null){
+				heightgetal = Double.parseDouble(height);
+				guic.sendHeightZep(heightgetal);
+			}
+		}
+		catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Ongeldige hoogte");
+		}
 
-    
+	}//GEN-LAST:event_setHeightBtnActionPerformed
+
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private ImageIcon propact;
-    private ImageIcon propnotact;
-    private javax.swing.JLabel propellor1;
-    private javax.swing.JLabel propellor2;
-    private javax.swing.JLabel propellor3;
     private javax.swing.JToggleButton downButton;
     private javax.swing.JToggleButton elevateButton;
     private javax.swing.JTextArea fullCommandList;
@@ -581,6 +583,9 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelHoogteDisplay;
     private javax.swing.JLabel labelHoogteTxt;
     private javax.swing.JToggleButton leftButton;
+    private javax.swing.JLabel propellor1;
+    private javax.swing.JLabel propellor2;
+    private javax.swing.JLabel propellor3;
     private javax.swing.JToggleButton rightButton;
     private javax.swing.JButton setHeightBtn;
     private javax.swing.JLayeredPane tab1;
@@ -591,38 +596,41 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JToggleButton upButton;
-    private GuiCommands guic;
     // End of variables declaration//GEN-END:variables
     
-    public void setHoogteLabel(double hoogte){
-    	labelHoogteDisplay.setText(hoogte+" cm");
-    }
-    
-    public void showMessage(String message){
-    	labelCommandsDisplay.setText(message);
-    }
-    
-    public void setImageDisplay(ImageIcon image){
-    	tab1window1Lbl.setIcon(image);
-    }
-    
-    public void propellorActive(int nbPropellor){
-    	if(nbPropellor==1){
-    		propellor1.setIcon(propact);
-    	}else if(nbPropellor==2){
-    		propellor2.setIcon(propact);
-    	}else{
-    		propellor3.setIcon(propact);
-    	}
-    }
-    
-    public void propellorNotActive(int nbPropellor){
-    	if(nbPropellor==1){
-    		propellor1.setIcon(propnotact);
-    	}else if(nbPropellor==2){
-    		propellor2.setIcon(propnotact);
-    	}else{
-    		propellor3.setIcon(propnotact);
-    	}
-    }
+    private ImageIcon propact = new ImageIcon("resources\\propelloractive.jpg");
+	private ImageIcon propnotact = new ImageIcon("resources\\propellornotactive.jpg");
+	private GuiCommands guic = new GuiCommands(this);
+	
+	public void setHoogteLabel(double hoogte){
+		labelHoogteDisplay.setText(hoogte+" cm");
+	}
+
+	public void showMessage(String message){
+		labelCommandsDisplay.setText(message);
+	}
+
+	public void setImageDisplay(ImageIcon image){
+		tab1window1Lbl.setIcon(image);
+	}
+
+	public void propellorActive(int nbPropellor){
+		if(nbPropellor==1){
+			propellor1.setIcon(propact);
+		}else if(nbPropellor==2){
+			propellor2.setIcon(propact);
+		}else{
+			propellor3.setIcon(propact);
+		}
+	}
+
+	public void propellorNotActive(int nbPropellor){
+		if(nbPropellor==1){
+			propellor1.setIcon(propnotact);
+		}else if(nbPropellor==2){
+			propellor2.setIcon(propnotact);
+		}else{
+			propellor3.setIcon(propnotact);
+		}
+	}
 }
