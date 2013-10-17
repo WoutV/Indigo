@@ -247,6 +247,9 @@ public class GUIMain extends javax.swing.JFrame {
         propellor1 = new javax.swing.JLabel();
         propellor2 = new javax.swing.JLabel();
         propellor3 = new javax.swing.JLabel();
+        prop1Lbl = new javax.swing.JLabel();
+        prop2Lbl = new javax.swing.JLabel();
+        prop3Lbl = new javax.swing.JLabel();
         tab1window3 = new javax.swing.JPanel();
         upButton = new javax.swing.JToggleButton();
         downButton = new javax.swing.JToggleButton();
@@ -320,6 +323,12 @@ public class GUIMain extends javax.swing.JFrame {
         propellor3.setMinimumSize(new java.awt.Dimension(51, 44));
         propellor3.setPreferredSize(new java.awt.Dimension(51, 44));
 
+        prop1Lbl.setText("Left");
+
+        prop2Lbl.setText("Up");
+
+        prop3Lbl.setText("Right");
+
         javax.swing.GroupLayout tab1window2Layout = new javax.swing.GroupLayout(tab1window2);
         tab1window2.setLayout(tab1window2Layout);
         tab1window2Layout.setHorizontalGroup(
@@ -333,12 +342,22 @@ public class GUIMain extends javax.swing.JFrame {
                             .addComponent(labelHoogteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelCommandsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(tab1window2Layout.createSequentialGroup()
-                                .addComponent(propellor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(propellor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(propellor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(tab1window2Layout.createSequentialGroup()
+                                    .addComponent(prop1Lbl)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(prop3Lbl))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, tab1window2Layout.createSequentialGroup()
+                                    .addComponent(propellor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(tab1window2Layout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(propellor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(tab1window2Layout.createSequentialGroup()
+                                            .addGap(23, 23, 23)
+                                            .addComponent(prop2Lbl)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(propellor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 50, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -353,12 +372,20 @@ public class GUIMain extends javax.swing.JFrame {
                 .addComponent(labelCommandsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(labelCommandsDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83)
+                .addGap(58, 58, 58)
                 .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(propellor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(propellor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(propellor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(72, Short.MAX_VALUE))
+                    .addComponent(prop1Lbl)
+                    .addComponent(prop3Lbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tab1window2Layout.createSequentialGroup()
+                        .addComponent(prop2Lbl)
+                        .addGap(11, 11, 11)
+                        .addComponent(propellor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(propellor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(propellor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         propellor1.getAccessibleContext().setAccessibleName("propellor1");
@@ -582,6 +609,9 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelHoogteDisplay;
     private javax.swing.JLabel labelHoogteTxt;
     private javax.swing.JToggleButton leftButton;
+    private javax.swing.JLabel prop1Lbl;
+    private javax.swing.JLabel prop2Lbl;
+    private javax.swing.JLabel prop3Lbl;
     private javax.swing.JLabel propellor1;
     private javax.swing.JLabel propellor2;
     private javax.swing.JLabel propellor3;
