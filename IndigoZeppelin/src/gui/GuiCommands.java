@@ -1,8 +1,12 @@
 package gui;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+
+import transfer.Transfer;
+import transfer.Transfer.TransferType;
+
+import client.SendToServer;
 
 /**
  * Klasse om de client / de GUI te linken met de zeppelin.
@@ -14,9 +18,9 @@ public class GuiCommands {
 	//TEMP: dit wordt een soort arraylist/andere collectie van een Klasse Command
 	private  ArrayList<String> newcommands;
 	private GUIMain gui;
-	
 	public GuiCommands(GUIMain gui){
 		this.gui=gui;
+		
 	}
 
 //	public ArrayList<String> getNewcommands() {
@@ -81,7 +85,9 @@ public class GuiCommands {
 	 * 			hoogte in cm
 	 */
 	public void sendHeightZep(double hoogte){
-		
+		Transfer transfer = new Transfer();
+		transfer.setHeight(hoogte);
+		sender.sendTransfer(transfer);
 	}
 	
 	/**
@@ -96,7 +102,10 @@ public class GuiCommands {
 	 * Wordt opgeroepen door GUIMain.
 	 */
 	public void sendKeyPressed(Key key){
-		
+		Transfer transfer = new Transfer();
+		transfer.setKeyEvent(key, TransferType.KEYPRESSEDEVENT);
+		sender.sendTransfer(transfer);
+	
 	}
 	
 	/**
@@ -104,6 +113,20 @@ public class GuiCommands {
 	 * Wordt opgeroepen door GUIMain.
 	 */
 	public void sendKeyReleased(Key key){
+		Transfer transfer = new Transfer();
+		transfer.setKeyEvent(key, TransferType.KEYRELEASEDEVENT);
+		sender.sendTransfer(transfer);
+	}
+
+	private SendToServer sender;
+	public void setSender(SendToServer sender){
+		this.sender=sender;
+	}
+
+	public void receiveMessage(String message) {
+		gui.showMessage(message);
 		
 	}
+	
+
 }

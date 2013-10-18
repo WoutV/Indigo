@@ -47,10 +47,12 @@ public class InitializeClient {
 		setIp();
 		try {
 			Socket sock = new Socket(serverIP,6789);
-			SendThread sendThread = new SendThread(sock,gui);
-			Thread thread = new Thread(sendThread);thread.start();
+			SendToServer sender = new SendToServer(sock,gui);
+			gui.getGuiCommands().setSender(sender);
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
+			
+			
 		} catch (Exception e) {System.out.println(e.getMessage());} 
 	}
 	static String serverIP;

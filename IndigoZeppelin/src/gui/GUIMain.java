@@ -211,7 +211,7 @@ public class GUIMain extends javax.swing.JFrame {
 		down = false;
 		downButton.setSelected(false);
 		addToCommandList("-Down unpressed!");
-		guic.sendKeyPressed(GuiCommands.Key.DOWN);
+		guic.sendKeyReleased(GuiCommands.Key.DOWN);
 	}
 
 	private void elevatePressed() {
@@ -664,4 +664,12 @@ public class GUIMain extends javax.swing.JFrame {
 			propellor3.setIcon(propnotact);
 		}
 	}
+
+	//ADDED BY SUNIL
+	public GuiCommands getGuiCommands(){
+		return guic;
+	}
+
+	
+	
 }

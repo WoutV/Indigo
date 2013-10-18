@@ -1,5 +1,7 @@
 package transfer;
 
+import gui.GuiCommands.Key;
+
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
@@ -16,7 +18,7 @@ public class Transfer implements Serializable {
 	}
 	private TransferType type;
 	private double height;
-	private KeyEvent keyevent;
+	private Key keyevent;
 	private String message;
 	private ImageIcon image;
 	public Transfer(){
@@ -26,7 +28,7 @@ public class Transfer implements Serializable {
 	public TransferType getTransferType(){
 		return type;
 	}
-	public KeyEvent getKeyEvent(){
+	public Key getKey(){
 		return keyevent;
 	}
 	
@@ -53,10 +55,10 @@ public class Transfer implements Serializable {
 	 * @param keyevent
 	 * @param type
 	 */
-	public void setKeyEvent(KeyEvent keyevent, TransferType type){
-		this.keyevent = keyevent;
+	public void setKeyEvent(Key key, TransferType type){
+		this.keyevent = key;
 		this.type = type;
-		message = "Transfering keyevent type: " +keyevent.getKeyCode() ;
+		message = "Transfering keyevent type: " + key.toString() ;
 	}
 	
 	public String getMessage(){

@@ -17,27 +17,30 @@ class ReceiveThread implements Runnable
 	GUIMain gui;
 	
 	
-	private void handleReceived(Transfer transferReceived) {
-		//Closing the socket if it is EXIT type
-				if(transferReceived.getTransferType() == Transfer.TransferType.EXIT )
-				{
-					try {
-						this.sock.close();
-						gui.showMessage("Sockect Closed By Server. Now Exiting...");
-					} catch (IOException e) {
-						gui.showMessage("Error while closing socket");
-						e.printStackTrace();
-					}
-					System.exit(0);
-				}
-				if(transferReceived.getTransferType()==Transfer.TransferType.MESSAGE){
-					gui.showMessage(transferReceived.getMessage());
-				}
-				if(transferReceived.getTransferType()==TransferType.IMAGE){
-					gui.setImageDisplay(transferReceived.getImage());
-				}
-				//What should the system do if it gets information?
+	private void handleReceived(Transfer information) {
+		switch(information.getTransferType()){
+		case EXIT:
+			exit(information);
+			break;
+		case IMAGE:
+			image(information);
+			break;
+		case HEIGHT:
+			height(information);
+			break;
+		case KEYPRESSEDEVENT:
+			keyPressedEvent(information);
+			break;
+		case KEYRELEASEDEVENT:
+			keyReleasedEvent(information);
+			break;
+		case MESSAGE:
+			message(information);
+			break;
+		default:
+			break;
 		
+		}
 	}
 	
 	
@@ -66,7 +69,33 @@ class ReceiveThread implements Runnable
 		gui.showMessage("Error receiving");}
 	}//end run
 	
+	public void exit(Transfer informatin){
+		try {
+			this.sock.close();
+			gui.showMessage("Sockect Closed By Server. Now Exiting...");
+		} catch (IOException e) {
+			gui.showMessage("Error while closing socket");
+			e.printStackTrace();
+		}
+		System.exit(0);
 	
+	}
+	public void image(Transfer information){
+		gui.getGuiCommands().receiveImage(information.getImage());
+	}
+	public void height(Transfer information){
+		gui.getGuiCommands().receiveHeight(information.getHeight());
+	}
+	
+	public void keyPressedEvent(Transfer information){
+		//NVT
+	}
+	public void keyReleasedEvent(Transfer information){
+		System.out.println("Key Released Event:"+ information.getKey().toString());
+	}
+	public void message(Transfer information){
+		gui.getGuiCommands().receiveMessage(information.getMessage());
+	}
 	
 }//end class recievethread
 
