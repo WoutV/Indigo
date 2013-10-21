@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package gui;
-
+import zeppelin.Propellor;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -68,9 +68,9 @@ public class GUIMain extends javax.swing.JFrame {
 		rightButton.setText("\u2192");
 		
 		//TEMP!!
-		propellorActive(GuiCommands.Propellor.LEFT);
-		propellorNotActive(GuiCommands.Propellor.UP);
-		propellorActive(GuiCommands.Propellor.RIGHT);
+		propellorActive(Propellor.LEFT);
+		propellorNotActive(Propellor.UP);
+		propellorActive(Propellor.RIGHT);
 	}
 
 	/**
@@ -646,20 +646,20 @@ public class GUIMain extends javax.swing.JFrame {
 		tab1window1Lbl.setIcon(image);
 	}
 
-	public void propellorActive(GuiCommands.Propellor nbPropellor){
-		if(nbPropellor==GuiCommands.Propellor.LEFT){
+	public void propellorActive(Propellor nbPropellor){
+		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propact);
-		}else if(nbPropellor==GuiCommands.Propellor.UP){
+		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propact);
 		}else{
 			propellor3.setIcon(propact);
 		}
 	}
 
-	public void propellorNotActive(GuiCommands.Propellor nbPropellor){
-		if(nbPropellor==GuiCommands.Propellor.LEFT){
+	public void propellorNotActive(Propellor nbPropellor){
+		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propnotact);
-		}else if(nbPropellor==GuiCommands.Propellor.UP){
+		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propnotact);
 		}else{
 			propellor3.setIcon(propnotact);
