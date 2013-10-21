@@ -1,9 +1,4 @@
 package client;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import gui.GUIMain;
@@ -44,7 +39,25 @@ public class InitializeClient {
     
         //INITIALIZING SOCKETS AND THREADS
 
-		setIp();
+		setIp(gui);
+		 
+	}
+	static String serverIP;
+	static boolean ipSet=false;
+	public static void setIp(GUIMain gui){
+		while(!ipSet){
+			serverIP = gui.setIP();
+			if(serverIP==null){
+				System.exit(0);
+			}
+			if(isValidIP(serverIP)){
+				ipSet=true;
+				gui.showMessage("");
+			}
+			else
+				gui.showMessage("Invalid IP address");
+		}
+		
 		try {
 			Socket sock = new Socket(serverIP,6789);
 			SendToServer sender = new SendToServer(sock,gui);
@@ -53,24 +66,11 @@ public class InitializeClient {
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 			
 			
-		} catch (Exception e) {System.out.println(e.getMessage());} 
-	}
-	static String serverIP;
-	static boolean ipSet=false;
-	public static void setIp(){
-		while(!ipSet){
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Enter Server's IP: ");
-			try {
-				serverIP = br.readLine();
-			} catch (IOException e) {
-				System.out.println("Something went wrong! Try again");
+		} catch (Exception e) {
+			gui.showMessage(e.getMessage()+"\n Please make sure the server is running!");
+			ipSet=false;
+			setIp(gui);
 			}
-			if(isValidIP(serverIP))
-				ipSet=true;
-			else
-				System.out.println("Invalid IP address");
-		}
 	}
 
 	//Check for valid IP Address

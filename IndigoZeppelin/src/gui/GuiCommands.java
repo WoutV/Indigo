@@ -16,6 +16,7 @@ import client.SendToServer;
 public class GuiCommands {
 	
 	//TEMP: dit wordt een soort arraylist/andere collectie van een Klasse Command
+	@SuppressWarnings("unused")
 	private  ArrayList<String> newcommands;
 	private GUIMain gui;
 	public GuiCommands(GUIMain gui){

@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import transfer.Transfer;
-import transfer.Transfer.TransferType;
 
 class ReceiveThread implements Runnable
 {

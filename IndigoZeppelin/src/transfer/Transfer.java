@@ -1,10 +1,7 @@
 package transfer;
 
 import gui.GuiCommands.Key;
-
-import java.awt.event.KeyEvent;
 import java.io.Serializable;
-
 import javax.swing.ImageIcon;
 
 public class Transfer implements Serializable {
