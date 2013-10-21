@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import zeppelin.Propellor;
 import javax.swing.ImageIcon;
 
 import transfer.Transfer;
@@ -47,14 +48,6 @@ public class GuiCommands {
 		gui.setHoogteLabel(hoogte);
 	}
 	
-	/**
-	 * Enum die de 3 verschillende propellors aangeeft.
-	 */
-	//voorlopig via enum
-	//dit evt aanpassen adhv interne werking
-	public enum Propellor{
-		LEFT,RIGHT,UP
-	}
 	
 	/**
 	 * Via deze methode stuurt de zeppelin de staat van één van zijn propellors door.
