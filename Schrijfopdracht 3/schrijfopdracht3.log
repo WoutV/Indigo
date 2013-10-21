@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  21 OCT 2013 22:55
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  21 OCT 2013 23:03
 entering extended mode
 **schrijfopdracht3.tex
 ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 3\schrijfopdracht3.tex"
@@ -409,12 +409,7 @@ File: opstelling.jpg Graphic file (type jpg)
  <use opstelling.jpg>
 Package pdftex.def Info: opstelling.jpg used on input line 33.
 (pdftex.def)             Requested size: 179.59233pt x 105.87634pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 44--45
-
- []
-
-[1
+ [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/Schrijfopdracht 3/opst
 elling.jpg>]
@@ -422,12 +417,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 46--47
 
  []
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 48.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 48.
 
-Overfull \hbox (10.28256pt too wide) in paragraph at lines 48--56
+Underfull \hbox (badness 10000) in paragraph at lines 48--49
+
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 50.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 50.
+
+Overfull \hbox (10.28256pt too wide) in paragraph at lines 50--58
 [][] 
  []
 
@@ -439,12 +439,12 @@ Here is how much of TeX's memory you used:
  5541 multiletter control sequences out of 15000+200000
  7895 words of font info for 28 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 32i,8n,31p,844b,229s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 32i,8n,31p,794b,229s stack positions out of 5000i,500n,10000p,200000b,50000s
 <F:/MiKTeX/fonts/type1/publi
 c/amsfonts/cm/cmbx10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmmi10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><F:/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on schrijfopdracht3.pdf (2 pages, 92683 bytes).
+Output written on schrijfopdracht3.pdf (2 pages, 93083 bytes).
 PDF statistics:
  34 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
