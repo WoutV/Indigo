@@ -17,34 +17,24 @@
 
 \maketitle
 
-Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. Via QR-codes kunnen bepaalde instructies gegeven worden.
+Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. De zeppelin wordt aangestuurd door een Raspberry Pi. Via QR-codes kunnen instructies gegeven worden, zoals ``stijg 50cm'' of ``draai 45   graden''. De gebruiker kan via een GUI op een client-pc zelf via de pijltjestoetsen de zeppelin aansturen of gegevens bekijken over de toestand van de zeppelin (bijvoorbeeld de huidige hoogte).
 
-\textbf{Fysisch ontwerp:} Houten frame met 2 grote ronde heliumballonnen, een afstandssensor (naar onder gericht), een camera (naar voren gericht) en de Raspberry Pi. De zeppelin bevat ook 2 propellers voor zijwaartse en 1 propeller voor opwaartse bewegingen.
-
-\textbf{Software ontwerp:} Onderverdeeld in 3 delen: de GUI, de communicatie tussen GUI en Raspberry Pi en de interne programmatie op de Pi (verwerking van data van de sensoren, aansturen van de motoren).
-De GUI zal in Java gemaakt worden. De communicatie tussen GUI en de Raspberry Pi zal gebeuren via een Java server-client model. Hierbij geeft de gebruiker (via de GUI) objecten door van klasses die opdrachten voor de Pi voorstellen (bijvoorbeeld de linkse motor gedurende 2 seconden actief). (Zie figuur \ref{schema})
-
-Een alternatief idee was om via een webinterface te communiceren. Dit idee hebben we voorlopig aan de kant geschoven, omdat we hierover nog niet voldoende informatie hebben. Indien we hier meer over vinden, kunnen we nog omschakelen naar deze strategie.\\
-
-\textbf{Planning:}
-\begin{itemize}
-\item Tegen volgende week: Uitlezen van de afstandssensor en basisontwerp van de GUI. Aangezien we nog geen volledig beeld hebben van alle onderdelen en opties, zal er telkens een nieuwe en aangepaste planning worden gemaakt.
-\item De week van 21 oktober zullen we starten met eenvoudige testen, dan hebben we nog ruime tijd om eventuele problemen op te lossen.
-\item De camera zal tegen de tussentijdse demo nog niet gebruikt en gemonteerd zijn, zo kunnen we ons volledig concentreren op de afstandssensor.
-\end{itemize}
+\paragraph{Fysisch ontwerp:}
+~\\ 
+De zeppelin bestaat uit een houten frame waaraan 2 grote ronde heliumballonnen vastgemaakt zijn. Aan het frame is een afstandssensor gekoppeld die naar onderen is gericht. Op het voorste deel van het frame hangt ook een camera die beelden maakt van de omgeving. Zowel de camera alsook de afstandssensor zijn verbonden met de Raspberry Pi die in het frame zit ingebed. Het geheel bevat drie propellers: twee voor zijwaartse bewegingen en \'{e}\'{e}n voor opwaartse bewegingen.
 
 
-\textbf{Taakverdeling voor de software-onderdelen:}
-\begin{itemize}
-\item GUI: Dimitri Jonckers \& Wander Bavin
-\item Communicatie: Sunil Tandan
-\item Verwerking gegevens: Vince Goossens \& Wout Vekemans
-\item Fysiek ontwerp: Wordt nog bepaald
-\end{itemize}
+\paragraph{Software ontwerp:}
+~\\
+Natuurlijk moet de zeppelin aangestuurd worden via de software. Dit is onderverdeeld in 3 grote delen: de GUI, de communicatie tussen GUI en Raspberry Pi en de interne programmatie op de Pi (Zie figuur \ref{schema}). De software zal volledig worden geprogrammeerd in Java. 
+De communicatie tussen GUI en de Raspberry Pi zal gebeuren via sockets. Hierbij worden objecten uitgewisseld tussen de client en de server (de Pi) die commando's doorgeven aan de zeppelin of de status doorgeven aan de gebruiker. De interne programmatie op de Pi moet op basis van zijn sensoren en commando's de motoren aansturen. 
+
+
+
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[height=43mm]{Schema.jpg}
+\includegraphics[height=5mm]{Schema.jpg}
 \caption{Architectuur}
 \label{schema}
 \end{figure}
