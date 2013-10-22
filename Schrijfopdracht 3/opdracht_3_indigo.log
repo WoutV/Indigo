@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  22 OCT 2013 16:59
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  22 OCT 2013 17:00
 entering extended mode
-**schrijfopdracht3.tex
-("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 3\schrijfopdracht3.tex"
+**opdracht_3_indigo.tex
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 3\opdracht_3_indigo.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, arabic, armenian, assamese, basque, bengali
 , bokmal, bulgarian, catalan, coptic, croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, galic
@@ -325,7 +325,7 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 ))
-("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 3\schrijfopdracht3.aux")
+No file opdracht_3_indigo.aux.
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
 LaTeX Font Info:    ... okay on input line 19.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
@@ -338,7 +338,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
 LaTeX Font Info:    ... okay on input line 19.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
 LaTeX Font Info:    ... okay on input line 19.
-
 (F:\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count92
@@ -404,7 +403,11 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
- <opstelling.jpg, id=1, 299.31825pt x 176.45924pt>
+
+
+LaTeX Warning: Reference `opstelling' on page 1 undefined on input line 30.
+
+<opstelling.jpg, id=1, 299.31825pt x 176.45924pt>
 File: opstelling.jpg Graphic file (type jpg)
  <use opstelling.jpg>
 Package pdftex.def Info: opstelling.jpg used on input line 33.
@@ -431,20 +434,26 @@ Overfull \hbox (10.28256pt too wide) in paragraph at lines 50--58
 [][] 
  []
 
-[2] ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 3\schrijfopdracht3.aux") ) 
+[2] ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\Schrijfopdracht 3\opdracht_3_indigo.aux")
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2265 strings out of 493921
- 28982 string characters out of 3154503
- 97266 words of memory out of 3000000
+ 2263 strings out of 493921
+ 28826 string characters out of 3154503
+ 97258 words of memory out of 3000000
  5541 multiletter control sequences out of 15000+200000
  7895 words of font info for 28 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 32i,8n,31p,920b,229s stack positions out of 5000i,500n,10000p,200000b,50000s
-<F:/MiKTeX/fonts/type1/publi
-c/amsfonts/cm/cmbx10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmmi10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><F:/M
-iKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on schrijfopdracht3.pdf (2 pages, 94161 bytes).
+ 32i,8n,31p,921b,229s stack positions out of 5000i,500n,10000p,200000b,50000s
+<F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><F:/MiKTeX/f
+onts/type1/public/amsfonts/cm/cmmi10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><F:/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmr17.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on opdracht_3_indigo.pdf (2 pages, 94410 bytes).
 PDF statistics:
  34 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
