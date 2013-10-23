@@ -1,6 +1,7 @@
 package zeppelin;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
@@ -9,7 +10,13 @@ import com.pi4j.io.gpio.RaspiPin;
 public class Motor {
 	private GpioPinDigitalOutput forwardPin;
 	private GpioPinDigitalOutput reversePin;
-	private GpioPinDigitalOutput pwmpin;
+	private GpioPinPwmOutput pwmPin;
+	
+	//PWM: value tussen 0 en 1024 (volgens WiringPi)
+	//of mss tussen 0 en 100 (dit is bij SoftPWM)
+	//evt een aparte klasse pwm control die gedeeld tussen alle motoren
+	private boolean pwmEnabled;
+	
 	private GpioController gpiocontroller;
 	private Propellor id;
 	
@@ -17,7 +24,7 @@ public class Motor {
 		gpiocontroller = gpio;
 		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin,"forward");
 		reversePin = gpiocontroller.provisionDigitalOutputPin(rvPin,"backward");
-		pwmpin = gpiocontroller.provisionDigitalOutputPin(RaspiPin.GPIO_01,"pwm");
+		pwmPin = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 		this.id = id;
 		
 		//status wanneer de app wordt afgesloten
@@ -61,5 +68,43 @@ public class Motor {
 		pinstates[0] = forwardPin.getState();
 		pinstates[1] = reversePin.getState();
 		return pinstates;
+	}
+	
+	/**
+	 * Activeert pwm op deze motor
+	 */
+	public void PwmOn() {
+		pwmEnabled = true;
+	}
+	
+	/**
+	 * Deactiveert pwm op deze motor
+	 * @param set0
+	 * 		Om aan te geven of de pwm pin op 0 moet worden gezet
+	 * 		Dus indien geen andere motoren hier nog gebruik van aan het maken zijn.
+	 */
+	public void PwmOff(boolean set0) {
+		pwmEnabled = false;
+		if(set0)
+			pwmPin.setPwm(0);
+	}
+	
+	/**
+	 * Zet de pwm value, indien pwm geactiveerd is op deze motor
+	 * @param value
+	 * 			Getal tussen 0 (min) en 1024 (max)
+	 */
+	public void setPwmValue(int value) {
+		if(pwmEnabled)
+			pwmPin.setPwm(value);
+	}
+	
+	
+	/**
+	 * Geeft aan of pwm geactiveerd is voor deze motor.
+	 * @return
+	 */
+	public boolean getPwmStatus() {
+		return pwmEnabled;
 	}
 }
