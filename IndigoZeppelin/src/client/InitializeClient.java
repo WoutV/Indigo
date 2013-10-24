@@ -53,6 +53,7 @@ public class InitializeClient {
 			if(isValidIP(serverIP)){
 				ipSet=true;
 				gui.showMessage("");
+				gui.enableAllComponents();
 			}
 			else
 				gui.showMessage("Invalid IP address");

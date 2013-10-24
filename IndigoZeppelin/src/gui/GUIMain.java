@@ -71,6 +71,7 @@ public class GUIMain extends javax.swing.JFrame {
 		propellorActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorActive(Propellor.RIGHT);
+		disableAllComponents();
 	}
 
 	/**
@@ -675,4 +676,13 @@ public class GUIMain extends javax.swing.JFrame {
 		return JOptionPane.showInputDialog(this, "Please enter server IP");
 	}
 	
+	@SuppressWarnings("deprecation")
+	public void disableAllComponents(){
+		tab1.disable();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void enableAllComponents(){
+		tab1.enable();
+	}
 }
