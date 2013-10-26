@@ -5,11 +5,14 @@
 package gui;
 import zeppelin.Propellor;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -71,7 +74,7 @@ public class GUIMain extends javax.swing.JFrame {
 		propellorActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorActive(Propellor.RIGHT);
-		disableAllComponents();
+		disableAllComponents(this);
 	}
 
 	/**
@@ -667,7 +670,6 @@ public class GUIMain extends javax.swing.JFrame {
 		}
 	}
 
-	//ADDED BY SUNIL
 	public GuiCommands getGuiCommands(){
 		return guic;
 	}
@@ -676,13 +678,32 @@ public class GUIMain extends javax.swing.JFrame {
 		return JOptionPane.showInputDialog(this, "Please enter server IP");
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void disableAllComponents(){
-		tab1.disable();
+	/**
+	 * Methode die alle buttons in de opgegeven container deactiveert.
+	 */
+	private void disableAllComponents(Container c){
+		for(Component c2:c.getComponents()) {
+			if(c2 instanceof JButton || c2 instanceof JToggleButton)
+				c2.setEnabled(false);
+			if(c2 instanceof Container)
+				disableAllComponents((Container) c2);
+		}
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void enableAllComponents(){
-		tab1.enable();
+	/**
+	 * Methode die alle buttons in de GUI activeert.
+	 */
+	public void enableAllButtons() {
+		enableAllComponents(this);	
 	}
+	
+	private void enableAllComponents(Container c){
+		for(Component c2:c.getComponents()) {
+			if(c2 instanceof JButton || c2 instanceof JToggleButton)
+				c2.setEnabled(true);
+			if(c2 instanceof Container)
+				enableAllComponents((Container) c2);
+		}
+	}
+
 }

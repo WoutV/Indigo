@@ -15,29 +15,31 @@ import client.SendToServer;
  * Communicatie van zeppelin naar GUI: receive..
  */
 public class GuiCommands {
-	
+
 	//TEMP: dit wordt een soort arraylist/andere collectie van een Klasse Command
 	@SuppressWarnings("unused")
 	private  ArrayList<String> newcommands;
+
 	private GUIMain gui;
+
 	public GuiCommands(GUIMain gui){
 		this.gui=gui;
-		
+
 	}
 
-//	public ArrayList<String> getNewcommands() {
-//		return newcommands;
-//	}
-//
-//	public void setNewcommands(ArrayList<String> newcommands) {
-//		this.newcommands = newcommands;
-//	}
-//
-//	public void setHoogte(double hoogte) {
-//		this.hoogte = hoogte;
-//		gui.setHoogteLabel(hoogte);
-//	}
-	
+	//	public ArrayList<String> getNewcommands() {
+	//		return newcommands;
+	//	}
+	//
+	//	public void setNewcommands(ArrayList<String> newcommands) {
+	//		this.newcommands = newcommands;
+	//	}
+	//
+	//	public void setHoogte(double hoogte) {
+	//		this.hoogte = hoogte;
+	//		gui.setHoogteLabel(hoogte);
+	//	}
+
 	/**
 	 * Via deze methode stuurt de zeppelin zijn huidige hoogte door.
 	 * Deze wordt dan in de GUI weergegeven
@@ -47,8 +49,8 @@ public class GuiCommands {
 	public void receiveHeight(double hoogte){
 		gui.setHoogteLabel(hoogte);
 	}
-	
-	
+
+
 	/**
 	 * Via deze methode stuurt de zeppelin de staat van één van zijn propellors door.
 	 * @param prop
@@ -64,13 +66,13 @@ public class GuiCommands {
 		else
 			gui.propellorNotActive(prop);
 	}
-	
+
 	//TEMP!?
 	//geeft de ontvangen afbeelding weer in GUI
 	public void receiveImage(ImageIcon image) {
 		gui.setImageDisplay(image);
 	}
-	
+
 	/**
 	 * Methode die een hoogte (in cm) doorstuurt naar de zeppelin
 	 * De zeppelin moet dan naar deze hoogte gaan
@@ -79,48 +81,54 @@ public class GuiCommands {
 	 * 			hoogte in cm
 	 */
 	public void sendHeightZep(double hoogte){
-		Transfer transfer = new Transfer();
-		transfer.setHeight(hoogte);
-		sender.sendTransfer(transfer);
+		if(sender !=null) {
+			Transfer transfer = new Transfer();
+			transfer.setHeight(hoogte);
+			sender.sendTransfer(transfer);
+		}
 	}
-	
+
 	/**
 	 * Enum die de verschillende keys aangeeft.
 	 */
 	public enum Key{
 		LEFT,RIGHT,UP,DOWN,ELEVATE;
 	}
-	
+
 	/**
 	 * Methode die een Key doorstuurt van de button die wordt ingedrukt.
 	 * Wordt opgeroepen door GUIMain.
 	 */
 	public void sendKeyPressed(Key key){
-		Transfer transfer = new Transfer();
-		transfer.setKeyEvent(key, TransferType.KEYPRESSEDEVENT);
-		sender.sendTransfer(transfer);
-	
+		if(sender != null) {
+			Transfer transfer = new Transfer();
+			transfer.setKeyEvent(key, TransferType.KEYPRESSEDEVENT);
+			sender.sendTransfer(transfer);
+		}
 	}
-	
+
 	/**
 	 * Methode die een Key doorstuurt van een button die wordt losgelaten (was ingedrukt)
 	 * Wordt opgeroepen door GUIMain.
 	 */
 	public void sendKeyReleased(Key key){
-		Transfer transfer = new Transfer();
-		transfer.setKeyEvent(key, TransferType.KEYRELEASEDEVENT);
-		sender.sendTransfer(transfer);
+		if(sender != null) { 
+			Transfer transfer = new Transfer();
+			transfer.setKeyEvent(key, TransferType.KEYRELEASEDEVENT);
+			sender.sendTransfer(transfer);
+		}
 	}
 
 	private SendToServer sender;
+	
 	public void setSender(SendToServer sender){
 		this.sender=sender;
 	}
 
 	public void receiveMessage(String message) {
 		gui.showMessage(message);
-		
+
 	}
-	
+
 
 }

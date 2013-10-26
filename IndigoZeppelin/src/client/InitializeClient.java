@@ -53,7 +53,6 @@ public class InitializeClient {
 			if(isValidIP(serverIP)){
 				ipSet=true;
 				gui.showMessage("");
-				gui.enableAllComponents();
 			}
 			else
 				gui.showMessage("Invalid IP address");
@@ -63,6 +62,7 @@ public class InitializeClient {
 			Socket sock = new Socket(serverIP,6789);
 			SendToServer sender = new SendToServer(sock,gui);
 			gui.getGuiCommands().setSender(sender);
+			gui.enableAllButtons();
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 			
