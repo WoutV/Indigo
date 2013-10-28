@@ -9,6 +9,8 @@ import java.net.Socket;
 
 import javax.swing.ImageIcon;
 
+import camera.Camera;
+
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
 
@@ -47,9 +49,11 @@ class SendToClientThread implements Runnable
 				exit= true;
 			}
 			if(readString.equalsIgnoreCase("image")){
-				System.out.println("Give the URL of image");
-				ImageIcon image = new ImageIcon((input.readLine()));//get message to send to client);
+				ImageIcon image = Camera.getImage();//get message to send to client);
 				information.setImage(image);
+			}
+			if(readString.equalsIgnoreCase("QR")){
+				information.setMessage(Camera.readQRCode());
 			}
 			//pwPrintWriter.println(msgToClientString);//send message to client with PrintWriter
 			//pwPrintWriter.flush();//flush the PrintWriter
