@@ -1,4 +1,6 @@
 package zeppelin;
+import zeppelin.utils.CircularDoubleArray;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -7,7 +9,7 @@ import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 
 public class DistanceSensor {
-	private double height;
+	private CircularDoubleArray distanceArray;
 
 	/**
 	 * Class to monitor distance measured by an HC-SR04 distance sensor on a
@@ -35,6 +37,7 @@ public class DistanceSensor {
 		this.echoPin = gpio.provisionDigitalInputPin( RaspiPin.GPIO_00 );
         this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_07 );
 		this.trigPin.low();
+		this.distanceArray = new CircularDoubleArray(10);
 	}
 
 	/*
@@ -103,7 +106,7 @@ public class DistanceSensor {
 
 	public void measureHeight() {
 		try {
-			this.height = measureDistance();
+			distanceArray.add(measureDistance());
 		} catch (TimeoutException e) {
 			System.err.println(e);
 		}
@@ -111,7 +114,7 @@ public class DistanceSensor {
 
 	public double getHeight() {
 		this.measureHeight();
-		return this.height;
+		return distanceArray.getMedian();
 	}
 
 	/**
