@@ -53,6 +53,59 @@ public class MotorController {
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP);
 		}
 	}
+
+	public void moveForward() {
+		left.setForward();
+		right.setForward();
+	}
+
+	public void moveBackward() {
+		left.setReverse();
+		right.setReverse();
+	}
+
+	public void turnLeft() {
+		right.setForward();
+		left.setReverse();
+	}
+
+	public void turnRight() {
+		right.setReverse();
+		left.setForward();
+	}
+
+	public void elevate() {
+		up.setForward();
+	}
+
+	/*public void stopMovingForward() {
+		left.setOff();
+		right.setForward();
+	}
+
+	public void stopMovingBackward() {
+		left.setOff();
+		right.setOff();
+	}
+
+	public void stopTurningLeft() {
+		left.setOff();
+		right.setOff();
+	}
+
+	public void stopTurningRight() {
+		left.setOff();
+		right.setOff();
+	}
+	*/
+	public void stopXY() {
+		left.setOff();
+		right.setOff();
+	}
+
+	public void stopElevate() {
+		up.setOff();
+	}	
 	
 	
 }

@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import transfer.Transfer;
+import zeppelin.Main;
 
 class RecieveFromClientThread implements Runnable
 {
@@ -94,10 +95,12 @@ class RecieveFromClientThread implements Runnable
 	}
 	
 	public void keyPressedEvent(Transfer information){
-		System.out.println("Key Pressed Event:" + information.getKey().toString());
+		Main.processPressedKeyEvent(information.getKey());
+		//System.out.println("Key Pressed Event:" + information.getKey().toString());
 	}
 	public void keyReleasedEvent(Transfer information){
-		System.out.println("Key Released Event:"+ information.getKey().toString());
+		Main.processReleasedKeyEvent(information.getKey());
+		//System.out.println("Key Released Event:"+ information.getKey().toString());
 	}
 	public void message(Transfer information){
 		System.out.println("Message Received: \n "+ information.getMessage());
