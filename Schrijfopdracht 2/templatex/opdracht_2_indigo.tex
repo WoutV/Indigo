@@ -20,7 +20,7 @@
 
 Nu de opdracht en planning van dit project duidelijk is, zullen we in detail treden over de hardware- en softwarecomponenten. 
 \paragraph{Hardware} ~\\
-Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellors bevestigd. Hiervan worden er twee gebruikt om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propellor dient om de zeppelin te laten stijgen. ~\\
+Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellers bevestigd. Hiervan worden er twee gebruikt om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen. ~\\
 
 Om het geheel in de lucht te houden, worden er 2 ballonnen gebruikt. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. \\
 \\
@@ -53,15 +53,15 @@ Zoals reeds vermeld, zal de software volledig in Java geschreven zijn. Deze keuz
 
 Om de software te schrijven, gaan we op de laptop gebruik maken van de Eclipse IDE. We maken ook gebruik van de Netbeans IDE. Deze is door de visuele interface veel gebruikvriendelijker om de GUI te ontwerpen. Hierdoor moeten we ons niet bezig houden met alle code voor de lay-out handmatig te schrijven. Voor het aansturen van de GPIO-pinnen gebruiken we Pi4J\footnote{www.pi4j.com}.\\
 
-Op een client-pc kan de GUI(zie figuur \ref{GUI} worden gestart. Hiermee kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. Deze commando's worden doorgestuurd aan de zeppelin om te verwerken. Op de GUI kan de gebruiker informatie aflezen zoals de hoogte en afbeeldingen van de camera. \\
+Op een client-pc kan de GUI(zie figuur \ref{GUI}) worden gestart. Hiermee kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. Deze commando's worden doorgestuurd aan de zeppelin om te verwerken. Op de GUI kan de gebruiker informatie aflezen zoals de hoogte en afbeeldingen van de camera. \\
 
-De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Dit is zoals een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen). Hierop kan 1 client verbinden. Het zou mogelijk zijn meerdere clienten toegang te geven, maar om conflicten (met pijltjestoetsen) te vermijden en om bandbreedte te besparen (bij het doorsturen van afbeeldingen), ondersteunt de server maar 1 client.  \\
+De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Dit is zoals een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen). Hierop kan 1 client verbinden. Het zou mogelijk zijn meerdere clients toegang te geven, maar om conflicten (met pijltjestoetsen) te vermijden en om bandbreedte te besparen (bij het doorsturen van afbeeldingen), ondersteunt de server maar 1 client.  \\
 
 Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Zo kan de zeppelin tegelijk foto's nemen en de afstand tot de grond meten. Later zal worden beslist hoeveel gelijklopende threads er gebruikt worden. \\
 
-Alle software behalve de GUI draait op de Raspberry Pi. Omdat de Raspberry Pi autonoom moet kunnen werken, laten we het grootste gedeelte van de software hierop draaien. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt ook naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de cpu van de Pi minder zwaar belast. \\
+Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet kunnen werken. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt ook naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de CPU van de Pi minder zwaar belast. \\
 
-De hoogte zal ook op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijke waarde te krijgen, dient er een gemiddelde/mediaan genomen te worden van een aantal opeenvolgende meetresultaten. De hoogte wordt, net zoals de foto's, doorgestuurd naar de GUI.
+De hoogte zal ook op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van een aantal opeenvolgende meetresultaten. De hoogte wordt, net zoals de foto's, doorgestuurd naar de GUI.
 
 \begin{figure}[ht!]
 \centering
@@ -73,7 +73,5 @@ De hoogte zal ook op bepaalde momenten opgemeten worden. Om een zo accuraat moge
 
 \paragraph{Opmerking} ~\\
 Omdat we nog niet beschikken over alle nodige hardware, is het op dit moment onmogelijk om dieper in te gaan op de softwarematige aansturing van de motoren. In een latere fase van het project zal dit verder uitgewerkt worden.
-
-
 
 \end{document}
