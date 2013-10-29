@@ -1,6 +1,7 @@
 package server;
 import java.io.*;
 import java.net.*;
+import server.SendToClient;
 
 
 public class Server {
@@ -15,7 +16,8 @@ public class Server {
 		RecieveFromClientThread recieve = new RecieveFromClientThread(clientSocket);
 		Thread thread = new Thread(recieve);
 		thread.start();
-		SendToClientThread send = new SendToClientThread(clientSocket);
-		Thread thread2 = new Thread(send);
+		SendToClient send = new SendToClient(clientSocket);
+		ReadInput ri = new ReadInput(send);
+		Thread thread2 = new Thread(ri);
 		thread2.start();
 	}}
