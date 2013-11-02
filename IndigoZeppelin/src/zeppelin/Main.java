@@ -48,7 +48,7 @@ public class Main {
 		if(releasedKey==Key.ELEVATE) {
 			motorController.stopElevate();
 		} else {
-			motorController.stopXY();
+			motorController.stopHorizontalMovement();
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package client;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 import gui.GUIMain;
 
 public class InitializeClient {
@@ -52,10 +54,10 @@ public class InitializeClient {
 			}
 			if(isValidIP(serverIP)){
 				ipSet=true;
-				gui.showMessage("");
+				gui.showMessage("Connecting...");
 			}
 			else
-				gui.showMessage("Invalid IP address");
+				gui.displayMessage("Invalid IP address", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		try {
@@ -65,10 +67,12 @@ public class InitializeClient {
 			gui.enableAllButtons();
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
+			gui.showMessage("");
 			
 			
 		} catch (Exception e) {
-			gui.showMessage(e.getMessage()+"\n Please make sure the server is running!");
+			gui.displayMessage(e.getMessage()+"\n" + "Please make sure the server is running!", JOptionPane.ERROR_MESSAGE);
+			gui.showMessage("");
 			ipSet=false;
 			setIp(gui);
 			}

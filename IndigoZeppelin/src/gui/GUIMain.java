@@ -4,6 +4,8 @@
  */
 package gui;
 import zeppelin.Propellor;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -16,6 +18,8 @@ import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *	Hoofdklasse voor weergave en reacties van de GUI
@@ -57,9 +61,17 @@ public class GUIMain extends javax.swing.JFrame {
 		setHeightBtn.setFocusable(false);
 
 		//program icon
-		ImageIcon image = new ImageIcon("./resources/ballon.jpg");
+		/*ImageIcon image = new ImageIcon("./resources/ballon.jpg");
 		Image img = image.getImage();
-		this.setIconImage(img);
+		this.setIconImage(img);*/
+		
+		//deze is beter voor jar
+		InputStream resource = GUIMain.class.getResourceAsStream("/ballon.jpg");
+		try {
+			Image image = ImageIO.read(resource);
+			this.setIconImage(image);
+		} catch (IOException e) {}
+		
 
 		tab1window1Lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		tab1window1Lbl.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
@@ -69,6 +81,18 @@ public class GUIMain extends javax.swing.JFrame {
 		downButton.setText("\u2193");
 		leftButton.setText("\u2190");
 		rightButton.setText("\u2192");
+		
+		//initialise the propellor icons
+		resource = GUIMain.class.getResourceAsStream("/propelloractive.jpg");
+		try {
+			Image image = ImageIO.read(resource);
+			propact = new ImageIcon(image);
+		} catch (IOException e) {}
+		resource = GUIMain.class.getResourceAsStream("/propellornotactive.jpg");
+		try {
+			Image image = ImageIO.read(resource);
+			propnotact = new ImageIcon(image);
+		} catch (IOException e) {}
 		
 		//TEMP!!
 		propellorActive(Propellor.LEFT);
@@ -634,16 +658,30 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JToggleButton upButton;
     // End of variables declaration//GEN-END:variables
     
-    private ImageIcon propact = new ImageIcon("resources\\propelloractive.jpg");
-	private ImageIcon propnotact = new ImageIcon("resources\\propellornotactive.jpg");
+    private ImageIcon propact;
+	private ImageIcon propnotact;
 	private GuiCommands guic = new GuiCommands(this);
 	
 	public void setHoogteLabel(double hoogte){
 		labelHoogteDisplay.setText(hoogte+" cm");
 	}
 
+	/**
+	 * Geeft de message weer op het commando-display in tab 1 van de GUI.
+	 * @param message
+	 */
 	public void showMessage(String message){
 		labelCommandsDisplay.setText(message);
+	}
+	
+	/**
+	 * Geeft de message weer in een pop-up venster
+	 * @param message
+	 * @param type
+	 * 		Is: JOptionPane. ... (error, question, information, warning, plain)
+	 */
+	public void displayMessage(String message, int type) {
+		JOptionPane.showMessageDialog(this,message,"Information",type);
 	}
 
 	public void setImageDisplay(ImageIcon image){
@@ -704,6 +742,13 @@ public class GUIMain extends javax.swing.JFrame {
 			if(c2 instanceof Container)
 				enableAllComponents((Container) c2);
 		}
+	}
+	
+	public static void main(String[] args) {
+		GUIMain gui = new GUIMain();
+		gui.setVisible(true);
+		gui.enableAllButtons();
+		
 	}
 
 }

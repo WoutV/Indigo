@@ -74,6 +74,7 @@ public class MotorController {
 		left.setForward();
 	}
 
+	//dit gaat wss worden vervangen zodat de kracht kan worden ingesteld
 	public void elevate() {
 		up.setForward();
 	}
@@ -98,11 +99,19 @@ public class MotorController {
 		right.setOff();
 	}
 	*/
-	public void stopXY() {
+	
+	/**
+	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
+	 */
+	public void stopHorizontalMovement() {
 		left.setOff();
 		right.setOff();
 	}
 
+	/**
+	 * Zet de motor naar boven uit.
+	 */
+	//dit gaat de zweef-pwm worden ipv off!
 	public void stopElevate() {
 		up.setOff();
 	}	
