@@ -7,44 +7,17 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import transfer.Transfer;
-import zeppelin.Main;
 
 class RecieveFromClientThread implements Runnable
 {
 	Socket clientSocket;
 	private ObjectInputStream input;
-
-	
-	private void handleRecieved(Transfer information) {
-		switch(information.getTransferType()){
-		case EXIT:
-			exit(information);
-			break;
-		case IMAGE:
-			image(information);
-			break;
-		case HEIGHT:
-			height(information);
-			break;
-		case KEYPRESSEDEVENT:
-			keyPressedEvent(information);
-			break;
-		case KEYRELEASEDEVENT:
-			keyReleasedEvent(information);
-			break;
-		case MESSAGE:
-			message(information);
-			break;
-		default:
-			break;
-		
-		}
-	}
-	
+	private ReceivedHandler receiveHandler;
 	
 	public RecieveFromClientThread(Socket clientSocket)
 	{	
 		this.clientSocket = clientSocket;
+		receiveHandler = new ReceivedHandler(clientSocket);
 		try {
 			input = new ObjectInputStream(clientSocket.getInputStream());
 		} catch (IOException e) {
@@ -55,12 +28,11 @@ class RecieveFromClientThread implements Runnable
 	
 	
 	public void run() {
-		try{
-		//brBufferedReader = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));		
+		try{		
 			while(true){
 				Transfer information;
 				while((information = ( Transfer) input.readObject())!= null){//assign message from client to messageString
-					handleRecieved(information);
+					receiveHandler.handleRecieved(information);
 				}
 			}
 		
@@ -75,34 +47,4 @@ class RecieveFromClientThread implements Runnable
 	}
 
 
-	public void exit(Transfer informatin){
-		try {
-			this.clientSocket.close();
-			System.out.println("Socket Closed By Client Now Exiting...");
-			
-		} catch (IOException e) {
-			System.out.println("Error while closing socket");
-			e.printStackTrace();
-		}
-		System.exit(0);
-	
-	}
-	public void image(Transfer information){
-		System.out.println("Client is not supposed to send this type of information");
-	}
-	public void height(Transfer information){
-		System.out.println("Height information received. \n New height:"+ information.getHeight());
-	}
-	
-	public void keyPressedEvent(Transfer information){
-		Main.processPressedKeyEvent(information.getKey());
-		//System.out.println("Key Pressed Event:" + information.getKey().toString());
-	}
-	public void keyReleasedEvent(Transfer information){
-		Main.processReleasedKeyEvent(information.getKey());
-		//System.out.println("Key Released Event:"+ information.getKey().toString());
-	}
-	public void message(Transfer information){
-		System.out.println("Message Received: \n "+ information.getMessage());
-	}
 }//end class RecieveFromClientThread
