@@ -37,12 +37,15 @@ class RecieveFromClientThread implements Runnable
 			}
 		
 		}
-		catch(Exception ex){
+		catch(IOException ex){
 			System.out.println("Client has closed the socket. Exiting now");
 			try {
 				this.clientSocket.close();
 			} catch (IOException e) {}
 			System.exit(0);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 

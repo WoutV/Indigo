@@ -126,8 +126,13 @@ public class GuiCommands {
 	}
 
 	public void receiveMessage(String message) {
+		showInfo("Message Received From Server: "+ message);
 		gui.showMessage(message);
 
+	}
+	
+	public void showInfo(String message){
+		gui.addToCommandList(message);
 	}
 
 

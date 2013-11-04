@@ -22,12 +22,19 @@ public abstract class Camera {
 	 * @return
 	 */
 	
+	private static boolean isInUse;
+	
 	public static ImageIcon getImage(){
+		if(isInUse){
+			return new ImageIcon("image.jpg");
+		}
 		try
 	    {
 
-	    	Process p = Runtime.getRuntime().exec("raspistill -cfx 128:128 -t 0 -n -h 100 -w 200 -o image.jpg");
+	    	isInUse=true;
+			Process p = Runtime.getRuntime().exec("raspistill -t 0 -n -h 300 -w 300 -o image.jpg");
 	    	p.waitFor();
+	    	isInUse=false;
 	    }
 		catch (Exception ieo)
 	    {
@@ -47,11 +54,21 @@ public abstract class Camera {
 	 */
 	public static String readQRCode()
 		throws FileNotFoundException, IOException, NotFoundException {
+		boolean printed =false;
+		while(isInUse){
+			if(!printed){
+			System.out.println("Camera is in use by getImage() waiting for it to finish");
+			printed =true;
+			}
+		}
 		  try
 		    {
-
+			  	System.out.println("Taking picture for QR code reading!");
+			  	isInUse=true;
 		    	Process p = Runtime.getRuntime().exec("raspistill -cfx 128:128 -t 0 -h 1000 -w 2000 -o QRimage.jpg");
 		    	p.waitFor();
+		    	isInUse=false;
+		    	System.out.println("Taking picture finished...");
 		    }
 		    catch (Exception ieo)
 		    {
@@ -59,9 +76,15 @@ public abstract class Camera {
 		    }
 		String filePath = "QRimage.jpg";
 		BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(ImageIO.read(new FileInputStream(filePath)))));
+		System.out.println("Loading image completed. Reading QR Code");
+		try{
 		@SuppressWarnings("unchecked")
 		Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,getMap());
 		return qrCodeResult.getText();
+		}catch(NotFoundException ex){
+			return "No QR code Found";
+		}
+		
 		}
 	@SuppressWarnings("rawtypes")
 	private static Map getMap(){

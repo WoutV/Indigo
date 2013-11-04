@@ -180,7 +180,7 @@ public class GUIMain extends javax.swing.JFrame {
 		}
 	}
 
-	private void addToCommandList(String s) {
+	public void addToCommandList(String s) {
 		fullCommandList.setText(fullCommandList.getText() + "\n" + s);
 	}
 	
