@@ -41,9 +41,11 @@ class ReadInput implements Runnable
 					information.setImage(image);
 				}
 				if(readString.equalsIgnoreCase("/QR")){
-					information.setMessage(Camera.readQRCode());
+					String readQR = "Read from QR: "+Camera.readQRCode();
+					System.out.println(readQR);
+					information.setMessage(readQR);
 				}
-				if(readString.equalsIgnoreCase("imagethread")){
+				if(readString.equalsIgnoreCase("/imagethread")){
 					if(!imageThreadStarted){
 						CameraThread ct = new CameraThread(stc);
 						Thread cameraT = new Thread(ct);
