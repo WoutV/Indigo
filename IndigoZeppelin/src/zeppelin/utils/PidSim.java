@@ -18,19 +18,19 @@ public class PidSim {
 		double dest = 2;
 		
 		//set the Kp, Kd and Ki here
-		Pid pid = new Pid(1000,0,0,dest,dt);
+		Pid pid = new Pid2(200,0,150,dest,dt);
 		
 		//current altitude
 		double height = 0.5;
 		
 		//tolerance: close enough to destination to quit
-		double tolerance = 0.001;
+		double tolerance = 0.01;
 		
 		//nothing to change from here
 		double previousheight = height;
-		double v = (height-previousheight)/dt;
+		double v = (height-previousheight)/(dt/1000.0);
 		double previousv = v;
-		double a = (v - previousv)/dt;
+		double a = (v - previousv)/(dt/1000.0);
 		double error = dest-height;
 		while(Math.abs(error) > tolerance) {
 			double output = pid.getOutput(height);
@@ -44,10 +44,11 @@ public class PidSim {
 			height = nieuwehoogte(output,dt,v,a,height);
 			error = dest-height;
 			previousv = v;
-			v = (height-previousheight)/dt;
+			double ts = dt/1000.0;
+			v = (height-previousheight)/ts;
 			
-			a = (v - previousv)/dt;
-			System.out.println("Height: " + height + ",error: " + error + ",v: " + v + ",a: " + a + "Output: " + output);
+			a = (v - previousv)/ts;
+			System.out.println("Height: " + height + ",error: " + error + ",v: " + v + ",a: " + a + ",Output: " + output);
 		}
 	}
 	
@@ -74,7 +75,7 @@ public class PidSim {
 		//lineair volgens factor X
 		//gedempt door de vorige a, waar we wel 9.81 moeten bijtellen omdat het over de a omhoog gaat
 		//nadien de echte a door er g van af te trekken
-		double a = (outputmotor/X + previousa + 9.81)/2;
+		double a = (outputmotor/X);
 		double atotal = a - 9.81;
 		//tijd in s
 		double ts = t/1000.0;

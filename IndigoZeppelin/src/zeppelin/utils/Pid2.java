@@ -35,10 +35,11 @@ public class Pid2 extends Pid {
 	 */
 	public double getOutput(double input) {
 		double error = dest - input;
-		integral = integral + error*dt;
-		double derivative = (error - previous_error)/dt;
+		integral = integral + error*dt/1000.0;
+		double derivative = (error - previous_error)/(dt/1000.0);
 		double output = Kp*error + Ki*integral + Kd*derivative;
 		output = output + zweefpwm;
+		previous_error = error;
 		if(error > minErrorForMaxPwm)
 			return 1024;
 		if(output > 1024)

@@ -47,6 +47,7 @@ public class Pid {
 		integral = integral + error*dt;
 		double derivative = (error - previous_error)/dt;
 		double output = Kp*error + Ki*integral + Kd*derivative;
+		
 		return output + zweefpwm;
 	}
 

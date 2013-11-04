@@ -8,7 +8,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 
-public class DistanceSensor {
+public class DistanceSensor implements Runnable{
 	private CircularDoubleArray distanceArray;
 
 	/**
@@ -23,9 +23,12 @@ public class DistanceSensor {
 
 	private final static float SOUND_SPEED = 340.29f; // speed of sound in m/s
 
-	private final static int TRIG_DURATION_IN_MICROS = 450000; // trigger duration
+	private final static int TRIG_DURATION_IN_MICROS = 10; // trigger duration
 															// of 10 micro s
-
+	
+	//TODO
+	private final static int WAIT_DURATION_IN_MILLIS = 60; // wait 60 milli s
+	
 	private final static int TIMEOUT = 2100;
 
 	private final static GpioController gpio = GpioFactory.getInstance();
@@ -104,18 +107,11 @@ public class DistanceSensor {
 		return (long) Math.ceil((end - start) / 1000.0); // Return micro seconds
 	}
 
-	public void measureHeight() {
-		try {
-			distanceArray.add(measureDistance());
-		} catch (TimeoutException e) {
-			System.err.println(e);
-		}
-	}
-
 	public double getHeight() {
-		this.measureHeight();
 		return distanceArray.getMedian();
 	}
+	
+	
 
 	/**
 	 * Exception thrown when timeout occurs
@@ -131,6 +127,22 @@ public class DistanceSensor {
 		@Override
 		public String toString() {
 			return this.reason;
+		}
+	}
+
+
+
+	@Override
+	public void run() {
+		try {
+			double currentReading = measureDistance();
+			distanceArray.add(currentReading);
+		} catch (TimeoutException e) {
+		}
+		try {
+			Thread.sleep(WAIT_DURATION_IN_MILLIS);
+		} catch (InterruptedException e) {
+			System.err.println("timeout between readings");
 		}
 	}
 

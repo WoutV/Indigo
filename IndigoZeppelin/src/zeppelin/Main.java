@@ -14,12 +14,14 @@ public class Main {
 	// wiringPiSetupGpio() functions beforehand.
 	// com.pi4j.wiringpi.Gpio.wiringPiSetup();
 
-	private static MotorController motorController = MotorController
-			.getInstance();
+	private static MotorController motorController = MotorController.getInstance();
 	private GpioController gpio = GpioFactory.getInstance();
+	private DistanceSensor distanceSensor = new DistanceSensor();
+	private Thread distanceSensorThread;
 
 	public Main() {
 		motorController.init(gpio);
+		distanceSensorThread = new Thread(distanceSensor);
 	}
 
 	public static void processPressedKeyEvent(Key pressedKey) {
