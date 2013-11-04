@@ -1,48 +1,13 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                                                     %%%
-%%%   LaTeX template voor het verslag van P&O: Computerwetenschappen.   %%%
-%%%                                                                     %%%
-%%%   Opties:                                                           %%%
-%%%     tt      Tussentijdsverslag                                      %%%
-%%%     eind    Eindverslag                                             %%%
-%%%                                                                     %%%
-%%%   4 november 2013                                                   %%%
-%%%   Versie 1.1                                                        %%%
-%%%                                                                     %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\documentclass[tt]{penoverslag}
-
-%%% PACKAGES %%%
+\documentclass{article}
 \usepackage{graphicx}
 \setlength\parindent{0pt}
 
+%\team{Indigo} % teamkleur
+
 \begin{document}
 
-% == TITELPAGINA == %
-\team{Indigo} % teamkleur
-\members{Rutger Claes\\
-         Micol Ferranti\\
-         Roel Matthysen\\
-         Jonathan Merlevede\\
-         Marco Patrignani\\
-         Jose Proenca\\
-         Steven Van Acker\\
-         Roel Van Beeumen} % teamleden
-\maketitlepage
+\maketitle
 
-
-% == SAMENVATTING == %
-\begin{abstract}
-
-\end{abstract}
-
-
-% == INHOUDSOPGAVE == %
-\tableofcontents\newpage
-
-
-% == INLEIDING == %
 \section{Inleiding}
 Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. De zeppelin wordt aangestuurd door een Raspberry Pi. Via QR-codes kunnen instructies gegeven worden, zoals ``stijg 50cm'' of ``draai 45   graden''. De gebruiker kan via een GUI op een client-pc zelf de pijltjestoetsen gebruiken om de zeppelin aan te sturen of gegevens bekijken over de toestand van de zeppelin (bijvoorbeeld de huidige hoogte).
 
@@ -63,9 +28,13 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 \label{schema}
 \end{figure}
 
+%\clearpage
 
-% == Beschrijving materiaal en bouw zeppelin == %
-\section{Beschrijving materiaal en bouw zeppelin}
+\section{Hard- en software}
+
+Nu de opdracht en planning van dit project duidelijk is, zullen we in detail treden over de hardware- en softwarecomponenten. 
+
+\paragraph{Hardware} ~\\
 Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. ~\\
 
 Om het geheel in de lucht te houden, hangen er 2 ballonnen tegen de bovenkant van het frame. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. \\
@@ -96,11 +65,29 @@ Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt
 \label{Pi}
 \end{figure}
 
+\paragraph{Software} ~\\
+Zoals reeds vermeld, zal de software volledig in Java geschreven zijn. Deze keuze hebben we gemaakt omdat we al veel ervaring hebben met het schrijven van Java-programma's. Python was een andere mogelijke keuze. Er is veel voorbeeldcode in Python te vinden voor de Raspberry Pi, maar we hebben voor de functies die wij nodig hebben voldoende kennis en referenties in Java gevonden. Het leren van een extra taal zou erg tijdrovend in verhouding met de voordelen die het brengt. \\
 
+Om de software te schrijven, gaan we op de laptop gebruik maken van de Eclipse IDE. We maken ook gebruik van de Netbeans IDE. Deze is door de visuele interface veel gebruikvriendelijker om de GUI te ontwerpen. Hierdoor moeten we ons niet bezig houden met alle code voor de lay-out handmatig te schrijven. Voor het aansturen van de GPIO-pinnen gebruiken we Pi4J\footnote{www.pi4j.com}.\\
 
-% == Testen == %
-\section{Testen}
-\subsection{Afstandssensor}
+Op een client-pc kan de GUI (zie figuur \ref{GUI}) worden gestart. Hier kan de gebruiker informatie aflezen over de toestand van de zeppelin (bijvoorbeeld de hoogte, commando's die hij aan het uitvoeren is) en afbeeldingen van de camera bekijken. Verder kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. \\
+
+De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Sockets zijn een eenvoudige en universele manier om data over een netwerk te sturen. Ze zijn te vergelijken met een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen). Hierop kan 1 client verbinden. Het zou mogelijk zijn meerdere clients toegang te geven, maar om conflicten (met pijltjestoetsen) te vermijden en om bandbreedte te besparen (bij het doorsturen van afbeeldingen), ondersteunt de server maar 1 client.  \\
+
+Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Zo kan de zeppelin tegelijk foto's nemen en de afstand tot de grond meten. Later zal worden beslist hoeveel gelijklopende threads er gebruikt worden. \\
+
+Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet kunnen werken. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de CPU van de Pi minder zwaar belast. \\
+
+De hoogte zal op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van een aantal opeenvolgende meetresultaten. De hoogte wordt, net zoals de foto's, doorgestuurd naar de GUI. Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekend project voor het inlezen van QR-codes dat oorspronkelijk in Java geschreven is. \\
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[height=40mm]{GUI.png}
+\caption{GUI}
+\label{GUI}
+\end{figure}
+
+\section{Afstandssensor}
 
 In deze sectie gaan we dieper in op de testen die we gedaan hebben naar de nauwkeurigheid en snelheid van de afstandssensor.
 
@@ -143,7 +130,7 @@ $\sigma$ (med.) (20)& 0.09 & 0.33 & 0.71 & 0.41 & 0.59 & 0.56 & 0.47 & 0.54 & 0.
 \paragraph{Conclusie} ~\\ 
 De afstandsmeter meet het meest nauwkeurig bij kleine afstanden, bij grotere afstanden (meer dan 60 cm) liggen de meetresultaten gemiddeld iets onder de opgelegde afstand. Relatief gezien blijft de fout nog klein en kunnen we deze afwijking in het vervolg incalculeren bij het bepalen van de meetwaarden. De afstandssensor geeft telkens de mediaan van 10 gegevens door volgens het principe van de “rolling median”-techniek. Tien gegevens zorgen voor voldoende nauwkeurigheid, maar hebben ook het aspect dat de mediaanberekeningen snel genoeg gebeuren. Tevens is dit bij een hoogteverandering accurater. Deze methode boet wel in op de standaardafwijking. De gegevens wijken dus meer uit, maar dit weegt niet op tegen de voorgenoemde pluspunten. Om de afstandsregistratie nog sneller te laten verlopen, meet de afstandsmeter om de 10 ms. Een vertraging van 32 seconden is niet acceptabel.
 
-\subsection{Camera}
+\section{Camera}
 
 \textbf{Deze is nog niet uitgevoerd.} \\
 
@@ -156,7 +143,7 @@ De responstijd (tijd tot herkennen QR-code) wordt getest door in verschillende o
 Om te bepalen tot op welke afstand de camera foto's kan maken die herkend kunnen worden, is er een simpele test: de camera fotografeert een QR-code vanop verschillende afstanden. 
 De positie van de QR-code in de foto is een cruciaal element. De codes bevatten commando’s die relatief ten opzichte van de huidige positie moeten worden uitgevoerd. Kleine afwijkingen van de positie van de code tot het midden van de foto zijn onvermijdelijk en zullen zich voortplanten tijdens het verderzetten van het parcours. Dit heeft echter meer betrekking tot het testen en calibreren van de motoren (zie verder). \\
 
-\subsection{Motoren}
+\section{Motoren}
 \textbf{Deze is nog niet uitgevoerd.} \\
 
 \paragraph{Zijwaartse bewegingen} ~\\ 
@@ -184,76 +171,6 @@ Het testen van de voorwaartse beweging gaat heel gelijkaardig zijn aan het teste
 \paragraph{Verticale bewegingen} ~\\ 
 We gaan allereerst op zoek naar de juiste pwm waarde waarbij de zeppelin op dezelfde hoogte blijft zweven ('zweef-pwm').  Dit gebeurt wanneer de stuwkracht gelijk is aan de gravitatiekracht.  Vervolgens gaan we uitzoeken hoeveel centimeter de zeppelin nog extra stijgt wanneer we overgaan van maximale pwm naar zweef-pwm.\\
 
-
-
-% == ALGORITMES == %
-\section{Algoritmes}
-
-
-
-% == SOFTWARE == %
-\section{Software}
-Zoals reeds vermeld, zal de software volledig in Java geschreven zijn. Deze keuze hebben we gemaakt omdat we al veel ervaring hebben met het schrijven van Java-programma's. Python was een andere mogelijke keuze. Er is veel voorbeeldcode in Python te vinden voor de Raspberry Pi, maar we hebben voor de functies die wij nodig hebben voldoende kennis en referenties in Java gevonden. Het leren van een extra taal zou erg tijdrovend in verhouding met de voordelen die het brengt. \\
-
-Om de software te schrijven, gaan we op de laptop gebruik maken van de Eclipse IDE. We maken ook gebruik van de Netbeans IDE. Deze is door de visuele interface veel gebruikvriendelijker om de GUI te ontwerpen. Hierdoor moeten we ons niet bezig houden met alle code voor de lay-out handmatig te schrijven. Voor het aansturen van de GPIO-pinnen gebruiken we Pi4J\footnote{www.pi4j.com}.\\
-
-Op een client-pc kan de GUI (zie figuur \ref{GUI}) worden gestart. Hier kan de gebruiker informatie aflezen over de toestand van de zeppelin (bijvoorbeeld de hoogte, commando's die hij aan het uitvoeren is) en afbeeldingen van de camera bekijken. Verder kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. \\
-
-De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Sockets zijn een eenvoudige en universele manier om data over een netwerk te sturen. Ze zijn te vergelijken met een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen). Hierop kan 1 client verbinden. Het zou mogelijk zijn meerdere clients toegang te geven, maar om conflicten (met pijltjestoetsen) te vermijden en om bandbreedte te besparen (bij het doorsturen van afbeeldingen), ondersteunt de server maar 1 client.  \\
-
-Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Zo kan de zeppelin tegelijk foto's nemen en de afstand tot de grond meten. Later zal worden beslist hoeveel gelijklopende threads er gebruikt worden. \\
-
-Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet kunnen werken. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de CPU van de Pi minder zwaar belast. \\
-
-De hoogte zal op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van een aantal opeenvolgende meetresultaten. De hoogte wordt, net zoals de foto's, doorgestuurd naar de GUI. Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekend project voor het inlezen van QR-codes dat oorspronkelijk in Java geschreven is. \\
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[height=40mm]{GUI.png}
-\caption{GUI}
-\label{GUI}
-\end{figure}
-
-
-% == GUI == %
-\section{GUI}
-
-
-
-
-
-% == BESLUIT == %
-\section{Besluit}
-
-
-
-% == REFERENTIES == %
-\bibliographystyle{siam}
-\bibliography{references.bib}
-
-
-% == APPENDICES == %
-\newpage\makeappendix
-
-\section{Beschrijving van het proces}
-\begin{itemize}
-\item Welke moeilijkheden heb je ondervonden tijdens de uitwerking?
-\item Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt?
-\item Hoe verliep het werken in team? Op welke manier werd de teamco\"ordinatie en planning aangepakt?
-\end{itemize}
-
-
-\section{Beschrijving van de werkverdeling}
-\begin{itemize}
-\item Geef voor elk van de groepsleden aan aan welke delen ze hebben meegewerkt en welke andere taken ze op zich hebben genomen.
-\item Rapporteer in tabelvorm hoeveel uur elk groepslid elke week aan het project gewerkt heeft, zowel tijdens als buiten de begeleide sessies. Geef ook totalen per groepslid voor het volledige semester.
-\end{itemize}
-
-
-\section{Kritisch analyse}
-\begin{itemize}
-\item Maak een analyse van de sterke en zwakke punten van het project. Welke punten zijn vatbaar voor verbetering. Wat zou je, met je huidige kennis, anders aangepakt hebben?
-\end{itemize}
 
 
 \end{document}
