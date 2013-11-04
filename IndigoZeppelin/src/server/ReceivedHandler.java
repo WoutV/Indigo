@@ -8,6 +8,7 @@ import zeppelin.Main;
 
 public class ReceivedHandler {
 	private Socket clientSocket;
+	private Main main = Main.getInstance();
 	public ReceivedHandler(Socket sock){
 		this.clientSocket = sock;
 	}
@@ -57,11 +58,11 @@ public class ReceivedHandler {
 	}
 	
 	private void keyPressedEvent(Transfer information){
-		Main.processPressedKeyEvent(information.getKey());
+		main.processPressedKeyEvent(information.getKey());
 		System.out.println("Key Pressed Event:" + information.getKey().toString());
 	}
 	private void keyReleasedEvent(Transfer information){
-		Main.processReleasedKeyEvent(information.getKey());
+		main.processReleasedKeyEvent(information.getKey());
 		System.out.println("Key Released Event:"+ information.getKey().toString());
 	}
 	private void message(Transfer information){

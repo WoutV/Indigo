@@ -14,18 +14,24 @@ public class Main {
 	// wiringPiSetupGpio() functions beforehand.
 	// com.pi4j.wiringpi.Gpio.wiringPiSetup();
 
-	private static MotorController motorController = MotorController.getInstance();
-	private static GpioController gpio = GpioFactory.getInstance();
+	private MotorController motorController = MotorController.getInstance();
+	private GpioController gpio = GpioFactory.getInstance();
 //	private static DistanceSensor distanceSensor = new DistanceSensor();
 	private Thread distanceSensorThread;
+	
+	private static Main main = new Main();
+	
+	private Main() {
+		motorController.init(gpio);
+	}
 
 	private static boolean init;
+	
+	public static Main getInstance() {
+		return main;
+	}
 
-	public static void processPressedKeyEvent(Key pressedKey) {
-		if(!init){
-			motorController.init(gpio);
-			init=true;
-		}
+	public void processPressedKeyEvent(Key pressedKey) {
 		switch (pressedKey) {
 		case UP:
 			motorController.moveForward();
@@ -47,7 +53,7 @@ public class Main {
 		}
 	}
 	
-	public static void processReleasedKeyEvent(Key releasedKey) {
+	public void processReleasedKeyEvent(Key releasedKey) {
 		if(releasedKey==Key.ELEVATE) {
 			motorController.stopElevate();
 		} else {
