@@ -49,8 +49,11 @@ public class MotorController {
 
 			//init Motors
 			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT);
+			left.setOff();
 			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT);
+			right.setOff();
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP);
+			up.setOff();
 		}
 	}
 
