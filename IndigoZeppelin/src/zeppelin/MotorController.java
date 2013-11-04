@@ -3,6 +3,7 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 
@@ -47,12 +48,13 @@ public class MotorController {
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
 
+			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
-			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT);
+			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT,pwm );
 			left.setOff();
-			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT);
+			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT, pwm);
 			right.setOff();
-			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP);
+			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm);
 			up.setOff();
 		}
 	}

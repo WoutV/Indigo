@@ -57,11 +57,11 @@ public class ReceivedHandler {
 	}
 	
 	private void keyPressedEvent(Transfer information){
-		//Main.processPressedKeyEvent(information.getKey());
+		Main.processPressedKeyEvent(information.getKey());
 		System.out.println("Key Pressed Event:" + information.getKey().toString());
 	}
 	private void keyReleasedEvent(Transfer information){
-		//Main.processReleasedKeyEvent(information.getKey());
+		Main.processReleasedKeyEvent(information.getKey());
 		System.out.println("Key Released Event:"+ information.getKey().toString());
 	}
 	private void message(Transfer information){

@@ -20,11 +20,11 @@ public class Motor {
 	private GpioController gpiocontroller;
 	private Propellor id;
 	
-	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id) {
+	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin) {
 		gpiocontroller = gpio;
 		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin,"forward");
 		reversePin = gpiocontroller.provisionDigitalOutputPin(rvPin,"backward");
-		pwmPin = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
+		this.pwmPin = pwmPin; 
 		this.id = id;
 		
 		//status wanneer de app wordt afgesloten

@@ -15,16 +15,17 @@ public class Main {
 	// com.pi4j.wiringpi.Gpio.wiringPiSetup();
 
 	private static MotorController motorController = MotorController.getInstance();
-	private GpioController gpio = GpioFactory.getInstance();
-	private DistanceSensor distanceSensor = new DistanceSensor();
+	private static GpioController gpio = GpioFactory.getInstance();
+//	private static DistanceSensor distanceSensor = new DistanceSensor();
 	private Thread distanceSensorThread;
 
-	public Main() {
-		motorController.init(gpio);
-		distanceSensorThread = new Thread(distanceSensor);
-	}
+	private static boolean init;
 
 	public static void processPressedKeyEvent(Key pressedKey) {
+		if(!init){
+			motorController.init(gpio);
+			init=true;
+		}
 		switch (pressedKey) {
 		case UP:
 			motorController.moveForward();
