@@ -83,6 +83,26 @@ public class MotorController {
 	public void elevate() {
 		up.setForward();
 	}
+	
+	public void moveToHeight(double height) {
+		//TODO 
+	}
+	
+	public void moveDistanceForward(double distance) {
+		//TODO
+	}
+	
+	public void moveDistanceBackward(double distance) {
+		//TODO
+	}
+	
+	public void turnDegreesLeft(double angle) {
+		//TODO
+	}
+	
+	public void turnDegreesRight(double angle) {
+		//TODO
+	}
 
 	/*public void stopMovingForward() {
 		left.setOff();
@@ -120,6 +140,4 @@ public class MotorController {
 	public void stopElevate() {
 		up.setOff();
 	}	
-	
-	
 }
