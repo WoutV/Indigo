@@ -296,6 +296,7 @@ public class GUIMain extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         fullCommandList = new javax.swing.JTextArea();
         tab3 = new javax.swing.JPanel();
+        creditsLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Zeppelin GUI");
@@ -408,9 +409,9 @@ public class GUIMain extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(labelCommandsDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58)
-                .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(prop1Lbl)
-                    .addComponent(prop3Lbl))
+                .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(prop3Lbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(prop1Lbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tab1window2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tab1window2Layout.createSequentialGroup()
@@ -529,7 +530,7 @@ public class GUIMain extends javax.swing.JFrame {
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -539,11 +540,17 @@ public class GUIMain extends javax.swing.JFrame {
         tab3.setLayout(tab3Layout);
         tab3Layout.setHorizontalGroup(
             tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 795, Short.MAX_VALUE)
+            .addGroup(tab3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(creditsLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                .addContainerGap())
         );
         tab3Layout.setVerticalGroup(
             tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 572, Short.MAX_VALUE)
+            .addGroup(tab3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(creditsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("tab3", tab3);
@@ -634,6 +641,7 @@ public class GUIMain extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel creditsLbl;
     private javax.swing.JToggleButton downButton;
     private javax.swing.JToggleButton elevateButton;
     private javax.swing.JTextArea fullCommandList;
