@@ -20,6 +20,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *	Hoofdklasse voor weergave en reacties van de GUI
@@ -181,7 +184,7 @@ public class GUIMain extends javax.swing.JFrame {
 	}
 
 	public void addToCommandList(String s) {
-		fullCommandList.setText(fullCommandList.getText() + "\n" + s);
+		fullCommandList.setText(fullCommandList.getText() + "\n" +"Tijd:"+getTime()+ s);
 	}
 	
 	//wanneer een toets ingedrukt
@@ -686,25 +689,32 @@ public class GUIMain extends javax.swing.JFrame {
 
 	public void setImageDisplay(ImageIcon image){
 		tab1window1Lbl.setIcon(image);
+		addToCommandList( "- New image  : ");
 	}
 
 	public void propellorActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propact);
+			addToCommandList( "- Propellor 1 activated : ");
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propact);
+			addToCommandList( "- Propellor 2 activated : ");
 		}else{
 			propellor3.setIcon(propact);
+			addToCommandList( "- Propellor 3 activated : " );
 		}
 	}
 
 	public void propellorNotActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propnotact);
+			addToCommandList( "- Propellor 1 turned off : " );
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propnotact);
+			addToCommandList( "- Propellor 2 turned off : " );
 		}else{
 			propellor3.setIcon(propnotact);
+			addToCommandList( "- Propellor 3 turned off : " );
 		}
 	}
 
@@ -751,4 +761,9 @@ public class GUIMain extends javax.swing.JFrame {
 		
 	}
 
+	public String getTime(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		return dateFormat.format(cal.getTime());
+	}
 }
