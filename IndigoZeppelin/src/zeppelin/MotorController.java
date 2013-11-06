@@ -1,4 +1,7 @@
 package zeppelin;
+import zeppelin.utils.Pid;
+import zeppelin.utils.Pid2;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -18,18 +21,19 @@ public class MotorController {
 	private Motor up;
 	private Motor left;
 	private Motor right;
-	
+
 	private Pin leftfw = RaspiPin.GPIO_13, leftrv = RaspiPin.GPIO_11, upfw = RaspiPin.GPIO_00,
 			uprv = RaspiPin.GPIO_04, rightfw = RaspiPin.GPIO_05, rightrv = RaspiPin.GPIO_07;
-	
-	
+
+
 	private GpioController gpiocontroller;
-	
+	private DistanceSensor distanceSensor;
+
 	private static MotorController mc = new MotorController();
-	
+
 	private MotorController() {
 	}
-	
+
 	/**
 	 * Geeft de enige instantie van deze singleton klasse terug
 	 * Motors zijn hierin nog niet geinitialiseerd
@@ -38,15 +42,16 @@ public class MotorController {
 	public static MotorController getInstance() {
 		return mc;
 	}
-	
+
 	/**
 	 * Initialiseert de motoren.
 	 * Mag maar een keer opgeroepen worden.
 	 * GpioController moet worden meegegeven (nodig voor de motoren)
 	 */
-	public void init(GpioController gpio) {
+	public void init(GpioController gpio,DistanceSensor distanceSensor) {
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
+			this.distanceSensor = distanceSensor;
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
@@ -56,6 +61,7 @@ public class MotorController {
 			right.setOff();
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm);
 			up.setOff();
+			up.PwmOn();
 		}
 	}
 
@@ -83,23 +89,56 @@ public class MotorController {
 	public void elevate() {
 		up.setForward();
 	}
-	
-	public void moveToHeight(double height) {
-		//TODO 
+
+	public void moveToHeight(double dest) {
+		//sampling frequency
+		int dt = 500;
+		//desired altitude
+
+		//set the Kp, Kd and Ki here
+		Pid pid = new Pid2(200,0,0,dest,dt);
+
+		//current altitude
+		double height = distanceSensor.getHeight();
+
+		//tolerance: close enough to destination to quit
+		double tolerance = 0.02;
+
+		//nothing to change from here
+		double previousheight = height;
+		double v = (height-previousheight)/(dt/1000.0);
+		double previousv = v;
+		double error = dest-height;
+		while(Math.abs(error) > tolerance) {
+			double output = pid.getOutput(height);
+			up.setPwmValue((int) output);
+			/*if(output > 1024)
+						output = 1024;*/
+			try {
+				Thread.sleep(dt);
+			} catch (InterruptedException e) {
+			}
+			previousheight = height;
+			height = distanceSensor.getHeight();
+			error = dest-height;
+			previousv = v;
+			double ts = dt/1000.0;
+			v = (height-previousheight)/ts;
+		}
 	}
-	
+
 	public void moveDistanceForward(double distance) {
 		//TODO
 	}
-	
+
 	public void moveDistanceBackward(double distance) {
 		//TODO
 	}
-	
+
 	public void turnDegreesLeft(double angle) {
 		//TODO
 	}
-	
+
 	public void turnDegreesRight(double angle) {
 		//TODO
 	}
@@ -123,8 +162,8 @@ public class MotorController {
 		left.setOff();
 		right.setOff();
 	}
-	*/
-	
+	 */
+
 	/**
 	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
 	 */

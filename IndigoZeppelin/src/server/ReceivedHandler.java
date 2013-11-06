@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import zeppelin.*;
 import java.net.Socket;
 
 import transfer.Transfer;
@@ -9,8 +10,10 @@ import zeppelin.Main;
 public class ReceivedHandler {
 	private Socket clientSocket;
 	private Main main = Main.getInstance();
+	private MotorController mc;
 	public ReceivedHandler(Socket sock){
 		this.clientSocket = sock;
+		mc = main.getMotorController();
 	}
 	
 	public void handleRecieved(Transfer information) {
@@ -51,10 +54,10 @@ public class ReceivedHandler {
 	
 	}
 	private void image(Transfer information){
-		System.out.println("Client is not supposed to send this type of information");
+		mc.moveToHeight(information.getHeight());
 	}
 	private void height(Transfer information){
-		System.out.println("Height information received. \n New height:"+ information.getHeight());
+		
 	}
 	
 	private void keyPressedEvent(Transfer information){

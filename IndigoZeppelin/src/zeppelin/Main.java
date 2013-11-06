@@ -24,7 +24,7 @@ public class Main implements Runnable{
 	private static Main main = new Main();
 	
 	private Main() {
-		motorController.init(gpio);
+		motorController.init(gpio,distanceSensor);
 		distanceSensorThread = new Thread(distanceSensor);
 		distanceSensorThread.start();
 	}
@@ -83,5 +83,9 @@ public class Main implements Runnable{
 	private SendToClient sender;
 	public void setSender(SendToClient sender){
 		this.sender =sender;
+	}
+	
+	public MotorController getMotorController() {
+		return motorController;
 	}
 }
