@@ -56,7 +56,7 @@ public class GUIMain extends javax.swing.JFrame {
 		//functies van de pijltjes met een keylistener
 		tab1window3.addKeyListener(new MotorListener());
 		tab1window3.requestFocusInWindow(); //voor arrow keys: focus vragen, voor andere keys automatisch goed
-
+		
 		upButton.setFocusable(false);
 		downButton.setFocusable(false);
 		rightButton.setFocusable(false);
@@ -97,11 +97,16 @@ public class GUIMain extends javax.swing.JFrame {
 			Image image = ImageIO.read(resource);
 			propnotact = new ImageIcon(image);
 		} catch (IOException e) {}
-		
+		resource = GUIMain.class.getResourceAsStream("/TEAMINDIGOpro.jpg");
+		try {
+			Image image = ImageIO.read(resource);
+			crditpic = new ImageIcon(image);
+		} catch (IOException e) {}
 		//TEMP!!
 		propellorActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorActive(Propellor.RIGHT);
+		creditsLbl.setIcon(crditpic);
 		disableAllComponents(this);
 	}
 
@@ -670,6 +675,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JToggleButton upButton;
     // End of variables declaration//GEN-END:variables
     
+    private ImageIcon crditpic; 
     private ImageIcon propact;
 	private ImageIcon propnotact;
 	private GuiCommands guic = new GuiCommands(this);
