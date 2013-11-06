@@ -54,10 +54,10 @@ public class ReceivedHandler {
 	
 	}
 	private void image(Transfer information){
-		mc.moveToHeight(information.getHeight());
+		
 	}
 	private void height(Transfer information){
-		
+		mc.moveToHeight(information.getHeight());
 	}
 	
 	private void keyPressedEvent(Transfer information){
