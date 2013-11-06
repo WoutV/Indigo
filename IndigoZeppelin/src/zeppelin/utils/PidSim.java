@@ -12,8 +12,8 @@ public class PidSim {
 	}
 	
 	/*public int getZweefPwm() {
-		int pwm = 500;
-		up.setPwmValue(pwm);
+	  int min=750; int max=1024
+		up.setPwmValue((min+max)/2);
 		double height = distanceSensor.getHeight();
 		double prev = height;
 		double tolerance = 3;
@@ -26,9 +26,10 @@ public class PidSim {
 		//sysout
 		while(Math.abs(diff)>tolerance) {
 			if(diff > 0)
-				pwm = pwm/2;
+				max=(low+max)/2
 			else
-				pwm = pwm + (1024-pwm)/2;
+				low= low +(max-low)/2
+			pwm = low+ (max-low)/2;
 			up.setPwmValue(pwm);
 			try {
 				Thread.sleep(2000);
