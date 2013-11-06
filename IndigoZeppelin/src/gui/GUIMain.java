@@ -97,16 +97,12 @@ public class GUIMain extends javax.swing.JFrame {
 			Image image = ImageIO.read(resource);
 			propnotact = new ImageIcon(image);
 		} catch (IOException e) {}
-		resource = GUIMain.class.getResourceAsStream("/TEAMINDIGOpro.jpg");
-		try {
-			Image image = ImageIO.read(resource);
-			crditpic = new ImageIcon(image);
-		} catch (IOException e) {}
+		
 		//TEMP!!
 		propellorActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorActive(Propellor.RIGHT);
-		creditsLbl.setIcon(crditpic);
+		
 		disableAllComponents(this);
 	}
 
@@ -675,7 +671,6 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JToggleButton upButton;
     // End of variables declaration//GEN-END:variables
     
-    private ImageIcon crditpic; 
     private ImageIcon propact;
 	private ImageIcon propnotact;
 	private GuiCommands guic = new GuiCommands(this);

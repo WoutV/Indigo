@@ -9,9 +9,9 @@ import com.pi4j.io.gpio.RaspiPin;
 
 /**
  * Controller voor de drie motoren.
- * !!!! left: motor 1 in doc (24,4)
+ * !!!! right: motor 1 in doc (24,4)
  * 		up: motor 2 in doc (17,23)	
- * 		right : motor 3 in doc (9,7)
+ * 		left : motor 3 in doc (9,7)
  * Usage: getInstance(), daarna: init met een GpioController
  */
 public class MotorController {
@@ -19,8 +19,8 @@ public class MotorController {
 	private Motor left;
 	private Motor right;
 	
-	private Pin leftfw = RaspiPin.GPIO_05, leftrv = RaspiPin.GPIO_07, upfw = RaspiPin.GPIO_00,
-			uprv = RaspiPin.GPIO_04, rightfw = RaspiPin.GPIO_13, rightrv = RaspiPin.GPIO_11;
+	private Pin leftfw = RaspiPin.GPIO_13, leftrv = RaspiPin.GPIO_11, upfw = RaspiPin.GPIO_00,
+			uprv = RaspiPin.GPIO_04, rightfw = RaspiPin.GPIO_05, rightrv = RaspiPin.GPIO_07;
 	
 	
 	private GpioController gpiocontroller;
