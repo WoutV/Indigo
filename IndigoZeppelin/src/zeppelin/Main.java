@@ -16,7 +16,7 @@ public class Main {
 
 	private MotorController motorController = MotorController.getInstance();
 	private GpioController gpio = GpioFactory.getInstance();
-//	private static DistanceSensor distanceSensor = new DistanceSensor();
+	private static DistanceSensor distanceSensor = new DistanceSensor();
 	private Thread distanceSensorThread;
 	
 	private static Main main = new Main();
