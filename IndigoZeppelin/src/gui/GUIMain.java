@@ -21,6 +21,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -666,7 +667,9 @@ public class GUIMain extends javax.swing.JFrame {
 	private GuiCommands guic = new GuiCommands(this);
 	
 	public void setHoogteLabel(double hoogte){
-		labelHoogteDisplay.setText(hoogte+" cm");
+		DecimalFormat df = new DecimalFormat("#.##");
+        String s = df.format(hoogte);
+		labelHoogteDisplay.setText(s+" cm");
 	}
 
 	/**
