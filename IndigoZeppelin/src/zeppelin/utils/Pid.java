@@ -17,7 +17,7 @@ public class Pid {
 	protected int dt;
 	//om de hoeveel tijd? (hoe vaak samplen??)
 	
-	protected int zweefpwm = 400;
+	protected int zweefpwm = 858;
 	
 	/**
 	 * Creates a new PID Algorithm.

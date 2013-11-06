@@ -124,6 +124,7 @@ public class MotorController {
 			previousv = v;
 			double ts = dt/1000.0;
 			v = (height-previousheight)/ts;
+			System.out.println(output );
 		}
 	}
 
