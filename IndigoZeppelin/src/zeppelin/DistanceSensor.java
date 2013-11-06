@@ -134,6 +134,7 @@ public class DistanceSensor implements Runnable{
 
 	@Override
 	public void run() {
+		while(true){
 		try {
 			double currentReading = measureDistance();
 			distanceArray.add(currentReading);
@@ -144,6 +145,6 @@ public class DistanceSensor implements Runnable{
 		} catch (InterruptedException e) {
 			System.err.println("timeout between readings");
 		}
-	}
+	}}
 
 }

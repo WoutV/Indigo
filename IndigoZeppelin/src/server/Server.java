@@ -2,6 +2,7 @@ package server;
 import java.io.*;
 import java.net.*;
 import server.SendToClient;
+import zeppelin.Main;
 
 
 public class Server {
@@ -20,4 +21,8 @@ public class Server {
 		ReadInput ri = new ReadInput(send);
 		Thread thread2 = new Thread(ri);
 		thread2.start();
+		Main main = Main.getInstance();
+		main.setSender(send);
+		Thread thread3 = new Thread(main);
+		thread3.start();
 	}}

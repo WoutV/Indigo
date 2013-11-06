@@ -64,7 +64,7 @@ class ReceiveThread implements Runnable
 			}
 		
 		}catch(IOException e){
-		gui.showMessage("Server closed the socket exiting now!");
+		e.printStackTrace();
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e1) {

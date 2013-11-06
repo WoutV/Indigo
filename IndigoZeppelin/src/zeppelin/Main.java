@@ -1,11 +1,13 @@
 package zeppelin;
 
+import server.SendToClient;
+import transfer.Transfer;
 import gui.GuiCommands.Key;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
-public class Main {
+public class Main implements Runnable{
 
 	// BELANGRIJK: Pi4J & WiringPi libraries nodig op de RPi!!
 	// dus wiringpi downloaden mss
@@ -23,6 +25,8 @@ public class Main {
 	
 	private Main() {
 		motorController.init(gpio);
+		distanceSensorThread = new Thread(distanceSensor);
+		distanceSensorThread.start();
 	}
 
 	private static boolean init;
@@ -59,5 +63,25 @@ public class Main {
 		} else {
 			motorController.stopHorizontalMovement();
 		}
+	}
+
+	@Override
+	public void run() {
+		while(true){
+		Transfer height = new Transfer();
+		height.setHeight(distanceSensor.getHeight());
+		sender.sendTransfer(height);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		
+	}
+	private SendToClient sender;
+	public void setSender(SendToClient sender){
+		this.sender =sender;
 	}
 }
