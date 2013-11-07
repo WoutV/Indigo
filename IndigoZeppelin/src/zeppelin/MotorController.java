@@ -1,6 +1,7 @@
 package zeppelin;
 import zeppelin.utils.Pid;
 import zeppelin.utils.Pid2;
+import zeppelin.utils.ZoekZweefPwm;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -28,6 +29,8 @@ public class MotorController {
 
 	private GpioController gpiocontroller;
 	private DistanceSensor distanceSensor;
+	
+	private int zweefpwm;
 
 	private static MotorController mc = new MotorController();
 
@@ -180,4 +183,37 @@ public class MotorController {
 	public void stopElevate() {
 		up.setOff();
 	}	
+	
+	private ZoekZweefPwm zoekZweefPwm;
+	private Thread zoekZweefPwmThread;
+	
+	/**
+	 * Stopt het automatisch zoeken naar zweef pwm
+	 * en zet zweef pwm op de gegeven value
+	 * @param pwm
+	 */
+	public void setFloatPwm(int pwm) {
+		if(zoekZweefPwm != null) {
+			zoekZweefPwmThread.interrupt();
+			zweefpwm = pwm;
+		}
+	}
+	
+	/**
+	 * Indien niet aan het zoeken: gaat op zoek naar zweef-pwm
+	 * Indien aan het zoeken: stopt
+	 */
+	public void searchFloatPwm() {
+		//laat de ZweefZoeker automatisch de zweef pwm zoeken
+		if(zoekZweefPwm == null) {
+			zoekZweefPwm = new ZoekZweefPwm(distanceSensor,up);
+			zoekZweefPwmThread = new Thread(zoekZweefPwm);
+			zoekZweefPwmThread.start();
+		}
+		else {
+			zoekZweefPwmThread.interrupt();
+			zweefpwm = zoekZweefPwm.getPwmValue();
+		}
+					
+	}
 }

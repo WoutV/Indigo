@@ -64,7 +64,7 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. ~\\
+Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
 Om het geheel in de lucht te houden, hangen er 2 ballonnen tegen de bovenkant van het frame. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. \\
 \\
@@ -190,6 +190,7 @@ We gaan allereerst op zoek naar de juiste pwm waarde waarbij de zeppelin op deze
 % == ALGORITMES == %
 \section{Algoritmes}
 \subsection{Verticale bewegingen}
+Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{en.wikipedia.org/wiki/PID_controller}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. \\ 
 
 
 % == SOFTWARE == %
@@ -198,15 +199,27 @@ Zoals reeds vermeld, zal de software volledig in Java geschreven zijn. Deze keuz
 
 Om de software te schrijven, gaan we op de laptop gebruik maken van de Eclipse IDE. We maken ook gebruik van de Netbeans IDE. Deze is door de visuele interface veel gebruikvriendelijker om de GUI te ontwerpen. Hierdoor moeten we ons niet bezig houden met alle code voor de lay-out handmatig te schrijven. Voor het aansturen van de GPIO-pinnen gebruiken we Pi4J\footnote{www.pi4j.com}.\\
 
-Op een client-pc kan de GUI (zie figuur \ref{GUI}) worden gestart. Hier kan de gebruiker informatie aflezen over de toestand van de zeppelin (bijvoorbeeld de hoogte, commando's die hij aan het uitvoeren is) en afbeeldingen van de camera bekijken. Verder kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. \\
+Op een client-pc kan de GUI (zie figuur \ref{GUI}) worden gestart. Hier kan de gebruiker informatie aflezen over de toestand van de zeppelin en commando's geven met de pijltjestoetsen. Meer informatie hierover is terug te vinden in de volgende sectie. \\
 
-De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Sockets zijn een eenvoudige en universele manier om data over een netwerk te sturen. Ze zijn te vergelijken met een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen). Hierop kan 1 client verbinden. Het zou mogelijk zijn meerdere clients toegang te geven, maar om conflicten (met pijltjestoetsen) te vermijden en om bandbreedte te besparen (bij het doorsturen van afbeeldingen), ondersteunt de server maar 1 client.  \\
+De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Sockets zijn een eenvoudige en universele manier om data over een netwerk te sturen. Ze zijn te vergelijken met een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen), waarop de client zal verbinden. \\
 
-Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Zo kan de zeppelin tegelijk foto's nemen en de afstand tot de grond meten. Later zal worden beslist hoeveel gelijklopende threads er gebruikt worden. \\
+Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Bepaalde functies die continu moeten gebeuren (met telkens een wachttijd tussen elke uitvoering) worden zo tegelijk uitgevoerd (technisch gezien niet tegelijk, maar er wordt gewisseld tussen deze threads). Een voorbeeld hiervan is het opmeten van de hoogte.\\
 
 Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet kunnen werken. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de CPU van de Pi minder zwaar belast. \\
 
 De hoogte zal op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van een aantal opeenvolgende meetresultaten. De hoogte wordt, net zoals de foto's, doorgestuurd naar de GUI. Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekend project voor het inlezen van QR-codes dat oorspronkelijk in Java geschreven is. \\
+
+
+
+% == GUI == %
+\section{GUI}
+De User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de zeppelin. De GUI geeft informatie weer over de status. Voorbeelden zijn de huidige hoogte en commando's die hij aan het uitvoeren is. Daarnaast kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. \\
+
+In de eerste tab ('main') toont de hoogte en toestand van de propellers. Er is ruimte voorzien om foto's (van de camera) te tonen en om de commando's weer te geven die in de wachtrij van de zeppelin zitten. Verder zijn hier toetsen om de motoren aan te sturen en om de zeppelin naar een bepaalde hoogte te laten stijgen.\\
+
+De tweede tab geeft een uitgebreider overzicht van de informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. \\
+
+De zeppelin (server) staat slechts toe dat er \'e\'en client verbindt, dus dat er \'e\'en GUI wordt getoond. Het zou mogelijk zijn meerdere clients toegang te geven, maar om conflicten (met pijltjestoetsen) te vermijden en om bandbreedte te besparen (bij het doorsturen van afbeeldingen), ondersteunt de server maar 1 client. \\
 
 \begin{figure}[ht!]
 \centering
@@ -214,13 +227,6 @@ De hoogte zal op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijk
 \caption{GUI}
 \label{GUI}
 \end{figure}
-
-
-% == GUI == %
-\section{GUI}
-
-
-
 
 
 % == BESLUIT == %

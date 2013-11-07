@@ -11,7 +11,7 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE
 	}
 	private TransferType type;
 	private double height;
@@ -45,6 +45,22 @@ public class Transfer implements Serializable {
 		this.height = height;
 		this.type  = TransferType.HEIGHT;
 		message = "Transfering height details";
+	}
+	
+	private int pwm;
+	
+	public int getPwm() {
+		return pwm;
+	}
+	
+	public void setPwm(int pwm) {
+		this.type = TransferType.PWM;
+		this.pwm = pwm;
+		message = "Transferring float pwm supplied by user";
+	}
+	
+	public void searchPwm() {
+		this.type = TransferType.PWMTOGGLE;
 	}
 	
 	/**

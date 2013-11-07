@@ -2,6 +2,7 @@ package zeppelin;
 
 import server.SendToClient;
 import transfer.Transfer;
+import zeppelin.utils.ZoekZweefPwm;
 import gui.GuiCommands.Key;
 
 import com.pi4j.io.gpio.GpioController;
@@ -64,6 +65,14 @@ public class Main implements Runnable{
 			motorController.stopHorizontalMovement();
 		}
 	}
+	
+	public void setFloatPwm(int pwm) {
+		motorController.setFloatPwm(pwm);
+	}
+	
+	public void searchFloatPwm() {
+		motorController.searchFloatPwm();
+	}
 
 	@Override
 	public void run() {
@@ -80,6 +89,7 @@ public class Main implements Runnable{
 		}
 		
 	}
+	
 	private SendToClient sender;
 	public void setSender(SendToClient sender){
 		this.sender =sender;

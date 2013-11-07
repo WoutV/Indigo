@@ -87,6 +87,28 @@ public class GuiCommands {
 			sender.sendTransfer(transfer);
 		}
 	}
+	
+	/**
+	 * Methode om een pwm door te geven aan de zeppelin.
+	 * Deze wordt dan gebruikt als zweef-pwm.
+	 * Op deze manier zal de ZoekZweefPwm worden gestopt.
+	 * @param pwm
+	 */
+	public void sendPwmZep(int pwm){
+		if(sender !=null) {
+			Transfer transfer = new Transfer();
+			transfer.setPwm(pwm);
+			sender.sendTransfer(transfer);
+		}
+	}
+	
+	public void searchPwmZep() {
+		if(sender !=null) {
+			Transfer transfer = new Transfer();
+			transfer.searchPwm();
+			sender.sendTransfer(transfer);
+		}
+	}
 
 	/**
 	 * Enum die de verschillende keys aangeeft.

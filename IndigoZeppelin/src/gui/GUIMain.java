@@ -293,6 +293,8 @@ public class GUIMain extends javax.swing.JFrame {
         rightButton = new javax.swing.JToggleButton();
         elevateButton = new javax.swing.JToggleButton();
         setHeightBtn = new javax.swing.JButton();
+        setPwmValue = new javax.swing.JButton();
+        zoekZweefPwm = new javax.swing.JButton();
         tab2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         fullCommandList = new javax.swing.JTextArea();
@@ -470,12 +472,32 @@ public class GUIMain extends javax.swing.JFrame {
             }
         });
 
+        setPwmValue.setText("set zweef");
+        setPwmValue.setFocusable(false);
+        setPwmValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setPwmValueActionPerformed(evt);
+            }
+        });
+
+        zoekZweefPwm.setText("zoek zweef");
+        zoekZweefPwm.setFocusable(false);
+        zoekZweefPwm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoekZweefPwmActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tab1window3Layout = new javax.swing.GroupLayout(tab1window3);
         tab1window3.setLayout(tab1window3Layout);
         tab1window3Layout.setHorizontalGroup(
             tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab1window3Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
+                .addContainerGap()
+                .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(zoekZweefPwm, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(setPwmValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
                 .addComponent(leftButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,18 +516,23 @@ public class GUIMain extends javax.swing.JFrame {
             tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab1window3Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, tab1window3Layout.createSequentialGroup()
-                        .addComponent(upButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(downButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(leftButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tab1window3Layout.createSequentialGroup()
-                        .addComponent(setHeightBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(zoekZweefPwm, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(elevateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(setPwmValue, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, tab1window3Layout.createSequentialGroup()
+                            .addComponent(upButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(tab1window3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(downButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(leftButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(tab1window3Layout.createSequentialGroup()
+                            .addComponent(setHeightBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(elevateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -638,6 +665,27 @@ public class GUIMain extends javax.swing.JFrame {
 
 	}//GEN-LAST:event_setHeightBtnActionPerformed
 
+    private void setPwmValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setPwmValueActionPerformed
+    	String pwm = JOptionPane.showInputDialog(this, "Set this pwm as float-pwm value");
+		int pwmgetal = 0;
+		try {
+			if(pwm != null){
+				pwmgetal = Integer.parseInt(pwm);
+				if(pwmgetal >= -1024 && pwmgetal <= 1024)
+					guic.sendPwmZep(pwmgetal);
+				else
+					JOptionPane.showMessageDialog(this, "Ongeldige pwm-waarde");
+			}
+		}
+		catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Ongeldige pwm-waarde");
+		}
+    }//GEN-LAST:event_setPwmValueActionPerformed
+
+    private void zoekZweefPwmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoekZweefPwmActionPerformed
+        guic.searchPwmZep();
+    }//GEN-LAST:event_zoekZweefPwmActionPerformed
+
 
 
 
@@ -661,6 +709,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JLabel propellor3;
     private javax.swing.JToggleButton rightButton;
     private javax.swing.JButton setHeightBtn;
+    private javax.swing.JButton setPwmValue;
     private javax.swing.JLayeredPane tab1;
     private javax.swing.JPanel tab1window1;
     private javax.swing.JLabel tab1window1Lbl;
@@ -669,6 +718,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JToggleButton upButton;
+    private javax.swing.JButton zoekZweefPwm;
     // End of variables declaration//GEN-END:variables
     
     private ImageIcon propact;

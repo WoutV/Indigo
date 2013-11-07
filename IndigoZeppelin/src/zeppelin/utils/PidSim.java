@@ -11,38 +11,6 @@ public class PidSim {
 	public PidSim() {
 	}
 	
-	/*public int getZweefPwm() {
-	  int min=750; int max=1024
-		up.setPwmValue((min+max)/2);
-		double height = distanceSensor.getHeight();
-		double prev = height;
-		double tolerance = 3;
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-		}
-		height = distanceSensor.getHeight();
-		double diff = height - prev;
-		//sysout
-		while(Math.abs(diff)>tolerance) {
-			if(diff > 0)
-				max=(low+max)/2
-			else
-				low= low +(max-low)/2
-			pwm = low+ (max-low)/2;
-			up.setPwmValue(pwm);
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-			prev = height;
-			height = distanceSensor.getHeight();
-			diff = height - prev;
-			//sysout
-		}
-		return pwm;
-	}*/
-	
 	public void run() {
 		//sampling frequency
 		int dt = 200;

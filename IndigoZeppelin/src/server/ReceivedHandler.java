@@ -36,6 +36,12 @@ public class ReceivedHandler {
 		case MESSAGE:
 			message(information);
 			break;
+		case PWM:
+			main.setFloatPwm(information.getPwm());
+			break;
+		case PWMTOGGLE:
+			main.searchFloatPwm();
+			break;
 		default:
 			break;
 		
