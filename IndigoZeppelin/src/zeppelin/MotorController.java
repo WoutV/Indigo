@@ -99,7 +99,7 @@ public class MotorController {
 		//desired altitude
 
 		//set the Kp, Kd and Ki here
-		Pid pid = new Pid2(200,0,0,dest,dt);
+		Pid pid = new Pid2(100,0,50,dest,dt);
 
 		//current altitude
 		double height = distanceSensor.getHeight();
@@ -115,6 +115,11 @@ public class MotorController {
 		while(Math.abs(error) > tolerance) {
 			double output = pid.getOutput(height);
 			up.setPwmValue((int) output);
+			if(output>0) {
+				up.setForward();
+			} else {
+				up.setReverse();
+			}
 			/*if(output > 1024)
 						output = 1024;*/
 			try {
