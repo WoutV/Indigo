@@ -88,4 +88,8 @@ public class Main implements Runnable{
 	public MotorController getMotorController() {
 		return motorController;
 	}
+	
+	/**
+	 * Hier iets van public Command ProcessQRCode die dan QRParser gebruikt? 
+	 */
 }
