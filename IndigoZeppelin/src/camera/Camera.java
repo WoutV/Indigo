@@ -32,7 +32,7 @@ public abstract class Camera {
 	    {
 
 	    	isInUse=true;
-			Process p = Runtime.getRuntime().exec("raspistill -t 0 -n -h 300 -w 300 -o image.jpg");
+			Process p = Runtime.getRuntime().exec("raspistill -t 0 -n -h 150 -w 150 -o image.jpg");
 	    	p.waitFor();
 	    	isInUse=false;
 	    }
@@ -65,7 +65,7 @@ public abstract class Camera {
 		    {
 			  	System.out.println("Taking picture for QR code reading!");
 			  	isInUse=true;
-		    	Process p = Runtime.getRuntime().exec("raspistill -cfx 128:128 -t 0 -h 1000 -w 2000 -o QRimage.jpg");
+		    	Process p = Runtime.getRuntime().exec("raspistill -t 0 -h 1000 -w 2000 -o QRimage.jpg");
 		    	p.waitFor();
 		    	isInUse=false;
 		    	System.out.println("Taking picture finished...");

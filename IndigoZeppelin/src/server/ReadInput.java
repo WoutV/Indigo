@@ -13,10 +13,12 @@ import transfer.Transfer.TransferType;
 class ReadInput implements Runnable
 {
 	SendToClient stc;
+	SendToClient imageSender;
 	
-	public ReadInput(SendToClient stc)
+	public ReadInput(SendToClient stc, SendToClient imageSender)
 	{
 		this.stc=stc;
+		this.imageSender = imageSender;
 		
 	}
 	public void run() {
@@ -24,7 +26,7 @@ class ReadInput implements Runnable
 		printHelp();
 		boolean imageThreadStarted=false;
 		while(true)
-		{	
+		{	boolean imageSend=false;
 			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));//get userinput
 			String readString = input.readLine();//get message to send to client
 			if(readString.equalsIgnoreCase("/help")){
@@ -37,6 +39,7 @@ class ReadInput implements Runnable
 					information.setType(TransferType.EXIT);
 				}
 				if(readString.equalsIgnoreCase("/image")){
+					imageSend=true;
 					ImageIcon image = Camera.getImage();//get message to send to client);
 					information.setImage(image);
 				}
@@ -47,14 +50,16 @@ class ReadInput implements Runnable
 				}
 				if(readString.equalsIgnoreCase("/imagethread")){
 					if(!imageThreadStarted){
-						CameraThread ct = new CameraThread(stc);
+						CameraThread ct = new CameraThread(imageSender);
 						Thread cameraT = new Thread(ct);
 						cameraT.start();
 						imageThreadStarted = true;
 					}
 				}
-				
+				if(!imageSend)
 				stc.sendTransfer(information);
+				else
+					imageSender.sendTransfer(information);
 			}
 			
 		}//end while

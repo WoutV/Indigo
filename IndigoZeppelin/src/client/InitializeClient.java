@@ -62,12 +62,16 @@ public class InitializeClient {
 		
 		try {
 			Socket sock = new Socket(serverIP,6789);
+			Socket imageSock = new Socket(serverIP,6790);
 			SendToServer sender = new SendToServer(sock,gui);
 			gui.getGuiCommands().setSender(sender);
 			gui.enableAllButtons();
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 			gui.showMessage("");
+			ReceiveThread imageReceiver = new ReceiveThread(imageSock,gui);
+			Thread imageThread = new Thread(imageReceiver);
+			imageThread.start();
 			
 			
 		} catch (Exception e) {
