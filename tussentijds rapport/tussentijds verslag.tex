@@ -32,7 +32,8 @@
 
 % == SAMENVATTING == %
 \begin{abstract}
-
+Dit document is een tussentijds verslag over de autonome zeppelin van Team Indigo. Deze zeppelin, gebouwd met 2 ballonnen en 3 motoren en aangestuurd door een Raspberry Pi, moet in staat zijn om op basis van QR-codes commando's uit te voeren.\\
+Dit verslag documenteert onze bevindingen en vooruitgang naar de tussentijdse demo toe. Concreet beschrijven we de opbouw van onze zeppelin en de structuur van de software.
 \end{abstract}
 
 
@@ -82,7 +83,7 @@ In de Raspberry Pi zit een SD-kaart van 4 GB. Op de USB-poort is een USB hub aan
 Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 \begin{itemize}
 	\item De camera laat toe foto's te nemen met een maximum resolutie van 5 MP. Hiermee kunnen we onder andere beelden maken van QR-codes. Daarnaast kan de camera video's maken met resoluties tot 1080p. 
-	\item De afstandssensor kan worden gebruikt om de afstand te meten tussen de zeppelin en de grond of muur. Het maximale bereik is 4m en het minimale bereik is 2cm.\\
+	\item De afstandssensor kan worden gebruikt om de afstand te meten tussen de zeppelin en de grond of muur. Deze werkt met ultrasone trillingen. Het maximale bereik is 4m en het minimale bereik is 2cm.\\
 \end{itemize}
 
 Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt, is het nodig dat de componenten getest worden. In de volgende secties volgt hierover meer informatie.\\
@@ -160,6 +161,10 @@ De positie van de QR-code in de foto is een cruciaal element. De codes bevatten 
 \subsection{Motoren}
 \textbf{Deze test is nog niet uitgevoerd.} \\
 
+We zijn bij onze eerste experimenten al enkele zaken te weten gekomen. Zo blijkt dat een minimale pwm-waarde van ongeveer 740 nodig is (ter info: maximumwaarde is 1024) om de propellor in beweging te krijgen. Daarnaast hebben we al gezien dat wanneer je de motoren voor enkele seconden laat draaien, de zeppelin nog een vrij lange tijd gaat uitbollen. \\
+
+Hieronder is meer informatie te vinden over hoe we concreter en grondiger gaan testen voor bepaalde bewegingen. \\
+
 \paragraph{Zijwaartse bewegingen} ~\\ 
 Om de zijwaartse bewegingen te testen, gaan we kijken hoe lang we de motor moeten aanzetten om een hoek van 10$^\circ$ , 20$^\circ$, 30$^\circ$, \ldots uit te voeren. We zullen deze testen uitvoeren op hoeken naar links. Hiervoor zetten we de linkermotor op volle kracht achteruit en de rechtermotor op volle kracht vooruit. \\
 
@@ -203,6 +208,8 @@ Op een client-pc kan de GUI (zie figuur \ref{GUI}) worden gestart. Hier kan de g
 
 De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Sockets zijn een eenvoudige en universele manier om data over een netwerk te sturen. Ze zijn te vergelijken met een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen), waarop de client zal verbinden. \\
 
+Voor de communicatie maken we gebruik van een virtueel netwerk dat wordt opgezet vanaf een laptop. Het bleek niet eenvoudig om gebruik te maken van Campusnet voor de verbinding, omdat hier een heleboel netwerkverkeer geblokkeerd wordt. Als alternatief hadden we gebruik kunnen maken van een router om een netwerk op te zetten, maar dan zouden we ofwel zelf voor een router moeten zorgen, ofwel afhankelijk zijn van een andere groep in dezelfde klas die de router in hun bezit hebben. \\
+
 Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Bepaalde functies die continu moeten gebeuren (met telkens een wachttijd tussen elke uitvoering) worden zo tegelijk uitgevoerd (technisch gezien niet tegelijk, maar er wordt gewisseld tussen deze threads). Een voorbeeld hiervan is het opmeten van de hoogte.\\
 
 Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet kunnen werken. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de CPU van de Pi minder zwaar belast. \\
@@ -231,7 +238,9 @@ De zeppelin (server) staat slechts toe dat er \'e\'en client verbindt, dus dat e
 
 % == BESLUIT == %
 \section{Besluit}
+We zijn er tot nu toe in geslaagd een zeppelin in elkaar te steken en de motoren aan te sturen. Via sockets wisselen we informatie uit tussen de zeppelin en de GUI en kunnen we de zeppelin via de pijltjestoetsen aansturen. De zeppelin zijn status en afbeeldingen tonen aan de gebruiker. \\
 
+Naar de toekomst toe moeten we de interne programmatie van de zeppelin verder uitbreiden, zodat hij een bepaalde afstand kan bewegen of over een bepaalde hoek kan draaien. Hiervoor gaan we veel informatie uit testen moeten gebruiken. Daarnaast zal de zeppelin in staat moeten zijn QR-codes te lezen en te interpreteren, maar hiervoor hebben we al een goede eerste aanzet qua programmatie.
 
 
 % == REFERENTIES == %
@@ -244,22 +253,43 @@ De zeppelin (server) staat slechts toe dat er \'e\'en client verbindt, dus dat e
 
 \section{Beschrijving van het proces}
 \begin{itemize}
-\item Welke moeilijkheden heb je ondervonden tijdens de uitwerking?
-\item Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt?
+\item Welke moeilijkheden heb je ondervonden tijdens de uitwerking? \\
+Over het algemeen is de uitwerking redelijk vlot verlopen, de zeppelin vliegt en doet wat de tussentijdse demo verlangde.  Kleine problemen bestonden uit het niet direct aanwezig zijn van alle hardware, waardoor we tijdens de beginfase veronderstellingen moesten maken over hoe deze in de praktijk zou werken. Hierdoor moesten we soms op enkele beslissingen terugkomen. De praktijk voldeed dus (zoals we wel hadden verwacht) niet volledig aan de theorie. Dit was goed duidelijk bij het naar links of rechts draaien van de zeppelin. In theorie zou deze op eenzelfde plaats moeten blijven hangen boven een bepaald punt, maar dit was niet het geval. Dit is een klein voorbeeld van een probleem dat we dan door veel testen zullen moeten oplossen. \\
+Een ander probleem dat we vooral in het begin hadden, was de communicatie tussen de zeppelin en de GUI. Dit is echter een probleem waar alle groepen mee te maken hadden.
+\item Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt? \\
+Dat veel testen in de praktijk noodzakelijk zijn. Dit wisten we eigenlijk al maar was bij het opstijgen eens zo duidelijk. De ballon voldeed in het begin vaak niet aan onze verwachtingen (zoals bij puntje 1 reeds vermeld). Ook was goed plannen en op tijd aan het schrijven van software/testen van hardware beginnen een goede les, onvoorziene problemen kunnen daardoor opgelost worden. \\
+Op het vlak van rapporteren hebben we vooral geleerd dat we veel moeten motiveren. We mogen ook niet verwachten dat de lezer even goed op de hoogte is van de details van het project, als wijzelf.
 \item Hoe verliep het werken in team? Op welke manier werd de teamco\"ordinatie en planning aangepakt?
-\end{itemize}
+Het werken in team verliep zeer vlot, tot bijna perfect. Iedereen was leergierig en bereid veel tijd in het project te steken. Het enige minpunt was dat er soms niet genoeg werk was voor iedereen waardoor er af en toe met 2-3 personen aan 1 computer gewerkt werd. \\
+De eerste les hebben we een teamco\"ordinator en secretaris gekozen, maar deze keuzes waren eerder gemaakt omdat we toen nog geen idee hadden hoe het project ging verlopen. Een co\"ordinatorrol was eigenlijk niet nodig, er werd goed tussen de verschillende groepsleden gecommuniceerd en bij problemen kon je terecht op de Facebook-groep die we hebben aangemaakt. De rol van secretaris hebben we allemaal gedeeltelijk ingevuld: wie even niets te doen had kon aan de verslagen werken, die dan nadien door alle groepsleden nagelezen en aangepast werden. \\ 
+Tijdens de eerste 2 lessen werd het al duidelijk welke grote delen er geprogrammeerd moesten worden. Hiervoor hebben we dan een aantal personen per deel gezet.  Meer hierover is in het volgende deel terug te vinden.
+
+\end{itemize}2
 
 
 \section{Beschrijving van de werkverdeling}
+De eerste lessen hebben we besloten dat er 3 grote delen waren die moesten afgewerkt worden: de GUI, de communicatie tussen GUI en zeppelin en de zeppelin zelf. Ook waren er de tussentijdse verslagen en het testen van de onderdelen. \\
 \begin{itemize}
-\item Geef voor elk van de groepsleden aan aan welke delen ze hebben meegewerkt en welke andere taken ze op zich hebben genomen.
-\item Rapporteer in tabelvorm hoeveel uur elk groepslid elke week aan het project gewerkt heeft, zowel tijdens als buiten de begeleide sessies. Geef ook totalen per groepslid voor het volledige semester.
+\item Wander Bavin: Heeft meegewerkt aan het onderdeel GUI. Dit deel vroeg vooral in het begin wat werk. Nadat de GUI afgewerkt was heeft hij verslagen gemaakt/nagelezen en uiteindelijk meegeholpen aan het motor-gedeelte. Indien er extra informatie op de GUI moest verschijnen heeft hij hiervoor gezorgd. Vervulde de rol van co\"ordinator, maar die was in deze goede groep niet echt nodig.
+\item Dimitri Jonckers: Heeft meegewerkt aan het onderdeel GUI. Heeft net zoals Wander de verslagen gemaakt en nagelezen, alsook meegeholpen aan het testen van de afstandsensor en het programmeren van de motoren. Ook hij heeft de GUI aangepast wanneer nodig. Heeft thuis veel opzoekwerk gedaan/geprogrammeerd. Heeft de meeste weekly progress reports geschreven.
+\item Sunil Tandan: Heeft gewerkt aan het deel communicatie tussen GUI en zeppelin. Dit was een groot en belangrijk deel dat hij op zichzelf heeft gemaakt. Dit deel vroeg redelijk wat werk en moest elke keer wel een beetje aangepast worden (bijvoorbeeld voor het versturen van images). Heeft elk verslag nagelezen en delen over de communicatie toegevoegd. Nadien heeft hij het werken met de camera op zich genomen.
+\item Wout Vekemans: Heeft meegewerkt aan het deel motoren/zeppelin. Tijdens de beginfase voornamelijk verslagen gemaakt/nagelezen. Heeft samen met Vince de afstandssensor getest/geprogrammeerd en is daarna aan de motoren beginnen werken. Hij vervulde de rol van secretaris en stuurde de verslagen dus telkens door.
+\item Vince Goossens: Heeft ongeveer hetzelfde gedaan als Wout Vekemans.
 \end{itemize}
 
+Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies:
+\begin{tabular}{r||r|r|r|r|r}
+Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vince Goossens \\
+\hline \hline 
+30/09 - 06/10 & 5 & 5 & 5 & 7 & 5 \\
+07/10 - 13/10 & 15.5 & 12 & 6 & 11 & 5 \\
+14/10 - 20/10 & 11 & 10.5 & 6.75 & 9 & 6.25 \\
+21/10 - 27/10 & 9 & 5.5 & 6 & 9 & 5.5 \\
+\end{tabular}
 
-\section{Kritisch analyse}
+\section{Kritische analyse}
 \begin{itemize}
-\item Maak een analyse van de sterke en zwakke punten van het project. Welke punten zijn vatbaar voor verbetering. Wat zou je, met je huidige kennis, anders aangepakt hebben?
+De groepssfeer en samenwerking onderling was zeer goed, de deadlines voor tussentijdse verslagen en de demo zijn makkelijk behaald. Veel zwakke punten zijn er eigenlijk niet, er werd altijd hard gewerkt om zo snel mogelijk een onderdeel van het project af te werken. Het enige zwakke punt was eventueel de werkverdeling: iedereen wou ergens aan werken maar vaak was iemand anders er al mee bezig. Verbetering bestaat er dan in het werk misschien wat eerlijker te verdelen (wat niet zo makkelijk is als iedereen veel wil doen). We zouden niet veel anders aangepakt hebben, alles verliep vlotjes en we hadden niet veel problemen met software of hardware.
 \end{itemize}
 
 
