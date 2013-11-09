@@ -1,4 +1,5 @@
 package zeppelin;
+import server.SendToClient;
 import zeppelin.utils.Pid;
 import zeppelin.utils.Pid2;
 import zeppelin.utils.ZoekZweefPwm;
@@ -31,6 +32,8 @@ public class MotorController {
 	private DistanceSensor distanceSensor;
 	
 	private int zweefpwm;
+	
+	private SendToClient sender;
 
 	private static MotorController mc = new MotorController();
 
@@ -93,10 +96,15 @@ public class MotorController {
 		up.setForward();
 	}
 
+	/**
+	 * Laat de zeppelin naar een bepaalde hoogte bewegen
+	 * Deze methode gebruikt het PID-algoritme
+	 * @param dest
+	 * 		hoogte (in cm) waar naartoe moet worden bewogen
+	 */
 	public void moveToHeight(double dest) {
 		//sampling frequency
 		int dt = 500;
-		//desired altitude
 
 		//set the Kp, Kd and Ki here
 		Pid pid = new Pid2(100,0,50,dest,dt);
@@ -115,11 +123,6 @@ public class MotorController {
 		while(Math.abs(error) > tolerance) {
 			double output = pid.getOutput(height);
 			up.setPwmValue((int) output);
-			if(output>0) {
-				up.setForward();
-			} else {
-				up.setReverse();
-			}
 			/*if(output > 1024)
 						output = 1024;*/
 			try {
@@ -152,27 +155,6 @@ public class MotorController {
 		//TODO
 	}
 
-	/*public void stopMovingForward() {
-		left.setOff();
-		right.setForward();
-	}
-
-	public void stopMovingBackward() {
-		left.setOff();
-		right.setOff();
-	}
-
-	public void stopTurningLeft() {
-		left.setOff();
-		right.setOff();
-	}
-
-	public void stopTurningRight() {
-		left.setOff();
-		right.setOff();
-	}
-	 */
-
 	/**
 	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
 	 */
@@ -182,11 +164,10 @@ public class MotorController {
 	}
 
 	/**
-	 * Zet de motor naar boven uit.
+	 * Zet verticale bewegingen stop (concreet wordt overgeschakeld naar zweef-pwm)
 	 */
-	//dit gaat de zweef-pwm worden ipv off!
 	public void stopElevate() {
-		up.setOff();
+		up.setPwmValue(zweefpwm);
 	}	
 	
 	private ZoekZweefPwm zoekZweefPwm;

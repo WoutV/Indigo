@@ -90,13 +90,19 @@ public class Motor {
 	}
 	
 	/**
-	 * Zet de pwm value, indien pwm geactiveerd is op deze motor
+	 * Zet de pwm value en laat de motor in de juiste richting draaien
+	 * indien pwm geactiveerd is op deze motor
 	 * @param value
-	 * 			Getal tussen 0 (min) en 1024 (max)
+	 * 			Getal tussen -1024 (min) en 1024 (max)
 	 */
 	public void setPwmValue(int value) {
-		if(pwmEnabled)
+		if(pwmEnabled) {
 			pwmPin.setPwm(value);
+			if(value > 0)
+				setForward();
+			else
+				setReverse();
+		}
 	}
 	
 	

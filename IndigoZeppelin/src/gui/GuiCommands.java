@@ -24,7 +24,6 @@ public class GuiCommands {
 
 	public GuiCommands(GUIMain gui){
 		this.gui=gui;
-
 	}
 
 	//	public ArrayList<String> getNewcommands() {
@@ -120,12 +119,20 @@ public class GuiCommands {
 	public enum Key{
 		LEFT,RIGHT,UP,DOWN,ELEVATE;
 	}
+	
+	//horizontale unpressed (left, right, reverse, forward) ==>
+	// enkel doorsturen indien dit het event is dat als laatste is ingedrukt
+	//dit vermijdt dat de gebruiker een knop moet loslaten, voor hij de andere mag indrukken
+	private Key lastHorizontalKey;
 
 	/**
 	 * Methode die een Key doorstuurt van de button die wordt ingedrukt.
 	 * Wordt opgeroepen door GUIMain.
 	 */
 	public void sendKeyPressed(Key key){
+		if(key != Key.ELEVATE)
+			lastHorizontalKey = key;
+		
 		if(sender != null) {
 			Transfer transfer = new Transfer();
 			transfer.setKeyEvent(key, TransferType.KEYPRESSEDEVENT);
@@ -138,6 +145,10 @@ public class GuiCommands {
 	 * Wordt opgeroepen door GUIMain.
 	 */
 	public void sendKeyReleased(Key key){
+		if(key != Key.ELEVATE && lastHorizontalKey != key)
+			return;
+		//niet laatste horizontal movement key ingedrukt
+		
 		if(sender != null) { 
 			Transfer transfer = new Transfer();
 			transfer.setKeyEvent(key, TransferType.KEYRELEASEDEVENT);

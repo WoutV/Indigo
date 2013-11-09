@@ -22,9 +22,9 @@ public class Main implements Runnable{
 	private GpioController gpio = GpioFactory.getInstance();
 	private static DistanceSensor distanceSensor = new DistanceSensor();
 	private Thread distanceSensorThread;
-	
+
 	private static Main main = new Main();
-	
+
 	private Main() {
 		motorController.init(gpio,distanceSensor);
 		distanceSensorThread = new Thread(distanceSensor);
@@ -32,15 +32,17 @@ public class Main implements Runnable{
 	}
 
 	private static boolean init;
-	
+
 	public static Main getInstance() {
 		return main;
 	}
 
 	public void processPressedKeyEvent(Key pressedKey) {
+		//keyevent teruggestuurd om gui te updaten, evt vervangen door iets van motorstatus
 		Transfer transfer = new Transfer();
 		transfer.setKeyEvent(pressedKey, TransferType.KEYPRESSEDEVENT);
 		sender.sendTransfer(transfer);
+
 		switch (pressedKey) {
 		case UP:
 			motorController.moveForward();
@@ -61,7 +63,7 @@ public class Main implements Runnable{
 			break;
 		}
 	}
-	
+
 	public void processReleasedKeyEvent(Key releasedKey) {
 		Transfer transfer = new Transfer();
 		transfer.setKeyEvent(releasedKey, TransferType.KEYRELEASEDEVENT);
@@ -72,11 +74,11 @@ public class Main implements Runnable{
 			motorController.stopHorizontalMovement();
 		}
 	}
-	
+
 	public void setFloatPwm(int pwm) {
 		motorController.setFloatPwm(pwm);
 	}
-	
+
 	public void searchFloatPwm() {
 		motorController.searchFloatPwm();
 	}
@@ -84,28 +86,29 @@ public class Main implements Runnable{
 	@Override
 	public void run() {
 		while(true){
-		Transfer height = new Transfer();
-		height.setHeight(distanceSensor.getHeight());
-		sender.sendTransfer(height);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//om de 1s: de hoogte doorsturen
+			Transfer height = new Transfer();
+			height.setHeight(distanceSensor.getHeight());
+			sender.sendTransfer(height);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				System.out.println("Main thread onderbroken");
+			}
 		}
-		}
-		
+
 	}
-	
+
 	private SendToClient sender;
+
 	public void setSender(SendToClient sender){
 		this.sender =sender;
 	}
-	
+
 	public MotorController getMotorController() {
 		return motorController;
 	}
-	
+
 	/**
 	 * Hier iets van public Command ProcessQRCode die dan QRParser gebruikt? 
 	 */
