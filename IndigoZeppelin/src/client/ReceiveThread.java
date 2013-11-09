@@ -2,12 +2,14 @@ package client;
 
 
 import gui.GUIMain;
+import gui.GuiCommands.Key;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import transfer.Transfer;
+import zeppelin.Propellor;
 
 class ReceiveThread implements Runnable
 {
@@ -96,10 +98,38 @@ class ReceiveThread implements Runnable
 	}
 	
 	public void keyPressedEvent(Transfer information){
-		//NVT
+		if(information.getKey()==Key.ELEVATE){
+			gui.getGuiCommands().receivePropellorState(Propellor.UP, true);
+		}else if(information.getKey()==Key.LEFT){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+		}else if(information.getKey()==Key.RIGHT){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+		}else if(information.getKey()==Key.UP){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+		}else if(information.getKey()==Key.DOWN){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+		}
 	}
 	public void keyReleasedEvent(Transfer information){
-		System.out.println("Key Released Event:"+ information.getKey().toString());
+		if(information.getKey()==Key.ELEVATE){
+			gui.getGuiCommands().receivePropellorState(Propellor.UP, false);
+		}else if(information.getKey()==Key.LEFT){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+		}else if(information.getKey()==Key.RIGHT){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+		}else if(information.getKey()==Key.UP){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+		}else if(information.getKey()==Key.DOWN){
+			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
+			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+		}
 	}
 	public void message(Transfer information){
 		gui.getGuiCommands().receiveMessage(information.getMessage());

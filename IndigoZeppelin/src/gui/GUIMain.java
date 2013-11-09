@@ -751,7 +751,7 @@ public class GUIMain extends javax.swing.JFrame {
 
 	public void setImageDisplay(ImageIcon image){
 		tab1window1Lbl.setIcon(image);
-		addToCommandList( "- New image  : ");
+		addToCommandList( "- New image received from Zeppelin ");
 	}
 
 	public void propellorActive(Propellor nbPropellor){

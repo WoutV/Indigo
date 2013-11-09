@@ -48,6 +48,7 @@ public class GuiCommands {
 	 */
 	public void receiveHeight(double hoogte){
 		gui.setHoogteLabel(hoogte);
+		gui.addToCommandList(" - New height received from Zeppelin : "+hoogte);
 	}
 
 
@@ -82,6 +83,7 @@ public class GuiCommands {
 	 */
 	public void sendHeightZep(double hoogte){
 		if(sender !=null) {
+			gui.addToCommandList(" - Desired height send to Zeppelin, Zeppelin must reach: " + hoogte +"cm");
 			Transfer transfer = new Transfer();
 			transfer.setHeight(hoogte);
 			sender.sendTransfer(transfer);
@@ -96,6 +98,7 @@ public class GuiCommands {
 	 */
 	public void sendPwmZep(int pwm){
 		if(sender !=null) {
+			gui.addToCommandList(" - New pwm send to Zeppelin ");
 			Transfer transfer = new Transfer();
 			transfer.setPwm(pwm);
 			sender.sendTransfer(transfer);
@@ -104,6 +107,7 @@ public class GuiCommands {
 	
 	public void searchPwmZep() {
 		if(sender !=null) {
+			gui.addToCommandList(" - Looking for zweefpwm ");
 			Transfer transfer = new Transfer();
 			transfer.searchPwm();
 			sender.sendTransfer(transfer);

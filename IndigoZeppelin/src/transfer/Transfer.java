@@ -11,7 +11,7 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, MOTOR
 	}
 	private TransferType type;
 	private double height;
@@ -95,11 +95,13 @@ public class Transfer implements Serializable {
 	}
 
 	public void setImage(ImageIcon image){
-		this.type= Transfer.TransferType.IMAGE;
+		this.type=TransferType.IMAGE;
 		this.image= image;
 		this.message= "Sending Image";
 	}
 	public ImageIcon getImage(){
 		return image;
 	}
+	
+	
 }

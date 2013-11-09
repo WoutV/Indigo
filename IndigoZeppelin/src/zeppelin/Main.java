@@ -2,6 +2,7 @@ package zeppelin;
 
 import server.SendToClient;
 import transfer.Transfer;
+import transfer.Transfer.TransferType;
 import zeppelin.utils.ZoekZweefPwm;
 import gui.GuiCommands.Key;
 
@@ -37,6 +38,9 @@ public class Main implements Runnable{
 	}
 
 	public void processPressedKeyEvent(Key pressedKey) {
+		Transfer transfer = new Transfer();
+		transfer.setKeyEvent(pressedKey, TransferType.KEYPRESSEDEVENT);
+		sender.sendTransfer(transfer);
 		switch (pressedKey) {
 		case UP:
 			motorController.moveForward();
@@ -59,6 +63,9 @@ public class Main implements Runnable{
 	}
 	
 	public void processReleasedKeyEvent(Key releasedKey) {
+		Transfer transfer = new Transfer();
+		transfer.setKeyEvent(releasedKey, TransferType.KEYRELEASEDEVENT);
+		sender.sendTransfer(transfer);
 		if(releasedKey==Key.ELEVATE) {
 			motorController.stopElevate();
 		} else {
