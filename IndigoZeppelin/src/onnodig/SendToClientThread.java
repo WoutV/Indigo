@@ -13,7 +13,7 @@ import camera.Camera;
 
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
-
+//orig: in server
 class SendToClientThread implements Runnable
 {
 	PrintWriter pwPrintWriter;

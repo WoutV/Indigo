@@ -8,13 +8,13 @@ import java.net.Socket;
 
 import transfer.Transfer;
 
-class RecieveFromClientThread implements Runnable
+class ReceiveFromClientThread implements Runnable
 {
 	Socket clientSocket;
 	private ObjectInputStream input;
 	private ReceivedHandler receiveHandler;
 	
-	public RecieveFromClientThread(Socket clientSocket)
+	public ReceiveFromClientThread(Socket clientSocket)
 	{	
 		this.clientSocket = clientSocket;
 		receiveHandler = new ReceivedHandler(clientSocket);
