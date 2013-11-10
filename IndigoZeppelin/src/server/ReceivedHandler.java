@@ -16,7 +16,7 @@ public class ReceivedHandler {
 		mc = main.getMotorController();
 	}
 	
-	public void handleRecieved(Transfer information) {
+	public void handleReceived(Transfer information) {
 		switch(information.getTransferType()){
 		case EXIT:
 			exit(information);
