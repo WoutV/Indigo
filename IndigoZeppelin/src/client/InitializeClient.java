@@ -46,6 +46,10 @@ public class InitializeClient {
 	}
 	static String serverIP;
 	static boolean ipSet=false;
+	/**
+	 * Sets the ip address of the server once it is set in the gui.
+	 * @param gui
+	 */
 	public static void setIp(GUIMain gui){
 		while(!ipSet){
 			serverIP = gui.setIP();

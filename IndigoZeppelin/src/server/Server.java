@@ -6,11 +6,18 @@ import zeppelin.Main;
 
 
 public class Server {
+	/**
+	 * Initializes the server and waits on port 6789. When the connection is made,
+	 * the threads(imageThread en ReceiveFromClientThread & ReadInputThread are started.
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		final int port = 6789;
 		System.out.println("Server waiting for connection on port "+port);
 		@SuppressWarnings("resource")
 		ServerSocket ss = new ServerSocket(port);
+		@SuppressWarnings("resource")
 		ServerSocket imageSocket = new ServerSocket(6790);
 		Socket clientSocket = ss.accept();
 		Socket imageSock = imageSocket.accept();

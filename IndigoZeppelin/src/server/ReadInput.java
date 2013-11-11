@@ -14,13 +14,30 @@ class ReadInput implements Runnable
 {
 	SendToClient stc;
 	SendToClient imageSender;
-	
+	/**
+	 * This class reads the input in the server.
+	 * @param stc
+	 * 			the class to send the informations about the state of the raspberry pi.
+	 * @param imageSender
+	 * 			the class to send the image.
+	 */
 	public ReadInput(SendToClient stc, SendToClient imageSender)
 	{
 		this.stc=stc;
 		this.imageSender = imageSender;
 		
 	}
+	/**
+	 * Loop.
+	 * This thread waits until the user types in something, processes that information
+	 * and calls the specific methods.
+	 *\/help shows the help menu
+	 *\/image takes an image sends that to the client.
+	 *\/imagethread starts a thread(if not already started) which sends image every one - two second to the client.
+	 *\/QR takes a high resolution image and processes the QR code found in it.
+	 *\/exit sends a exit type transfer to the client.
+	 *If something other is written then it is sent as a message to the client. 
+	 */
 	public void run() {
 		try{
 		printHelp();

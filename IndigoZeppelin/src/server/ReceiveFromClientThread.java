@@ -14,6 +14,11 @@ class ReceiveFromClientThread implements Runnable
 	private ObjectInputStream input;
 	private ReceivedHandler receiveHandler;
 	
+	/**
+	 * Initializes a thread which when a new item is received does calls for an receivedhandler.
+	 * @param clientSocket
+	 * 			Socket from which the input stream has to be initialized.
+	 */
 	public ReceiveFromClientThread(Socket clientSocket)
 	{	
 		this.clientSocket = clientSocket;
@@ -26,7 +31,10 @@ class ReceiveFromClientThread implements Runnable
 		}
 	}//end constructor
 	
-	
+	/**
+	 * Loop.
+	 * Calls handleReceived method from receivedHandler class if a new transfer object is received.
+	 */
 	public void run() {
 		try{		
 			while(true){

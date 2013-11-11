@@ -2,6 +2,7 @@ package client;
 
 
 import gui.GUIMain;
+import gui.GuiCommands;
 import gui.GuiCommands.Key;
 
 import java.io.IOException;
@@ -16,8 +17,13 @@ class ReceiveThread implements Runnable
 	Socket sock;
 	private ObjectInputStream input;
 	GUIMain gui;
+	GuiCommands gc;
 	
-	
+	/**
+	 * Handles the transfer received by looking at its type.
+	 * @param information
+	 * 			The transfer to be handled.
+	 */
 	private void handleReceived(Transfer information) {
 		switch(information.getTransferType()){
 		case EXIT:
@@ -45,10 +51,17 @@ class ReceiveThread implements Runnable
 	}
 	
 	
-	
+	/**
+	 * Initializes this thread.
+	 * @param sock
+	 * 			Socket from which the input stream has to be milked.
+	 * @param gui
+	 * 			Gui to show the messages into.
+	 */
 	public ReceiveThread(Socket sock, GUIMain gui) {
 		this.sock = sock;
 		this.gui = gui;
+		gc = gui.getGuiCommands();
 		try {
 			input = new ObjectInputStream(sock.getInputStream());
 		} catch (IOException e) {
@@ -56,6 +69,10 @@ class ReceiveThread implements Runnable
 			e.printStackTrace();
 		}
 	}//end constructor
+	/**
+	 * Waits until something new is received and calls handle received. 
+	 * If socket closes unexpectedly then exits after 5 seconds.
+	 */
 	public void run() {
 		try{
 			while(true){
@@ -78,7 +95,10 @@ class ReceiveThread implements Runnable
 			ex.printStackTrace();
 		}
 	}//end run
-	
+	/**
+	 * Closes the socket to free the port.
+	 * @param informatin
+	 */
 	public void exit(Transfer informatin){
 		try {
 			this.sock.close();
@@ -90,49 +110,52 @@ class ReceiveThread implements Runnable
 		System.exit(0);
 	
 	}
+	
+	//Here on code on how the things are handled.
+	
 	public void image(Transfer information){
-		gui.getGuiCommands().receiveImage(information.getImage());
+		gc.receiveImage(information.getImage());
 	}
 	public void height(Transfer information){
-		gui.getGuiCommands().receiveHeight(information.getHeight());
+		gc.receiveHeight(information.getHeight());
 	}
 	
 	public void keyPressedEvent(Transfer information){
 		if(information.getKey()==Key.ELEVATE){
-			gui.getGuiCommands().receivePropellorState(Propellor.UP, true);
+			gc.receivePropellorState(Propellor.UP, true);
 		}else if(information.getKey()==Key.LEFT){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+			gc.receivePropellorState(Propellor.LEFT, true);
+			gc.receivePropellorState(Propellor.RIGHT, true);
 		}else if(information.getKey()==Key.RIGHT){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+			gc.receivePropellorState(Propellor.LEFT, true);
+			gc.receivePropellorState(Propellor.RIGHT, true);
 		}else if(information.getKey()==Key.UP){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+			gc.receivePropellorState(Propellor.LEFT, true);
+			gc.receivePropellorState(Propellor.RIGHT, true);
 		}else if(information.getKey()==Key.DOWN){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, true);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, true);
+			gc.receivePropellorState(Propellor.LEFT, true);
+			gc.receivePropellorState(Propellor.RIGHT, true);
 		}
 	}
 	public void keyReleasedEvent(Transfer information){
 		if(information.getKey()==Key.ELEVATE){
-			gui.getGuiCommands().receivePropellorState(Propellor.UP, false);
+			gc.receivePropellorState(Propellor.UP, false);
 		}else if(information.getKey()==Key.LEFT){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+			gc.receivePropellorState(Propellor.LEFT, false);
+			gc.receivePropellorState(Propellor.RIGHT, false);
 		}else if(information.getKey()==Key.RIGHT){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+			gc.receivePropellorState(Propellor.LEFT, false);
+			gc.receivePropellorState(Propellor.RIGHT, false);
 		}else if(information.getKey()==Key.UP){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+			gc.receivePropellorState(Propellor.LEFT, false);
+			gc.receivePropellorState(Propellor.RIGHT, false);
 		}else if(information.getKey()==Key.DOWN){
-			gui.getGuiCommands().receivePropellorState(Propellor.LEFT, false);
-			gui.getGuiCommands().receivePropellorState(Propellor.RIGHT, false);
+			gc.receivePropellorState(Propellor.LEFT, false);
+			gc.receivePropellorState(Propellor.RIGHT, false);
 		}
 	}
 	public void message(Transfer information){
-		gui.getGuiCommands().receiveMessage(information.getMessage());
+		gc.receiveMessage(information.getMessage());
 	}
 	
 }//end class recievethread

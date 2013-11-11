@@ -17,6 +17,11 @@ public class SendToServer {
 	PrintWriter print=null;
 	BufferedReader brinput=null;
 	private ObjectOutputStream output;
+	/**
+	 * Initializes a new class which sends given transfer to the server using given socket.
+	 * @param sock
+	 * @param gui
+	 */
 	public SendToServer(Socket sock, GUIMain gui)
 	{
 		this.sock = sock;
@@ -33,6 +38,11 @@ public class SendToServer {
 			gui.showMessage("Client connected to "+sock.getInetAddress() + " on port "+sock.getPort());
 		}
 	}//end constructor
+	/**
+	 * Writes the given transfer and flushes the outputstream.
+	 * @param transfer
+	 * @return
+	 */
 	public boolean sendTransfer(Transfer transfer){
 		try {
 			output.writeObject(transfer);

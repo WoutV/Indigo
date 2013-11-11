@@ -11,11 +11,21 @@ public class ReceivedHandler {
 	private Socket clientSocket;
 	private Main main = Main.getInstance();
 	private MotorController mc;
+	/**
+	 * This class handles the transfers received in server.
+	 * @param sock
+	 * 		Socket to be closed when an exit type transfer is received.
+	 */
 	public ReceivedHandler(Socket sock){
 		this.clientSocket = sock;
 		mc = main.getMotorController();
 	}
-	
+	/**
+	 * Does what the method says. handles received transfer.
+	 *
+	 * @param information
+	 * 			The transfer to be handled.
+	 */
 	public void handleReceived(Transfer information) {
 		switch(information.getTransferType()){
 		case EXIT:
@@ -47,6 +57,12 @@ public class ReceivedHandler {
 		
 		}
 	}
+	/**
+	 * This method is called when an exit type transfer is received. 
+	 * It closes the socket to free the port and to prevent broken pipe exception.
+	 * @param informatin
+	 *			Doesnt actually need this.
+	 */
 	private void exit(Transfer informatin){
 		try {
 			this.clientSocket.close();
@@ -59,21 +75,41 @@ public class ReceivedHandler {
 		System.exit(0);
 	
 	}
+	/**
+	 * This method is never called since no image shall be sent to server.
+	 * @param information
+	 */
 	private void image(Transfer information){
 		
 	}
+	/**
+	 * Calls this method when information about height is received. 
+	 * @param information
+	 */
 	private void height(Transfer information){
 		mc.moveToHeight(information.getHeight());
 	}
 	
+	/**
+	 * Calls this method when a key is pressed in the gui.
+	 * @param information
+	 */
 	private void keyPressedEvent(Transfer information){
 		main.processPressedKeyEvent(information.getKey());
 		System.out.println("Key Pressed Event:" + information.getKey().toString());
 	}
+	/**
+	 * Calls this method when a key is released in the gui.
+	 * @param information
+	 */
 	private void keyReleasedEvent(Transfer information){
 		main.processReleasedKeyEvent(information.getKey());
 		System.out.println("Key Released Event:"+ information.getKey().toString());
 	}
+	/**
+	 * This method is never called since no message is sent from the client or gui.
+	 * @param information
+	 */
 	private void message(Transfer information){
 		System.out.println("Message Received: \n "+ information.getMessage());
 	}

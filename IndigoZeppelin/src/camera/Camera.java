@@ -17,13 +17,13 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 public abstract class Camera {
+	
+	private static boolean isInUse;
+	
 	/**
 	 * Takes a low resolution picture and gives its imageicon.
 	 * @return
 	 */
-	
-	private static boolean isInUse;
-	
 	public static ImageIcon getImage(){
 		if(isInUse){
 			return new ImageIcon("image.jpg");
@@ -86,6 +86,10 @@ public abstract class Camera {
 		}
 		
 		}
+	/***
+	 * For the things that i do not understand.
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	private static Map getMap(){
 		Map<EncodeHintType, ErrorCorrectionLevel>hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
