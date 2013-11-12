@@ -65,7 +65,7 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-Alle onderdelen van de zeppelin zullen gemonteerd worden op een frame. Hierop worden 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
+Alle onderdelen van de zeppelin zijn gemonteerd op een frame. Hierop worden 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
 Om het geheel in de lucht te houden, hangen er 2 ballonnen tegen de bovenkant van het frame. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. \\
 \\
@@ -195,8 +195,12 @@ We gaan allereerst op zoek naar de juiste pwm waarde waarbij de zeppelin op deze
 % == ALGORITMES == %
 \section{Algoritmes}
 \subsection{Verticale bewegingen}
-Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{en.wikipedia.org/wiki/PID_controller}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. \\ 
+Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{en.wikipedia.org/wiki/PID\_controller}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Dit algoritme moet nog verder getuned worden. \\
 
+Daarnaast hebben we al een algoritme voorzien om automatisch de zweef-pwm te zoeken. Hiervoor draait de up-motor gedurende 2 seconden aan een bepaalde pwm-waarde. Dan wordt het hoogteverschil berekend en op basis hiervan het interval verkleind waarin de zweef-pwm ligt. \\
+
+\subsection{Andere bewegingen}
+Hiervoor kunnen we geen gebruik maken van data van een sensor, dus gaan we een functie moeten opstellen om een cerband te krijgen tussen afstand en tijd dat een motor aan moet staan. Dit hadden we reeds vermeld in het gedeelte over het testen van de motoren. \\
 
 % == SOFTWARE == %
 \section{Software}
@@ -214,7 +218,9 @@ Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Be
 
 Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet kunnen werken. Hier worden beslissingen genomen op basis van QR-codes, die uit afbeeldingen komen die de camera op geregelde tijdstippen neemt. Elke opname van de camera wordt naar de GUI doorgestuurd. Het verwerken van de beelden zal gebeuren op de Raspberry Pi. Logisch gezien is het weergeven van de status van de zeppelin echter geen taak van de Pi zelf. Daarom draait de GUI op de client. Daarnaast wordt door deze keuze de CPU van de Pi minder zwaar belast. \\
 
-De hoogte zal op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van een aantal opeenvolgende meetresultaten. De hoogte wordt, net zoals de foto's, doorgestuurd naar de GUI. Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekend project voor het inlezen van QR-codes dat oorspronkelijk in Java geschreven is. \\
+De hoogte wordt om de 40 ms opgemeten. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van 10 opeenvolgende meetresultaten. De hoogte wordt elke seconde doorgestuurd naar de GUI. \\
+
+Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekend project voor het inlezen van QR-codes dat oorspronkelijk in Java geschreven is. \\
 
 
 
@@ -222,7 +228,7 @@ De hoogte zal op bepaalde momenten opgemeten worden. Om een zo accuraat mogelijk
 \section{GUI}
 De User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de zeppelin. De GUI geeft informatie weer over de status. Voorbeelden zijn de huidige hoogte en commando's die hij aan het uitvoeren is. Daarnaast kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. \\
 
-In de eerste tab ('main') toont de hoogte en toestand van de propellers. Er is ruimte voorzien om foto's (van de camera) te tonen en om de commando's weer te geven die in de wachtrij van de zeppelin zitten. Verder zijn hier toetsen om de motoren aan te sturen en om de zeppelin naar een bepaalde hoogte te laten stijgen.\\
+De eerste tab ('main') toont de hoogte en toestand van de propellers. Er is ruimte voorzien om foto's (van de camera) te tonen en om de commando's weer te geven die in de wachtrij van de zeppelin zitten. Verder zijn hier toetsen om de motoren aan te sturen en om de zeppelin naar een bepaalde hoogte te laten stijgen.\\
 
 De tweede tab geeft een uitgebreider overzicht van de informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. \\
 
@@ -243,23 +249,19 @@ We zijn er tot nu toe in geslaagd een zeppelin in elkaar te steken en de motoren
 Naar de toekomst toe moeten we de interne programmatie van de zeppelin verder uitbreiden, zodat hij een bepaalde afstand kan bewegen of over een bepaalde hoek kan draaien. Hiervoor gaan we veel informatie uit testen moeten gebruiken. Daarnaast zal de zeppelin in staat moeten zijn QR-codes te lezen en te interpreteren, maar hiervoor hebben we al een goede eerste aanzet qua programmatie.
 
 
-% == REFERENTIES == %
-\bibliographystyle{siam}
-\bibliography{references.bib}
-
 
 % == APPENDICES == %
 \newpage\makeappendix
 
 \section{Beschrijving van het proces}
 \begin{itemize}
-\item Welke moeilijkheden heb je ondervonden tijdens de uitwerking? \\
+\item \textbf{Welke moeilijkheden heb je ondervonden tijdens de uitwerking?} \\
 Over het algemeen is de uitwerking redelijk vlot verlopen, de zeppelin vliegt en doet wat de tussentijdse demo verlangde.  Kleine problemen bestonden uit het niet direct aanwezig zijn van alle hardware, waardoor we tijdens de beginfase veronderstellingen moesten maken over hoe deze in de praktijk zou werken. Hierdoor moesten we soms op enkele beslissingen terugkomen. De praktijk voldeed dus (zoals we wel hadden verwacht) niet volledig aan de theorie. Dit was goed duidelijk bij het naar links of rechts draaien van de zeppelin. In theorie zou deze op eenzelfde plaats moeten blijven hangen boven een bepaald punt, maar dit was niet het geval. Dit is een klein voorbeeld van een probleem dat we dan door veel testen zullen moeten oplossen. \\
 Een ander probleem dat we vooral in het begin hadden, was de communicatie tussen de zeppelin en de GUI. Dit is echter een probleem waar alle groepen mee te maken hadden.
-\item Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt? \\
+\item \textbf{Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt?} \\
 Dat veel testen in de praktijk noodzakelijk zijn. Dit wisten we eigenlijk al maar was bij het opstijgen eens zo duidelijk. De ballon voldeed in het begin vaak niet aan onze verwachtingen (zoals bij puntje 1 reeds vermeld). Ook was goed plannen en op tijd aan het schrijven van software/testen van hardware beginnen een goede les, onvoorziene problemen kunnen daardoor opgelost worden. \\
 Op het vlak van rapporteren hebben we vooral geleerd dat we veel moeten motiveren. We mogen ook niet verwachten dat de lezer even goed op de hoogte is van de details van het project, als wijzelf.
-\item Hoe verliep het werken in team? Op welke manier werd de teamco\"ordinatie en planning aangepakt?
+\item \textbf{Hoe verliep het werken in team? Op welke manier werd de teamco\"ordinatie en planning aangepakt?} \\
 Het werken in team verliep zeer vlot, tot bijna perfect. Iedereen was leergierig en bereid veel tijd in het project te steken. Het enige minpunt was dat er soms niet genoeg werk was voor iedereen waardoor er af en toe met 2-3 personen aan 1 computer gewerkt werd. \\
 De eerste les hebben we een teamco\"ordinator en secretaris gekozen, maar deze keuzes waren eerder gemaakt omdat we toen nog geen idee hadden hoe het project ging verlopen. Een co\"ordinatorrol was eigenlijk niet nodig, er werd goed tussen de verschillende groepsleden gecommuniceerd en bij problemen kon je terecht op de Facebook-groep die we hebben aangemaakt. De rol van secretaris hebben we allemaal gedeeltelijk ingevuld: wie even niets te doen had kon aan de verslagen werken, die dan nadien door alle groepsleden nagelezen en aangepast werden. \\ 
 Tijdens de eerste 2 lessen werd het al duidelijk welke grote delen er geprogrammeerd moesten worden. Hiervoor hebben we dan een aantal personen per deel gezet.  Meer hierover is in het volgende deel terug te vinden.
@@ -277,7 +279,8 @@ De eerste lessen hebben we besloten dat er 3 grote delen waren die moesten afgew
 \item Vince Goossens: Heeft ongeveer hetzelfde gedaan als Wout Vekemans.
 \end{itemize}
 
-Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies:
+Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies: \\
+
 \begin{tabular}{r||r|r|r|r|r}
 Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vince Goossens \\
 \hline \hline 
