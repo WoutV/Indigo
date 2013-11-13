@@ -16,7 +16,7 @@
 \def\thepagelimit{100}
 \DeclareOption{tt}{%
   \def\thetitle{Tussentijdsverslag}%
-  \def\thepagelimit{10}}
+  \def\thepagelimit{20}}
 \DeclareOption{eind}{%
   \def\thetitle{Eindverslag}%
   \def\thepagelimit{20}}

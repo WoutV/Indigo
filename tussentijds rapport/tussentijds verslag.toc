@@ -6,19 +6,21 @@
 \contentsline {section}{\numberline {3}Testen}{3}{section.3}
 \contentsline {subsection}{\numberline {3.1}Afstandssensor}{3}{subsection.3.1}
 \contentsline {paragraph}{Opstelling}{3}{section*.4}
-\contentsline {paragraph}{Verloop}{3}{section*.5}
+\contentsline {paragraph}{Verloop}{4}{section*.5}
 \contentsline {paragraph}{Gegevens en verwerking}{4}{section*.6}
 \contentsline {paragraph}{Conclusie}{4}{section*.7}
-\contentsline {subsection}{\numberline {3.2}Camera}{4}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.2}Camera}{5}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Motoren}{5}{subsection.3.3}
 \contentsline {paragraph}{Zijwaartse bewegingen}{5}{section*.8}
 \contentsline {paragraph}{Voorwaartse bewegingen}{6}{section*.9}
 \contentsline {paragraph}{Verticale bewegingen}{6}{section*.10}
 \contentsline {section}{\numberline {4}Algoritmes}{6}{section.4}
-\contentsline {section}{\numberline {5}Software}{6}{section.5}
-\contentsline {section}{\numberline {6}GUI}{7}{section.6}
-\contentsline {section}{\numberline {7}Besluit}{7}{section.7}
+\contentsline {subsection}{\numberline {4.1}Verticale bewegingen}{6}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Andere bewegingen}{7}{subsection.4.2}
+\contentsline {section}{\numberline {5}Software}{7}{section.5}
+\contentsline {section}{\numberline {6}GUI}{9}{section.6}
+\contentsline {section}{\numberline {7}Besluit}{9}{section.7}
 \setcounter {tocdepth}{1}
-\contentsline {section}{\numberline {A}Beschrijving van het proces}{8}{appendix.A}
-\contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{8}{appendix.B}
-\contentsline {section}{\numberline {C}Kritisch analyse}{8}{appendix.C}
+\contentsline {section}{\numberline {A}Beschrijving van het proces}{10}{appendix.A}
+\contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{10}{appendix.B}
+\contentsline {section}{\numberline {C}Kritische analyse}{11}{appendix.C}

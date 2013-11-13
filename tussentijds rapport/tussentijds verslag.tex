@@ -47,12 +47,12 @@ Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. De zeppelin 
 
 \paragraph{Fysisch ontwerp}
 ~\\ 
-De zeppelin bestaat uit een houten frame waaraan 2 grote ronde heliumballonnen vastgemaakt zijn. Aan het frame is een afstandssensor gekoppeld die naar onderen is gericht. Verder is er een camera naar beneden gericht. Zowel de camera alsook de afstandssensor zijn verbonden met de Raspberry Pi die in het frame zit ingebed. Het geheel bevat drie propellers: twee voor zijwaartse bewegingen en \'{e}\'{e}n voor opwaartse bewegingen.
+De zeppelin bestaat uit een houten frame waaraan 2 grote ronde heliumballonnen vastgemaakt zijn. Aan het frame is een afstandssensor gekoppeld die naar onderen is gericht. Verder is er een camera naar beneden gericht. Zowel de camera alsook de afstandssensor zijn verbonden met de Raspberry Pi die in het frame zit ingebed. Het geheel bevat drie propellers: twee voor horizontale bewegingen en \'{e}\'{e}n voor verticale bewegingen.
 
 
 \paragraph{Software ontwerp}
 ~\\
-Natuurlijk moet de zeppelin aangestuurd worden via de software. Dit is onderverdeeld in 3 grote delen: de GUI, de communicatie tussen GUI en Raspberry Pi en de interne programmatie op de Pi (Zie figuur \ref{schema}). De software zal volledig worden geprogrammeerd in Java. 
+Natuurlijk moet de zeppelin aangestuurd worden via de software. Deze is onderverdeeld in 3 grote delen: de GUI, de communicatie tussen GUI en Raspberry Pi en de interne programmatie op de Pi (Zie figuur \ref{schema}). De software zal volledig worden geprogrammeerd in Java. 
 De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worden objecten uitgewisseld tussen de client en de server (de Pi), die commando's doorgeven aan de zeppelin of de status doorgeven aan de gebruiker. De interne programmatie op de Pi moet op basis van gegevens van zijn sensoren en instructies van QR-codes (en commando's van de gebruiker) de motoren aansturen. 
 
 \begin{figure}[ht!]
@@ -65,9 +65,9 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-Alle onderdelen van de zeppelin zijn gemonteerd op een frame. Hierop worden 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
+De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller dient om de zeppelin te laten stijgen, dus is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
-Om het geheel in de lucht te houden, hangen er 2 ballonnen tegen de bovenkant van het frame. Deze hebben een diameter van ongeveer 90 centimeter en bevatten helium. \\
+Om het geheel in de lucht te houden, zitten er 2 heliumballonnen (ongeveer 90cm diameter) vast aan de bovenkant van het frame. \\
 \\
 De zeppelin wordt aangestuurd door een Raspberry Pi model A (zie Figuur \ref{Pi}). Deze heeft volgende specificaties: 
 \begin{itemize}
@@ -78,12 +78,12 @@ De zeppelin wordt aangestuurd door een Raspberry Pi model A (zie Figuur \ref{Pi}
 	\item GPIO-pinnen om de hardware aan te sturen
 \end{itemize}
 
-In de Raspberry Pi zit een SD-kaart van 4 GB. Op de USB-poort is een USB hub aangesloten, zodat het mogelijk is meerdere onderdelen aan te sluiten. Deze gebruiken we voor een toetsenbord, muis en WiFi dongle. \\
+In de Raspberry Pi zit een SD-kaart van 4 GB. Hierop staat Raspbian, het standaard besturingssysteem van de Raspberry Pi. \\
 
 Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 \begin{itemize}
 	\item De camera laat toe foto's te nemen met een maximum resolutie van 5 MP. Hiermee kunnen we onder andere beelden maken van QR-codes. Daarnaast kan de camera video's maken met resoluties tot 1080p. 
-	\item De afstandssensor kan worden gebruikt om de afstand te meten tussen de zeppelin en de grond of muur. Deze werkt met ultrasone trillingen. Het maximale bereik is 4m en het minimale bereik is 2cm.\\
+	\item De afstandssensor kan worden gebruikt om de afstand te meten tussen de zeppelin en de grond of muur. Deze werkt met ultrasone trillingen. Het bereik gaat van 2-400 cm. \\
 \end{itemize}
 
 Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt, is het nodig dat de componenten getest worden. In de volgende secties volgt hierover meer informatie.\\
@@ -119,12 +119,12 @@ Deze componenten worden in deze opstelling geplaatst : zie figuur \ref{opstellin
 \end{figure}
 
 \paragraph{Verloop} ~\\ 
-De test bestaat uit het meten van 11 verschillende afstanden (10, 20, 30, 60, 90, 100, 110, 120, 130, 140 en 150 cm). Deze zijn zo gekozen om meer kennis te hebben over kleine afstanden en over de verwachte vlieghoogte. Deze afstanden worden elk 500 keer gemeten, om de 60 ms. Deze waarden zijn zo gekozen, om toch voldoende nauwkeurigheid te hebben, veronderstellende dat er uitschieters zouden zijn.
+De test bestaat uit het meten van 11 verschillende afstanden (10, 20, 30, 60, 90, 100, 110, 120, 130, 140 en 150 cm). Deze zijn zo gekozen om informatie te hebben over voldoende punten binnen het vlieghoogtebereik. Deze afstanden worden elk 500 keer gemeten, om de 60 ms. Deze waarden zijn zo gekozen, om toch voldoende nauwkeurigheid te hebben, veronderstellende dat er uitschieters zouden zijn.
 
 \paragraph{Gegevens en verwerking} ~\\ 
 Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin onhaalbaar is, hebben we besloten om het interval te verlagen. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm. Het blijkt dat we het interval tussen metingen kunnen verlagen tot 40 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
 
-Omdat 500 metingen nog steeds 20 seconden duren, hebben we het aantal verlaagd. We hebben d.m.v. rolling median de mediaan berekend van 10 en 20 opeenvolgende gegevens. Minder dan 10 is niet nauwkeurig genoeg, en voor meer dan 20 samples is de registratietijd te hoog. Uit deze gegevens hebben we om een aantal redenen besloten om een window van 10 samples te nemen.  Ten eerste is er de nauwkeurigheid als de zeppelin stijgt/daalt. Het hoogteverschil tussen sample 1 en 10 is immers kleiner dan dat tussen 1 en 20. Ten tweede is er de snelheid. Het spreekt voor zich dat het registreren van 10 samples minder lang duurt dan 20 samples. Tenslotte is er ook het minieme verschil tussen de gemiddelde mediaan bij 10 en 20 metingen. Minder metingen zorgen dus voor een even grote nauwkeurigheid. 
+We hebben d.m.v. rolling median de mediaan berekend van 10 en 20 opeenvolgende gegevens, uit de set van 500 waardes per hoogte. Minder dan 10 is niet nauwkeurig genoeg, en voor meer dan 20 samples is de registratietijd te hoog. Uit deze gegevens hebben we om een aantal redenen besloten om een window van 10 samples te nemen.  Ten eerste is er de nauwkeurigheid als de zeppelin stijgt/daalt. Het hoogteverschil tussen sample 1 en 10 is immers kleiner dan dat tussen 1 en 20. Ten tweede is er de snelheid. Het spreekt voor zich dat het registreren van 10 samples minder lang duurt dan 20 samples. Tenslotte is er ook het minieme verschil tussen de gemiddelde mediaan bij 10 en 20 metingen. Minder metingen zorgen dus voor een even grote nauwkeurigheid. 
 
 Een nadeel is wel dat de standaardafwijking van de medianen bij een breedte van 10 samples gemiddeld 0.2 cm groter is dan bij 20 samples. Dit weegt echter niet op tegen de winst aan snelheid en nauwkeurigheid.\\ 
 
@@ -200,13 +200,13 @@ Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\f
 Daarnaast hebben we al een algoritme voorzien om automatisch de zweef-pwm te zoeken. Hiervoor draait de up-motor gedurende 2 seconden aan een bepaalde pwm-waarde. Dan wordt het hoogteverschil berekend en op basis hiervan het interval verkleind waarin de zweef-pwm ligt. \\
 
 \subsection{Andere bewegingen}
-Hiervoor kunnen we geen gebruik maken van data van een sensor, dus gaan we een functie moeten opstellen om een cerband te krijgen tussen afstand en tijd dat een motor aan moet staan. Dit hadden we reeds vermeld in het gedeelte over het testen van de motoren. \\
+Hiervoor kunnen we geen gebruik maken van data van een sensor, dus gaan we een functie moeten opstellen om een verband te krijgen tussen afstand en tijd dat een motor aan moet staan. Dit hadden we reeds vermeld in het gedeelte over het testen van de motoren. \\
 
 % == SOFTWARE == %
 \section{Software}
-Zoals reeds vermeld, zal de software volledig in Java geschreven zijn. Deze keuze hebben we gemaakt omdat we al veel ervaring hebben met het schrijven van Java-programma's. Python was een andere mogelijke keuze. Er is veel voorbeeldcode in Python te vinden voor de Raspberry Pi, maar we hebben voor de functies die wij nodig hebben voldoende kennis en referenties in Java gevonden. Het leren van een extra taal zou erg tijdrovend in verhouding met de voordelen die het brengt. \\
+Zoals reeds vermeld, zal de software volledig in Java geschreven zijn. Deze keuze hebben we gemaakt omdat we al veel ervaring hebben met het schrijven van Java-programma's. Python was een andere mogelijke keuze. Er is veel voorbeeldcode in Python te vinden voor de Raspberry Pi, maar we hebben voor de functies die wij nodig hebben voldoende kennis en referenties in Java gevonden. Het leren van een extra taal zou erg tijdrovend zijn in verhouding met de voordelen die het brengt. \\
 
-Om de software te schrijven, gaan we op de laptop gebruik maken van de Eclipse IDE. We maken ook gebruik van de Netbeans IDE. Deze is door de visuele interface veel gebruikvriendelijker om de GUI te ontwerpen. Hierdoor moeten we ons niet bezig houden met alle code voor de lay-out handmatig te schrijven. Voor het aansturen van de GPIO-pinnen gebruiken we Pi4J\footnote{www.pi4j.com}.\\
+Om de software te schrijven, gaan we op de laptop gebruik maken van de Eclipse IDE. We maken ook gebruik van de Netbeans IDE. Deze is door de visuele interface veel gebruiksvriendelijker om de GUI te ontwerpen. Hierdoor moeten we ons niet bezig houden met alle code voor de lay-out handmatig te schrijven. Voor het aansturen van de GPIO-pinnen gebruiken we Pi4J\footnote{www.pi4j.com}.\\
 
 Op een client-pc kan de GUI (zie figuur \ref{GUI}) worden gestart. Hier kan de gebruiker informatie aflezen over de toestand van de zeppelin en commando's geven met de pijltjestoetsen. Meer informatie hierover is terug te vinden in de volgende sectie. \\
 
@@ -220,11 +220,11 @@ Alle software behalve de GUI draait op de Raspberry Pi, omdat die autonoom moet 
 
 De hoogte wordt om de 40 ms opgemeten. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van 10 opeenvolgende meetresultaten. De hoogte wordt elke seconde doorgestuurd naar de GUI. \\
 
-Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekend project voor het inlezen van QR-codes dat oorspronkelijk in Java geschreven is. \\
+Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekende library voor het inlezen van QR-codes die oorspronkelijk in Java geschreven is. \\
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
-\includegraphics[angle=90]{UML.png}
+\includegraphics[scale=0.4, angle=90]{UML.png}
 \caption{Klassediagram van de interne programmatie}
 \label{UML}
 \end{figure}
@@ -249,7 +249,7 @@ De zeppelin (server) staat slechts toe dat er \'e\'en client verbindt, dus dat e
 
 % == BESLUIT == %
 \section{Besluit}
-We zijn er tot nu toe in geslaagd een zeppelin in elkaar te steken en de motoren aan te sturen. Via sockets wisselen we informatie uit tussen de zeppelin en de GUI en kunnen we de zeppelin via de pijltjestoetsen aansturen. De zeppelin zijn status en afbeeldingen tonen aan de gebruiker. \\
+We zijn er tot nu toe in geslaagd een zeppelin in elkaar te steken en de motoren aan te sturen. Via sockets wisselen we informatie uit tussen de zeppelin en de GUI en kunnen we de zeppelin via de pijltjestoetsen aansturen. Verder toont de zeppelin op de GUI zijn status en afbeeldingen aan de gebruiker. \\
 
 Naar de toekomst toe moeten we de interne programmatie van de zeppelin verder uitbreiden, zodat hij een bepaalde afstand kan bewegen of over een bepaalde hoek kan draaien. Hiervoor gaan we veel informatie uit testen moeten gebruiken. Daarnaast zal de zeppelin in staat moeten zijn QR-codes te lezen en te interpreteren, maar hiervoor hebben we al een goede eerste aanzet qua programmatie.
 
@@ -271,7 +271,7 @@ Het werken in team verliep zeer vlot, tot bijna perfect. Iedereen was leergierig
 De eerste les hebben we een teamco\"ordinator en secretaris gekozen, maar deze keuzes waren eerder gemaakt omdat we toen nog geen idee hadden hoe het project ging verlopen. Een co\"ordinatorrol was eigenlijk niet nodig, er werd goed tussen de verschillende groepsleden gecommuniceerd en bij problemen kon je terecht op de Facebook-groep die we hebben aangemaakt. De rol van secretaris hebben we allemaal gedeeltelijk ingevuld: wie even niets te doen had kon aan de verslagen werken, die dan nadien door alle groepsleden nagelezen en aangepast werden. \\ 
 Tijdens de eerste 2 lessen werd het al duidelijk welke grote delen er geprogrammeerd moesten worden. Hiervoor hebben we dan een aantal personen per deel gezet.  Meer hierover is in het volgende deel terug te vinden.
 
-\end{itemize}2
+\end{itemize}
 
 
 \section{Beschrijving van de werkverdeling}
@@ -281,7 +281,7 @@ De eerste lessen hebben we besloten dat er 3 grote delen waren die moesten afgew
 \item Dimitri Jonckers: Heeft meegewerkt aan het onderdeel GUI. Heeft net zoals Wander de verslagen gemaakt en nagelezen, alsook meegeholpen aan het testen van de afstandsensor en het programmeren van de motoren. Ook hij heeft de GUI aangepast wanneer nodig. Heeft thuis veel opzoekwerk gedaan/geprogrammeerd. Heeft de meeste weekly progress reports geschreven.
 \item Sunil Tandan: Heeft gewerkt aan het deel communicatie tussen GUI en zeppelin. Dit was een groot en belangrijk deel dat hij op zichzelf heeft gemaakt. Dit deel vroeg redelijk wat werk en moest elke keer wel een beetje aangepast worden (bijvoorbeeld voor het versturen van images). Heeft elk verslag nagelezen en delen over de communicatie toegevoegd. Nadien heeft hij het werken met de camera op zich genomen.
 \item Wout Vekemans: Heeft meegewerkt aan het deel motoren/zeppelin. Tijdens de beginfase voornamelijk verslagen gemaakt/nagelezen. Heeft samen met Vince de afstandssensor getest/geprogrammeerd en is daarna aan de motoren beginnen werken. Hij vervulde de rol van secretaris en stuurde de verslagen dus telkens door.
-\item Vince Goossens: Heeft ongeveer hetzelfde gedaan als Wout Vekemans.
+\item Vince Goossens: Heeft meegewerkt aan het deel motoren/zeppelin. Tijdens de beginfase voornamelijk verslagen nagelezen. Heeft samen met Wout de afstandssensor gestest/geprogrammeerd en is daarna aan de motoren beginnen werken/programmeren.
 \end{itemize}
 
 Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies: \\
@@ -294,13 +294,14 @@ Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vi
 14/10 - 20/10 & 11 & 10.5 & 6.75 & 9 & 6.25 \\
 21/10 - 27/10 & 9 & 5.5 & 6 & 9 & 5.5 \\
 28/11 - 03/11 & 12 & 5 & 5 & 5 & 5 \\
-04/11 - 10/11 & 15 & 16 & 10 & 10 & 10 \\
+04/11 - 10/11 & 15 & 16 & 10 & 16.5 & 10 \\
+\hline \hline
+Totaal & 67.5 & 54 & 38.75 & 57.5 & 36.75 \\
 \end{tabular}
 
 \section{Kritische analyse}
-\begin{itemize}
 De groepssfeer en samenwerking onderling was zeer goed, de deadlines voor tussentijdse verslagen en de demo zijn makkelijk behaald. Veel zwakke punten zijn er eigenlijk niet, er werd altijd hard gewerkt om zo snel mogelijk een onderdeel van het project af te werken. Het enige zwakke punt was eventueel de werkverdeling: iedereen wou ergens aan werken maar vaak was iemand anders er al mee bezig. Verbetering bestaat er dan in het werk misschien wat eerlijker te verdelen (wat niet zo makkelijk is als iedereen veel wil doen). We zouden niet veel anders aangepakt hebben, alles verliep vlotjes en we hadden niet veel problemen met software of hardware.
-\end{itemize}
+
 
 
 \end{document}
