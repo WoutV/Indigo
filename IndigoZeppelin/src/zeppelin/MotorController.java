@@ -107,10 +107,10 @@ public class MotorController {
 	public void moveToHeight(double dest) {
 		
 		//sampling frequency
-		int dt = 100;
+		int dt = 200;
 
 		//set the Kp, Kd and Ki here
-		Pid3 pid = new Pid3(1,0,100,dest,dt,zweefpwm);
+		Pid3 pid = new Pid3(1,0,10,dest,dt,zweefpwm);
 
 		//current altitude
 		double height = distanceSensor.getHeight();

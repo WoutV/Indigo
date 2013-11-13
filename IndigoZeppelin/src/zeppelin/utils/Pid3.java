@@ -36,6 +36,7 @@ public class Pid3 extends Pid {
 	 */
 	public double getOutput(double input) {
 		double error = dest - input;
+		System.out.println("currentheight: "+ input);
 		integral = integral + error*dt/1000.0;
 		double derivative = (error - previous_error)/(dt/1000.0);
 		System.out.println("error: "+error);
