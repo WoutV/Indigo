@@ -1,10 +1,15 @@
-\BOOKMARK [1][-]{section.1}{Inleiding}{}
-\BOOKMARK [1][-]{section.2}{Beschrijving materiaal en bouw zeppelin}{}
-\BOOKMARK [1][-]{section.3}{Testen}{}
-\BOOKMARK [1][-]{section.4}{Algoritmes}{}
-\BOOKMARK [1][-]{section.5}{Software}{}
-\BOOKMARK [1][-]{section.6}{GUI}{}
-\BOOKMARK [1][-]{section.7}{Besluit}{}
-\BOOKMARK [1][-]{appendix.A}{Beschrijving van het proces}{}
-\BOOKMARK [1][-]{appendix.B}{Beschrijving van de werkverdeling}{}
-\BOOKMARK [1][-]{appendix.C}{Kritische analyse}{}
+\BOOKMARK [1][-]{section.1}{Inleiding}{}% 1
+\BOOKMARK [1][-]{section.2}{Beschrijving materiaal en bouw zeppelin}{}% 2
+\BOOKMARK [1][-]{section.3}{Testen}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Afstandssensor}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Camera}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Motoren}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Algoritmes}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Verticale bewegingen}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Andere bewegingen}{section.4}% 9
+\BOOKMARK [1][-]{section.5}{Software}{}% 10
+\BOOKMARK [1][-]{section.6}{GUI}{}% 11
+\BOOKMARK [1][-]{section.7}{Besluit}{}% 12
+\BOOKMARK [1][-]{appendix.A}{Beschrijving van het proces}{}% 13
+\BOOKMARK [1][-]{appendix.B}{Beschrijving van de werkverdeling}{}% 14
+\BOOKMARK [1][-]{appendix.C}{Kritische analyse}{}% 15
