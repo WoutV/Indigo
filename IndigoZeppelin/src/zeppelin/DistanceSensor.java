@@ -27,7 +27,7 @@ public class DistanceSensor implements Runnable{
 															// of 10 micro s
 	
 	//between readings
-	private final static int WAIT_DURATION_IN_MILLIS = 40; // wait 40 milli s
+	private final static int WAIT_DURATION_IN_MILLIS = 20; // wait 40 milli s
 	
 	private final static int TIMEOUT = 2100;
 
@@ -37,8 +37,8 @@ public class DistanceSensor implements Runnable{
 	private final GpioPinDigitalOutput trigPin;
 
 	public DistanceSensor() {
-		this.echoPin = gpio.provisionDigitalInputPin( RaspiPin.GPIO_12 );
-        this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_14 );
+		this.echoPin = gpio.provisionDigitalInputPin( RaspiPin.GPIO_02 );
+        this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_03 );
 		this.trigPin.low();
 		this.distanceArray = new CircularDoubleArray(10);
 	}

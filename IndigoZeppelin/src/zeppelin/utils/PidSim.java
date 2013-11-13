@@ -18,7 +18,7 @@ public class PidSim {
 		double dest = 2;
 		
 		//set the Kp, Kd and Ki here
-		Pid pid = new Pid2(200,0,150,dest,dt);
+		Pid pid = new Pid2(200,0,150,dest,dt,800);
 		
 		//current altitude
 		double height = 0.5;

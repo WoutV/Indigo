@@ -2,6 +2,7 @@ package zeppelin;
 import server.SendToClient;
 import zeppelin.utils.Pid;
 import zeppelin.utils.Pid2;
+import zeppelin.utils.Pid3;
 import zeppelin.utils.ZoekZweefPwm;
 
 import com.pi4j.io.gpio.GpioController;
@@ -93,6 +94,7 @@ public class MotorController {
 
 	//dit gaat wss worden vervangen zodat de kracht kan worden ingesteld
 	public void elevate() {
+		up.setPwmValue(1024);
 		up.setForward();
 	}
 
@@ -103,25 +105,32 @@ public class MotorController {
 	 * 		hoogte (in cm) waar naartoe moet worden bewogen
 	 */
 	public void moveToHeight(double dest) {
+		
 		//sampling frequency
-		int dt = 500;
+		int dt = 100;
 
 		//set the Kp, Kd and Ki here
-		Pid pid = new Pid2(100,0,50,dest,dt);
+		Pid3 pid = new Pid3(1,0,100,dest,dt,zweefpwm);
 
 		//current altitude
 		double height = distanceSensor.getHeight();
-
-		//tolerance: close enough to destination to quit
-		double tolerance = 0.02;
+		
+//		if((dest - height)>30){
+//			derp =true;
+//		}
+		//tolerance: close enough to destination to quit (in cm)
+		double tolerance = 3;
 
 		//nothing to change from here
 		double previousheight = height;
 		double v = (height-previousheight)/(dt/1000.0);
 		double previousv = v;
 		double error = dest-height;
+		double error1 = dest-height;
 		while(Math.abs(error) > tolerance) {
 			double output = pid.getOutput(height);
+			if(output>900)
+				output=900;
 			up.setPwmValue((int) output);
 			/*if(output > 1024)
 						output = 1024;*/
@@ -135,8 +144,18 @@ public class MotorController {
 			previousv = v;
 			double ts = dt/1000.0;
 			v = (height-previousheight)/ts;
-			System.out.println(output );
+			System.out.println("Output: " +output );
 		}
+//		if(error1<0){
+//			up.setPwmValue(zweefpwm+25);
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		up.setPwmValue(zweefpwm);
 	}
 
 	public void moveDistanceForward(double distance) {
@@ -167,7 +186,8 @@ public class MotorController {
 	 * Zet verticale bewegingen stop (concreet wordt overgeschakeld naar zweef-pwm)
 	 */
 	public void stopElevate() {
-		up.setPwmValue(zweefpwm);
+		//up.setPwmValue(zweefpwm);
+		up.setOff();
 	}	
 	
 	private ZoekZweefPwm zoekZweefPwm;
@@ -181,8 +201,10 @@ public class MotorController {
 	public void setFloatPwm(int pwm) {
 		if(zoekZweefPwm != null) {
 			zoekZweefPwmThread.interrupt();
-			zweefpwm = pwm;
+			
 		}
+		up.setPwmValue(pwm);
+		zweefpwm = pwm;
 	}
 	
 	/**
@@ -202,4 +224,23 @@ public class MotorController {
 		}
 					
 	}
+	
+//	private boolean derp;
+//	
+//	public int getPwmToTarget(double currentHeight, double destination){
+//		double difference = destination - currentHeight;
+//		if(difference > 30){
+//			return 900;
+//		}
+//		if(difference > 15){
+//			if(derp==false){
+//				return zweefpwm+15;
+//			}else
+//			return -800;
+//		}
+//		
+//		if(difference >0)
+//			return zweefpwm;
+//		
+//	}
 }

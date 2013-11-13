@@ -97,14 +97,24 @@ public class Motor {
 	 */
 	public void setPwmValue(int value) {
 		if(pwmEnabled) {
-			pwmPin.setPwm(value);
-			if(value > 0)
+			if(value > 0){
+				pwmPin.setPwm(1024);
 				setForward();
-			else
-				setReverse();
+				setOff();
+				pwmPin.setPwm(value);
+				setForward();
+			}
+				else{
+					pwmPin.setPwm(1024);
+					setReverse();
+					setOff();
+					pwmPin.setPwm(Math.abs(value));
+					setReverse();
+				
+				}
+	
 		}
 	}
-	
 	
 	/**
 	 * Geeft aan of pwm geactiveerd is voor deze motor.
