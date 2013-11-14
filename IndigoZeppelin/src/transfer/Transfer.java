@@ -1,6 +1,6 @@
 package transfer;
 
-import gui.GuiCommands.Key;
+
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 
@@ -148,5 +148,11 @@ public class Transfer implements Serializable {
 		return image;
 	}
 	
+	/**
+	 * Enum die de verschillende keys aangeeft.
+	 */
+	public enum Key{
+		LEFT,RIGHT,UP,DOWN,ELEVATE;
+	}
 	
 }

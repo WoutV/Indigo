@@ -4,7 +4,7 @@ import server.SendToClient;
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
 import zeppelin.utils.ZoekZweefPwm;
-import gui.GuiCommands.Key;
+import transfer.Transfer.Key;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;

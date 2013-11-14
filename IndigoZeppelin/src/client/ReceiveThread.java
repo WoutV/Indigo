@@ -3,7 +3,7 @@ package client;
 
 import gui.GUIMain;
 import gui.GuiCommands;
-import gui.GuiCommands.Key;
+import transfer.Transfer.Key;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+import transfer.Transfer;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
@@ -195,7 +195,7 @@ public class GUIMain extends javax.swing.JFrame {
 		upButton.setSelected(true);
 
 		addToCommandList("-Up pressed!");
-		guic.sendKeyPressed(GuiCommands.Key.UP);
+		guic.sendKeyPressed(Transfer.Key.UP);
 	}
 
 	private void upUnpressed() {
@@ -203,63 +203,63 @@ public class GUIMain extends javax.swing.JFrame {
 		upButton.setSelected(false);
 
 		addToCommandList("-Up unpressed!");
-		guic.sendKeyReleased(GuiCommands.Key.UP);
+		guic.sendKeyReleased(Transfer.Key.UP);
 	}
 
 	private void leftPressed() {
 		left = true;
 		leftButton.setSelected(true);
 		addToCommandList("-Left pressed!");
-		guic.sendKeyPressed(GuiCommands.Key.LEFT);
+		guic.sendKeyPressed(Transfer.Key.LEFT);
 	}
 
 	private void leftUnpressed() {
 		left = false;
 		leftButton.setSelected(false);
 		addToCommandList("-Left unpressed!");
-		guic.sendKeyReleased(GuiCommands.Key.LEFT);
+		guic.sendKeyReleased(Transfer.Key.LEFT);
 	}
 
 	private void rightPressed() {
 		right = true;
 		rightButton.setSelected(true);
 		addToCommandList("-Right pressed!");
-		guic.sendKeyPressed(GuiCommands.Key.RIGHT);
+		guic.sendKeyPressed(Transfer.Key.RIGHT);
 	}
 
 	private void rightUnpressed() {
 		right = false;
 		rightButton.setSelected(false);
 		addToCommandList("-Right unpressed!");
-		guic.sendKeyReleased(GuiCommands.Key.RIGHT);
+		guic.sendKeyReleased(Transfer.Key.RIGHT);
 	}
 
 	private void downPressed() {
 		down = true;
 		downButton.setSelected(true);
 		addToCommandList("-Down pressed!");
-		guic.sendKeyPressed(GuiCommands.Key.DOWN);
+		guic.sendKeyPressed(Transfer.Key.DOWN);
 	}
 
 	private void downUnpressed() {
 		down = false;
 		downButton.setSelected(false);
 		addToCommandList("-Down unpressed!");
-		guic.sendKeyReleased(GuiCommands.Key.DOWN);
+		guic.sendKeyReleased(Transfer.Key.DOWN);
 	}
 
 	private void elevatePressed() {
 		elevate = true;
 		elevateButton.setSelected(true);
 		addToCommandList("-Elevate pressed!");
-		guic.sendKeyPressed(GuiCommands.Key.ELEVATE);
+		guic.sendKeyPressed(Transfer.Key.ELEVATE);
 	}
 
 	private void elevateUnpressed() {
 		elevate = false;
 		elevateButton.setSelected(false);
 		addToCommandList("-Elevate unpressed!");
-		guic.sendKeyReleased(GuiCommands.Key.ELEVATE);
+		guic.sendKeyReleased(Transfer.Key.ELEVATE);
 	}
 
 	/**

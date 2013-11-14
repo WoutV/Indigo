@@ -3,7 +3,7 @@ package gui;
 import java.util.ArrayList;
 import zeppelin.Propellor;
 import javax.swing.ImageIcon;
-
+import transfer.Transfer.Key;
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
 
@@ -113,13 +113,7 @@ public class GuiCommands {
 		}
 	}
 
-	/**
-	 * Enum die de verschillende keys aangeeft.
-	 */
-	public enum Key{
-		LEFT,RIGHT,UP,DOWN,ELEVATE;
-	}
-	
+
 	//horizontale unpressed (left, right, reverse, forward) ==>
 	// enkel doorsturen indien dit het event is dat als laatste is ingedrukt
 	//dit vermijdt dat de gebruiker een knop moet loslaten, voor hij de andere mag indrukken
