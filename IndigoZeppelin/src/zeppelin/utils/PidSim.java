@@ -5,6 +5,47 @@ package zeppelin.utils;
  */
 public class PidSim {
 	
+	
+//	/**
+//	 * movetoheight (motorcontroller): vorige versie met pid2
+//	 */
+//	public void moveToHeight(double dest) {
+//		//sampling frequency
+//		int dt = 500;
+//
+//		//set the Kp, Kd and Ki here
+//		Pid pid = new Pid2(100,0,50,dest,dt);
+//
+//		//current altitude
+//		double height = distanceSensor.getHeight();
+//
+//		//tolerance: close enough to destination to quit
+//		double tolerance = 0.02;
+//
+//		//nothing to change from here
+//		double previousheight = height;
+//		double v = (height-previousheight)/(dt/1000.0);
+//		double previousv = v;
+//		double error = dest-height;
+//		while(Math.abs(error) > tolerance) {
+//			double output = pid.getOutput(height);
+//			up.setPwmValue((int) output);
+//			/*if(output > 1024)
+//						output = 1024;*/
+//			try {
+//				Thread.sleep(dt);
+//			} catch (InterruptedException e) {
+//			}
+//			previousheight = height;
+//			height = distanceSensor.getHeight();
+//			error = dest-height;
+//			previousv = v;
+//			double ts = dt/1000.0;
+//			v = (height-previousheight)/ts;
+//			System.out.println(output );
+//		}
+//	}
+	
 	//Kp = 1000, zweefpwm = 400, Kd = Ki = 0;
 	//gedaan voor dt = 200 (OK), dt = 500 (minder), dt = 1 (niet goed)
 	
