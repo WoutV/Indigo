@@ -55,18 +55,19 @@ public class MotorController {
 	 * Mag maar een keer opgeroepen worden.
 	 * GpioController moet worden meegegeven (nodig voor de motoren)
 	 */
-	public void init(GpioController gpio,DistanceSensor distanceSensor) {
+	public void init(GpioController gpio,DistanceSensor distanceSensor,SendToClient sender) {
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
 			this.distanceSensor = distanceSensor;
+			this.sender = sender;
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
-			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT,pwm );
+			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT,pwm,sender);
 			left.setOff();
-			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT, pwm);
+			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT, pwm, sender);
 			right.setOff();
-			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm);
+			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender);
 			up.setOff();
 			up.PwmOn();
 		}

@@ -32,7 +32,7 @@ public class Server {
 		Thread thread2 = new Thread(ri);
 		thread2.start();
 		Main main = Main.getInstance();
-		main.setSender(send);
+		main.init(send);
 		Thread thread3 = new Thread(main);
 		thread3.start();
 	}}

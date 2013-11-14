@@ -44,6 +44,9 @@ class ReceiveThread implements Runnable
 		case MESSAGE:
 			message(information);
 			break;
+		case PROPELLOR:
+			propellor(information);
+			break;
 		default:
 			break;
 		
@@ -156,6 +159,20 @@ class ReceiveThread implements Runnable
 	}
 	public void message(Transfer information){
 		gc.receiveMessage(information.getMessage());
+	}
+	
+	public void propellor(Transfer information) {
+		if(information.getPropellorMode() == Propellor.Mode.OFF)
+			gc.receivePropellorState(information.getPropellorId(), false);
+		else if(information.getPropellorMode() == Propellor.Mode.ON)
+			gc.receivePropellorState(information.getPropellorId(), true);
+		else if(information.getPropellorMode() == Propellor.Mode.PWM) {
+			if(Math.abs(information.getPropellorPwm()) >740)
+				gc.receivePropellorState(information.getPropellorId(), true);
+			else
+				gc.receivePropellorState(information.getPropellorId(), false);
+		}
+			
 	}
 	
 }//end class recievethread

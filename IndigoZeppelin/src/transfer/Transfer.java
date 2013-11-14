@@ -4,6 +4,8 @@ import gui.GuiCommands.Key;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 
+import zeppelin.Propellor;
+
 public class Transfer implements Serializable {
 	/**
 	 * 
@@ -11,7 +13,7 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, MOTOR
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR
 	}
 	private TransferType type;
 	private double height;
@@ -24,9 +26,6 @@ public class Transfer implements Serializable {
 
 	public TransferType getTransferType(){
 		return type;
-	}
-	public Key getKey(){
-		return keyevent;
 	}
 	
 	/**
@@ -59,8 +58,49 @@ public class Transfer implements Serializable {
 		message = "Transferring float pwm supplied by user";
 	}
 	
+	
 	public void searchPwm() {
 		this.type = TransferType.PWMTOGGLE;
+	}
+	
+	
+	private Propellor id;
+	private Propellor.Mode mode;
+	private Propellor.Direction direction;
+	private int pwmvalue;
+	
+	/**
+	 * Sets this Transfer to send a propellor update
+	 * @param id
+	 * @param mode
+	 * @param direction
+	 * 		only necessary if mode == ON
+	 * @param pwmvalue
+	 * 		only necessary if mode == PWM
+	 */
+	public void setPropellor(Propellor id, Propellor.Mode mode, Propellor.Direction direction, int pwmvalue) {
+		this.type = TransferType.PROPELLOR;
+		this.id = id;
+		this.mode = mode;
+		this.direction = direction;
+		this.pwmvalue = pwmvalue;
+		message = "Transferring propellor update";
+	}
+	
+	public Propellor getPropellorId() {
+		return id;
+	}
+	
+	public Propellor.Mode getPropellorMode() {
+		return mode;
+	}
+	
+	public Propellor.Direction getPropellorDirection() {
+		return direction;
+	}
+	
+	public int getPropellorPwm() {
+		return pwmvalue;
 	}
 	
 	/**
@@ -74,9 +114,10 @@ public class Transfer implements Serializable {
 		message = "Transfering keyevent type: " + key.toString() ;
 	}
 	
-	public String getMessage(){
-		return message;
+	public Key getKey(){
+		return keyevent;
 	}
+	
 	
 	/**
 	 * Only use this to set Exit type.
@@ -86,19 +127,23 @@ public class Transfer implements Serializable {
 		this.type = type;
 	}
 	
-	/**
-	 * 
-	 */
+	
 	public void setMessage(String message){
 		this.type= TransferType.MESSAGE;
 		this.message = message;
 	}
+	
+	public String getMessage(){
+		return message;
+	}
+	
 
 	public void setImage(ImageIcon image){
 		this.type=TransferType.IMAGE;
 		this.image= image;
 		this.message= "Sending Image";
 	}
+	
 	public ImageIcon getImage(){
 		return image;
 	}

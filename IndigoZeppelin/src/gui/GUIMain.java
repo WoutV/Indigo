@@ -757,26 +757,26 @@ public class GUIMain extends javax.swing.JFrame {
 	public void propellorActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propact);
-			addToCommandList( "- Propellor 1 activated : ");
+			addToCommandList( "- Left propellor activated : ");
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propact);
-			addToCommandList( "- Propellor 2 activated : ");
+			addToCommandList( "- Up propellor activated : ");
 		}else{
 			propellor3.setIcon(propact);
-			addToCommandList( "- Propellor 3 activated : " );
+			addToCommandList( "- Right propellor activated : " );
 		}
 	}
 
 	public void propellorNotActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propnotact);
-			addToCommandList( "- Propellor 1 turned off : " );
+			addToCommandList( "- Left propellor turned off : " );
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propnotact);
-			addToCommandList( "- Propellor 2 turned off : " );
+			addToCommandList( "- Up propellor turned off : " );
 		}else{
 			propellor3.setIcon(propnotact);
-			addToCommandList( "- Propellor 3 turned off : " );
+			addToCommandList( "- Right propellor turned off : " );
 		}
 	}
 

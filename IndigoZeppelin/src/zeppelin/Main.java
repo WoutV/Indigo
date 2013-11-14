@@ -22,26 +22,39 @@ public class Main implements Runnable{
 	private GpioController gpio = GpioFactory.getInstance();
 	private static DistanceSensor distanceSensor = new DistanceSensor();
 	private Thread distanceSensorThread;
+	
+	private SendToClient sender;
 
 	private static Main main = new Main();
 
 	private Main() {
-		motorController.init(gpio,distanceSensor);
-		distanceSensorThread = new Thread(distanceSensor);
-		distanceSensorThread.start();
 	}
-
-	private static boolean init;
 
 	public static Main getInstance() {
 		return main;
 	}
+	
+	/**
+	 * Initialiseert de Main.
+	 * Mag maar een keer opgeroepen worden.
+	 * Sender moet worden meegegeven.
+	 */
+	public void init(SendToClient sender) {
+		if(sender == null) {
+			this.sender = sender;
+			
+			motorController.init(gpio,distanceSensor,sender);
+			distanceSensorThread = new Thread(distanceSensor);
+			distanceSensorThread.start();
+		}
+	}
+	
 
 	public void processPressedKeyEvent(Key pressedKey) {
 		//keyevent teruggestuurd om gui te updaten, evt vervangen door iets van motorstatus
-		Transfer transfer = new Transfer();
-		transfer.setKeyEvent(pressedKey, TransferType.KEYPRESSEDEVENT);
-		sender.sendTransfer(transfer);
+		//Transfer transfer = new Transfer();
+		//transfer.setKeyEvent(pressedKey, TransferType.KEYPRESSEDEVENT);
+		//sender.sendTransfer(transfer);
 
 		switch (pressedKey) {
 		case UP:
@@ -65,9 +78,9 @@ public class Main implements Runnable{
 	}
 
 	public void processReleasedKeyEvent(Key releasedKey) {
-		Transfer transfer = new Transfer();
-		transfer.setKeyEvent(releasedKey, TransferType.KEYRELEASEDEVENT);
-		sender.sendTransfer(transfer);
+		//Transfer transfer = new Transfer();
+		//transfer.setKeyEvent(releasedKey, TransferType.KEYRELEASEDEVENT);
+		//sender.sendTransfer(transfer);
 		if(releasedKey==Key.ELEVATE) {
 			motorController.stopElevate();
 		} else {
@@ -97,12 +110,6 @@ public class Main implements Runnable{
 			}
 		}
 
-	}
-
-	private SendToClient sender;
-
-	public void setSender(SendToClient sender){
-		this.sender =sender;
 	}
 
 	public MotorController getMotorController() {
