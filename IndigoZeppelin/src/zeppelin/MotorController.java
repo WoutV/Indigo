@@ -129,8 +129,6 @@ public class MotorController {
 		double error1 = dest-height;
 		while(Math.abs(error) > tolerance) {
 			double output = pid.getOutput(height);
-			if(output>900)
-				output=900;
 			up.setPwmValue((int) output);
 			/*if(output > 1024)
 						output = 1024;*/
