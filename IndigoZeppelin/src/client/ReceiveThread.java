@@ -3,6 +3,7 @@ package client;
 
 import gui.GUIMain;
 import gui.GuiCommands;
+import transfer.PropellorUpdate;
 import transfer.Transfer.Key;
 
 import java.io.IOException;
@@ -162,15 +163,16 @@ class ReceiveThread implements Runnable
 	}
 	
 	public void propellor(Transfer information) {
-		if(information.getPropellorMode() == Propellor.Mode.OFF)
-			gc.receivePropellorState(information.getPropellorId(), false);
-		else if(information.getPropellorMode() == Propellor.Mode.ON)
-			gc.receivePropellorState(information.getPropellorId(), true);
-		else if(information.getPropellorMode() == Propellor.Mode.PWM) {
-			if(Math.abs(information.getPropellorPwm()) >740)
-				gc.receivePropellorState(information.getPropellorId(), true);
+		PropellorUpdate p = information.getPropellor();
+		if(p.getPropellorMode() == Propellor.Mode.OFF)
+			gc.receivePropellorState(p.getPropellorId(), false);
+		else if(p.getPropellorMode() == Propellor.Mode.ON)
+			gc.receivePropellorState(p.getPropellorId(), true);
+		else if(p.getPropellorMode() == Propellor.Mode.PWM) {
+			if(Math.abs(p.getPropellorPwm()) >740)
+				gc.receivePropellorState(p.getPropellorId(), true);
 			else
-				gc.receivePropellorState(information.getPropellorId(), false);
+				gc.receivePropellorState(p.getPropellorId(), false);
 		}
 			
 	}

@@ -1,5 +1,6 @@
 package zeppelin;
 import server.SendToClient;
+import transfer.PropellorUpdate;
 import transfer.Transfer;
 
 import com.pi4j.io.gpio.GpioController;
@@ -51,7 +52,8 @@ public class Motor {
 
 		if(prevdirection != Propellor.Direction.FORWARD || prevmode != Propellor.Mode.ON) {
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.ON, Propellor.Direction.FORWARD, 0);
+			PropellorUpdate propupd = new PropellorUpdate(id, Propellor.Mode.ON, Propellor.Direction.FORWARD, 0);
+			transfer.setPropellor(propupd);
 			sender.sendTransfer(transfer);
 
 			prevmode = Propellor.Mode.ON;
@@ -77,7 +79,8 @@ public class Motor {
 		
 		if(prevdirection != Propellor.Direction.REVERSE || prevmode != Propellor.Mode.ON) {
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.ON, Propellor.Direction.REVERSE, 0);
+			PropellorUpdate propupd = new PropellorUpdate(id, Propellor.Mode.ON, Propellor.Direction.REVERSE, 0);
+			transfer.setPropellor(propupd);
 			sender.sendTransfer(transfer);
 
 			prevmode = Propellor.Mode.ON;
@@ -103,7 +106,8 @@ public class Motor {
 		
 		if(prevmode != Propellor.Mode.OFF) {
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.OFF, null, 0);
+			PropellorUpdate propupd = new PropellorUpdate(id, Propellor.Mode.OFF, null, 0);
+			transfer.setPropellor(propupd);
 			sender.sendTransfer(transfer);
 
 			prevmode = Propellor.Mode.OFF;
@@ -164,7 +168,8 @@ public class Motor {
 			
 			
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
+			PropellorUpdate propupd = new PropellorUpdate(id, Propellor.Mode.PWM, null, value);
+			transfer.setPropellor(propupd);
 			sender.sendTransfer(transfer);
 			prevmode = Propellor.Mode.PWM;
 			
