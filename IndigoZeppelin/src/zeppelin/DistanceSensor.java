@@ -40,7 +40,7 @@ public class DistanceSensor implements Runnable{
 		this.echoPin = gpio.provisionDigitalInputPin( RaspiPin.GPIO_02 );
         this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_03 );
 		this.trigPin.low();
-		this.distanceArray = new CircularDoubleArray(10);
+		this.distanceArray = new CircularDoubleArray(30);
 	}
 
 	/*

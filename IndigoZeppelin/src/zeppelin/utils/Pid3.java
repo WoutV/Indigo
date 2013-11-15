@@ -47,8 +47,8 @@ public class Pid3 extends Pid {
 		previous_error = error;
 //		if(error > minErrorForMaxPwm)
 //			return 900;
-		if(output > 900)
-			return 900;
+		if(output > 1024)
+			return 1024;
 		if(output < -750)
 			return -750;
 		return output;

@@ -40,13 +40,11 @@ public class Main implements Runnable{
 	 * Sender moet worden meegegeven.
 	 */
 	public void init(SendToClient sender) {
-		if(sender == null) {
 			this.sender = sender;
-			
+			System.out.println("Sender Set");
 			motorController.init(gpio,distanceSensor,sender);
 			distanceSensorThread = new Thread(distanceSensor);
 			distanceSensorThread.start();
-		}
 	}
 	
 
@@ -102,12 +100,13 @@ public class Main implements Runnable{
 			//om de 1s: de hoogte doorsturen
 			Transfer height = new Transfer();
 			height.setHeight(distanceSensor.getHeight());
+			if(sender!=null){
 			sender.sendTransfer(height);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
 				System.out.println("Main thread onderbroken");
-			}
+			}}
 		}
 
 	}

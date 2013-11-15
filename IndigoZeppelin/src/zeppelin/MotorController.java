@@ -56,6 +56,7 @@ public class MotorController {
 	 * GpioController moet worden meegegeven (nodig voor de motoren)
 	 */
 	public void init(GpioController gpio,DistanceSensor distanceSensor,SendToClient sender) {
+		System.out.println("Initializing Motor before if test");
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
 			this.distanceSensor = distanceSensor;
@@ -63,6 +64,7 @@ public class MotorController {
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
+			System.out.println("Initializing Motor");
 			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT,pwm,sender);
 			left.setOff();
 			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT, pwm, sender);
@@ -108,13 +110,15 @@ public class MotorController {
 	public void moveToHeight(double dest) {
 		
 		//sampling frequency
-		int dt = 200;
-
+		int dt = 100;
+		
+		double height = distanceSensor.getHeight();
 		//set the Kp, Kd and Ki here
-		Pid3 pid = new Pid3(1,0,10,dest,dt,zweefpwm);
+		double Kp = (1024-zweefpwm)/150;
+		Pid3 pid = new Pid3(Kp,0,5,dest,dt,zweefpwm);
 
 		//current altitude
-		double height = distanceSensor.getHeight();
+		
 		
 //		if((dest - height)>30){
 //			derp =true;

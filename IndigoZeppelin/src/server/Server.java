@@ -32,6 +32,7 @@ public class Server {
 		Thread thread2 = new Thread(ri);
 		thread2.start();
 		Main main = Main.getInstance();
+		System.out.println("Initializing Main");
 		main.init(send);
 		Thread thread3 = new Thread(main);
 		thread3.start();
