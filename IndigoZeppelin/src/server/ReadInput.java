@@ -9,6 +9,7 @@ import camera.CameraThread;
 
 import transfer.Transfer;
 import transfer.Transfer.TransferType;
+import zeppelin.MotorController;
 
 class ReadInput implements Runnable
 {
@@ -64,6 +65,18 @@ class ReadInput implements Runnable
 					String readQR = "Read from QR: "+Camera.readQRCode();
 					System.out.println(readQR);
 					information.setMessage(readQR);
+				}
+				if(readString.equalsIgnoreCase("/KD")){
+					MotorController mc = MotorController.getInstance();
+					mc.Kd = Double.parseDouble(input.readLine());
+				}
+				if(readString.equalsIgnoreCase("/KI")){
+					MotorController mc = MotorController.getInstance();
+					mc.Ki = Double.parseDouble(input.readLine());
+				}
+				if(readString.equalsIgnoreCase("/KP")){
+					MotorController mc = MotorController.getInstance();
+					mc.Kp = Double.parseDouble(input.readLine());
 				}
 				if(readString.equalsIgnoreCase("/imagethread")){
 					if(!imageThreadStarted){

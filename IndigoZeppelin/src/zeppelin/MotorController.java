@@ -100,7 +100,13 @@ public class MotorController {
 		up.setPwmValue(1024);
 		up.setForward();
 	}
-
+	
+	
+	public double Kp=(1024-zweefpwm)/100;;
+	public double Kd=0;
+	public double Ki=0;
+	boolean newHeightReceived;
+	boolean algorithmRunning;
 	/**
 	 * Laat de zeppelin naar een bepaalde hoogte bewegen
 	 * Deze methode gebruikt het PID-algoritme
@@ -108,14 +114,21 @@ public class MotorController {
 	 * 		hoogte (in cm) waar naartoe moet worden bewogen
 	 */
 	public void moveToHeight(double dest) {
+		if(algorithmRunning){
+			newHeightReceived=true;
+			while(algorithmRunning==true){
+				
+			}
+			newHeightReceived=false;
+		}
+		algorithmRunning=true;
 		
 		//sampling frequency
 		int dt = 100;
 		
 		double height = distanceSensor.getHeight();
 		//set the Kp, Kd and Ki here
-		double Kp = (1024-zweefpwm)/150;
-		Pid3 pid = new Pid3(Kp,0,3,dest,dt,zweefpwm);
+		Pid3 pid = new Pid3(Kp,Ki,Kd,dest,dt,zweefpwm);
 
 		//current altitude
 		
@@ -128,7 +141,7 @@ public class MotorController {
 
 		//nothing to change from here
 		double error = dest-height;
-		while(Math.abs(error) > tolerance) {
+		while(Math.abs(error) > tolerance && !newHeightReceived) {
 			double output = pid.getOutput(height);
 			up.setPwmValue((int) output);
 			/*if(output > 1024)
@@ -151,6 +164,7 @@ public class MotorController {
 //			}
 //		}
 		up.setPwmValue(zweefpwm);
+		algorithmRunning=false;
 	}
 
 	public void moveDistanceForward(double distance) {
@@ -195,9 +209,14 @@ public class MotorController {
 	 */
 	public void setFloatPwm(int pwm) {
 		if(zoekZweefPwm != null) {
-			zoekZweefPwmThread.interrupt();
+			zoekZweefPwm.stop();
 			
 		}
+		up.setPwmValue(pwm);
+		zweefpwm = pwm;
+	}
+	
+	public void setZweefPwm(int pwm){
 		up.setPwmValue(pwm);
 		zweefpwm = pwm;
 	}
@@ -208,15 +227,14 @@ public class MotorController {
 	 */
 	public void searchFloatPwm() {
 		//laat de ZweefZoeker automatisch de zweef pwm zoeken
-		if(zoekZweefPwm == null) {
-			zoekZweefPwm = new ZoekZweefPwm(distanceSensor,up);
-			zoekZweefPwmThread = new Thread(zoekZweefPwm);
-			zoekZweefPwmThread.start();
+		if(zoekZweefPwmThread!= null && zoekZweefPwmThread.isAlive()){
+			zoekZweefPwm.stop();
 		}
-		else {
-			zoekZweefPwmThread.interrupt();
-			zweefpwm = zoekZweefPwm.getPwmValue();
-		}
+		
+		zoekZweefPwm = new ZoekZweefPwm(distanceSensor,up,this);
+		zoekZweefPwmThread = new Thread(zoekZweefPwm);
+		zoekZweefPwmThread.start();
+		
 					
 	}
 	

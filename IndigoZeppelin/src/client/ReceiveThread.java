@@ -79,9 +79,13 @@ class ReceiveThread implements Runnable
 	public void run() {
 		try{
 			while(true){
+				try{
 				Transfer transferRecieved = null;
 				while((transferRecieved = ( Transfer) input.readObject())!= null){
 					handleReceived(transferRecieved);
+				}
+				}
+				catch(ClassCastException e){
 				}
 			}
 		

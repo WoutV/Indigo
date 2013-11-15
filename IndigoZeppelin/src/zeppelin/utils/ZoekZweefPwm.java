@@ -1,6 +1,7 @@
 package zeppelin.utils;
 
 import zeppelin.Motor;
+import zeppelin.MotorController;
 
 import zeppelin.DistanceSensor;
 
@@ -16,11 +17,11 @@ public class ZoekZweefPwm implements Runnable {
 	private DistanceSensor distanceSensor;
 	private Motor up;
 	private int pwm;
-	private boolean found;
-
-	public ZoekZweefPwm(DistanceSensor distanceSensor, Motor up) {
+	private MotorController mc;
+	public ZoekZweefPwm(DistanceSensor distanceSensor, Motor up, MotorController motorController) {
 		this.distanceSensor = distanceSensor;
 		this.up = up;
+		mc =  motorController;
 	}
 
 
@@ -29,7 +30,7 @@ public class ZoekZweefPwm implements Runnable {
 		up.setPwmValue((low+max)/2);
 		double height = distanceSensor.getHeight();
 		double prev = height;
-		double tolerance = 3;
+		double tolerance = 2;
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -39,7 +40,7 @@ public class ZoekZweefPwm implements Runnable {
 		double v = (height-prev)/2;
 		//sysout op server zodat user kan bijsturen
 		System.out.println("pwm = " + (low+max)/2 + ", v = " + v);
-		while(Math.abs(diff)>tolerance && !found) {
+		while(Math.abs(diff)>tolerance && !stop) {
 			if(diff > 0)
 				max=(low+max)/2;
 			else
@@ -49,7 +50,7 @@ public class ZoekZweefPwm implements Runnable {
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				found = true;
+				stop = true;
 				System.out.println("zoek zweef pwm gestopt door gebruiker");
 			}
 			prev = height;
@@ -59,13 +60,11 @@ public class ZoekZweefPwm implements Runnable {
 			//sysout op server zodat user kan bijsturen
 			System.out.println("pwm = " + pwm + ", v = " + v);
 		}
-		found = true;
+		if(!stop)
+			mc.setFloatPwm(pwm);
 		System.out.println("found!!");
 	}
-	
-	public void setFound() {
-		found = true;
-	}
+
 	
 	public int getPwmValue() {
 		return pwm;
@@ -74,5 +73,11 @@ public class ZoekZweefPwm implements Runnable {
 	@Override
 	public void run() {
 		getZweefPwm();
+	}
+
+	boolean stop;
+	public void stop() {
+		stop = true;
+		
 	}
 }

@@ -103,7 +103,7 @@ public class Main implements Runnable{
 			if(sender!=null){
 			sender.sendTransfer(height);
 			try {
-				Thread.sleep(300);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				System.out.println("Main thread onderbroken");
 			}}
