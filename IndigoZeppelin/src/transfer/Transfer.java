@@ -63,24 +63,6 @@ public class Transfer implements Serializable {
 		this.type = TransferType.PWMTOGGLE;
 	}
 	
-	
-	private PropellorUpdate propupd;
-	
-	/**
-	 * Sets this Transfer to send a propellor update
-	 * @param propupd
-	 * 		the propellor update to be transferred
-	 */
-	public void setPropellor(PropellorUpdate propupd) {
-		this.propupd = propupd;
-		message = "Transferring propellor update";
-	}
-	
-	public PropellorUpdate getPropellor() {
-		return propupd;
-	}
-	
-	
 	/**
 	 * Sets the keyevent to given keyevent as well as the type. 
 	 * @param keyevent
@@ -133,4 +115,42 @@ public class Transfer implements Serializable {
 		LEFT,RIGHT,UP,DOWN,ELEVATE;
 	}
 	
+	private Propellor id;
+	private Propellor.Mode mode;
+	private Propellor.Direction direction;
+	private int pwmvalue;
+
+	/**
+	 * Configures this object to send a propellor update
+	 * @param id
+	 * @param mode
+	 * @param direction
+	 * 		only necessary if mode == ON
+	 * @param pwmvalue
+	 * 		only necessary if mode == PWM
+	 */
+	public void setPropellor(Propellor id, Propellor.Mode mode, Propellor.Direction direction, int pwmvalue) {
+		this.setType(Transfer.TransferType.PROPELLOR);
+		message = "Transferring propellor update";
+		this.id = id;
+		this.mode = mode;
+		this.direction = direction;
+		this.pwmvalue = pwmvalue;
+	}
+
+	public Propellor getPropellorId() {
+		return id;
+	}
+
+	public Propellor.Mode getPropellorMode() {
+		return mode;
+	}
+
+	public Propellor.Direction getPropellorDirection() {
+		return direction;
+	}
+
+	public int getPropellorPwm() {
+		return pwmvalue;
+	}
 }

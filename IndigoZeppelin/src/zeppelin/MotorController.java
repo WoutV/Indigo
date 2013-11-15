@@ -115,7 +115,7 @@ public class MotorController {
 		double height = distanceSensor.getHeight();
 		//set the Kp, Kd and Ki here
 		double Kp = (1024-zweefpwm)/150;
-		Pid3 pid = new Pid3(Kp,0,5,dest,dt,zweefpwm);
+		Pid3 pid = new Pid3(Kp,0,3,dest,dt,zweefpwm);
 
 		//current altitude
 		
@@ -127,11 +127,7 @@ public class MotorController {
 		double tolerance = 3;
 
 		//nothing to change from here
-		double previousheight = height;
-		double v = (height-previousheight)/(dt/1000.0);
-		double previousv = v;
 		double error = dest-height;
-		double error1 = dest-height;
 		while(Math.abs(error) > tolerance) {
 			double output = pid.getOutput(height);
 			up.setPwmValue((int) output);
@@ -141,12 +137,8 @@ public class MotorController {
 				Thread.sleep(dt);
 			} catch (InterruptedException e) {
 			}
-			previousheight = height;
 			height = distanceSensor.getHeight();
 			error = dest-height;
-			previousv = v;
-			double ts = dt/1000.0;
-			v = (height-previousheight)/ts;
 			System.out.println("Output: " +output );
 		}
 //		if(error1<0){

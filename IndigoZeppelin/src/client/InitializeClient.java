@@ -67,7 +67,8 @@ public class InitializeClient {
 		try {
 			Socket sock = new Socket(serverIP,6789);
 			Socket imageSock = new Socket(serverIP,6790);
-			SendToServer sender = new SendToServer(sock,gui);
+			Socket sendSocket = new Socket(serverIP,6791);
+			SendToServer sender = new SendToServer(sendSocket,gui);
 			gui.getGuiCommands().setSender(sender);
 			gui.enableAllButtons();
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);

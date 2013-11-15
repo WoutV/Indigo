@@ -99,9 +99,9 @@ public class GUIMain extends javax.swing.JFrame {
 		} catch (IOException e) {}
 		
 		//TEMP!!
-		propellorActive(Propellor.LEFT);
+		propellorNotActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
-		propellorActive(Propellor.RIGHT);
+		propellorNotActive(Propellor.RIGHT);
 		
 		disableAllComponents(this);
 	}

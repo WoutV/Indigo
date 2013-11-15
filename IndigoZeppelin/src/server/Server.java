@@ -19,11 +19,14 @@ public class Server {
 		ServerSocket ss = new ServerSocket(port);
 		@SuppressWarnings("resource")
 		ServerSocket imageSocket = new ServerSocket(6790);
+		@SuppressWarnings("resource")
+		ServerSocket receiveSocket = new ServerSocket(6791);
 		Socket clientSocket = ss.accept();
 		Socket imageSock = imageSocket.accept();
+		Socket receive = receiveSocket.accept();
 		System.out.println("Recieved connection from "+clientSocket.getInetAddress()+" on port "+clientSocket.getPort());
 		//create two threads to send and recieve from client
-		ReceiveFromClientThread recieve = new ReceiveFromClientThread(clientSocket);
+		ReceiveFromClientThread recieve = new ReceiveFromClientThread(receive);
 		Thread thread = new Thread(recieve);
 		thread.start();
 		SendToClient send = new SendToClient(clientSocket);
