@@ -51,9 +51,6 @@ public class SendToClient {
 	 * Closes the socket in order to free the port and to prevent broken pipe exception.
 	 */
 	private void closeSocket(){
-		Transfer exitTransfer = new Transfer();
-		exitTransfer.setType(TransferType.EXIT);
-		sendTransfer(exitTransfer);
 		try {
 			sock.close();
 			System.out.println("Socket Closed Exiting Now...");
