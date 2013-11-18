@@ -194,5 +194,13 @@ public class MotorController {
 		
 					
 	}
+
+	public void moveUpward(double amount) {
+		
+	}
+
+	public void moveDownward(double amount) {
+		
+	}
 	
 }
