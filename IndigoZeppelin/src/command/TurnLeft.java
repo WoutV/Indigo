@@ -1,11 +1,18 @@
 package command;
 
+import zeppelin.MotorController;
+
 public class TurnLeft implements Command {
+	
+	private double amount;
+
+	public TurnLeft(double amount) {
+		this.amount = amount;
+	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		MotorController.getInstance().turnDegreesLeft(amount);
 	}
 
 }
