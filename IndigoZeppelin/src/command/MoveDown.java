@@ -1,11 +1,19 @@
 package command;
 
-public class MoveDown implements Command {
+import zeppelin.MotorController;
+
+public class MoveDown extends Command {
+
+	public MoveDown(double amount) {
+		super(amount);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		MotorController.getInstance().moveDownward(amount);
 	}
+
+	
 
 }

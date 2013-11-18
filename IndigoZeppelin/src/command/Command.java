@@ -1,6 +1,12 @@
 package command;
 
-public interface Command {
-
+public abstract class Command {
+	
+	protected double amount;
+	
+	public Command(double amount) {
+		this.amount = amount;
+	}
+	
 	public abstract void execute();
 }

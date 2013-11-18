@@ -1,11 +1,17 @@
 package command;
 
-public class MoveBackward implements Command {
+import zeppelin.MotorController;
+
+public class MoveBackward extends Command {
+
+	public MoveBackward(double amount) {
+		super(amount);
+	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		MotorController.getInstance().moveDistanceBackward(amount);
 	}
-
+	
+	
 }

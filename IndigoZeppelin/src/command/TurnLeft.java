@@ -2,12 +2,12 @@ package command;
 
 import zeppelin.MotorController;
 
-public class TurnLeft implements Command {
-	
-	private double amount;
+public class TurnLeft extends Command {
+
+
 
 	public TurnLeft(double amount) {
-		this.amount = amount;
+		super(amount);
 	}
 
 	@Override
