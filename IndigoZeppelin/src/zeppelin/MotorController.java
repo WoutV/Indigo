@@ -37,6 +37,12 @@ public class MotorController {
 	private SendToClient sender;
 
 	private static MotorController mc = new MotorController();
+	
+	private HeightController hc;
+	
+	public double Kp=(1024-zweefpwm)/100;;
+	public double Kd=70;
+	public double Ki=0.3;
 
 	private MotorController() {
 	}
@@ -72,6 +78,10 @@ public class MotorController {
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender);
 			up.setOff();
 			up.PwmOn();
+			hc = new HeightController(Kp, Ki, Kd, zweefpwm, distanceSensor, up);
+			Thread hct = new Thread(hc);
+			hct.start();
+			
 		}
 	}
 
@@ -97,16 +107,13 @@ public class MotorController {
 
 	//dit gaat wss worden vervangen zodat de kracht kan worden ingesteld
 	public void elevate() {
+		hc.stop();
 		up.setPwmValue(1024);
 		up.setForward();
 	}
 	
 	
-	public double Kp=(1024-zweefpwm)/100;;
-	public double Kd=70;
-	public double Ki=0.3;
-	boolean newHeightReceived;
-	boolean algorithmRunning;
+	
 	/**
 	 * Laat de zeppelin naar een bepaalde hoogte bewegen
 	 * Deze methode gebruikt het PID-algoritme
@@ -114,47 +121,7 @@ public class MotorController {
 	 * 		hoogte (in cm) waar naartoe moet worden bewogen
 	 */
 	public void moveToHeight(double dest) {
-		if(algorithmRunning){
-			newHeightReceived=true;
-			while(algorithmRunning==true){
-				
-			}
-			newHeightReceived=false;
-		}
-		algorithmRunning=true;
-		
-		//sampling frequency
-		int dt = 100;
-		
-		double height = distanceSensor.getHeight();
-		//set the Kp, Kd and Ki here
-		Pid3 pid = new Pid3(Kp,Ki,Kd,dest,dt,zweefpwm);
-
-		//current altitude
-		
-		
-//		if((dest - height)>30){
-//			derp =true;
-//		}
-		//tolerance: close enough to destination to quit (in cm)
-		double tolerance = 3;
-
-		//nothing to change from here
-		double error = dest-height;
-		while(Math.abs(error) > tolerance && !newHeightReceived) {
-			double output = pid.getOutput(height);
-			up.setPwmValue((int) output);
-			try {
-				Thread.sleep(dt);
-			} catch (InterruptedException e) {
-			}
-			height = distanceSensor.getHeight();
-			error = dest-height;
-			System.out.println("Output: " +output );
-		}
-
-		up.setPwmValue(zweefpwm);
-		algorithmRunning=false;
+		hc.moveToHeight(dest);
 	}
 
 	public void moveDistanceForward(double distance) {
@@ -185,7 +152,7 @@ public class MotorController {
 	 * Zet verticale bewegingen stop (concreet wordt overgeschakeld naar zweef-pwm)
 	 */
 	public void stopElevate() {
-		//up.setPwmValue(zweefpwm);
+		hc.stop();
 		up.setOff();
 	}	
 	
