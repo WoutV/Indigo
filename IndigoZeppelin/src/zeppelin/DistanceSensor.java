@@ -5,7 +5,6 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 
 public class DistanceSensor implements Runnable{
@@ -116,6 +115,7 @@ public class DistanceSensor implements Runnable{
 	/**
 	 * Exception thrown when timeout occurs
 	 */
+	@SuppressWarnings("serial")
 	private static class TimeoutException extends Exception {
 
 		private final String reason;

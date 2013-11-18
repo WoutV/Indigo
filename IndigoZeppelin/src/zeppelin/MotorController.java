@@ -32,7 +32,7 @@ public class MotorController {
 	private GpioController gpiocontroller;
 	private DistanceSensor distanceSensor;
 	
-	private int zweefpwm;
+	private int zweefpwm =848;
 	
 	private SendToClient sender;
 
@@ -103,8 +103,8 @@ public class MotorController {
 	
 	
 	public double Kp=(1024-zweefpwm)/100;;
-	public double Kd=0;
-	public double Ki=0;
+	public double Kd=70;
+	public double Ki=0.3;
 	boolean newHeightReceived;
 	boolean algorithmRunning;
 	/**
@@ -144,8 +144,6 @@ public class MotorController {
 		while(Math.abs(error) > tolerance && !newHeightReceived) {
 			double output = pid.getOutput(height);
 			up.setPwmValue((int) output);
-			/*if(output > 1024)
-						output = 1024;*/
 			try {
 				Thread.sleep(dt);
 			} catch (InterruptedException e) {
@@ -154,15 +152,7 @@ public class MotorController {
 			error = dest-height;
 			System.out.println("Output: " +output );
 		}
-//		if(error1<0){
-//			up.setPwmValue(zweefpwm+25);
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+
 		up.setPwmValue(zweefpwm);
 		algorithmRunning=false;
 	}
@@ -238,22 +228,4 @@ public class MotorController {
 					
 	}
 	
-//	private boolean derp;
-//	
-//	public int getPwmToTarget(double currentHeight, double destination){
-//		double difference = destination - currentHeight;
-//		if(difference > 30){
-//			return 900;
-//		}
-//		if(difference > 15){
-//			if(derp==false){
-//				return zweefpwm+15;
-//			}else
-//			return -800;
-//		}
-//		
-//		if(difference >0)
-//			return zweefpwm;
-//		
-//	}
 }
