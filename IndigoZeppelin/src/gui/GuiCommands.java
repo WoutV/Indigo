@@ -165,6 +165,14 @@ public class GuiCommands {
 	public void showInfo(String message){
 		gui.addToCommandList(message);
 	}
+	
+	public void setManualContr() {
+		gui.addToCommandList(" - Switched to manual control");
+	}
+	
+	public void setAutomaticContr() {
+		gui.addToCommandList(" - Switched to automatic control");
+	}
 
 
 }

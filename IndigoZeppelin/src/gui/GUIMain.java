@@ -13,6 +13,8 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import transfer.Transfer;
+
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
@@ -54,7 +56,7 @@ public class GUIMain extends javax.swing.JFrame {
 		jTabbedPane.setTitleAt(2, "credits");
 
 		//functies van de pijltjes met een keylistener
-		tab1window3.addKeyListener(new MotorListener());
+		tab1window3.addKeyListener(keyboardListener);
 		tab1window3.requestFocusInWindow(); //voor arrow keys: focus vragen, voor andere keys automatisch goed
 		
 		upButton.setFocusable(false);
@@ -102,6 +104,8 @@ public class GUIMain extends javax.swing.JFrame {
 		propellorNotActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorNotActive(Propellor.RIGHT);
+		
+		automatic();
 		
 		disableAllComponents(this);
 	}
@@ -275,6 +279,9 @@ public class GUIMain extends javax.swing.JFrame {
         tab1 = new javax.swing.JLayeredPane();
         tab1window1 = new javax.swing.JPanel();
         tab1window1Lbl = new javax.swing.JLabel();
+        tab1Window1StringLbl = new javax.swing.JLabel();
+        manualButton = new javax.swing.JButton();
+        automaticButton = new javax.swing.JButton();
         tab1window2 = new javax.swing.JPanel();
         labelHoogteDisplay = new javax.swing.JLabel();
         labelCommandsTxt = new javax.swing.JLabel();
@@ -308,21 +315,52 @@ public class GUIMain extends javax.swing.JFrame {
 
         jTabbedPane.setName(""); // NOI18N
 
+        manualButton.setText("manual");
+        manualButton.setFocusable(false);
+        manualButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manualButtonActionPerformed(evt);
+            }
+        });
+
+        automaticButton.setText("automatic");
+        automaticButton.setFocusable(false);
+        automaticButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                automaticButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tab1window1Layout = new javax.swing.GroupLayout(tab1window1);
         tab1window1.setLayout(tab1window1Layout);
         tab1window1Layout.setHorizontalGroup(
             tab1window1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab1window1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tab1window1Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(tab1window1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tab1window1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addGroup(tab1window1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tab1Window1StringLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                            .addComponent(tab1window1Lbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(tab1window1Layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(manualButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(automaticButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         tab1window1Layout.setVerticalGroup(
             tab1window1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab1window1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tab1window1Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGroup(tab1window1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(manualButton, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(automaticButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tab1window1Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tab1Window1StringLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         tab1window1.setBounds(0, 0, 500, 400);
@@ -686,10 +724,51 @@ public class GUIMain extends javax.swing.JFrame {
         guic.searchPwmZep();
     }//GEN-LAST:event_zoekZweefPwmActionPerformed
 
+    private void manualButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualButtonActionPerformed
+    	 manual();
+    }//GEN-LAST:event_manualButtonActionPerformed
 
+    private void automaticButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_automaticButtonActionPerformed
+        automatic();
+    }//GEN-LAST:event_automaticButtonActionPerformed
+
+    private void manual() {
+    	downButton.setEnabled(true);
+        leftButton.setEnabled(true);
+        rightButton.setEnabled(true);
+        upButton.setEnabled(true);
+        elevateButton.setEnabled(true);
+        setHeightBtn.setEnabled(true);
+        
+        automaticButton.setBackground(Color.RED);
+        manualButton.setBackground(Color.GREEN);
+        
+        tab1window3.addKeyListener(keyboardListener);
+        
+        guic.setManualContr();
+    }
+    
+    private void automatic() {
+    	downButton.setEnabled(false);
+        leftButton.setEnabled(false);
+        rightButton.setEnabled(false);
+        upButton.setEnabled(false);
+        elevateButton.setEnabled(false);
+        setHeightBtn.setEnabled(false);
+        
+        automaticButton.setBackground(Color.GREEN);
+        manualButton.setBackground(Color.RED);
+        
+        tab1window3.removeKeyListener(keyboardListener);
+        
+        guic.setAutomaticContr();
+    }
+    
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton automaticButton;
     private javax.swing.JLabel creditsLbl;
     private javax.swing.JToggleButton downButton;
     private javax.swing.JToggleButton elevateButton;
@@ -701,6 +780,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelHoogteDisplay;
     private javax.swing.JLabel labelHoogteTxt;
     private javax.swing.JToggleButton leftButton;
+    private javax.swing.JButton manualButton;
     private javax.swing.JLabel prop1Lbl;
     private javax.swing.JLabel prop2Lbl;
     private javax.swing.JLabel prop3Lbl;
@@ -711,6 +791,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JButton setHeightBtn;
     private javax.swing.JButton setPwmValue;
     private javax.swing.JLayeredPane tab1;
+    private javax.swing.JLabel tab1Window1StringLbl;
     private javax.swing.JPanel tab1window1;
     private javax.swing.JLabel tab1window1Lbl;
     private javax.swing.JPanel tab1window2;
@@ -724,6 +805,8 @@ public class GUIMain extends javax.swing.JFrame {
     private ImageIcon propact;
 	private ImageIcon propnotact;
 	private GuiCommands guic = new GuiCommands(this);
+	
+	private KeyListener keyboardListener = new MotorListener();
 	
 	public void setHoogteLabel(double hoogte){
 		DecimalFormat df = new DecimalFormat("#.##");
