@@ -10,7 +10,9 @@ public class MoveForward extends Command {
 
 	@Override
 	public void execute() {
+		MotorController.getInstance().setCommandIsBeingExecuted(true);
 		MotorController.getInstance().moveDistanceForward(amount);
+		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 
 	

@@ -222,4 +222,7 @@ public class MotorController {
 		ct.getCommandList().add(command);
 	}
 	
+	public void setCommandIsBeingExecuted(boolean execute){
+		ct.setCommandIsBeingExecuted(execute);
+	}
 }

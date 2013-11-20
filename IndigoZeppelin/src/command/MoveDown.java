@@ -11,7 +11,9 @@ public class MoveDown extends Command {
 
 	@Override
 	public void execute() {
+		MotorController.getInstance().setCommandIsBeingExecuted(true);
 		MotorController.getInstance().moveDownward(amount);
+		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 
 	

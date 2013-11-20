@@ -10,7 +10,9 @@ public class MoveUp extends Command {
 
 	@Override
 	public void execute() {
+		MotorController.getInstance().setCommandIsBeingExecuted(true);
 		MotorController.getInstance().moveUpward(amount);
+		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 
 }

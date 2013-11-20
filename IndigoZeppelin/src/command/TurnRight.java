@@ -11,7 +11,9 @@ public class TurnRight extends Command {
 
 	@Override
 	public void execute() {
+		MotorController.getInstance().setCommandIsBeingExecuted(true);
 		MotorController.getInstance().turnDegreesRight(amount);
+		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 
 }

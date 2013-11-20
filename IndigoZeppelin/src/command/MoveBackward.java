@@ -10,7 +10,9 @@ public class MoveBackward extends Command {
 
 	@Override
 	public void execute() {
+		MotorController.getInstance().setCommandIsBeingExecuted(true);
 		MotorController.getInstance().moveDistanceBackward(amount);
+		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 	
 	

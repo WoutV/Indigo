@@ -15,6 +15,7 @@ public class CommandThread implements Runnable {
 
 	private boolean autoPilot;
 	private LinkedList<Command> commandList;
+	private boolean commandIsBeingExecuted;
 	
 	public CommandThread(){
 		commandList = new LinkedList<Command>();
@@ -22,15 +23,25 @@ public class CommandThread implements Runnable {
 	
 	@Override
 	public void run() {
-		
-		while(autoPilot){
-			if(commandList.isEmpty()){
-				
-			}else{
-				commandList.get(0).execute();
+		while(true){
+			while(autoPilot){
+				if(commandList.isEmpty()){
+
+				}else{
+					commandList.pop().execute();
+					while(commandIsBeingExecuted){};
+				}
 			}
 		}
 		
+	}
+
+	public boolean isCommandIsBeingExecuted() {
+		return commandIsBeingExecuted;
+	}
+
+	public void setCommandIsBeingExecuted(boolean commandIsBeingExecuted) {
+		this.commandIsBeingExecuted = commandIsBeingExecuted;
 	}
 
 	public boolean isAutoPilot() {
