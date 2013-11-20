@@ -167,6 +167,9 @@ public class GuiCommands {
 	 */
 	public void setManualContr() {
 		gui.addToCommandList(" - Switched to manual control");
+		Transfer transfer = new Transfer();
+		transfer.setMode();
+		sender.sendTransfer(transfer);
 	}
 	
 	/**
@@ -174,6 +177,9 @@ public class GuiCommands {
 	 */
 	public void setAutomaticContr() {
 		gui.addToCommandList(" - Switched to automatic control");
+		Transfer transfer = new Transfer();
+		transfer.setMode();
+		sender.sendTransfer(transfer);
 	}
 
 

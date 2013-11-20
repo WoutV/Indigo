@@ -12,6 +12,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
+import command.Command;
 
 /**
  * Controller voor de drie motoren.
@@ -39,6 +40,8 @@ public class MotorController {
 	private static MotorController mc = new MotorController();
 	
 	private HeightController hc;
+	private CommandThread ct;
+	private Thread ctt;
 	
 	public double Kp=(1024-zweefpwm)/100;;
 	public double Kd=70;
@@ -81,6 +84,8 @@ public class MotorController {
 			hc = new HeightController(Kp, Ki, Kd, zweefpwm, distanceSensor, up);
 			Thread hct = new Thread(hc);
 			hct.start();
+			ct = new CommandThread();
+			ctt = new Thread(ct);
 			
 		}
 	}
@@ -201,6 +206,20 @@ public class MotorController {
 
 	public void moveDownward(double amount) {
 		
+	}
+	
+	public void changeFlyMode(){
+		if(ct.isAutoPilot()){
+			ctt.interrupt();
+			ct.setAutoPilot(false);
+		}else{
+			ct.setAutoPilot(true);
+			ctt.start();
+		}
+	}
+	
+	public void addToCommandList(Command command){
+		ct.getCommandList().add(command);
 	}
 	
 }

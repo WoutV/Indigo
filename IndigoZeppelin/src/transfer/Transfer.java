@@ -13,8 +13,9 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR,FLYMODE
 	}
+	
 	private TransferType type;
 	private double height;
 	private Key keyevent;
@@ -152,5 +153,10 @@ public class Transfer implements Serializable {
 
 	public int getPropellorPwm() {
 		return pwmvalue;
+	}
+	
+	public void setMode(){
+		
+		this.setType(TransferType.FLYMODE);
 	}
 }

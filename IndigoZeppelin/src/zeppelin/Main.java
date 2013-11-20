@@ -93,6 +93,10 @@ public class Main implements Runnable{
 	public void searchFloatPwm() {
 		motorController.searchFloatPwm();
 	}
+	
+	public void changeFlyMode(){
+		motorController.changeFlyMode();
+	}
 
 	@Override
 	public void run() {

@@ -104,7 +104,7 @@ public class GUIMain extends javax.swing.JFrame {
 		propellorNotActive(Propellor.UP);
 		propellorNotActive(Propellor.RIGHT);
 		
-		automatic();
+		manual();
 		
 		disableAllComponents(this);
 	}
@@ -730,8 +730,9 @@ public class GUIMain extends javax.swing.JFrame {
     private void automaticButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_automaticButtonActionPerformed
         automatic();
     }//GEN-LAST:event_automaticButtonActionPerformed
-
+    private boolean manual;
     private void manual() {
+    	if(!manual){
     	downButton.setEnabled(true);
         leftButton.setEnabled(true);
         rightButton.setEnabled(true);
@@ -745,9 +746,12 @@ public class GUIMain extends javax.swing.JFrame {
         tab1window3.addKeyListener(keyboardListener);
         
         guic.setManualContr();
+        manual=true;
+    	}
     }
     
     private void automatic() {
+    	if(manual){
     	downButton.setEnabled(false);
         leftButton.setEnabled(false);
         rightButton.setEnabled(false);
@@ -761,6 +765,8 @@ public class GUIMain extends javax.swing.JFrame {
         tab1window3.removeKeyListener(keyboardListener);
         
         guic.setAutomaticContr();
+        manual=false;
+    	}
     }
     
     
