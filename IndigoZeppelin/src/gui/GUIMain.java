@@ -100,7 +100,6 @@ public class GUIMain extends javax.swing.JFrame {
 			propnotact = new ImageIcon(image);
 		} catch (IOException e) {}
 		
-		//TEMP!!
 		propellorNotActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorNotActive(Propellor.RIGHT);
@@ -834,32 +833,32 @@ public class GUIMain extends javax.swing.JFrame {
 
 	public void setImageDisplay(ImageIcon image){
 		tab1window1Lbl.setIcon(image);
-		addToCommandList( "- New image received from Zeppelin ");
+		addToCommandList( " - New image received from Zeppelin ");
 	}
 
 	public void propellorActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propact);
-			addToCommandList( "- Left propellor activated : ");
+			addToCommandList( "- Left propellor activated ");
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propact);
-			addToCommandList( "- Up propellor activated : ");
+			addToCommandList( " - Up propellor activated ");
 		}else{
 			propellor3.setIcon(propact);
-			addToCommandList( "- Right propellor activated : " );
+			addToCommandList( " - Right propellor activated " );
 		}
 	}
 
 	public void propellorNotActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propnotact);
-			addToCommandList( "- Left propellor turned off : " );
+			addToCommandList( " - Left propellor turned off " );
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propnotact);
-			addToCommandList( "- Up propellor turned off : " );
+			addToCommandList( " - Up propellor turned off " );
 		}else{
 			propellor3.setIcon(propnotact);
-			addToCommandList( "- Right propellor turned off : " );
+			addToCommandList( " - Right propellor turned off " );
 		}
 	}
 

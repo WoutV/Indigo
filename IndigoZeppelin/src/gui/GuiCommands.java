@@ -16,28 +16,11 @@ import client.SendToServer;
  */
 public class GuiCommands {
 
-	//TEMP: dit wordt een soort arraylist/andere collectie van een Klasse Command
-	@SuppressWarnings("unused")
-	private  ArrayList<String> newcommands;
-
 	private GUIMain gui;
 
 	public GuiCommands(GUIMain gui){
 		this.gui=gui;
 	}
-
-	//	public ArrayList<String> getNewcommands() {
-	//		return newcommands;
-	//	}
-	//
-	//	public void setNewcommands(ArrayList<String> newcommands) {
-	//		this.newcommands = newcommands;
-	//	}
-	//
-	//	public void setHoogte(double hoogte) {
-	//		this.hoogte = hoogte;
-	//		gui.setHoogteLabel(hoogte);
-	//	}
 
 	/**
 	 * Via deze methode stuurt de zeppelin zijn huidige hoogte door.
@@ -67,8 +50,10 @@ public class GuiCommands {
 			gui.propellorNotActive(prop);
 	}
 
-	//TEMP!?
-	//geeft de ontvangen afbeelding weer in GUI
+	/**
+	 * Geeft de ontvangen afbeelding weer in een label in tab 1 van window 1 van GUI.
+	 * @param image
+	 */
 	public void receiveImage(ImageIcon image) {
 		gui.setImageDisplay(image);
 	}
@@ -82,7 +67,7 @@ public class GuiCommands {
 	 */
 	public void sendHeightZep(double hoogte){
 		if(sender !=null) {
-			gui.addToCommandList(" - Desired height send to Zeppelin, Zeppelin must reach: " + hoogte +"cm");
+			gui.addToCommandList(" - Desired height sent to Zeppelin, Zeppelin must reach: " + hoogte +" cm");
 			Transfer transfer = new Transfer();
 			transfer.setHeight(hoogte);
 			sender.sendTransfer(transfer);
@@ -97,16 +82,19 @@ public class GuiCommands {
 	 */
 	public void sendPwmZep(int pwm){
 		if(sender !=null) {
-			gui.addToCommandList(" - New pwm send to Zeppelin ");
+			gui.addToCommandList(" - New float pwm sent to Zeppelin: " + pwm );
 			Transfer transfer = new Transfer();
 			transfer.setPwm(pwm);
 			sender.sendTransfer(transfer);
 		}
 	}
 	
+	/**
+	 * Methode om door te geven dat de zeppelin automatisch naar zweef-pwm moet zoeken.
+	 */
 	public void searchPwmZep() {
 		if(sender !=null) {
-			gui.addToCommandList(" - Looking for zweefpwm ");
+			gui.addToCommandList(" - Looking for floatpwm ");
 			Transfer transfer = new Transfer();
 			transfer.searchPwm();
 			sender.sendTransfer(transfer);
@@ -156,20 +144,34 @@ public class GuiCommands {
 		this.sender=sender;
 	}
 
+	/**
+	 * Methode om een boodschap weer te geven in het commandodisplay op tab 1 in de GUI
+	 * @param message
+	 */
 	public void receiveMessage(String message) {
 		showInfo("Message Received From Server: "+ message);
 		gui.showMessage(message);
 
 	}
 	
+	/**
+	 * Methode om een boodschap toe te voegen aan de full command list (tab 2) van de GUI.
+	 * @param message
+	 */
 	public void showInfo(String message){
 		gui.addToCommandList(message);
 	}
 	
+	/**
+	 * Doorgeven aan zeppelin dat naar manual control moet worden geschakeld.
+	 */
 	public void setManualContr() {
 		gui.addToCommandList(" - Switched to manual control");
 	}
 	
+	/**
+	 * Doorgeven aan zeppelin dat naar automatic control moet worden geschakeld.
+	 */
 	public void setAutomaticContr() {
 		gui.addToCommandList(" - Switched to automatic control");
 	}
