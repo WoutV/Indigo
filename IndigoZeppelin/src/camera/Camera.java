@@ -77,13 +77,9 @@ public abstract class Camera {
 		String filePath = "QRimage.jpg";
 		BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(ImageIO.read(new FileInputStream(filePath)))));
 		System.out.println("Loading image completed. Reading QR Code");
-		try{
 		@SuppressWarnings("unchecked")
 		Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,getMap());
 		return qrCodeResult.getText();
-		}catch(NotFoundException ex){
-			return "No QR code Found";
-		}
 		
 		}
 	/***
