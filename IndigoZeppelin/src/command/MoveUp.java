@@ -14,5 +14,10 @@ public class MoveUp extends Command {
 		MotorController.getInstance().moveUpward(amount);
 		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
+	
+	@Override
+	public String toString() {
+		return " - Move " + super.amount + "cm upwards!";
+	}
 
 }

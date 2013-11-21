@@ -17,4 +17,8 @@ public class TurnLeft extends Command {
 		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 
+	@Override
+	public String toString() {
+		return " - Turn " + super.amount + "degrees left!";
+	}
 }

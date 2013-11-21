@@ -53,7 +53,7 @@ public class ReceivedHandler {
 			main.searchFloatPwm();
 			break;
 		case FLYMODE:
-			main.changeFlyMode();
+			main.changeFlyMode(information.isAutoPilot());
 		default:
 			break;
 		

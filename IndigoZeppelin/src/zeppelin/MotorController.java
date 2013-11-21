@@ -1,5 +1,6 @@
 package zeppelin;
 import server.SendToClient;
+import transfer.Transfer;
 import zeppelin.utils.Pid;
 import zeppelin.utils.Pid2;
 import zeppelin.utils.Pid3;
@@ -38,10 +39,11 @@ public class MotorController {
 	private SendToClient sender;
 
 	private static MotorController mc = new MotorController();
+	private CommandParser commandParser;
 	
 	private HeightController hc;
 	private CommandThread ct;
-	private Thread ctt;
+	
 	
 	public double Kp=(1024-zweefpwm)/100;;
 	public double Kd=70;
@@ -85,7 +87,9 @@ public class MotorController {
 			Thread hct = new Thread(hc);
 			hct.start();
 			ct = new CommandThread();
-			ctt = new Thread(ct);
+			Thread ctt = new Thread(ct);
+			ctt.start();
+			 commandParser = new CommandParser(this.getInstance());
 			
 		}
 	}
@@ -130,7 +134,7 @@ public class MotorController {
 	}
 
 	public void moveDistanceForward(double distance) {
-		//TODO
+		commandParser.moveDistanceForward(distance);
 	}
 
 	public void moveDistanceBackward(double distance) {
@@ -208,21 +212,27 @@ public class MotorController {
 		
 	}
 	
-	public void changeFlyMode(){
-		if(ct.isAutoPilot()){
-			ctt.interrupt();
-			ct.setAutoPilot(false);
-		}else{
-			ct.setAutoPilot(true);
-			ctt.start();
+	public void changeFlyMode(boolean autoPilot){
+		if(autoPilot==true){
+			if(!ct.isAutoPilot()){
+				ct.setAutoPilot(true);
+				}
+		}else if(autoPilot==false){
+			if(ct.isAutoPilot()){
+				ct.setAutoPilot(false);
+			}
 		}
 	}
 	
 	public void addToCommandList(Command command){
 		ct.getCommandList().add(command);
+		Transfer transfer = new Transfer();
+		transfer.setCommand(command.toString());
+		sender.sendTransfer(transfer);
 	}
 	
 	public void setCommandIsBeingExecuted(boolean execute){
 		ct.setCommandIsBeingExecuted(execute);
+		
 	}
 }

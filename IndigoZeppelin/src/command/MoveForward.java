@@ -15,5 +15,9 @@ public class MoveForward extends Command {
 		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
 
+	@Override
+	public String toString() {
+		return " - Move " + super.amount + "cm forwards!";
+	}
 	
 }

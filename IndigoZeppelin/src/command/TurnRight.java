@@ -15,5 +15,10 @@ public class TurnRight extends Command {
 		MotorController.getInstance().turnDegreesRight(amount);
 		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
+	
+	@Override
+	public String toString() {
+		return " - Turn " + super.amount + "degrees right!";
+	}
 
 }

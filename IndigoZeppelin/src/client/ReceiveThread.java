@@ -47,6 +47,8 @@ class ReceiveThread implements Runnable
 		case PROPELLOR:
 			propellor(information);
 			break;
+		case COMMAND:
+			command(information);
 		default:
 			break;
 		
@@ -54,6 +56,12 @@ class ReceiveThread implements Runnable
 	}
 	
 	
+	private void command(Transfer information) {
+		gc.showOnCommandLabel(information.getMessage());
+		
+	}
+
+
 	/**
 	 * Initializes this thread.
 	 * @param sock

@@ -15,6 +15,11 @@ public class MoveDown extends Command {
 		MotorController.getInstance().moveDownward(amount);
 		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
+	
+	@Override
+	public String toString() {
+		return " - Move " + super.amount + "cm downwards!";
+	}
 
 	
 

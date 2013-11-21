@@ -13,7 +13,7 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR,FLYMODE
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR,FLYMODE, COMMAND
 	}
 	
 	private TransferType type;
@@ -120,6 +120,11 @@ public class Transfer implements Serializable {
 	private Propellor.Mode mode;
 	private Propellor.Direction direction;
 	private int pwmvalue;
+	public boolean isAutoPilot() {
+		return autoPilot;
+	}
+
+	private boolean autoPilot;
 
 	/**
 	 * Configures this object to send a propellor update
@@ -155,8 +160,13 @@ public class Transfer implements Serializable {
 		return pwmvalue;
 	}
 	
-	public void setMode(){
-		
+	public void setMode(boolean autoPilot){
+		this.autoPilot=autoPilot;
 		this.setType(TransferType.FLYMODE);
+	}
+	
+	public void setCommand(String message){
+		this.setType(TransferType.COMMAND);
+		this.setMessage(message);
 	}
 }

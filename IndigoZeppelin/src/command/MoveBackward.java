@@ -14,6 +14,11 @@ public class MoveBackward extends Command {
 		MotorController.getInstance().moveDistanceBackward(amount);
 		MotorController.getInstance().setCommandIsBeingExecuted(false);
 	}
+
+	@Override
+	public String toString() {
+		return " - Move " + super.amount + "cm backwards!";
+	}
 	
 	
 }

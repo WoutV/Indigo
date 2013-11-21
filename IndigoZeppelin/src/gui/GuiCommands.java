@@ -168,7 +168,7 @@ public class GuiCommands {
 	public void setManualContr() {
 		gui.addToCommandList(" - Switched to manual control");
 		Transfer transfer = new Transfer();
-		transfer.setMode();
+		transfer.setMode(false);
 		sender.sendTransfer(transfer);
 	}
 	
@@ -178,8 +178,12 @@ public class GuiCommands {
 	public void setAutomaticContr() {
 		gui.addToCommandList(" - Switched to automatic control");
 		Transfer transfer = new Transfer();
-		transfer.setMode();
+		transfer.setMode(true);
 		sender.sendTransfer(transfer);
+	}
+	
+	public void showOnCommandLabel(String info){
+		gui.addToCommandLabel(info);
 	}
 
 
