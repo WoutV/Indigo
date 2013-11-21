@@ -2,7 +2,7 @@ package zeppelin;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
+
 
 import com.google.zxing.NotFoundException;
 
@@ -15,9 +15,10 @@ import command.*;
  *
  */
 public abstract class QRParser {
+	static MotorController mc = MotorController.getInstance();
 
-	public static LinkedList<Command> parseQR(){
-		LinkedList<Command> commandList = new LinkedList<Command>();
+	public static void parseQR(){
+		
 		try {
 			String readQRCode = Camera.readQRCode();
 			String[] commands = readQRCode.split( "\\;" );
@@ -25,22 +26,22 @@ public abstract class QRParser {
 				String[] parts = command.split( "\\:" );
 				switch(parts[1]){
 				case "V":
-					commandList.add(new MoveForward(Double.parseDouble(parts[1])));
+					mc.addToCommandList(new MoveForward(Double.parseDouble(parts[1])));
 					break;
 				case "A":
-					commandList.add(new MoveBackward(Double.parseDouble(parts[1])));
+					mc.addToCommandList(new MoveBackward(Double.parseDouble(parts[1])));
 					break;
 				case "S":
-					commandList.add(new MoveUp(Double.parseDouble(parts[1])));
+					mc.addToCommandList(new MoveUp(Double.parseDouble(parts[1])));
 					break;
 				case "D":
-					commandList.add(new MoveDown(Double.parseDouble(parts[1])));
+					mc.addToCommandList(new MoveDown(Double.parseDouble(parts[1])));
 					break;
 				case "L":
-					commandList.add(new TurnLeft(Double.parseDouble(parts[1])));
+					mc.addToCommandList(new TurnLeft(Double.parseDouble(parts[1])));
 					break;
 				case "R":
-					commandList.add(new TurnRight(Double.parseDouble(parts[1])));
+					mc.addToCommandList(new TurnRight(Double.parseDouble(parts[1])));
 					break;
 				}
 			}
@@ -54,7 +55,7 @@ public abstract class QRParser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return commandList;
+		
 
 	}
 }
