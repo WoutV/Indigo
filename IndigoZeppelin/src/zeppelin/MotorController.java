@@ -215,10 +215,12 @@ public class MotorController {
 	public void changeFlyMode(boolean autoPilot){
 		if(autoPilot==true){
 			if(!ct.isAutoPilot()){
+				hc.startRunning();
 				ct.setAutoPilot(true);
 				}
 		}else if(autoPilot==false){
 			if(ct.isAutoPilot()){
+				
 				ct.setAutoPilot(false);
 			}
 		}
