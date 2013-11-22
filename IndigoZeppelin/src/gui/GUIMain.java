@@ -104,8 +104,6 @@ public class GUIMain extends javax.swing.JFrame {
 		propellorNotActive(Propellor.UP);
 		propellorNotActive(Propellor.RIGHT);
 		
-		manual();
-		
 		disableAllComponents(this);
 	}
 
@@ -731,7 +729,7 @@ public class GUIMain extends javax.swing.JFrame {
         automatic();
     }//GEN-LAST:event_automaticButtonActionPerformed
     private boolean manual;
-    private void manual() {
+    public void manual() {
     	if(!manual){
     	downButton.setEnabled(true);
         leftButton.setEnabled(true);
@@ -750,7 +748,7 @@ public class GUIMain extends javax.swing.JFrame {
     	}
     }
     
-    private void automatic() {
+    public void automatic() {
     	if(manual){
     	downButton.setEnabled(false);
         leftButton.setEnabled(false);

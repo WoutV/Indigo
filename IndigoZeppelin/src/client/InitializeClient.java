@@ -71,6 +71,7 @@ public class InitializeClient {
 			SendToServer sender = new SendToServer(sendSocket,gui);
 			gui.getGuiCommands().setSender(sender);
 			gui.enableAllButtons();
+			gui.manual();
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 			gui.showMessage("");
