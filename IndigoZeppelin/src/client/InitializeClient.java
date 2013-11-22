@@ -106,7 +106,7 @@ public class InitializeClient {
 		                return false;
 		            }
 		        }
-
+		        
 		        return true;
 		    } catch (NumberFormatException nfe) {
 		        return false;
