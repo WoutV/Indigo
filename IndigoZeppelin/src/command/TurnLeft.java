@@ -12,9 +12,7 @@ public class TurnLeft extends Command {
 
 	@Override
 	public void execute() {
-		MotorController.getInstance().setCommandIsBeingExecuted(true);
-		MotorController.getInstance().turnDegreesLeft(amount);
-		MotorController.getInstance().setCommandIsBeingExecuted(false);
+		ce.turnDegreesLeft(amount);
 	}
 
 	@Override

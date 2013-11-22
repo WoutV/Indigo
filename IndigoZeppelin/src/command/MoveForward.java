@@ -1,5 +1,6 @@
 package command;
 
+import zeppelin.CommandExecutioner;
 import zeppelin.MotorController;
 
 public class MoveForward extends Command {
@@ -10,9 +11,7 @@ public class MoveForward extends Command {
 
 	@Override
 	public void execute() {
-		MotorController.getInstance().setCommandIsBeingExecuted(true);
-		MotorController.getInstance().moveDistanceForward(amount);
-		MotorController.getInstance().setCommandIsBeingExecuted(false);
+		ce.moveDistanceForward(amount);
 	}
 
 	@Override

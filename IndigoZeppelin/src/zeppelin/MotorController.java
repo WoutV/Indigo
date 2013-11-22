@@ -1,4 +1,6 @@
 package zeppelin;
+import java.util.HashMap;
+
 import server.SendToClient;
 import transfer.Transfer;
 import zeppelin.utils.Pid;
@@ -39,7 +41,7 @@ public class MotorController {
 	private SendToClient sender;
 
 	private static MotorController mc = new MotorController();
-	private CommandParser commandParser;
+	private CommandExecutioner commandParser;
 	
 	private HeightController hc;
 	private CommandThread ct;
@@ -48,6 +50,8 @@ public class MotorController {
 	public double Kp=(1024-zweefpwm)/100;;
 	public double Kd=70;
 	public double Ki=0.3;
+	
+	
 
 	private MotorController() {
 	}
@@ -89,8 +93,6 @@ public class MotorController {
 			ct = new CommandThread();
 			Thread ctt = new Thread(ct);
 			ctt.start();
-			 commandParser = new CommandParser(this.getInstance());
-			
 		}
 	}
 
@@ -131,22 +133,6 @@ public class MotorController {
 	 */
 	public void moveToHeight(double dest) {
 		hc.moveToHeight(dest);
-	}
-
-	public void moveDistanceForward(double distance) {
-		commandParser.moveDistanceForward(distance);
-	}
-
-	public void moveDistanceBackward(double distance) {
-		//TODO
-	}
-
-	public void turnDegreesLeft(double angle) {
-		//TODO
-	}
-
-	public void turnDegreesRight(double angle) {
-		//TODO
 	}
 
 	/**
@@ -203,14 +189,6 @@ public class MotorController {
 		
 					
 	}
-
-	public void moveUpward(double amount) {
-		
-	}
-
-	public void moveDownward(double amount) {
-		
-	}
 	
 	public void changeFlyMode(boolean autoPilot){
 		if(autoPilot==true){
@@ -237,4 +215,6 @@ public class MotorController {
 		ct.setCommandIsBeingExecuted(execute);
 		
 	}
+	
+	
 }
