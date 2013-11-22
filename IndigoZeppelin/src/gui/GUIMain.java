@@ -916,6 +916,6 @@ public class GUIMain extends javax.swing.JFrame {
 	}
 	
 	public void addToCommandLabel(String string){
-		labelCommandsDisplay.setText(labelCommandsDisplay.getText()+ "<HTML>\n" +"Test" );
+		labelCommandsDisplay.setText(string);
 	}
 }

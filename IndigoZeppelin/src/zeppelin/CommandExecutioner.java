@@ -38,37 +38,56 @@ public class CommandExecutioner {
 		}
 		mc.stopHorizontalMovement();
 
+		mc.updateCommandList();
 		mc.setCommandIsBeingExecuted(false);
+		
 	}
 
 
 	public void moveDistanceBackward(double amount) {
-		// TODO Auto-generated method stub
+		mc.setCommandIsBeingExecuted(true);
+		//TODO schrijf de methode hier
 		
+		mc.updateCommandList();
+		mc.setCommandIsBeingExecuted(false);
 	}
 
 
 	public void moveDownward(double amount) {
-		// TODO Auto-generated method stub
+		mc.setCommandIsBeingExecuted(true);
+		//TODO schrijf de methode hier
 		
+		mc.updateCommandList();
+		mc.setCommandIsBeingExecuted(false);
 	}
 
 
 	public void moveUpward(double amount) {
-		// TODO Auto-generated method stub
+		mc.setCommandIsBeingExecuted(true);
+		//TODO schrijf de methode hier
+		
+		mc.updateCommandList();
+		mc.setCommandIsBeingExecuted(false);
 		
 	}
 
 
 	public void turnDegreesLeft(double amount) {
-		// TODO Auto-generated method stub
+		mc.setCommandIsBeingExecuted(true);
+		//TODO schrijf de methode hier
+		
+		mc.updateCommandList();
+		mc.setCommandIsBeingExecuted(false);
 		
 	}
 
 
 	public void turnDegreesRight(double amount) {
-		// TODO Auto-generated method stub
+		mc.setCommandIsBeingExecuted(true);
+		//TODO schrijf de methode hier
 		
+		mc.updateCommandList();
+		mc.setCommandIsBeingExecuted(false);
 	}
 	
 	

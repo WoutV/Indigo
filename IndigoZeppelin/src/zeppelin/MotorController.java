@@ -206,14 +206,23 @@ public class MotorController {
 	
 	public void addToCommandList(Command command){
 		ct.getCommandList().add(command);
-		Transfer transfer = new Transfer();
-		transfer.setCommand(command.toString());
-		sender.sendTransfer(transfer);
+		updateCommandList();
 	}
 	
 	public void setCommandIsBeingExecuted(boolean execute){
 		ct.setCommandIsBeingExecuted(execute);
 		
+	}
+	
+	public void updateCommandList(){
+		Transfer transfer  = new Transfer();
+		String fullList = "<HTML>\n";
+		for(Command command :ct.getCommandList()){
+			fullList=fullList + command.toString() + "\n";
+		}
+		
+		transfer.setCommand(fullList);
+		sender.sendTransfer(transfer);
 	}
 	
 	
