@@ -44,7 +44,7 @@ public class MotorController {
 	private CommandExecutioner commandParser;
 	
 	private HeightController hc;
-	private CommandThread ct;
+	private CommandController cc;
 	
 	
 	public double Kp=(1024-zweefpwm)/100;;
@@ -90,8 +90,8 @@ public class MotorController {
 			hc = new HeightController(Kp, Ki, Kd, zweefpwm, distanceSensor, up);
 			Thread hct = new Thread(hc);
 			hct.start();
-			ct = new CommandThread();
-			Thread ctt = new Thread(ct);
+			cc = new CommandController();
+			Thread ctt = new Thread(cc);
 			ctt.start();
 		}
 	}
@@ -192,32 +192,32 @@ public class MotorController {
 	
 	public void changeFlyMode(boolean autoPilot){
 		if(autoPilot==true){
-			if(!ct.isAutoPilot()){
+			if(!cc.isAutoPilot()){
 				hc.startRunning();
-				ct.setAutoPilot(true);
+				cc.setAutoPilot(true);
 				}
 		}else if(autoPilot==false){
-			if(ct.isAutoPilot()){
+			if(cc.isAutoPilot()){
 				
-				ct.setAutoPilot(false);
+				cc.setAutoPilot(false);
 			}
 		}
 	}
 	
 	public void addToCommandList(Command command){
-		ct.getCommandList().add(command);
+		cc.getCommandList().add(command);
 		updateCommandList();
 	}
 	
 	public void setCommandIsBeingExecuted(boolean execute){
-		ct.setCommandIsBeingExecuted(execute);
+		cc.setCommandIsBeingExecuted(execute);
 		
 	}
 	
 	public void updateCommandList(){
 		Transfer transfer  = new Transfer();
 		String fullList = "<HTML>\n";
-		for(Command command :ct.getCommandList()){
+		for(Command command :cc.getCommandList()){
 			fullList=fullList + command.toString() + "\n";
 		}
 		

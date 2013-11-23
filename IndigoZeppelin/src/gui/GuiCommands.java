@@ -195,6 +195,15 @@ public class GuiCommands {
 	public void showOnCommandLabel(String info){
 		gui.showMessage(info);
 	}
+	
+	/**
+	 * Geeft een text weer op de gui, door er een QR-code van te maken
+	 * en zowel de text als de QR-code te tonen in tab 1.
+	 * @param text
+	 */
+	public void receiveQRCode(String text) {
+		gui.displayQRCode(text);
+	}
 
 
 }

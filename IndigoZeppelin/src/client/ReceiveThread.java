@@ -49,6 +49,10 @@ class ReceiveThread implements Runnable
 			break;
 		case COMMAND:
 			command(information);
+			break;
+		case QRCODE:
+			qrcode(information);
+			break;
 		default:
 			break;
 		
@@ -185,6 +189,10 @@ class ReceiveThread implements Runnable
 				gc.receivePropellorState(information.getPropellorId(), false);
 		}
 			
+	}
+	
+	public void qrcode(Transfer information) {
+		gc.receiveQRCode(information.getMessage());
 	}
 	
 }//end class recievethread

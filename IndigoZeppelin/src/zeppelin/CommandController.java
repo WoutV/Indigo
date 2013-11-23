@@ -11,13 +11,13 @@ import command.Command;
  * @author Wout
  *
  */
-public class CommandThread implements Runnable {
+public class CommandController implements Runnable {
 
 	private boolean autoPilot;
 	private LinkedList<Command> commandList;
 	private boolean commandIsBeingExecuted;
 	
-	public CommandThread(){
+	public CommandController(){
 		commandList = new LinkedList<Command>();
 	}
 	

@@ -13,7 +13,8 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR,FLYMODE, COMMAND
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR,FLYMODE, COMMAND,
+		QRCODE;
 	}
 	
 	private TransferType type;
@@ -167,6 +168,11 @@ public class Transfer implements Serializable {
 	
 	public void setCommand(String message){
 		this.setType(TransferType.COMMAND);
+		this.setMessage(message);
+	}
+	
+	public void setQRCode(String txt) {
+		this.setType(TransferType.QRCODE);
 		this.setMessage(message);
 	}
 }

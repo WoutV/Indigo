@@ -3,6 +3,8 @@ package zeppelin;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import transfer.Transfer;
+
 
 import com.google.zxing.NotFoundException;
 
@@ -11,16 +13,20 @@ import command.*;
 
 /**
  * Zet QR code om naar een command.
- * @author Wout
  *
  */
 public abstract class QRParser {
+	
 	static MotorController mc = MotorController.getInstance();
 
 	public static void parseQR(){
-		
 		try {
 			String readQRCode = Camera.readQRCode();
+			if(Main.getInstance().getSender()!=null) {
+				Transfer transfer = new Transfer();
+				transfer.setQRCode(readQRCode);
+				Main.getInstance().getSender().sendTransfer(transfer);
+			}
 			String[] commands = readQRCode.split( "\\;" );
 			for(String command: commands){
 				String[] parts = command.split( "\\:" );
