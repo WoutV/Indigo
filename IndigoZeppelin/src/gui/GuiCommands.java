@@ -73,7 +73,7 @@ public class GuiCommands {
 			sender.sendTransfer(transfer);
 		}
 	}
-	
+
 	/**
 	 * Methode om een pwm door te geven aan de zeppelin.
 	 * Deze wordt dan gebruikt als zweef-pwm.
@@ -88,7 +88,7 @@ public class GuiCommands {
 			sender.sendTransfer(transfer);
 		}
 	}
-	
+
 	/**
 	 * Methode om door te geven dat de zeppelin automatisch naar zweef-pwm moet zoeken.
 	 */
@@ -114,7 +114,7 @@ public class GuiCommands {
 	public void sendKeyPressed(Key key){
 		if(key != Key.ELEVATE)
 			lastHorizontalKey = key;
-		
+
 		if(sender != null) {
 			Transfer transfer = new Transfer();
 			transfer.setKeyEvent(key, TransferType.KEYPRESSEDEVENT);
@@ -130,7 +130,7 @@ public class GuiCommands {
 		if(key != Key.ELEVATE && lastHorizontalKey != key)
 			return;
 		//niet laatste horizontal movement key ingedrukt
-		
+
 		if(sender != null) { 
 			Transfer transfer = new Transfer();
 			transfer.setKeyEvent(key, TransferType.KEYRELEASEDEVENT);
@@ -139,7 +139,7 @@ public class GuiCommands {
 	}
 
 	private SendToServer sender;
-	
+
 	public void setSender(SendToServer sender){
 		this.sender=sender;
 	}
@@ -153,7 +153,7 @@ public class GuiCommands {
 		gui.showMessage(message);
 
 	}
-	
+
 	/**
 	 * Methode om een boodschap toe te voegen aan de full command list (tab 2) van de GUI.
 	 * @param message
@@ -161,30 +161,40 @@ public class GuiCommands {
 	public void showInfo(String message){
 		gui.addToCommandList(message);
 	}
-	
+
 	/**
 	 * Doorgeven aan zeppelin dat naar manual control moet worden geschakeld.
 	 */
 	public void setManualContr() {
-		gui.addToCommandList(" - Switched to manual control");
-		Transfer transfer = new Transfer();
-		transfer.setMode(false);
-		sender.sendTransfer(transfer);
+		if(sender!=null){
+			gui.addToCommandList(" - Switched to manual control");
+			Transfer transfer = new Transfer();
+			transfer.setMode(false);
+			sender.sendTransfer(transfer);
+		}
 	}
-	
+
 	/**
 	 * Doorgeven aan zeppelin dat naar automatic control moet worden geschakeld.
 	 */
 	public void setAutomaticContr() {
-		gui.addToCommandList(" - Switched to automatic control");
-		Transfer transfer = new Transfer();
-		transfer.setMode(true);
-		sender.sendTransfer(transfer);
-	}
-	
-	public void showOnCommandLabel(String info){
-		gui.addToCommandLabel(info);
+		if(sender!=null) {
+			gui.addToCommandList(" - Switched to automatic control");
+			Transfer transfer = new Transfer();
+			transfer.setMode(true);
+			sender.sendTransfer(transfer);
+		}
 	}
 
-	
+	/**
+	 * Geeft een boodschap weer in het commandodisplay van tab 1, zonder vermelding in
+	 * de full command list van tab 2.
+	 * (wel in tab 2: gebruik receiveMessage(String))
+	 * @param info
+	 */
+	public void showOnCommandLabel(String info){
+		gui.showMessage(info);
+	}
+
+
 }

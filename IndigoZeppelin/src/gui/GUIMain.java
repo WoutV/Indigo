@@ -914,8 +914,4 @@ public class GUIMain extends javax.swing.JFrame {
 		Calendar cal = Calendar.getInstance();
 		return dateFormat.format(cal.getTime());
 	}
-	
-	public void addToCommandLabel(String string){
-		labelCommandsDisplay.setText(string);
-	}
 }
