@@ -20,7 +20,7 @@ public class Main implements Runnable{
 
 	private MotorController motorController = MotorController.getInstance();
 	private GpioController gpio = GpioFactory.getInstance();
-	private static DistanceSensor distanceSensor = new DistanceSensor();
+	private DistanceSensor distanceSensor;
 	private Thread distanceSensorThread;
 	
 	private SendToClient sender;
@@ -42,9 +42,13 @@ public class Main implements Runnable{
 	public void init(SendToClient sender) {
 			this.sender = sender;
 			System.out.println("Sender Set");
-			motorController.init(gpio,distanceSensor,sender);
+			
+			distanceSensor = new DistanceSensor(sender);
 			distanceSensorThread = new Thread(distanceSensor);
 			distanceSensorThread.start();
+			
+			motorController.init(gpio,distanceSensor,sender);
+			
 	}
 	
 
@@ -101,16 +105,9 @@ public class Main implements Runnable{
 	@Override
 	public void run() {
 		while(true){
-			//om de 1s: de hoogte doorsturen
-			Transfer height = new Transfer();
-			height.setHeight(distanceSensor.getHeight());
-			if(sender!=null){
-			sender.sendTransfer(height);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				System.out.println("Main thread onderbroken");
-			}}
+			//TODO some other run for main
+			
+			//TODO is this even necessary??
 		}
 
 	}

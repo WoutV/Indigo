@@ -1,4 +1,6 @@
 package zeppelin;
+import server.SendToClient;
+import transfer.Transfer;
 import zeppelin.utils.CircularDoubleArray;
 
 import com.pi4j.io.gpio.GpioController;
@@ -23,11 +25,11 @@ public class DistanceSensor implements Runnable{
 	private final static float SOUND_SPEED = 340.29f; // speed of sound in m/s
 
 	private final static int TRIG_DURATION_IN_MICROS = 10; // trigger duration
-															// of 10 micro s
-	
+	// of 10 micro s
+
 	//between readings
-	private final static int WAIT_DURATION_IN_MILLIS = 20; // wait 40 milli s
-	
+	private final static int WAIT_DURATION_IN_MILLIS = 20; // wait 20 milli s
+
 	private final static int TIMEOUT = 2100;
 
 	private final static GpioController gpio = GpioFactory.getInstance();
@@ -35,11 +37,14 @@ public class DistanceSensor implements Runnable{
 	private final GpioPinDigitalInput echoPin;
 	private final GpioPinDigitalOutput trigPin;
 
-	public DistanceSensor() {
+	private SendToClient sender;
+
+	public DistanceSensor(SendToClient sender) {
 		this.echoPin = gpio.provisionDigitalInputPin( RaspiPin.GPIO_02 );
-        this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_03 );
+		this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_03 );
 		this.trigPin.low();
 		this.distanceArray = new CircularDoubleArray(30);
+		this.sender = sender;
 	}
 
 	/*
@@ -109,8 +114,8 @@ public class DistanceSensor implements Runnable{
 	public double getHeight() {
 		return distanceArray.getMedian();
 	}
-	
-	
+
+
 
 	/**
 	 * Exception thrown when timeout occurs
@@ -131,20 +136,37 @@ public class DistanceSensor implements Runnable{
 	}
 
 
+	//wait duration: 20 ms
+	//send height: each second
+	//hence send height after 50 readings
 
 	@Override
 	public void run() {
+		//initialised at -50 to allow the distancesensor to gather some data before sending
+		int i = -50;
 		while(true){
-		try {
-			double currentReading = measureDistance();
-			distanceArray.add(currentReading);
-		} catch (TimeoutException e) {
-		}
-		try {
-			Thread.sleep(WAIT_DURATION_IN_MILLIS);
-		} catch (InterruptedException e) {
-			System.err.println("timeout between readings");
-		}
-	}}
+			try {
+				//read the current height
+				double currentReading = measureDistance();
+				distanceArray.add(currentReading);
+
+				if(i % 50 == 0) {
+					//om de 1s: de hoogte doorsturen
+					Transfer height = new Transfer();
+					height.setHeight(getHeight());
+					if(sender!=null){
+						sender.sendTransfer(height);
+					}
+					i = 0;
+				}
+				i++;
+			} catch (TimeoutException e) {
+			}
+			try {
+				Thread.sleep(WAIT_DURATION_IN_MILLIS);
+			} catch (InterruptedException e) {
+				System.err.println("timeout between readings");
+			}
+		}}
 
 }
