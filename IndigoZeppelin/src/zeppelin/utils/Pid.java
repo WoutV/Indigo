@@ -10,6 +10,7 @@ public class Pid {
 	protected double Kp, Ki, Kd;
 	
 	protected double previous_error = 0;
+	protected Integral integ = new Integral(200);
 	protected double integral = 0;
 	
 	protected double dest;
