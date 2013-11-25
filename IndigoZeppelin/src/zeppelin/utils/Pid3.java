@@ -36,14 +36,14 @@ public class Pid3 extends Pid {
 	 */
 	public double getOutput(double input) {
 		double error = dest - input;
-		System.out.println("currentheight: "+ input);
+//		System.out.println("currentheight: "+ input);
 		integ.addToIntegral(error*dt/1000.0);
 		integral = integ.getValue();
 		double derivative = (error - previous_error)/(dt/1000.0);
-		System.out.println("error: "+error);
-		System.out.println("derivative: "+derivative);
+//		System.out.println("error: "+error);
+//		System.out.println("derivative: "+derivative);
 		double output = Kp*error + Ki*integral + Kd*derivative;
-		System.out.println("Zweefpwm + (" +output+")");
+//		System.out.println("Zweefpwm + (" +output+")");
 		output = output + zweefpwm;
 		previous_error = error;
 //		if(error > minErrorForMaxPwm)

@@ -41,7 +41,7 @@ public class HeightController implements Runnable{
 			double height = ds.getHeight();
 
 			while(!stop) {
-				System.out.println("going to : " + destination);
+//				System.out.println("going to : " + destination);
 				double output = pid.getOutput(height);
 				up.setPwmValue((int) output);
 				try {
@@ -49,7 +49,7 @@ public class HeightController implements Runnable{
 				} catch (InterruptedException e) {
 				}
 				height = ds.getHeight();
-				System.out.println("Output: " +output );
+//				System.out.println("Output: " +output );
 			}
 		}
 	}

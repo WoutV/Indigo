@@ -89,7 +89,9 @@ public class MotorController {
 			up.PwmOn();
 			hc = new HeightController(Kp, Ki, Kd, zweefpwm, distanceSensor, up);
 			Thread hct = new Thread(hc);
+			System.out.println("Starting heightController Thread ");
 			hct.start();
+			System.out.println("HeightController Thread Started");
 			cc = new CommandController();
 			Thread ctt = new Thread(cc);
 			ctt.start();

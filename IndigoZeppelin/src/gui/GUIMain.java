@@ -115,6 +115,10 @@ public class GUIMain extends javax.swing.JFrame {
 		propellorNotActive(Propellor.LEFT);
 		propellorNotActive(Propellor.UP);
 		propellorNotActive(Propellor.RIGHT);
+		
+		manual=true;
+		automaticButton.setBackground(Color.RED);
+		manualButton.setBackground(Color.GREEN);
 
 		disableAllComponents(this);
 	}
