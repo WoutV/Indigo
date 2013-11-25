@@ -34,7 +34,6 @@ public class CommandExecutioner {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			System.out.println("How do i sleep?");
-			
 		}
 		mc.stopHorizontalMovement();
 
