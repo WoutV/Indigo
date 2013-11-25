@@ -931,10 +931,10 @@ public class GUIMain extends javax.swing.JFrame {
 	 * @param text
 	 */
 	public void displayQRCode(String text) {
-		int size = 125;
+		int size = 250;
 		try {
 			Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<EncodeHintType, ErrorCorrectionLevel>();
-			hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+			hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix byteMatrix = qrCodeWriter.encode(text,BarcodeFormat.QR_CODE, size, size, hintMap);
 			int width = byteMatrix.getWidth();
