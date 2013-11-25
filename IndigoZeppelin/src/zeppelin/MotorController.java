@@ -218,9 +218,9 @@ public class MotorController {
 		Transfer transfer  = new Transfer();
 		String fullList = "<HTML>\n";
 		for(Command command :cc.getCommandList()){
-			fullList=fullList + command.toString() + "\n";
+			fullList=fullList + command.toString() + "<BR>";
 		}
-		
+		fullList = fullList + "</HTML>";
 		transfer.setCommand(fullList);
 		sender.sendTransfer(transfer);
 	}
