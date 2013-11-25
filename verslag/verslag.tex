@@ -68,7 +68,13 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
 De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
-TODO afbeelding frame
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{frame.pdf}
+\caption{Blueprint van het frame}
+\label{frame}
+\end{figure}
 
 Om het geheel in de lucht te houden, zitten er 2 heliumballonnen (ongeveer 90cm diameter) vast aan de bovenkant van het frame. \\
 \\
@@ -80,13 +86,6 @@ De zeppelin wordt aangestuurd door een Raspberry Pi model A (zie Figuur \ref{Pi}
 	\item \emph{Voeding:} Micro USB
 	\item GPIO-pinnen om de hardware aan te sturen
 \end{itemize}
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[height=30mm]{raspb.jpg}
-\caption{Raspberry Pi}
-\label{Pi}
-\end{figure}
 
 In de Raspberry Pi zit een SD-kaart van 4 GB. Hierop staat Raspbian, het standaard besturingssysteem van de Raspberry Pi. \\
 
@@ -120,6 +119,7 @@ Benodigdheden:
 	\item meetlat
 \end{itemize}
 Deze componenten worden in deze opstelling geplaatst : zie figuur \ref{opstelling}
+
 \begin{figure}[ht!]%
 \centering
 \includegraphics[scale=0.6]{opstelling.jpg}%
@@ -313,7 +313,8 @@ Totaal & 67.5 & 54 & 38.75 & 57.5 & 36.75 \\
 \end{tabular}
 
 \section{Kritische analyse}
-De groepssfeer en onderlinge samenwerking was zeer goed, de deadlines voor tussentijdse verslagen en de demo zijn makkelijk behaald. Veel zwakke punten zijn er eigenlijk niet, er werd altijd hard gewerkt om zo snel mogelijk een onderdeel van het project af te werken. Het enige zwakke punt was eventueel de werkverdeling: iedereen wou ergens aan werken maar vaak was iemand anders hiermee al begonnen. Verbetering bestaat er dan in het werk misschien wat eerlijker te verdelen (wat niet zo makkelijk is als iedereen veel wil doen). We zouden niet veel anders aangepakt hebben, alles verliep vlotjes en we hadden niet veel problemen met software of hardware.
+De groepssfeer en onderlinge samenwerking was zeer goed, de deadlines voor tussentijdse verslagen en de demo's zijn behaald. Een eerste zwak punt was de werkverdeling, vooral in de periode voor de tussentijdse demo: iedereen wou ergens aan werken maar vaak was iemand anders hiermee al begonnen. Verbetering bestaat er dan in het werk misschien wat eerlijker te verdelen (wat niet zo makkelijk is als iedereen veel wil doen). \\
+Een tweede punt van kritiek is dat in de loop van het project, een gedeelte van de code van de zeppelin sterk uitgebreid is. Hierdoor is de code niet altijd even duidelijk meer (bijvoorbeeld de introductie van een aantal boolean-variabelen om de flow te regelen). Dit betekent dat er extra aandacht nodig is bij het aanpassen van de code. In principe is het mogelijk deze code op te kuisen, maar we hebben ons in de laatste weken voor de demo vooral moeten bezighouden met het toevoegen van nieuwe functionaliteit. \\
 
 
 
