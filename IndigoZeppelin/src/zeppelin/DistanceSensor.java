@@ -28,7 +28,7 @@ public class DistanceSensor implements Runnable{
 	// of 10 micro s
 
 	//between readings
-	private final static int WAIT_DURATION_IN_MILLIS = 20; // wait 20 milli s
+	private final static int WAIT_DURATION_IN_MILLIS = 30; // wait 20 milli s
 
 	private final static int TIMEOUT = 2100;
 

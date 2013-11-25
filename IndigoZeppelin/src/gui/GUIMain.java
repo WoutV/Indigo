@@ -722,7 +722,7 @@ public class GUIMain extends javax.swing.JFrame {
 		try {
 			if(pwm != null){
 				pwmgetal = Integer.parseInt(pwm);
-				if(pwmgetal >= -1024 && pwmgetal <= 1024)
+				if(pwmgetal >= -1024 && pwmgetal <= 1000000000)
 					guic.sendPwmZep(pwmgetal);
 				else
 					JOptionPane.showMessageDialog(this, "Ongeldige pwm-waarde");
