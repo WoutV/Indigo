@@ -723,6 +723,7 @@ public class GUIMain extends javax.swing.JFrame {
 				else
 					JOptionPane.showMessageDialog(this, "Ongeldige pwm-waarde");
 			}
+			System.out.println("fsm");
 		}
 		catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(this, "Ongeldige pwm-waarde");
