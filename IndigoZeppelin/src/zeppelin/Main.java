@@ -9,7 +9,7 @@ import transfer.Transfer.Key;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
-public class Main implements Runnable{
+public class Main{
 
 	// BELANGRIJK: Pi4J & WiringPi libraries nodig op de RPi!!
 	// dus wiringpi downloaden mss
@@ -101,16 +101,6 @@ public class Main implements Runnable{
 	
 	public void changeFlyMode(boolean autoPilot){
 		motorController.changeFlyMode(autoPilot);
-	}
-
-	@Override
-	public void run() {
-		while(true){
-			//TODO some other run for main
-			
-			//TODO is this even necessary??
-		}
-
 	}
 
 	public MotorController getMotorController() {

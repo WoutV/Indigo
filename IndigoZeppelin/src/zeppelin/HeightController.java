@@ -4,8 +4,8 @@ import zeppelin.utils.Pid3;
 
 public class HeightController implements Runnable{
 
-	private boolean stop;
-	
+	private Boolean stop=false;
+
 	private double destination;
 	private DistanceSensor ds;
 	private Motor up;
@@ -13,7 +13,7 @@ public class HeightController implements Runnable{
 	private double Kp,Ki,Kd;
 	private int zweefpwm;
 	private int dt = 100;
-	
+
 	private Pid3 pid;
 
 	public HeightController(double Kp,double Ki, double Kd, int zweefpwm,DistanceSensor ds,Motor up){
@@ -35,25 +35,31 @@ public class HeightController implements Runnable{
 			e1.printStackTrace();
 		}
 		destination = ds.getHeight();
-		
+
 		makePid();
 		while(true){
-			double height = ds.getHeight();
-
-			while(!stop) {
-//				System.out.println("going to : " + destination);
-				double output = pid.getOutput(height);
-				up.setPwmValue((int) output);
+			if(stop){
 				try {
-					Thread.sleep(dt);
+					stop.wait();
 				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				height = ds.getHeight();
-//				System.out.println("Output: " +output );
 			}
+			double height = ds.getHeight();
+			//				System.out.println("going to : " + destination);
+			double output = pid.getOutput(height);
+			up.setPwmValue((int) output);
+			try {
+				Thread.sleep(dt);
+			} catch (InterruptedException e) {
+			}
+			height = ds.getHeight();
+			//				System.out.println("Output: " +output );
+
 		}
 	}
-	
+
 	private void makePid() {
 		pid = new Pid3(Kp,Ki,Kd,destination,dt,zweefpwm);
 	}
@@ -65,6 +71,7 @@ public class HeightController implements Runnable{
 
 	public void stop(){
 		stop=true;
+		stop.notify();
 	}
 	public void startRunning(){
 		stop = false;

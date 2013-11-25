@@ -38,7 +38,5 @@ public class Server {
 		Main main = Main.getInstance();
 //		System.out.println("Initializing Main");
 		main.init(send);
-		Thread thread3 = new Thread(main);
-		thread3.start();
 //		System.out.println("Main Initialized");
 	}}

@@ -13,30 +13,35 @@ import command.Command;
  */
 public class CommandController implements Runnable {
 
-	private boolean autoPilot;
+	private Boolean autoPilot=false;
 	private LinkedList<Command> commandList;
 	private boolean commandIsBeingExecuted;
-	
+
 	public CommandController(){
 		commandList = new LinkedList<Command>();
 	}
-	
+
 	@Override
 	public void run() {
 		while(true){
-			
-			while(autoPilot){
-				
-				if(commandList.isEmpty()){
-
-				}else{
-					System.out.println("enteredlecommand");
-					commandList.pop().execute();
-					while(commandIsBeingExecuted){};
+			if(!autoPilot){
+				try {
+					autoPilot.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
+			if(commandList.isEmpty()){
+
+			}else{
+				System.out.println("enteredlecommand");
+				commandList.pop().execute();
+				while(commandIsBeingExecuted){};
+			}
 		}
-		
+
+
 	}
 
 	public boolean isCommandIsBeingExecuted() {
@@ -51,8 +56,10 @@ public class CommandController implements Runnable {
 		return autoPilot;
 	}
 
-	public void setAutoPilot(boolean autoPilot) {
-		this.autoPilot = autoPilot;
+	public void setAutoPilot(boolean autoPilott) {
+		this.autoPilot = autoPilott;
+		if(autoPilott)
+		autoPilot.notify();
 	}
 
 	public LinkedList<command.Command> getCommandList() {
