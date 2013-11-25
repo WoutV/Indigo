@@ -52,16 +52,17 @@ public class InitializeClient {
 	 */
 	public static void setIp(GUIMain gui){
 		while(!ipSet){
-			serverIP = gui.setIP();
+			//serverIP = gui.setIP();
+			serverIP= "raspberrypi.mshome.net";
 			if(serverIP==null){
 				System.exit(0);
 			}
-			if(isValidIP(serverIP)){
+		//	if(isValidIP(serverIP)){
 				ipSet=true;
 				gui.showMessage("Connecting...");
-			}
-			else
-				gui.displayMessage("Invalid IP address", JOptionPane.ERROR_MESSAGE);
+		//	}
+		//	else
+		//		gui.displayMessage("Invalid IP address", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		try {
@@ -71,7 +72,6 @@ public class InitializeClient {
 			SendToServer sender = new SendToServer(sendSocket,gui);
 			gui.getGuiCommands().setSender(sender);
 			gui.enableAllButtons();
-			gui.manual();
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 			gui.showMessage("");

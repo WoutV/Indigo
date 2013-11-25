@@ -40,7 +40,9 @@ class ReceiveFromClientThread implements Runnable
 			while(true){
 				Transfer information;
 				while((information = ( Transfer) input.readObject())!= null){//assign message from client to messageString
+//					System.out.println("Information received processing: "+ information.getTransferType().toString());
 					receiveHandler.handleReceived(information);
+//					System.out.println("information processed");
 				}
 			}
 		

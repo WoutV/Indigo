@@ -162,6 +162,7 @@ public class GuiCommands {
 		gui.addToCommandList(message);
 	}
 
+	
 	/**
 	 * Doorgeven aan zeppelin dat naar manual control moet worden geschakeld.
 	 */
