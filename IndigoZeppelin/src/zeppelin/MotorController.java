@@ -15,7 +15,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
-import command.Command;
+import command.*;
 
 /**
  * Controller voor de drie motoren.
@@ -162,17 +162,21 @@ public class MotorController {
 	 * @param pwm
 	 */
 	public void setFloatPwm(int pwm) {
-		if(zoekZweefPwm != null) {
-			zoekZweefPwm.stop();
-			
-		}
-		up.setPwmValue(pwm);
-		zweefpwm = pwm;
+//		if(zoekZweefPwm != null) {
+//			zoekZweefPwm.stop();
+//			
+//		}
+//		up.setPwmValue(pwm);
+//		zweefpwm = pwm;
+		System.out.println("buuuuuurrrrrr");
+		MoveForward command = new MoveForward(pwm);
+		addToCommandList(command);
 	}
 	
 	public void setZweefPwm(int pwm){
-		up.setPwmValue(pwm);
-		zweefpwm = pwm;
+		//up.setPwmValue(pwm);
+		//zweefpwm = pwm;
+		
 	}
 	
 	/**
@@ -181,13 +185,15 @@ public class MotorController {
 	 */
 	public void searchFloatPwm() {
 		//laat de ZweefZoeker automatisch de zweef pwm zoeken
-		if(zoekZweefPwmThread!= null && zoekZweefPwmThread.isAlive()){
-			zoekZweefPwm.stop();
-		}
+//		if(zoekZweefPwmThread!= null && zoekZweefPwmThread.isAlive()){
+//			zoekZweefPwm.stop();
+//		}
+//		
+//		zoekZweefPwm = new ZoekZweefPwm(distanceSensor,up,this);
+//		zoekZweefPwmThread = new Thread(zoekZweefPwm);
+//		zoekZweefPwmThread.start();
 		
-		zoekZweefPwm = new ZoekZweefPwm(distanceSensor,up,this);
-		zoekZweefPwmThread = new Thread(zoekZweefPwm);
-		zoekZweefPwmThread.start();
+		MoveForward command = new MoveForward(1);
 		
 					
 	}

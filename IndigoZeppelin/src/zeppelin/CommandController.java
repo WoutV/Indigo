@@ -24,10 +24,13 @@ public class CommandController implements Runnable {
 	@Override
 	public void run() {
 		while(true){
+			
 			while(autoPilot){
+				
 				if(commandList.isEmpty()){
 
 				}else{
+					System.out.println("enteredlecommand");
 					commandList.pop().execute();
 					while(commandIsBeingExecuted){};
 				}

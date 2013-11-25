@@ -11,6 +11,7 @@ public class MoveForward extends Command {
 
 	@Override
 	public void execute() {
+		System.out.println("commandexecute");
 		ce.moveDistanceForward(amount);
 	}
 
