@@ -54,7 +54,7 @@ De zeppelin bestaat uit een houten frame waaraan 2 grote ronde heliumballonnen v
 
 \paragraph{Software ontwerp}
 ~\\
-Natuurlijk moet de zeppelin aangestuurd worden via de software. Deze is onderverdeeld in 3 grote delen: de GUI, de communicatie tussen GUI en Raspberry Pi en de interne programmatie op de Pi (Zie figuur \ref{schema}). De software zal volledig worden geprogrammeerd in Java. 
+Het grootste deel van de opdracht is het schrijven van de software in een taal naar keuze. Wij hebben gekozen voor Java. De software bestaat uit 3 grote delen: de GUI, de communicatie tussen GUI en Raspberry Pi en de interne programmatie op de Pi (Zie figuur \ref{schema}). \\
 De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worden objecten uitgewisseld tussen de client en de server (de Pi), die commando's doorgeven aan de zeppelin of de status doorgeven aan de gebruiker. De interne programmatie op de Pi moet op basis van gegevens van zijn sensoren en instructies van QR-codes (en commando's van de gebruiker) de motoren aansturen. 
 
 \begin{figure}[ht!]
@@ -67,7 +67,8 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
+De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
+TODO afbeelding frame
 
 Om het geheel in de lucht te houden, zitten er 2 heliumballonnen (ongeveer 90cm diameter) vast aan de bovenkant van het frame. \\
 \\
@@ -80,6 +81,13 @@ De zeppelin wordt aangestuurd door een Raspberry Pi model A (zie Figuur \ref{Pi}
 	\item GPIO-pinnen om de hardware aan te sturen
 \end{itemize}
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[height=30mm]{raspb.jpg}
+\caption{Raspberry Pi}
+\label{Pi}
+\end{figure}
+
 In de Raspberry Pi zit een SD-kaart van 4 GB. Hierop staat Raspbian, het standaard besturingssysteem van de Raspberry Pi. \\
 
 Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
@@ -88,19 +96,18 @@ Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 	\item De afstandssensor kan worden gebruikt om met ultrasone trillingen de afstand te meten tussen de zeppelin en de grond of muur. Het bereik gaat van 2-400 cm. \\
 \end{itemize}
 
-Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt, is het nodig dat de componenten getest worden. In de volgende secties volgt hierover meer informatie.\\
+\\
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[height=30mm]{raspb.jpg}
-\caption{Raspberry Pi}
-\label{Pi}
-\end{figure}
+TODO zeppelin figuur
+
+Om het geheel te monteren, hebben we gebruik gemaakt van plakband en zipties (bundelbandjes). 
 
 
 
 % == Testen == %
 \section{Testen}
+
+Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt, is het nodig dat de componenten getest worden. In de volgende sectie volgt hierover meer informatie. \\
 \subsection{Afstandssensor}
 
 In deze sectie gaan we dieper in op de testen die we gedaan hebben naar de nauwkeurigheid en snelheid van de afstandssensor.
@@ -124,7 +131,7 @@ Deze componenten worden in deze opstelling geplaatst : zie figuur \ref{opstellin
 De test bestaat uit het meten van 11 verschillende afstanden (10, 20, 30, 60, 90, 100, 110, 120, 130, 140 en 150 cm). Deze zijn zo gekozen om informatie te hebben over voldoende punten binnen het vlieghoogtebereik. Deze afstanden worden elk 500 keer gemeten, om de 60 ms. Deze waarden zijn zo gekozen, om toch voldoende nauwkeurigheid te hebben, veronderstellende dat er uitschieters zouden zijn.
 
 \paragraph{Gegevens en verwerking} ~\\ 
-Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin onhaalbaar is, hebben we besloten om het interval te verkleinen. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm. Het blijkt dat we het interval tussen metingen kunnen terugbrengen naar 40 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
+Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin onhaalbaar is, hebben we besloten om het interval te verkleinen. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm. Het blijkt dat we het interval tussen metingen kunnen terugbrengen naar 20 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
 
 We hebben d.m.v. rolling median de mediaan berekend van 10 en 20 opeenvolgende gegevens, uit de set van 500 waardes per hoogte. Minder dan 10 is niet nauwkeurig genoeg, en voor meer dan 20 samples is de registratietijd te hoog. Uit deze gegevens hebben we om een aantal redenen besloten om een window van 10 samples te nemen.  Ten eerste is er de nauwkeurigheid als de zeppelin stijgt/daalt. Het hoogteverschil tussen sample 1 en 10 is immers kleiner dan dat tussen 1 en 20. Ten tweede is er de snelheid. Het spreekt voor zich dat het registreren van 10 samples minder lang duurt dan 20 samples. Tenslotte is er ook het minieme verschil tussen de gemiddelde mediaan bij 10 en 20 metingen. Minder metingen zorgen dus voor een even grote nauwkeurigheid. 
 
@@ -142,12 +149,12 @@ $\sigma$ (med.) (20)& 0.09 & 0.33 & 0.71 & 0.41 & 0.59 & 0.56 & 0.47 & 0.54 & 0.
 \end{tabular}
 
 \paragraph{Conclusie} ~\\ 
-De afstandsmeter meet het meest nauwkeurig bij kleine afstanden, bij grotere afstanden (meer dan 60 cm) liggen de meetresultaten gemiddeld iets onder de werkelijke afstand. Relatief gezien blijft de fout nog klein en kunnen we deze afwijking in het vervolg incalculeren bij het bepalen van de meetwaarden. De afstandssensor geeft telkens de mediaan van 10 gegevens door volgens het principe van de “rolling median”-techniek. Tien gegevens zorgen voor voldoende nauwkeurigheid, maar hebben ook het aspect dat de mediaanberekeningen snel genoeg gebeuren. Tevens is dit bij een hoogteverandering accurater. Deze methode boet wel in op de standaardafwijking. De gegevens wijken dus meer uit, maar dit weegt niet op tegen de voorgenoemde pluspunten. Om de afstandsregistratie nog sneller te laten verlopen, meet de afstandsmeter om de 40 ms.
+De afstandsmeter meet het meest nauwkeurig bij kleine afstanden, bij grotere afstanden (meer dan 60 cm) liggen de meetresultaten gemiddeld iets onder de werkelijke afstand. Relatief gezien blijft de fout nog klein en kunnen we deze afwijking in het vervolg incalculeren bij het bepalen van de meetwaarden. De afstandssensor geeft telkens de mediaan van 10 gegevens door volgens het principe van de “rolling median”-techniek. Tien gegevens zorgen voor voldoende nauwkeurigheid, maar hebben ook het aspect dat de mediaanberekeningen snel genoeg gebeuren. Tevens is dit bij een hoogteverandering accurater. Deze methode boet wel in op de standaardafwijking. De gegevens wijken dus meer uit, maar dit weegt niet op tegen de voorgenoemde pluspunten. Om de afstandsregistratie nog sneller te laten verlopen, meet de afstandsmeter om de 20 ms.
 
 \subsection{Camera}
 
 \textbf{Deze test is nog niet uitgevoerd.} \\
-
+TODO
 Het testen van de camera lijkt op het eerste zicht eenvoudig, maar er komt veel meer bij kijken dan enkel foto's nemen. Er moet rekening gehouden worden met lichtintensiteit, responstijd van de camera, positie van de QR-code op de foto, \ldots \\
 
 De lichtintensiteit wordt getest in een kamer met controleerbare lichtbron (d.m.v. lichtschakelaar, verduistering). Er wordt getest hoe licht het moet zijn in de kamer opdat de QR-code in de foto nog herkend wordt door het programma. \\
@@ -197,7 +204,10 @@ We gaan allereerst op zoek naar de juiste pwm waarde waarbij de zeppelin op deze
 % == ALGORITMES == %
 \section{Algoritmes}
 \subsection{Verticale bewegingen}
+TODO
 Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{en.wikipedia.org/wiki/PID\_controller}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Dit algoritme moet nog verder getuned worden. \\
+
+\texttt{output = Kp*error + Ki*integral + Kd*derivative}
 
 Daarnaast hebben we al een algoritme voorzien om automatisch de zweef-pwm te zoeken. Hiervoor draait de up-motor gedurende 2 seconden aan een bepaalde pwm-waarde. Dan wordt het hoogteverschil berekend en op basis hiervan het interval verkleind waarin de zweef-pwm ligt. \\
 
