@@ -91,6 +91,7 @@ public class Main implements Runnable{
 	}
 
 	public void setFloatPwm(int pwm) {
+		System.out.println("i dont get itµ");
 		motorController.setFloatPwm(pwm);
 	}
 
