@@ -11,16 +11,14 @@ public class HeightController implements Runnable{
 	private Motor up;
 
 	private double Kp,Ki,Kd;
-	private int zweefpwm;
 	private int dt = 100;
 
 	private Pid3 pid;
 
-	public HeightController(double Kp,double Ki, double Kd, int zweefpwm,DistanceSensor ds,Motor up){
+	public HeightController(double Kp,double Ki, double Kd,DistanceSensor ds,Motor up){
 		this.Kp=Kp;
 		this.Kd=Kd;
 		this.Ki=Ki;
-		this.zweefpwm=zweefpwm;
 		this.ds=ds;
 		this.up =up;
 	}
@@ -49,8 +47,9 @@ public class HeightController implements Runnable{
 				}
 			}
 			double height = ds.getHeight();
-			//				System.out.println("going to : " + destination);
+							System.out.println("going to : " + destination);
 			double output = pid.getOutput(height);
+			
 			up.setPwmValue((int) output);
 			try {
 				Thread.sleep(dt);
@@ -63,11 +62,14 @@ public class HeightController implements Runnable{
 	}
 
 	private void makePid() {
-		pid = new Pid3(Kp,Ki,Kd,destination,dt,zweefpwm);
+		pid = new Pid3(Kp,Ki,Kd,destination,dt);
 	}
 
 	public void moveToHeight(double height){
+		System.out.println("Changing height");
 		destination = height;
+		pid.setDestination(height);
+		System.out.println("Height Changed");
 		stop = false;
 	}
 
@@ -106,11 +108,7 @@ public class HeightController implements Runnable{
 		Kd = kd;
 		makePid();
 	}
-	public int getZweefpwm() {
-		return zweefpwm;
-	}
-	public void setZweefpwm(int zweefpwm) {
-		this.zweefpwm = zweefpwm;
+	public void setZweefpwm() {
 		makePid();
 	}
 

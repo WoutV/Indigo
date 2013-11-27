@@ -95,9 +95,6 @@ public class Main{
 		motorController.setFloatPwm(pwm);
 	}
 
-	public void searchFloatPwm() {
-		motorController.searchFloatPwm();
-	}
 	
 	public void changeFlyMode(boolean autoPilot){
 		motorController.changeFlyMode(autoPilot);

@@ -2,15 +2,8 @@ package zeppelin;
 
 import server.SendToClient;
 import transfer.Transfer;
-import zeppelin.utils.Pid;
-import zeppelin.utils.Pid2;
-import zeppelin.utils.Pid3;
-import zeppelin.utils.ZoekZweefPwm;
 
 import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
@@ -33,22 +26,18 @@ public class MotorController {
 
 
 	private GpioController gpiocontroller;
-	private DistanceSensor distanceSensor;
-	
-	private int zweefpwm =848;
+
+
 	
 	private SendToClient sender;
-
 	private static MotorController mc = new MotorController();
-	private CommandExecutioner commandParser;
-	
 	private HeightController hc;
 	private CommandController cc;
 	
 	
-	public double Kp=(1024-zweefpwm)/100;;
-	public double Kd=70;
-	public double Ki=0.3;
+	public double Kp=30;
+	public double Kd=90;
+	public double Ki=2;
 	
 	
 
@@ -73,7 +62,6 @@ public class MotorController {
 		System.out.println("Initializing Motor before if test");
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
-			this.distanceSensor = distanceSensor;
 			this.sender = sender;
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
@@ -86,7 +74,7 @@ public class MotorController {
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender);
 			up.setOff();
 			up.PwmOn();
-			hc = new HeightController(Kp, Ki, Kd, zweefpwm, distanceSensor, up);
+			hc = new HeightController(Kp, Ki, Kd, distanceSensor, up);
 			Thread hct = new Thread(hc);
 			System.out.println("Starting heightController Thread ");
 			hct.start();
@@ -154,8 +142,8 @@ public class MotorController {
 		up.setOff();
 	}	
 	
-	private ZoekZweefPwm zoekZweefPwm;
-	private Thread zoekZweefPwmThread;
+
+
 	
 	/**
 	 * Stopt het automatisch zoeken naar zweef pwm
@@ -174,30 +162,8 @@ public class MotorController {
 		addToCommandList(command);
 	}
 	
-	public void setZweefPwm(int pwm){
-		//up.setPwmValue(pwm);
-		//zweefpwm = pwm;
-		
-	}
+
 	
-	/**
-	 * Indien niet aan het zoeken: gaat op zoek naar zweef-pwm
-	 * Indien aan het zoeken: stopt
-	 */
-	public void searchFloatPwm() {
-		//laat de ZweefZoeker automatisch de zweef pwm zoeken
-//		if(zoekZweefPwmThread!= null && zoekZweefPwmThread.isAlive()){
-//			zoekZweefPwm.stop();
-//		}
-//		
-//		zoekZweefPwm = new ZoekZweefPwm(distanceSensor,up,this);
-//		zoekZweefPwmThread = new Thread(zoekZweefPwm);
-//		zoekZweefPwmThread.start();
-		
-		MoveForward command = new MoveForward(1);
-		
-					
-	}
 	
 	public void changeFlyMode(boolean autoPilot){
 		if(autoPilot==true){

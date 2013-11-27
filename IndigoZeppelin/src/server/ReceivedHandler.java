@@ -49,9 +49,6 @@ public class ReceivedHandler {
 		case PWM:
 			main.setFloatPwm(information.getPwm());
 			break;
-		case PWMTOGGLE:
-			main.searchFloatPwm();
-			break;
 		case FLYMODE:
 			main.changeFlyMode(information.isAutoPilot());
 		default:

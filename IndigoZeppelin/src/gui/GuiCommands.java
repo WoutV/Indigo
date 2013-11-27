@@ -93,12 +93,12 @@ public class GuiCommands {
 	 * Methode om door te geven dat de zeppelin automatisch naar zweef-pwm moet zoeken.
 	 */
 	public void searchPwmZep() {
-		if(sender !=null) {
-			gui.addToCommandList(" - Looking for floatpwm ");
-			Transfer transfer = new Transfer();
-			transfer.searchPwm();
-			sender.sendTransfer(transfer);
-		}
+//		if(sender !=null) {
+//			gui.addToCommandList(" - Looking for floatpwm ");
+//			Transfer transfer = new Transfer();
+//			transfer.searchPwm();
+//			sender.sendTransfer(transfer);
+//		}
 	}
 
 

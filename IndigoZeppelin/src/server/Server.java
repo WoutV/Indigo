@@ -31,12 +31,12 @@ public class Server {
 		thread.start();
 //		System.out.println("ReceiveFromClientThread initialized");
 		SendToClient send = new SendToClient(clientSocket);
-		
+		SendToClient imageSender = new SendToClient(imageSock);
 		Main main = Main.getInstance();
 //		System.out.println("Initializing Main");
 		main.init(send);
 		System.out.println("Main Initialized");
-		sensor motor = new sensor();
+		ReadInput motor = new ReadInput(send, imageSender);
 		Thread thread2 = new Thread(motor);
 		thread2.start();
 	}}

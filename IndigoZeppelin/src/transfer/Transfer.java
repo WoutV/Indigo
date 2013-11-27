@@ -13,7 +13,7 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PWMTOGGLE, PROPELLOR,FLYMODE, COMMAND,
+		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PROPELLOR,FLYMODE, COMMAND,
 		QRCODE;
 	}
 	
@@ -60,10 +60,6 @@ public class Transfer implements Serializable {
 		message = "Transferring float pwm supplied by user";
 	}
 	
-	
-	public void searchPwm() {
-		this.type = TransferType.PWMTOGGLE;
-	}
 	
 	/**
 	 * Sets the keyevent to given keyevent as well as the type. 
