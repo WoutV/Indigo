@@ -27,12 +27,12 @@ public class CommandExecutioner {
 		return ce;
 	}
 
-	public void moveDistanceForward(double distance) {
+	public void moveDistanceForward(double amount) {
 		System.out.println("it works derp");
 		mc.setCommandIsBeingExecuted(true);
 		mc.moveForward();
 		try {
-			Thread.sleep((long) distance);
+			Thread.sleep((long) amount);
 		} catch (InterruptedException e) {
 			System.out.println("How do i sleep?");
 		}

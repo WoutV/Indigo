@@ -213,7 +213,7 @@ public class MotorController {
 	}
 	
 	public void addToCommandList(Command command){
-		cc.getCommandList().add(command);
+		cc.addCommand(command);
 		updateCommandList();
 	}
 	

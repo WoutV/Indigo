@@ -69,5 +69,9 @@ public class CommandController implements Runnable {
 	public void setCommandList(LinkedList<command.Command> commandList) {
 		this.commandList = commandList;
 	}
+	
+	public void addCommand(Command command) {
+		commandList.add(command);
+	}
 
 }
