@@ -1,5 +1,4 @@
 package zeppelin;
-import java.util.HashMap;
 
 import server.SendToClient;
 import transfer.Transfer;

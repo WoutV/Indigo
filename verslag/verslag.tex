@@ -26,7 +26,7 @@
         Vince Goossens\\
         Dimitri Jonckers\\
         Sunil Tandan\\
-		Wout Vekemans\\} % teamleden
+				Wout Vekemans} % teamleden				
 \maketitlepage
 
 
@@ -34,7 +34,7 @@
 \begin{abstract}
 \noindent
 TODO!!!!!! uitbreiden\\
-Dit document bespreekt de autonome zeppelin van Team Indigo, gemaakt in het kader van P&O Computerwetenschappen. Deze zeppelin, gebouwd met 2 ballonnen en 3 motoren en aangestuurd door een Raspberry Pi, kan commando's uitvoeren die op QR-cedes staan.\\
+Dit document bespreekt de autonome zeppelin van Team Indigo, gemaakt in het kader van P\&O Computerwetenschappen. Deze zeppelin, gebouwd met 2 ballonnen en 3 motoren en aangestuurd door een Raspberry Pi, kan commando's uitvoeren die op QR-cedes staan.\\
 Dit verslag documenteert onze bevindingen en vooruitgang. Meer concreet beschrijven we de opbouw van onze zeppelin en de structuur van de software.
 \end{abstract}
 
@@ -69,9 +69,9 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 \section{Beschrijving materiaal en bouw zeppelin}
 De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.4]{frame.pdf}
+\includegraphics[scale=0.1]{frame.pdf}
 \caption{Blueprint van het frame}
 \label{frame}
 \end{figure}
@@ -95,7 +95,7 @@ Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 	\item De afstandssensor kan worden gebruikt om met ultrasone trillingen de afstand te meten tussen de zeppelin en de grond of muur. Het bereik gaat van 2-400 cm. \\
 \end{itemize}
 
-\\
+
 
 TODO zeppelin figuur
 
@@ -234,9 +234,9 @@ De hoogte wordt om de 40 ms opgemeten. Om een zo accuraat mogelijke waarde te kr
 
 Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekende library voor het inlezen van QR-codes die oorspronkelijk in Java geschreven is. \\
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.4, angle=90]{UML.png}
+\includegraphics[scale=0.35]{UML.png}
 \caption{Klassediagram van de interne programmatie}
 \label{UML}
 \end{figure}

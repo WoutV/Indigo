@@ -37,7 +37,6 @@ public class CommandExecutioner {
 			System.out.println("How do i sleep?");
 		}
 		mc.stopHorizontalMovement();
-
 		mc.updateCommandList();
 		mc.setCommandIsBeingExecuted(false);
 		
