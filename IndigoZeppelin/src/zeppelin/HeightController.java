@@ -26,7 +26,7 @@ public class HeightController implements Runnable{
 	}
 
 	@Override
-	public void run() {
+	public  void run() {
 		//wait for reliable data
 		try {
 			Thread.sleep(2000);
@@ -40,7 +40,9 @@ public class HeightController implements Runnable{
 		while(true){
 			if(stop){
 				try {
-					stop.wait();
+					synchronized(stop){
+						stop.wait();
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -70,8 +72,14 @@ public class HeightController implements Runnable{
 	}
 
 	public void stop(){
+		System.out.println("Method stop has been called");
 		stop=true;
-		stop.notify();
+		System.out.println("Value of stop changed");
+		synchronized(stop){
+			System.out.println("Notifying stop");
+			stop.notify();
+			System.out.println("stop notified");
+		}
 	}
 	public void startRunning(){
 		stop = false;

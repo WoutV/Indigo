@@ -53,7 +53,7 @@ public class InitializeClient {
 	public static void setIp(GUIMain gui){
 		while(!ipSet){
 			//serverIP = gui.setIP();
-			serverIP= "raspberrypi.mshome.net";
+			serverIP= "192.168.173.209";
 			if(serverIP==null){
 				System.exit(0);
 			}

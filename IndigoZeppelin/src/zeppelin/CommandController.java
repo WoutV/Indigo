@@ -22,18 +22,25 @@ public class CommandController implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public  void run() {
 		while(true){
 			if(!autoPilot){
 				try {
+					synchronized(autoPilot) {
 					autoPilot.wait();
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			if(commandList.isEmpty()){
-
+				try {
+					commandList.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else{
 				System.out.println("enteredlecommand");
 				commandList.pop().execute();
@@ -56,12 +63,30 @@ public class CommandController implements Runnable {
 		return autoPilot;
 	}
 
-	public void setAutoPilot(boolean autoPilott) {
-		this.autoPilot = autoPilott;
-		if(autoPilott)
-		autoPilot.notify();
+	public   void setAutoPilot(boolean autoPilott) {
+		if(autoPilott){
+			setAutoPilotTrue();
+		}
+		else{
+			setAutoPilotFalse();
+		}
+		
 	}
-
+	private  void setAutoPilotTrue(){
+		autoPilot=true;
+		synchronized(autoPilot) {
+			autoPilot.notify();
+			}
+		
+	} 
+	private  void setAutoPilotFalse(){
+		autoPilot=false;
+		synchronized(commandList) {
+			commandList.notify();
+			}
+		
+	}
+	
 	public LinkedList<command.Command> getCommandList() {
 		return commandList;
 	}
@@ -69,9 +94,11 @@ public class CommandController implements Runnable {
 	public void setCommandList(LinkedList<command.Command> commandList) {
 		this.commandList = commandList;
 	}
-	
-	public void addCommand(Command command) {
+
+	public synchronized void addCommand(Command command) {
 		commandList.add(command);
+		commandList.notify();
+		
 	}
 
 }

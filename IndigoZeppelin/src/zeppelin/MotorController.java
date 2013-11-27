@@ -140,8 +140,10 @@ public class MotorController {
 	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
 	 */
 	public void stopHorizontalMovement() {
-		left.setOff();
 		right.setOff();
+		left.setOff();
+		
+		
 	}
 
 	/**

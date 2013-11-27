@@ -57,7 +57,6 @@ public class DistanceSensor implements Runnable{
 		this.triggerSensor();
 		this.waitForSignal();
 		long duration = this.measureSignal();
-		System.out.println("Duration:" + duration);
 
 		return duration * SOUND_SPEED / (2 * 10000);
 	}
