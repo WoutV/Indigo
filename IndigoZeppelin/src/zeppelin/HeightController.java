@@ -50,6 +50,7 @@ public class HeightController implements Runnable{
 							System.out.println("going to : " + destination);
 			double output = pid.getOutput(height);
 			
+			//TODO map pid output to 700-1024 value??
 			up.setPwmValue((int) output);
 			try {
 				Thread.sleep(dt);
