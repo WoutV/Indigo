@@ -69,16 +69,24 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 \section{Beschrijving materiaal en bouw zeppelin}
 De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
+TODO figuren: even groot? (evt met height), caption bij upper?
+
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.1]{frame.pdf}
+\includegraphics[scale=0.1]{upperFrame.pnf}
+\label{frame}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.1]{lowerFrame.pnf}
 \caption{Blueprint van het frame}
 \label{frame}
 \end{figure}
 
 Om het geheel in de lucht te houden, zitten er 2 heliumballonnen (ongeveer 90cm diameter) vast aan de bovenkant van het frame. \\
 \\
-De zeppelin wordt aangestuurd door een Raspberry Pi model A (zie Figuur \ref{Pi}). Deze heeft volgende specificaties: 
+De zeppelin wordt aangestuurd door een Raspberry Pi model A. Deze heeft volgende specificaties: 
 \begin{itemize}
 	\item \emph{Processor:} 700MHz ARM
 	\item \emph{Geheugen:} 256MB 
@@ -300,6 +308,8 @@ De eerste lessen hebben we besloten dat er 3 grote delen waren die moesten afgew
 \end{itemize}
 
 Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies: \\
+
+TODO aanvullen en updaten
 
 \begin{tabular}{r||r|r|r|r|r}
 Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vince Goossens \\
