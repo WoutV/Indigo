@@ -2,6 +2,7 @@ package zeppelin;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import transfer.Transfer;
 
@@ -16,7 +17,9 @@ import command.*;
  *
  */
 public abstract class QRParser {
-	
+
+	static LinkedList<Command> toAddCommands = new LinkedList<Command>();
+	static int qrCodeOrder=1;
 	static MotorController mc = MotorController.getInstance();
 
 	public static void parseQR(){
@@ -30,24 +33,33 @@ public abstract class QRParser {
 			String[] commands = readQRCode.split( "\\;" );
 			for(String command: commands){
 				String[] parts = command.split( "\\:" );
-				switch(parts[1]){
+				switch(parts[0]){
 				case "V":
-					mc.addToCommandList(new MoveForward(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveForward(Double.parseDouble(parts[1])));
 					break;
 				case "A":
-					mc.addToCommandList(new MoveBackward(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveBackward(Double.parseDouble(parts[1])));
 					break;
 				case "S":
-					mc.addToCommandList(new MoveUp(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveUp(Double.parseDouble(parts[1])));
 					break;
 				case "D":
-					mc.addToCommandList(new MoveDown(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveDown(Double.parseDouble(parts[1])));
 					break;
 				case "L":
-					mc.addToCommandList(new TurnLeft(Double.parseDouble(parts[1])));
+					toAddCommands.add(new TurnLeft(Double.parseDouble(parts[1])));
 					break;
 				case "R":
-					mc.addToCommandList(new TurnRight(Double.parseDouble(parts[1])));
+					toAddCommands.add(new TurnRight(Double.parseDouble(parts[1])));
+					break;
+				case "N":
+					if(qrCodeOrder==Integer.parseInt(parts[1])){
+						addToCommandList();
+						qrCodeOrder++;
+					}
+					else{
+						toAddCommands.clear();
+					}
 					break;
 				}
 			}
@@ -63,5 +75,11 @@ public abstract class QRParser {
 		}
 		
 
+	}
+
+	private static void addToCommandList() {
+		while(!toAddCommands.isEmpty()){
+			mc.addToCommandList(toAddCommands.pop());
+		}
 	}
 }
