@@ -219,8 +219,10 @@ De output wordt berekend op basis van deze formule: \\
 
 Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij. \\
 
+We hebben een HeightController die dit algoritme implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat.
 
 \subsection{Andere bewegingen}
+TODO!!
 Hiervoor kunnen we geen gebruik maken van data van een sensor, dus gaan we een functie moeten opstellen om een verband te krijgen tussen afstand en tijd dat een motor moet aanstaan. Dit hadden we reeds vermeld in het gedeelte over het testen van de motoren. \\
 
 % == SOFTWARE == %

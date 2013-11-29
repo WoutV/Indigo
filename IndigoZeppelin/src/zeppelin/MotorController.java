@@ -33,6 +33,7 @@ public class MotorController {
 	private static MotorController mc = new MotorController();
 	private HeightController hc;
 	private CommandController cc;
+	private DistanceSensor ds;
 	
 	
 	public double Kp=30;
@@ -63,6 +64,7 @@ public class MotorController {
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
 			this.sender = sender;
+			ds = distanceSensor;
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
@@ -105,7 +107,10 @@ public class MotorController {
 		left.setForward();
 	}
 
-	//dit gaat wss worden vervangen zodat de kracht kan worden ingesteld
+	/**
+	 * Move up at full pwm.
+	 * Automatic height control is shut down!
+	 */
 	public void elevate() {
 		hc.stop();
 		up.setPwmValue(1024);
@@ -168,12 +173,14 @@ public class MotorController {
 	public void changeFlyMode(boolean autoPilot){
 		if(autoPilot==true){
 			if(!cc.isAutoPilot()){
+				//heightcontroller aanzetten (eventueel afgezet door een elevate)
+				//de hoogte die moet behouden blijven, is de huidige hoogte van de zeppelin
+				hc.moveToHeight(ds.getHeight());
 				hc.startRunning();
 				cc.setAutoPilot(true);
 				}
 		}else if(autoPilot==false){
 			if(cc.isAutoPilot()){
-				
 				cc.setAutoPilot(false);
 			}
 		}
