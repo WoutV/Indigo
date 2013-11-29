@@ -107,6 +107,10 @@ public class Main{
 	public SendToClient getSender() {
 		return sender;
 	}
+	
+	public DistanceSensor getDistanceSensor() {
+		return distanceSensor;
+	}
 
 	/**
 	 * Hier iets van public Command ProcessQRCode die dan QRParser gebruikt? 

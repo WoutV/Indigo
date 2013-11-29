@@ -10,7 +10,7 @@ public class MoveUp extends Command {
 
 	@Override
 	public void execute() {
-		ce.moveUpward(amount);
+		ce.moveVertically(amount);
 	}
 	
 	@Override

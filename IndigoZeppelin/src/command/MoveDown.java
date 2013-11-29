@@ -11,7 +11,7 @@ public class MoveDown extends Command {
 
 	@Override
 	public void execute() {
-		ce.moveDownward(amount);
+		ce.moveVertically(amount);
 	}
 	
 	@Override

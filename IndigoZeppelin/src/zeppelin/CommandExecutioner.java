@@ -61,9 +61,16 @@ public class CommandExecutioner {
 	}
 
 
-	public void moveUpward(double amount) {
+	/**
+	 * Moves the zeppelin vertically by the specified amount (in cm)
+	 * @param amount
+	 */
+	public void moveVertically(double amount) {
 		mc.setCommandIsBeingExecuted(true);
-		//TODO schrijf de methode hier
+		
+		double currentHeight = Main.getInstance().getDistanceSensor().getHeight();
+		double dest = currentHeight + amount;
+		mc.moveToHeight(dest);
 		
 		mc.updateCommandList();
 		mc.setCommandIsBeingExecuted(false);
