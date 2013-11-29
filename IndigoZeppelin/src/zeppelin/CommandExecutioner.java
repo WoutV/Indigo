@@ -51,16 +51,6 @@ public class CommandExecutioner {
 		mc.setCommandIsBeingExecuted(false);
 	}
 
-
-	public void moveDownward(double amount) {
-		mc.setCommandIsBeingExecuted(true);
-		//TODO schrijf de methode hier
-		
-		mc.updateCommandList();
-		mc.setCommandIsBeingExecuted(false);
-	}
-
-
 	/**
 	 * Moves the zeppelin vertically by the specified amount (in cm)
 	 * @param amount
