@@ -1,6 +1,5 @@
 package gui;
 
-import java.util.ArrayList;
 import zeppelin.Propellor;
 import javax.swing.ImageIcon;
 import transfer.Transfer.Key;
@@ -30,7 +29,7 @@ public class GuiCommands {
 	 */
 	public void receiveHeight(double hoogte){
 		gui.setHoogteLabel(hoogte);
-		gui.addToCommandList(" - New height received from Zeppelin : "+hoogte);
+		gui.addToGUIEventList(GUIEvent.EventType.HeightReceived," - New height received from Zeppelin : "+hoogte);
 	}
 
 
@@ -67,7 +66,7 @@ public class GuiCommands {
 	 */
 	public void sendHeightZep(double hoogte){
 		if(sender !=null) {
-			gui.addToCommandList(" - Desired height sent to Zeppelin, Zeppelin must reach: " + hoogte +" cm");
+			gui.addToGUIEventList(GUIEvent.EventType.SentOther," - Desired height sent to Zeppelin, Zeppelin must reach: " + hoogte +" cm");
 			Transfer transfer = new Transfer();
 			transfer.setHeight(hoogte);
 			sender.sendTransfer(transfer);
@@ -82,7 +81,7 @@ public class GuiCommands {
 	 */
 	public void sendPwmZep(int pwm){
 		if(sender !=null) {
-			gui.addToCommandList(" - New float pwm sent to Zeppelin: " + pwm );
+			gui.addToGUIEventList(GUIEvent.EventType.SentOther," - New float pwm sent to Zeppelin: " + pwm );
 			Transfer transfer = new Transfer();
 			transfer.setPwm(pwm);
 			sender.sendTransfer(transfer);
@@ -159,7 +158,7 @@ public class GuiCommands {
 	 * @param message
 	 */
 	public void showInfo(String message){
-		gui.addToCommandList(message);
+		gui.addToGUIEventList(GUIEvent.EventType.Misc,message);
 	}
 
 	
@@ -168,7 +167,7 @@ public class GuiCommands {
 	 */
 	public void setManualContr() {
 		if(sender!=null){
-			gui.addToCommandList(" - Switched to manual control");
+			gui.addToGUIEventList(GUIEvent.EventType.Misc," - Switched to manual control");
 			Transfer transfer = new Transfer();
 			transfer.setMode(false);
 			sender.sendTransfer(transfer);
@@ -180,7 +179,7 @@ public class GuiCommands {
 	 */
 	public void setAutomaticContr() {
 		if(sender!=null) {
-			gui.addToCommandList(" - Switched to automatic control");
+			gui.addToGUIEventList(GUIEvent.EventType.Misc," - Switched to automatic control");
 			Transfer transfer = new Transfer();
 			transfer.setMode(true);
 			sender.sendTransfer(transfer);

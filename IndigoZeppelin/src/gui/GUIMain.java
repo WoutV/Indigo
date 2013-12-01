@@ -5,7 +5,9 @@
 package gui;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedList;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -13,11 +15,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
 import zeppelin.Propellor;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
@@ -99,6 +103,14 @@ public class GUIMain extends javax.swing.JFrame {
 		downButton.setText("\u2193");
 		leftButton.setText("\u2190");
 		rightButton.setText("\u2192");
+		
+		//initialise all GUIEvents to true
+		typevisibility.put(GUIEvent.EventType.HeightReceived, true);
+		typevisibility.put(GUIEvent.EventType.KeyEvent, true);
+		typevisibility.put(GUIEvent.EventType.Misc, true);
+		typevisibility.put(GUIEvent.EventType.SentOther, true);
+		typevisibility.put(GUIEvent.EventType.ReceivedOther, true);
+		typevisibility.put(GUIEvent.EventType.PropStatus, true);
 
 		//initialise the propellor icons
 		resource = GUIMain.class.getResourceAsStream("/propelloractive.jpg");
@@ -121,6 +133,10 @@ public class GUIMain extends javax.swing.JFrame {
 		manualButton.setBackground(Color.GREEN);
 
 		disableAllComponents(this);
+
+		creditsLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		creditsLbl.setText("<html>IndigoZeppelin v2.00: <br> Locomotor Zeppelin <br><br> " +
+				"&copy Team Indigo. All rights reserved. </html>");
 	}
 
 	/**
@@ -202,8 +218,19 @@ public class GUIMain extends javax.swing.JFrame {
 		}
 	}
 
-	public void addToCommandList(String s) {
-		fullCommandList.setText(fullCommandList.getText() + "\n" +getTime()+ s);
+	public void addToGUIEventList(GUIEvent.EventType type, String s) {
+		GUIEvent g = new GUIEvent(type,getTime()+s);
+		fullGUIEventList.add(g);
+		if(typevisibility.get(type))
+			shownGUIEventList.setText(shownGUIEventList.getText() + g.text + "\n");
+	}
+	
+	private void remakeGUIEvents() {
+		String s = "";
+		for(GUIEvent g : fullGUIEventList)
+			if(typevisibility.get(g.type))
+				s = s + g.text + "\n";
+		shownGUIEventList.setText(s);
 	}
 
 	//wanneer een toets ingedrukt
@@ -211,7 +238,7 @@ public class GUIMain extends javax.swing.JFrame {
 		up = true;
 		upButton.setSelected(true);
 
-		addToCommandList("-Up pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Up pressed!");
 		guic.sendKeyPressed(Transfer.Key.UP);
 	}
 
@@ -219,63 +246,63 @@ public class GUIMain extends javax.swing.JFrame {
 		up = false;
 		upButton.setSelected(false);
 
-		addToCommandList("-Up unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Up unpressed!");
 		guic.sendKeyReleased(Transfer.Key.UP);
 	}
 
 	private void leftPressed() {
 		left = true;
 		leftButton.setSelected(true);
-		addToCommandList("-Left pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Left pressed!");
 		guic.sendKeyPressed(Transfer.Key.LEFT);
 	}
 
 	private void leftUnpressed() {
 		left = false;
 		leftButton.setSelected(false);
-		addToCommandList("-Left unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Left unpressed!");
 		guic.sendKeyReleased(Transfer.Key.LEFT);
 	}
 
 	private void rightPressed() {
 		right = true;
 		rightButton.setSelected(true);
-		addToCommandList("-Right pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Right pressed!");
 		guic.sendKeyPressed(Transfer.Key.RIGHT);
 	}
 
 	private void rightUnpressed() {
 		right = false;
 		rightButton.setSelected(false);
-		addToCommandList("-Right unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Right unpressed!");
 		guic.sendKeyReleased(Transfer.Key.RIGHT);
 	}
 
 	private void downPressed() {
 		down = true;
 		downButton.setSelected(true);
-		addToCommandList("-Down pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Down pressed!");
 		guic.sendKeyPressed(Transfer.Key.DOWN);
 	}
 
 	private void downUnpressed() {
 		down = false;
 		downButton.setSelected(false);
-		addToCommandList("-Down unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Down unpressed!");
 		guic.sendKeyReleased(Transfer.Key.DOWN);
 	}
 
 	private void elevatePressed() {
 		elevate = true;
 		elevateButton.setSelected(true);
-		addToCommandList("-Elevate pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Elevate pressed!");
 		guic.sendKeyPressed(Transfer.Key.ELEVATE);
 	}
 
 	private void elevateUnpressed() {
 		elevate = false;
 		elevateButton.setSelected(false);
-		addToCommandList("-Elevate unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Elevate unpressed!");
 		guic.sendKeyReleased(Transfer.Key.ELEVATE);
 	}
 
@@ -317,8 +344,9 @@ public class GUIMain extends javax.swing.JFrame {
         zoekZweefPwm = new javax.swing.JButton();
         tab2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        fullCommandList = new javax.swing.JTextArea();
+        shownGUIEventList = new javax.swing.JTextArea();
         clearBtn = new javax.swing.JButton();
+        filterBtn = new javax.swing.JButton();
         tab3 = new javax.swing.JPanel();
         creditsLbl = new javax.swing.JLabel();
 
@@ -593,14 +621,21 @@ public class GUIMain extends javax.swing.JFrame {
 
         jTabbedPane.addTab("tab1", tab1);
 
-        fullCommandList.setColumns(20);
-        fullCommandList.setRows(5);
-        jScrollPane2.setViewportView(fullCommandList);
+        shownGUIEventList.setColumns(20);
+        shownGUIEventList.setRows(5);
+        jScrollPane2.setViewportView(shownGUIEventList);
 
         clearBtn.setText("clear");
         clearBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearBtnActionPerformed(evt);
+            }
+        });
+
+        filterBtn.setText("filter ...");
+        filterBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterBtnActionPerformed(evt);
             }
         });
 
@@ -613,9 +648,11 @@ public class GUIMain extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(clearBtn)
-                .addGap(360, 360, 360))
+                .addGap(210, 210, 210)
+                .addComponent(filterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(210, 210, 210))
         );
         tab2Layout.setVerticalGroup(
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -623,7 +660,9 @@ public class GUIMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(filterBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -761,8 +800,34 @@ public class GUIMain extends javax.swing.JFrame {
 	}//GEN-LAST:event_automaticButtonActionPerformed
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
-        fullCommandList.setText(getTime() + " -- Commandlist CLEARED -- ");
+        fullGUIEventList.clear();
+        GUIEvent g = new GUIEvent(GUIEvent.EventType.Misc,getTime() + " -- Commandlist CLEARED -- ");
+        fullGUIEventList.add(g);
+    	for(GUIEvent.EventType type : typevisibility.keySet())
+    		typevisibility.put(type, true);
+    	remakeGUIEvents();
     }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
+    	JCheckBox heightreceived = new JCheckBox("Height Received");
+		JCheckBox propstatus = new JCheckBox("PropStatus");
+		JCheckBox keyevent = new JCheckBox("KeyEvent");
+		JCheckBox receivedother = new JCheckBox("ReceivedOther");
+		JCheckBox sentother = new JCheckBox("SentOther");
+		JCheckBox misc = new JCheckBox("Misc");
+		Object[] p = {"Choose which GUIEvents are shown:",heightreceived,propstatus,keyevent,receivedother,
+				sentother,misc};
+		int a = JOptionPane.showConfirmDialog(this, p,"Filter GUI events",JOptionPane.OK_CANCEL_OPTION);
+		if(a == JOptionPane.OK_OPTION) {
+			typevisibility.put(GUIEvent.EventType.HeightReceived,heightreceived.isSelected());
+			typevisibility.put(GUIEvent.EventType.PropStatus,propstatus.isSelected());
+			typevisibility.put(GUIEvent.EventType.KeyEvent,keyevent.isSelected());
+			typevisibility.put(GUIEvent.EventType.ReceivedOther,receivedother.isSelected());
+			typevisibility.put(GUIEvent.EventType.SentOther,sentother.isSelected());
+			typevisibility.put(GUIEvent.EventType.Misc,misc.isSelected());
+			remakeGUIEvents();
+		}	
+    }//GEN-LAST:event_filterBtnActionPerformed
 	
     private boolean manual;
 	public void manual() {
@@ -812,7 +877,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JLabel creditsLbl;
     private javax.swing.JToggleButton downButton;
     private javax.swing.JToggleButton elevateButton;
-    private javax.swing.JTextArea fullCommandList;
+    private javax.swing.JButton filterBtn;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JLabel labelCommandsDisplay;
@@ -830,6 +895,7 @@ public class GUIMain extends javax.swing.JFrame {
     private javax.swing.JToggleButton rightButton;
     private javax.swing.JButton setHeightBtn;
     private javax.swing.JButton setPwmValue;
+    private javax.swing.JTextArea shownGUIEventList;
     private javax.swing.JLayeredPane tab1;
     private javax.swing.JLabel tab1Window1StringLbl;
     private javax.swing.JPanel tab1window1;
@@ -845,6 +911,8 @@ public class GUIMain extends javax.swing.JFrame {
 	private ImageIcon propact;
 	private ImageIcon propnotact;
 	private GuiCommands guic = new GuiCommands(this);
+	private LinkedList<GUIEvent> fullGUIEventList = new LinkedList<GUIEvent>();
+	private HashMap<GUIEvent.EventType,Boolean> typevisibility = new HashMap<>();
 
 	private KeyListener keyboardListener = new MotorListener();
 
@@ -874,32 +942,32 @@ public class GUIMain extends javax.swing.JFrame {
 
 	public void setImageDisplay(ImageIcon image){
 		tab1window1Lbl.setIcon(image);
-		addToCommandList( " - New image received from Zeppelin ");
+		addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New image received from Zeppelin ");
 	}
 
 	public void propellorActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propact);
-			addToCommandList( "- Left propellor activated ");
+			addToGUIEventList(GUIEvent.EventType.PropStatus, "- Left propellor activated ");
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propact);
-			addToCommandList( " - Up propellor activated ");
+			addToGUIEventList(GUIEvent.EventType.PropStatus, " - Up propellor activated ");
 		}else{
 			propellor3.setIcon(propact);
-			addToCommandList( " - Right propellor activated " );
+			addToGUIEventList(GUIEvent.EventType.PropStatus, " - Right propellor activated " );
 		}
 	}
 
 	public void propellorNotActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propnotact);
-			addToCommandList( " - Left propellor turned off " );
+			addToGUIEventList(GUIEvent.EventType.PropStatus, " - Left propellor turned off " );
 		}else if(nbPropellor==Propellor.UP){
 			propellor2.setIcon(propnotact);
-			addToCommandList( " - Up propellor turned off " );
+			addToGUIEventList(GUIEvent.EventType.PropStatus, " - Up propellor turned off " );
 		}else{
 			propellor3.setIcon(propnotact);
-			addToCommandList( " - Right propellor turned off " );
+			addToGUIEventList(GUIEvent.EventType.PropStatus, " - Right propellor turned off " );
 		}
 	}
 
@@ -943,6 +1011,8 @@ public class GUIMain extends javax.swing.JFrame {
 		GUIMain gui = new GUIMain();
 		gui.setVisible(true);
 		gui.enableAllButtons();
+		
+		gui.guic.receiveHeight(40);
 	}
 
 	public String getTime(){
@@ -982,7 +1052,7 @@ public class GUIMain extends javax.swing.JFrame {
 			ImageIcon ii = new ImageIcon(image);
 			tab1window1Lbl.setIcon(ii);
 			tab1Window1StringLbl.setText(text);
-			addToCommandList( " - New QR-code received from Zeppelin ");
+			addToGUIEventList(GUIEvent.EventType.ReceivedOther, " - New QR-code received from Zeppelin ");
 		} catch (WriterException e) {
 		}
 	}
