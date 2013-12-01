@@ -218,6 +218,13 @@ public class GUIMain extends javax.swing.JFrame {
 		}
 	}
 
+	/**
+	 * Voegt een GUIEvent toe aan tab 2.
+	 * @param type
+	 * 		EventType: enum in GUIEvent
+	 * @param s
+	 * 		tekst
+	 */
 	public void addToGUIEventList(GUIEvent.EventType type, String s) {
 		GUIEvent g = new GUIEvent(type,getTime()+s);
 		fullGUIEventList.add(g);
@@ -225,6 +232,9 @@ public class GUIMain extends javax.swing.JFrame {
 			shownGUIEventList.setText(shownGUIEventList.getText() + g.text + "\n");
 	}
 	
+	/**
+	 * Herschrijft alle tekst in de shownGUIEventList, aan de hand van de typevisibility.
+	 */
 	private void remakeGUIEvents() {
 		String s = "";
 		for(GUIEvent g : fullGUIEventList)
@@ -238,7 +248,7 @@ public class GUIMain extends javax.swing.JFrame {
 		up = true;
 		upButton.setSelected(true);
 
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Up pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Up pressed!");
 		guic.sendKeyPressed(Transfer.Key.UP);
 	}
 
@@ -246,63 +256,63 @@ public class GUIMain extends javax.swing.JFrame {
 		up = false;
 		upButton.setSelected(false);
 
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Up unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Up unpressed!");
 		guic.sendKeyReleased(Transfer.Key.UP);
 	}
 
 	private void leftPressed() {
 		left = true;
 		leftButton.setSelected(true);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Left pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Left pressed!");
 		guic.sendKeyPressed(Transfer.Key.LEFT);
 	}
 
 	private void leftUnpressed() {
 		left = false;
 		leftButton.setSelected(false);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Left unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Left unpressed!");
 		guic.sendKeyReleased(Transfer.Key.LEFT);
 	}
 
 	private void rightPressed() {
 		right = true;
 		rightButton.setSelected(true);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Right pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Right pressed!");
 		guic.sendKeyPressed(Transfer.Key.RIGHT);
 	}
 
 	private void rightUnpressed() {
 		right = false;
 		rightButton.setSelected(false);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Right unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Right unpressed!");
 		guic.sendKeyReleased(Transfer.Key.RIGHT);
 	}
 
 	private void downPressed() {
 		down = true;
 		downButton.setSelected(true);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Down pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Down pressed!");
 		guic.sendKeyPressed(Transfer.Key.DOWN);
 	}
 
 	private void downUnpressed() {
 		down = false;
 		downButton.setSelected(false);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Down unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Down unpressed!");
 		guic.sendKeyReleased(Transfer.Key.DOWN);
 	}
 
 	private void elevatePressed() {
 		elevate = true;
 		elevateButton.setSelected(true);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Elevate pressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Elevate pressed!");
 		guic.sendKeyPressed(Transfer.Key.ELEVATE);
 	}
 
 	private void elevateUnpressed() {
 		elevate = false;
 		elevateButton.setSelected(false);
-		addToGUIEventList(GUIEvent.EventType.KeyEvent,"-Elevate unpressed!");
+		addToGUIEventList(GUIEvent.EventType.KeyEvent," - Elevate unpressed!");
 		guic.sendKeyReleased(Transfer.Key.ELEVATE);
 	}
 
@@ -799,6 +809,10 @@ public class GUIMain extends javax.swing.JFrame {
 		automatic();
 	}//GEN-LAST:event_automaticButtonActionPerformed
 
+	/**
+	 * Deze button verwijdert alle GUIEvents, en zet alle GUIEvents terug visible.
+	 * @param evt
+	 */
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
         fullGUIEventList.clear();
         GUIEvent g = new GUIEvent(GUIEvent.EventType.Misc,getTime() + " -- Commandlist CLEARED -- ");
@@ -809,6 +823,7 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
+    	//checkbox voor elke GUIEvent.EventType
     	JCheckBox heightreceived = new JCheckBox("Height Received");
 		JCheckBox propstatus = new JCheckBox("PropStatus");
 		JCheckBox keyevent = new JCheckBox("KeyEvent");
@@ -819,6 +834,7 @@ public class GUIMain extends javax.swing.JFrame {
 				sentother,misc};
 		int a = JOptionPane.showConfirmDialog(this, p,"Filter GUI events",JOptionPane.OK_CANCEL_OPTION);
 		if(a == JOptionPane.OK_OPTION) {
+			//update typevisibility
 			typevisibility.put(GUIEvent.EventType.HeightReceived,heightreceived.isSelected());
 			typevisibility.put(GUIEvent.EventType.PropStatus,propstatus.isSelected());
 			typevisibility.put(GUIEvent.EventType.KeyEvent,keyevent.isSelected());
@@ -830,6 +846,7 @@ public class GUIMain extends javax.swing.JFrame {
     }//GEN-LAST:event_filterBtnActionPerformed
 	
     private boolean manual;
+    
 	public void manual() {
 		if(!manual){
 			downButton.setEnabled(true);
@@ -867,9 +884,6 @@ public class GUIMain extends javax.swing.JFrame {
 			manual=false;
 		}
 	}
-
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton automaticButton;
@@ -940,11 +954,19 @@ public class GUIMain extends javax.swing.JFrame {
 		JOptionPane.showMessageDialog(this,message,"Information",type);
 	}
 
+	/**
+	 * Geeft een image weer in tab 1 window1.
+	 * @param image
+	 */
 	public void setImageDisplay(ImageIcon image){
 		tab1window1Lbl.setIcon(image);
 		addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New image received from Zeppelin ");
 	}
 
+	/**
+	 * Update de status van een propellor wanneer deze is ingeschakeld.
+	 * @param nbPropellor
+	 */
 	public void propellorActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propact);
@@ -958,6 +980,10 @@ public class GUIMain extends javax.swing.JFrame {
 		}
 	}
 
+	/**
+	 * Update de status van een propellor wanneer deze is uitgeschakeld.
+	 * @param nbPropellor
+	 */
 	public void propellorNotActive(Propellor nbPropellor){
 		if(nbPropellor==Propellor.LEFT){
 			propellor1.setIcon(propnotact);
@@ -1011,8 +1037,6 @@ public class GUIMain extends javax.swing.JFrame {
 		GUIMain gui = new GUIMain();
 		gui.setVisible(true);
 		gui.enableAllButtons();
-		
-		gui.guic.receiveHeight(40);
 	}
 
 	public String getTime(){
