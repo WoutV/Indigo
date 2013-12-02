@@ -72,8 +72,6 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 \section{Beschrijving materiaal en bouw zeppelin}
 De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
-TODO figuren: even groot? (evt met height), caption bij upper?
-
 \begin{figure}[ht!]
 \centering
 \includegraphics[scale=0.3]{upperFrame.png}
@@ -87,7 +85,7 @@ TODO figuren: even groot? (evt met height), caption bij upper?
 \label{frame}
 \end{figure}
 
-Om het geheel in de lucht te houden, zitten er 2 heliumballonnen ($\diameter$90 cm) vast aan de bovenkant van het frame. \\
+Om het geheel in de lucht te houden, zitten er 2 heliumballonnen ($\diameter$90 cm) vast aan de bovenkant van het frame. Deze hebben een lift van 268 gr per stuk, maar dit vermindert wanneer de ballonnen doorheen de weken volume verliezen. \\
 \\
 De zeppelin wordt aangestuurd door een Raspberry Pi model A. Deze heeft volgende specificaties: 
 \begin{itemize}
@@ -110,9 +108,7 @@ Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 
 TODO zeppelin figuur
 
-Om het geheel te monteren, hebben we gebruik gemaakt van plakband en zipties (bundelbandjes). 
-
-
+Om het geheel te monteren, hebben we gebruik gemaakt van plakband en zipties (bundelbandjes). We hebben bekertjes bevestigd om ballast te dragen, zodat het geheel lichtjes zakt wanneer de motor geen kracht naar boven zet. Als gewicht gebruiken we zout, zodat het mogelijk is om nauwkeurig het gewicht te regelen. \\
 
 % == Testen == %
 \section{Testen}
@@ -142,8 +138,6 @@ Deze componenten worden in deze opstelling geplaatst : zie figuur \ref{opstellin
 De test bestaat uit het meten van 11 verschillende afstanden (10, 20, 30, 60, 90, 100, 110, 120, 130, 140 en 150 cm). Deze zijn zo gekozen om informatie te hebben over voldoende punten binnen het vlieghoogtebereik. Deze afstanden worden elk 500 keer gemeten, om de 60 ms. Deze waarden zijn zo gekozen, om toch voldoende nauwkeurigheid te hebben, veronderstellende dat er uitschieters zouden zijn.
 
 \paragraph{Gegevens en verwerking} ~\\ 
-Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin veel te lang is, hebben we besloten om de tijd tussen de metingen te verkorten. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm. Het blijkt dat we het interval tussen metingen kunnen terugbrengen naar 20 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
-
 We hebben d.m.v. rolling median de mediaan berekend van 10 en 20 opeenvolgende gegevens, uit de set van 500 waardes per hoogte. Minder dan 10 is niet nauwkeurig genoeg, en voor meer dan 20 samples is de registratietijd te hoog. Uit deze gegevens hebben we om een aantal redenen besloten om een window van 10 samples te nemen.  Ten eerste is er de nauwkeurigheid als de zeppelin stijgt/daalt. Het hoogteverschil tussen sample 1 en 10 is immers kleiner dan dat tussen 1 en 20. Ten tweede is er de snelheid. Het spreekt voor zich dat het registreren van 10 samples minder lang duurt dan 20 samples. Tenslotte is er ook het minieme verschil tussen de gemiddelde mediaan bij 10 en 20 metingen. Minder metingen zorgen dus voor een even grote nauwkeurigheid. 
 
 Een nadeel is wel dat de standaardafwijking van de medianen bij een breedte van 10 samples gemiddeld 0.2 cm groter is dan bij 20 samples. Dit weegt echter niet op tegen de winst aan snelheid en nauwkeurigheid.\\ 
@@ -157,7 +151,10 @@ $\mu$ (med.) (10) & 10.8 & 20.5 & 30.8 & 58.0 & 88.3 & 98.7 & 108.5 & 117.3 & 12
 $\mu$ (med.) (20) & 10.8 & 20.7 & 30.7 & 58.0 & 88.3 & 98.7 & 108.5 & 117.3 & 127.7 & 137.0 & 147.1 \\
 $\sigma$ (med.) (10) & 0.21 & 0.52 & 0.82 & 0.55 & 0.70 & 0.72 & 0.68 & 0.94 & 0.58 & 0.60 & 0.69 \\
 $\sigma$ (med.) (20)& 0.09 & 0.33 & 0.71 & 0.41 & 0.59 & 0.56 & 0.47 & 0.54 & 0.43 & 0.37 & 0.49 \\
+\caption{Gemiddelde en standaardafwijking van de rolling medians van 10 en 20, uit 500 meetwaarden}
 \end{tabular}
+
+Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin veel te lang is, hebben we besloten om de tijd tussen de metingen te verkorten. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm (kleiner interval zou voor interferentie kunnen zorgen op grote afstanden). Het blijkt dat we het interval tussen metingen kunnen terugbrengen naar 20 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
 
 \paragraph{Conclusie} ~\\ 
 De afstandsmeter meet het meest nauwkeurig bij kleine afstanden, bij grotere afstanden (meer dan 60 cm) liggen de meetresultaten gemiddeld iets onder de werkelijke afstand. Relatief gezien blijft de fout nog klein en kunnen we deze afwijking in het vervolg incalculeren bij het bepalen van de meetwaarden. De afstandssensor geeft telkens de mediaan van 10 gegevens door volgens het principe van de “rolling median”-techniek. Tien gegevens zorgen voor voldoende nauwkeurigheid, maar hebben ook het aspect dat de mediaanberekeningen snel genoeg gebeuren. Tevens is dit bij een hoogteverandering accurater. Deze methode boet wel in op de standaardafwijking. De gegevens wijken dus meer uit, maar dit weegt niet op tegen de voorgenoemde pluspunten. Om de afstandsregistratie nog sneller te laten verlopen, meet de afstandsmeter om de 20 ms.
@@ -252,6 +249,8 @@ De hoogte wordt om de 20 ms opgemeten. Om een zo accuraat mogelijke waarde te kr
 Op de Raspberry Pi worden objecten aangemaakt die commando's voorstellen. Deze commando's zitten in de package `command', en zijn allemaal subklasses van de klasse Command. De zeppelin heeft klasses die verantwoordelijk zijn voor de aanmaak van deze objecten op basis van QR-codes (QRParser) en het bijhouden van een rij van uit te voeren commando's (CommandController). De klasse CommandExecutioner zorgt voor de praktische implementatie van algoritmes van de commando's. \\
 
 Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekende library voor het inlezen van QR-codes die oorspronkelijk in Java geschreven is. \\
+
+Het klassediagram (zie figuur \ref{UML}) toont de klasses van de interne programmatie en hun verbanden. Het package 'server' bevat klasses verantwoordelijk voor communicatie en Server, die alles van de zeppelin initialiseert.
 
 \begin{figure}[!ht]
 \centering
