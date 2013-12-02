@@ -35,6 +35,8 @@ public class CommandController implements Runnable {
 				}
 			}
 			if(commandList.isEmpty()){
+				//empty --> take new picture to check for more commands
+				QRParser.parseQR();
 				try {
 					commandList.wait();
 				} catch (InterruptedException e) {
