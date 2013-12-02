@@ -163,19 +163,19 @@ $\sigma$ (med.) (20)& 0.09 & 0.33 & 0.71 & 0.41 & 0.59 & 0.56 & 0.47 & 0.54 & 0.
 De afstandsmeter meet het meest nauwkeurig bij kleine afstanden, bij grotere afstanden (meer dan 60 cm) liggen de meetresultaten gemiddeld iets onder de werkelijke afstand. Relatief gezien blijft de fout nog klein en kunnen we deze afwijking in het vervolg incalculeren bij het bepalen van de meetwaarden. De afstandssensor geeft telkens de mediaan van 10 gegevens door volgens het principe van de “rolling median”-techniek. Tien gegevens zorgen voor voldoende nauwkeurigheid, maar hebben ook het aspect dat de mediaanberekeningen snel genoeg gebeuren. Tevens is dit bij een hoogteverandering accurater. Deze methode boet wel in op de standaardafwijking. De gegevens wijken dus meer uit, maar dit weegt niet op tegen de voorgenoemde pluspunten. Om de afstandsregistratie nog sneller te laten verlopen, meet de afstandsmeter om de 20 ms.
 
 \subsection{Camera}
+De camera moet in staat zijn om foto's te nemen en de QR-code te herkennen. De focus bij het testen lag op resolutie, responstijd van de camera, positie van de QR-code op de foto en invalshoek. \\
 
-\textbf{Deze test is nog niet uitgevoerd.} \\
-TODO
-Het testen van de camera lijkt op het eerste zicht eenvoudig, maar er komt veel meer bij kijken dan enkel foto's nemen. Er moet rekening gehouden worden met lichtintensiteit, responstijd van de camera, positie van de QR-code op de foto, \ldots \\
+We hebben testen uitgevoerd waarin de QR-code lichtjes gedraaid was (invalshoek). Dit hebben we uitgevoerd tot hoeken van 20 graden, en er was geen probleem om ze te lezen. \\
 
-De lichtintensiteit wordt getest in een kamer met controleerbare lichtbron (d.m.v. lichtschakelaar, verduistering). Er wordt getest hoe licht het moet zijn in de kamer opdat de QR-code in de foto nog herkend wordt door het programma. \\
+Daarna hebben gezocht naar een geschikte resolutie waarbij de QR-code gelezen kan worden. Voor een afstand van 2 meter is een resolutie van 600 x 800 nodig. Bij afstanden kleiner dan of gelijk aan 1.20 m kunnen we dit verlagen tot 600 x 400. \\
 
-We hebben al kleine testen uitgevoerd waarin de QR-code lichtjes gedraaid was (invalshoek), en er was geen probleem om ze te lezen. Omdat de QR-code altijd recht onder de zeppelin zal staan, gaan we dit niet verder testen. \\
+De responstijd (tijd tot herkennen QR-code) is getest door in verschillende omstandigheden een code te fotograferen. Een simpel printcommando in Java vertelt ons hoe lang het nemen van de foto en het verwerken duurt. Hiervoor wordt de interne klok van de computer gebruikt. Om een globaal beeld te krijgen van de responstijd wordt een gemiddelde berekend van deze gegevens. Een hogere resolutie zorgt voor een langere verwerkingstijd. Bij een resolutie van 600 x 800 duurt het lezen gemiddeld 6 seconden, met een maximum van 8 seconden. Bij een resolutie van 400 x 600 duurt het lezen gemiddeld 3.5 seconden. \\
 
-De responstijd (tijd tot herkennen QR-code) wordt getest door in verschillende omstandigheden een code te fotograferen. Een simpel printcommando in Java vertelt ons hoe lang het verwerken duurt. Hiervoor wordt de interne klok van de computer gebruikt. Om een globaal beeld te krijgen van de responstijd wordt een gemiddelde berekend van deze gegevens. We verwachten dat op grotere hoogtes (grotere afstand tot de code) we een afbeelding moeten nemen in hogere resolutie, waardoor de verwerkingstijd langer zal zijn. \\
+De positie van de QR-code blijkt geen problemen op te leveren voor het lezen van de QR-code. Hiervoor hebben we de QR-code op verschillende plaatsen (weg van het midden) binnen het beeld gezet. De codes bevatten commando’s die relatief ten opzichte van de huidige positie moeten worden uitgevoerd. \\
 
-Om te bepalen tot op welke afstand de camera foto's kan maken die herkend kunnen worden, is er een eenvoudige test: de camera fotografeert een QR-code vanop verschillende afstanden. 
-De positie van de QR-code in de foto is een cruciaal element. De codes bevatten commando’s die relatief ten opzichte van de huidige positie moeten worden uitgevoerd. Kleine afwijkingen van de positie van de code tot het midden van de foto zijn onvermijdelijk en zullen zich voortplanten tijdens het verderzetten van het parcours. Dit heeft echter meer betrekking tot het testen en calibreren van de motoren (zie verder). \\
+Het is wel duidelijk geworden dat meerdere QR-codes binnen een beeld (soms) een probleem opleveren. Wanneer ze dichter dan 10 cm bij elkaar staan, slaagt de parser er niet meer in ze te interpreteren. Indien dit zich voordoet, zullen we moeten zakken, een nieuwe foto nemen en terug naar de oorspronkelijke hoogte gaan. \\
+
+Als conclusie kunnen we stellen dat de camera en QR-parser in de meeste gevallen geen problemen opleveren. De resolutie passen we aan op basis van de hoogte: bij hoogtes lager dan 1.20 m nemen we 400 x 600, anders nemen we 600 x 800. \\
 
 
 \subsection{Motoren}
