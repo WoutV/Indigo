@@ -40,6 +40,11 @@
       \vfill%
       {\Huge\sc P\&O: Computerwetenschappen}\\[0.75cm]%
       {\huge\bf \thetitle}%
+	  \begin{figure}[ht!]
+\centering
+\includegraphics[height=60mm]{zeppelinFull.jpg}
+\label{zeppFull}
+\end{figure}
       \vfill%
       \begin{minipage}{0.4\textwidth}%
         \begin{flushleft}%
