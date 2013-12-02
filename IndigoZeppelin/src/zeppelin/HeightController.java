@@ -47,9 +47,9 @@ public class HeightController implements Runnable{
 				}
 			}
 			double height = ds.getHeight();
-							System.out.println("going to : " + destination);
+			//							System.out.println("going to : " + destination);
 			double output = pid.getOutput(height);
-			
+
 			//TODO map pid output to 700-1024 value??
 			up.setPwmValue((int) output);
 			try {
@@ -67,21 +67,21 @@ public class HeightController implements Runnable{
 	}
 
 	public void moveToHeight(double height){
-		System.out.println("Changing height");
+		//		System.out.println("Changing height");
 		destination = height;
 		pid.setDestination(height);
-		System.out.println("Height Changed");
+		//		System.out.println("Height Changed");
 		stop = false;
 	}
 
 	public void stop(){
-		System.out.println("Method stop has been called");
+		//		System.out.println("Method stop has been called");
 		stop=true;
-		System.out.println("Value of stop changed");
+		//		System.out.println("Value of stop changed");
 		synchronized(stop){
-			System.out.println("Notifying stop");
+			//			System.out.println("Notifying stop");
 			stop.notify();
-			System.out.println("stop notified");
+			//			System.out.println("stop notified");
 		}
 	}
 	public void startRunning(){

@@ -21,8 +21,8 @@ public class MotorController {
 	private Motor left;
 	private Motor right;
 
-	private Pin leftfw = RaspiPin.GPIO_13, leftrv = RaspiPin.GPIO_11, upfw = RaspiPin.GPIO_00,
-			uprv = RaspiPin.GPIO_04, rightfw = RaspiPin.GPIO_05, rightrv = RaspiPin.GPIO_07;
+	private Pin leftfw = RaspiPin.GPIO_11, leftrv = RaspiPin.GPIO_13, upfw = RaspiPin.GPIO_00,
+			uprv = RaspiPin.GPIO_04, rightfw = RaspiPin.GPIO_07, rightrv = RaspiPin.GPIO_05;
 
 
 	private GpioController gpiocontroller;
@@ -98,13 +98,13 @@ public class MotorController {
 	}
 
 	public void turnLeft() {
-		right.setForward();
-		left.setReverse();
+		right.setReverse();
+		left.setForward();
 	}
 
 	public void turnRight() {
-		right.setReverse();
-		left.setForward();
+		left.setReverse();
+		right.setForward();
 	}
 
 	/**

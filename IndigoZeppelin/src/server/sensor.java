@@ -74,8 +74,26 @@ public class sensor implements Runnable{
 					System.out.println("Cannot Parse Duration try again");
 				}
 			}
+			durationRead=false;
+			long pause=0;
+			while(!durationRead){
+				System.out.println("Duration of pause between runs:");
+				try {
+					pause = Long.parseLong(br.readLine());
+					System.out.println("Pause Duration:"+pause);
+					durationRead = true;
+				} catch(Exception e){
+					System.out.println("Cannot Parse Duration try again");
+				}
+			}
 			for(int i=1;i<=times;i++){
-				goForward(motorDuration);		
+				goForward(motorDuration);
+				try {
+					Thread.sleep(pause);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			distanceRead=false;
@@ -107,7 +125,9 @@ public class sensor implements Runnable{
 
 		}
 		try {
-			PrintStream out = new PrintStream(new FileOutputStream("DataHorizontalMovement.txt"));
+			int i =0;
+			PrintStream out = new PrintStream(new FileOutputStream("DataHorizontalMovement"+i+".txt"));
+			i++;
 			out.println("Info About File: \n"+ fileContent);
 			out.close();
 		} catch (IOException e2) {
@@ -119,10 +139,10 @@ public class sensor implements Runnable{
 	}
 	public void goForward(int duration){
 		try {
-			MotorController.getInstance().moveBackward();
+			MotorController.getInstance().moveForward();
 			Thread.sleep(duration);
 			MotorController.getInstance().stopHorizontalMovement();
-			MotorController.getInstance().moveForward();
+			MotorController.getInstance().moveBackward();
 			long Durr =  (long) ((percent/100l)*(double)duration);
 			Thread.sleep(Durr);
 			System.out.println(Durr);

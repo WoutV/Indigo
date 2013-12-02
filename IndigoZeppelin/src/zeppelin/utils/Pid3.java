@@ -44,18 +44,18 @@ public class Pid3 {
 	 */
 	public double getOutput(double input) {
 		double error = dest - input;
-		System.out.println("Destination="+dest);
-		System.out.println("currentheight: "+ input);
+//		System.out.println("Destination="+dest);
+//		System.out.println("currentheight: "+ input);
 //		integral += error*dt/1000.0;
 		integ.addToIntegral(error*dt/1000.0);
 		integral = integ.getValue();
-		System.out.println("Integral:"+integral);
+//		System.out.println("Integral:"+integral);
 		double derivative = (error - previous_error)/(dt/1000.0);
 //		System.out.println("error: "+error);
 //		System.out.println("derivative: "+derivative);
 		double output = Kp*error + Ki*integral + Kd*derivative;
-		System.out.println("Ki*integral:"+Ki*integral);
-		System.out.println("Output: (" +output+")");
+//		System.out.println("Ki*integral:"+Ki*integral);
+//		System.out.println("Output: (" +output+")");
 		previous_error = error;
 //		if(error > minErrorForMaxPwm)
 //			return 900;
