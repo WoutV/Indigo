@@ -60,6 +60,12 @@ public class CameraTest implements Runnable{
 				System.out.println("Loading image completed. Reading QR Code");
 				@SuppressWarnings("unchecked")
 				Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,getMap());
+				
+				
+				
+				System.out.println("Point 1: "+qrCodeResult.getResultPoints()[0].getX()+","+qrCodeResult.getResultPoints()[0].getY());
+				System.out.println("Point 2: "+qrCodeResult.getResultPoints()[1].getX()+","+qrCodeResult.getResultPoints()[1].getY());
+				System.out.println("Point 3: "+qrCodeResult.getResultPoints()[2].getX()+","+qrCodeResult.getResultPoints()[2].getY());
 				long finishTime = System.currentTimeMillis();
 				System.out.println("Time taken to take picture and decode :"+ (finishTime-time));
 				System.out.println(qrCodeResult.getText());

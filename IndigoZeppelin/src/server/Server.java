@@ -39,20 +39,20 @@ public class Server {
 		main.init(send);
 		System.out.println("Main Initialized");
 //		ReadInput motor = new ReadInput(send, imageSender);
-		sensor s = new sensor();
-		Thread thread2 = new Thread(s);
+//		sensor s = new sensor();
+//		Thread thread2 = new Thread(s);
 //		Thread thread2 = new Thread(motor);
-		thread2.start();
-//		CameraTest cameraTest= new CameraTest(imageSender);
-//		Thread camera = new Thread(cameraTest);
-//		camera.start();
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
+//		thread2.start();
+		CameraTest cameraTest= new CameraTest(imageSender);
+		Thread camera = new Thread(cameraTest);
+		camera.start();
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		CameraThread ct = new CameraThread(imageSender);
-		Thread cameraT = new Thread(ct);
-		cameraT.start();
+//			e.printStackTrace();
+//		}
+//		CameraThread ct = new CameraThread(imageSender);
+//		Thread cameraT = new Thread(ct);
+//		cameraT.start();
 	}}
