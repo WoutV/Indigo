@@ -15,6 +15,9 @@
 
 %%% PACKAGES %%%
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{wasysym}
+\usepackage{float}
 \setlength\parindent{0pt}
 
 \begin{document}
@@ -45,11 +48,11 @@ Dit verslag documenteert onze bevindingen en vooruitgang. Meer concreet beschrij
 
 % == INLEIDING == %
 \section{Inleiding}
-Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. De zeppelin wordt aangestuurd door een Raspberry Pi. Via QR-codes kunnen instructies gegeven worden, zoals ``stijg 50cm'' of ``draai 45   graden''. De gebruiker kan via een GUI op een client-pc zelf de pijltjestoetsen gebruiken om de zeppelin aan te sturen of gegevens bekijken over de toestand van de zeppelin (bijvoorbeeld de huidige hoogte).
+Het doel van deze opdracht is een autonome zeppelin te ontwikkelen. De zeppelin wordt aangestuurd door een Raspberry Pi. Via QR-codes kunnen instructies gegeven worden, zoals ``stijg 50 cm'' of ``draai 45   graden''. De gebruiker kan via een GUI op een client-pc zelf de pijltjestoetsen gebruiken om de zeppelin aan te sturen of gegevens bekijken over de toestand van de zeppelin (bijvoorbeeld de huidige hoogte).
 
 \paragraph{Fysisch ontwerp}
 ~\\ 
-De zeppelin bestaat uit een houten frame waaraan 2 grote ronde heliumballonnen vastgemaakt zijn. Aan het frame is een afstandssensor gekoppeld die naar onderen is gericht. Verder is er een camera naar beneden gericht. Zowel de camera als de afstandssensor zijn verbonden met de Raspberry Pi die in het frame zit ingebed. Het geheel bevat drie propellers: twee voor horizontale bewegingen en \'{e}\'{e}n voor verticale bewegingen.
+De zeppelin bestaat uit een houten frame waaraan 2 heliumballonnen ($\diameter$90 cm) vastgemaakt zijn. Aan het frame is een afstandssensor gekoppeld die naar onderen is gericht. Verder is er een camera naar beneden gericht. Zowel de camera als de afstandssensor zijn verbonden met de Raspberry Pi die in het frame zit ingebed. Het geheel bevat drie propellers: twee voor horizontale bewegingen en \'{e}\'{e}n voor verticale bewegingen.
 
 
 \paragraph{Software ontwerp}
@@ -67,24 +70,24 @@ De communicatie tussen GUI en de Raspberry Pi gebeurt via sockets. Hierbij worde
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Door pwm is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
+De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht worden aangestuurd (in 2 richtingen) of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation}. Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen.~\\
 
 TODO figuren: even groot? (evt met height), caption bij upper?
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.1]{upperFrame.png}
+\includegraphics[scale=0.3]{upperFrame.png}
 \label{frame}
 \end{figure}
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.1]{lowerFrame.png}
+\includegraphics[scale=0.3]{lowerFrame.png}
 \caption{Blueprint van het frame}
 \label{frame}
 \end{figure}
 
-Om het geheel in de lucht te houden, zitten er 2 heliumballonnen (ongeveer 90cm diameter) vast aan de bovenkant van het frame. \\
+Om het geheel in de lucht te houden, zitten er 2 heliumballonnen ($\diameter$90 cm) vast aan de bovenkant van het frame. \\
 \\
 De zeppelin wordt aangestuurd door een Raspberry Pi model A. Deze heeft volgende specificaties: 
 \begin{itemize}
@@ -139,7 +142,7 @@ Deze componenten worden in deze opstelling geplaatst : zie figuur \ref{opstellin
 De test bestaat uit het meten van 11 verschillende afstanden (10, 20, 30, 60, 90, 100, 110, 120, 130, 140 en 150 cm). Deze zijn zo gekozen om informatie te hebben over voldoende punten binnen het vlieghoogtebereik. Deze afstanden worden elk 500 keer gemeten, om de 60 ms. Deze waarden zijn zo gekozen, om toch voldoende nauwkeurigheid te hebben, veronderstellende dat er uitschieters zouden zijn.
 
 \paragraph{Gegevens en verwerking} ~\\ 
-Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin onhaalbaar is, hebben we besloten om het interval te verkleinen. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm. Het blijkt dat we het interval tussen metingen kunnen terugbrengen naar 20 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
+Het uitvoeren van de testen nam per afstand gemiddeld 32 seconden in beslag. Omdat dit tijdens het opereren van de zeppelin veel te lang is, hebben we besloten om de tijd tussen de metingen te verkorten. Zo kunnen de metingen sneller gebeuren. Hiervoor hebben we een extra test uitgevoerd op een hoogte van 170cm. Het blijkt dat we het interval tussen metingen kunnen terugbrengen naar 20 ms. Bij lagere waardes gaan signalen door elkaar lopen en zo de meting verstoren. \\
 
 We hebben d.m.v. rolling median de mediaan berekend van 10 en 20 opeenvolgende gegevens, uit de set van 500 waardes per hoogte. Minder dan 10 is niet nauwkeurig genoeg, en voor meer dan 20 samples is de registratietijd te hoog. Uit deze gegevens hebben we om een aantal redenen besloten om een window van 10 samples te nemen.  Ten eerste is er de nauwkeurigheid als de zeppelin stijgt/daalt. Het hoogteverschil tussen sample 1 en 10 is immers kleiner dan dat tussen 1 en 20. Ten tweede is er de snelheid. Het spreekt voor zich dat het registreren van 10 samples minder lang duurt dan 20 samples. Tenslotte is er ook het minieme verschil tussen de gemiddelde mediaan bij 10 en 20 metingen. Minder metingen zorgen dus voor een even grote nauwkeurigheid. 
 
@@ -214,8 +217,11 @@ We gaan allereerst op zoek naar de juiste pwm waarde waarbij de zeppelin op deze
 \subsection{Verticale bewegingen}
 TODO
 Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{en.wikipedia.org/wiki/PID\_controller}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Tenslotte is er de integraal, die fouten uit het verleden voorstelt. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Dit algoritme moet nog verder getuned worden. \\
-De output wordt berekend op basis van deze formule: \\
-\texttt{output = Kp*error + Ki*integral + Kd*derivative}
+De output wordt berekend op basis van deze formule: 
+
+\begin{center}
+\texttt{output = Kp*error + Ki*integral + Kd*derivative}\\
+\end{center}
 
 Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij. \\
 
@@ -235,7 +241,7 @@ Op een client-pc kan de GUI worden gestart. Hier kan de gebruiker informatie afl
 
 De communicatie tussen de GUI (client) en de Raspberry Pi (server) gebeurt via sockets. Sockets zijn een eenvoudige en universele manier om data over een netwerk te sturen. Ze zijn te vergelijken met een deur waarlangs objecten van klassen uitgewisseld worden. Deze stellen bijvoorbeeld commando's van de gebruiker voor of de status van de zeppelin die aan de GUI wordt doorgegeven. Concreet opent de server een socket op poort 6789 (de eerste 1024 poorten zijn gereserveerd voor services zoals http en ftp, we hebben een willekeurige poort hierachter gekozen), waarop de client zal verbinden. We hebben zelf een klasse ge\"implementeerd die Transfers voorstelt die worden doorgestuurd, en we regelen de co\"ordinatie zelf via klasses voor communicatie op zowel client als server. Andere klasses maken hiervan gebruik om Transfers aan te maken met een bepaalde functie (bijvoorbeeld doorsturen van de status van een propeller) en deze te versturen. \\
 
-Voor de communicatie maken we gebruik van een virtueel netwerk dat wordt opgezet vanaf een laptop. Het bleek niet eenvoudig om gebruik te maken van Campusnet voor de verbinding, omdat hier een heleboel netwerkverkeer geblokkeerd wordt. Als alternatief hadden we gebruik kunnen maken van een router om een netwerk op te zetten, maar dan zouden we ofwel zelf voor een router moeten zorgen, ofwel afhankelijk zijn van een andere groep in dezelfde klas die de router in hun bezit hebben. \\
+Voor de communicatie maken we gebruik van een virtueel netwerk dat wordt opgezet vanaf een laptop. Het bleek niet eenvoudig om gebruik te maken van Eduroam voor de verbinding, omdat dat een groot deel van het netwerkverkeer blokkeert. Als alternatief hadden we gebruik kunnen maken van een router om een netwerk op te zetten, maar dan zouden we ofwel zelf voor een router moeten zorgen, ofwel afhankelijk zijn van een andere groep in dezelfde klas die de router in hun bezit hebben. \\
 
 Om meerdere taken tegelijk te kunnen uitvoeren, maken we gebruik van threads. Bepaalde functies die continu moeten gebeuren (met telkens een wachttijd tussen elke uitvoering) worden zo tegelijk uitgevoerd (technisch gezien niet tegelijk, maar er wordt gewisseld tussen deze threads). Threads worden onder andere gebruikt voor de HeightController (constant bijsturen om te zorgen dat de juiste hoogte bereikt wordt of behouden blijft) en de ReceivedHandler (die binnenkomende Transfers van de socket opvangt en verwerkt). \\
 
@@ -243,13 +249,13 @@ Behalve de GUI draait alle software op de Raspberry Pi, omdat die autonoom moet 
 
 De hoogte wordt om de 20 ms opgemeten. Om een zo accuraat mogelijke waarde te krijgen, wordt de mediaan genomen van 10 opeenvolgende meetresultaten. De hoogte wordt elke seconde doorgestuurd naar de GUI. \\
 
-Op de Raspberry Pi worden objecten aangemaakt die commando's voorstellen. Deze commando's zitten in de package 'command', en zijn allemaal subklasses van de klasse Command. De zeppelin heeft klasses die verantwoordelijk zijn voor de aanmaak van deze objecten op basis van QR-codes (QRParser) en het bijhouden van een rij van uit te voeren commando's (CommandController). De klasse CommandExecutioner zorgt voor de praktische implementatie van algoritmes van de commando's. \\
+Op de Raspberry Pi worden objecten aangemaakt die commando's voorstellen. Deze commando's zitten in de package `command', en zijn allemaal subklasses van de klasse Command. De zeppelin heeft klasses die verantwoordelijk zijn voor de aanmaak van deze objecten op basis van QR-codes (QRParser) en het bijhouden van een rij van uit te voeren commando's (CommandController). De klasse CommandExecutioner zorgt voor de praktische implementatie van algoritmes van de commando's. \\
 
 Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnote{http://code.google.com/p/zxing/} (Zebra Crossing). Dit is een bekende library voor het inlezen van QR-codes die oorspronkelijk in Java geschreven is. \\
 
-\begin{figure}[ht!]
+\begin{figure}[!ht]
 \centering
-\includegraphics[scale=0.4, angle=90]{UML.png}
+\includegraphics[scale=0.3]{UML.png}
 \caption{Klassediagram van de interne programmatie}
 \label{UML}
 \end{figure}
@@ -258,7 +264,7 @@ Om de afbeelding te doorzoeken op QR-codes, maken we gebruiken van ZXing\footnot
 \section{GUI}
 De User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de zeppelin. De GUI geeft informatie weer over de status, zoals de huidige hoogte en commando's die worden uitgevoerd. Daarnaast kan de gebruiker de zeppelin aansturen via de pijltjestoetsen. \\
 
-De eerste tab ('main') toont de hoogte en toestand van de propellers. Er is ruimte voorzien om foto's (van de camera) te tonen en om de commando's weer te geven die in de wachtrij van de zeppelin zitten. Verder zijn hier toetsen om de motoren aan te sturen en om de zeppelin naar een bepaalde hoogte te laten stijgen.\\
+De eerste tab (`main') toont de hoogte en toestand van de propellers. Er is ruimte voorzien om foto's (van de camera) te tonen en om de commando's weer te geven die in de wachtrij van de zeppelin zitten. Verder zijn hier toetsen om de motoren aan te sturen en om de zeppelin naar een bepaalde hoogte te laten stijgen.\\
 
 De tweede tab geeft een uitgebreider overzicht van de informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. \\
 
@@ -337,8 +343,8 @@ Totaal &  &  &  &  &  \\
 \end{tabular}
 
 \section{Kritische analyse}
-De groepssfeer was vlot. De algemene groepswerking, specifiek dan de werkverdeling, kon echter wel beter. In de periode voor de tussentijdse demo wou iedereen wel ergens aan werken, maar vaak was iemand anders hiermee al begonnen. We zouden beter (en vanaf het begin) moeten zorgen voor een goede taakverdeling, en deze ook opvolgen en aanpassen aan de hand van eventuele problemen en van verschillen in werkuren. \\
-Een tweede punt van kritiek is dat in de loop van het project, een gedeelte van de code van de zeppelin sterk uitgebreid is. Hierdoor is de code niet altijd even duidelijk meer (bijvoorbeeld de introductie van een aantal boolean-variabelen om de flow te regelen). Dit betekent dat er extra aandacht nodig is bij het aanpassen van de code. In principe is het mogelijk deze code op te kuisen, maar we hebben ons in code laatste weken voor de demo vooral moeten bezighouden met het toevoegen van nieuwe functionaliteit. \\
+De groepssfeer was goed. De werkverdeling kon echter wel beter. In de periode voor de tussentijdse demo wou iedereen wel ergens aan werken, maar vaak was iemand anders hiermee al begonnen. We zouden beter (en vanaf het begin) moeten zorgen voor een goede taakverdeling en deze ook opvolgen en aanpassen aan de hand van eventuele problemen en van verschillen in werkuren. \\
+Een tweede punt van kritiek is dat in de loop van het project een gedeelte van de code van de zeppelin sterk uitgebreid is. Hierdoor is de code niet altijd even duidelijk meer (bijvoorbeeld de introductie van een aantal boolean-variabelen om de flow te regelen). Dit betekent dat er extra aandacht nodig is bij het aanpassen van de code. In principe is het mogelijk deze code op te kuisen, maar we hebben ons in code laatste weken voor de demo vooral moeten bezighouden met het toevoegen van nieuwe functionaliteit. \\
 Over de kwaliteit van de code zelf zijn we wel tevreden. Omwille van problemen met het aantal threads zijn we verplicht geweest deze een stuk efficiënter te maken. \\
 Verder is het fysiek ontwerp van onze zeppelin niet perfect. Idealiter hadden we een nieuw frame moeten laten maken, waarbij een deftige plaats voor de distancesensor voorzien is en dat gemaakt is uit een stevig materiaal zoals plexiglas. Omwille van het vele werk met de programmatie zijn we hier niet toe gekomen.
 We zijn tevreden over onze keuze voor Java en hebben eigenlijk op geen enkel moment tijdens het project gedacht dat we beter af zouden zijn door Python te gebruiken. Alle functionaliteit die we moesten implementeren, was zonder problemen mogelijk in Java. \\
