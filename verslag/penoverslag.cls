@@ -40,6 +40,12 @@
       \vfill%
       {\Huge\sc P\&O: Computerwetenschappen}\\[0.75cm]%
       {\huge\bf \thetitle}%
+      ~\\
+      ~\\
+      ~\\
+      ~\\
+      ~\\
+      ~\\
 	  \begin{figure}[ht!]
 \centering
 \includegraphics[height=60mm]{zeppelinFull.jpg}

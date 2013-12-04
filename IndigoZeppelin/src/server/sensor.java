@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 
 import zeppelin.MotorController;
 
+import com.pi4j.component.motor.Motor;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
@@ -35,7 +36,7 @@ public class sensor implements Runnable{
 		double distanceTravelled=0;
 		int again =1;
 		boolean durationRead,distanceRead; 
-		fileContent = "Duration(ms)    ; Distance(cm)\n";
+		fileContent = "Direction	;Duration(ms)    ; Distance(cm)\n";
 		int times=1;
 
 		while(again==1){
@@ -51,9 +52,20 @@ public class sensor implements Runnable{
 				}
 			}
 
-
 			durationRead=false;
-
+			String direction = null;
+			while(!durationRead){
+				System.out.println("Direction(F/B/L/R)");
+				try {
+					direction = (br.readLine());
+					System.out.println("Direction:"+direction);
+					durationRead = true;
+				} catch(Exception e){
+					System.out.println("Cannot Parse Direction try again");
+				}
+			}
+			
+			durationRead=false;
 			while(!durationRead){
 				System.out.println("Duration motors running in Milliseconds:");
 				try {
@@ -65,7 +77,7 @@ public class sensor implements Runnable{
 			}
 			durationRead=false;
 			while(!durationRead){
-				System.out.println("Duration motors running BACKWARD in percent:");
+				System.out.println("Duration motors running OPPOSITE in percent:");
 				try {
 					percent = Long.parseLong(br.readLine());
 					System.out.println("Percent:"+percent);
@@ -86,8 +98,21 @@ public class sensor implements Runnable{
 					System.out.println("Cannot Parse Duration try again");
 				}
 			}
+			
 			for(int i=1;i<=times;i++){
-				goForward(motorDuration);
+				switch(direction){
+				case "F":
+					goForward(motorDuration);
+					break;
+				case "B":
+					goBackward(motorDuration);
+					break;
+				case "L":
+					turnLeft(motorDuration);
+					break;
+				case "R":
+					turnRight(motorDuration);
+				}
 				try {
 					Thread.sleep(pause);
 				} catch (InterruptedException e) {
@@ -111,7 +136,7 @@ public class sensor implements Runnable{
 			try {
 				valid = Integer.parseInt(br.readLine());
 				if(valid == 1)
-					fileContent += ""+motorDuration +"    ; "+distanceTravelled+"\n";
+					fileContent += ""+direction+","+motorDuration +"    ; "+distanceTravelled+"\n";
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -121,19 +146,19 @@ public class sensor implements Runnable{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
+			try {
+				int i =0;
+				PrintStream out = new PrintStream(new FileOutputStream("DataHorizontalMovement"+i+".txt"));
+				i++;
+				out.println("Info About File: \n"+ fileContent);
+				out.close();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 
 		}
-		try {
-			int i =0;
-			PrintStream out = new PrintStream(new FileOutputStream("DataHorizontalMovement"+i+".txt"));
-			i++;
-			out.println("Info About File: \n"+ fileContent);
-			out.close();
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		
 
 
 	}
@@ -150,6 +175,55 @@ public class sensor implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	public void goBackward(int duration){
+		try {
+			MotorController.getInstance().moveBackward();
+			Thread.sleep(duration);
+			MotorController.getInstance().stopHorizontalMovement();
+			MotorController.getInstance().moveForward();
+			long Durr =  (long) ((percent/100l)*(double)duration);
+			Thread.sleep(Durr);
+			System.out.println(Durr);
+			MotorController.getInstance().stopHorizontalMovement();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void turnLeft(int duration){
+		
+		try {
+			MotorController.getInstance().turnLeft();
+			Thread.sleep(duration);
+			MotorController.getInstance().stopHorizontalMovement();
+			MotorController.getInstance().turnRight();
+			long durr= (long) ((percent/100l)* (double)duration);
+			Thread.sleep(durr);
+			MotorController.getInstance().stopHorizontalMovement();
+			System.out.println("Wander is gay");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void turnRight(int duration){
+		
+		try {
+			MotorController.getInstance().turnRight();
+			Thread.sleep(duration);
+			MotorController.getInstance().stopHorizontalMovement();
+			MotorController.getInstance().turnLeft();
+			long durr= (long) ((percent/100l)* (double)duration);
+			Thread.sleep(durr);
+			MotorController.getInstance().stopHorizontalMovement();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
