@@ -38,8 +38,7 @@
 \begin{abstract}
 \noindent
 Dit rapport documenteert onze analyse en oplossing van het volgende probleem : een zeppelin die aangestuurd wordt door een Raspberry Pi, gemonteerd aan een frame met 3 motoren en   gelift door 2 grote ballonnen, moet opdrachten kunnen uitvoeren. Deze opdrachten, die via QR-codes worden meegegeven, moeten autonoom door de zeppelin worden uitgevoerd. Het uiteindelijke doel is om zo een traject af te leggen dat door de commando's wordt bepaald. Hiervoor hebben we Java-software ontwikkeld die op de Pi draait. Deze regelt de motoren en verwerkt de commando's. Ook kan de gebruiker via een GUI op de client-pc kiezen voor manuele of automatische besturing en de status van de zeppelin bekijken. \\
-
-!!!!!Todo : 2 zinnen over besluit (wat werkt)!!!!!!!!!!!
+Via een PID-regelaar controleren we op elk moment de hoogte van de zeppelin. Voor horizontale bewegingen maken we gebruik van gegevens voor enkele afstanden door deze te combineren om de gevraagde afstand af te leggen. Dit is echter nog niet volledig ge\"implementeerd door veel problemen met de invloed van de wind. Wel kan de zeppelin uit foto's van QR-codes zijn fout in hoek en afstand bepalen, zodat aan de hand hiervan kan worden bijgestuurd.
 \end{abstract}
 
 
@@ -206,9 +205,9 @@ Voor zijwaartse bewegingen zien we ook een probleem: de zeppelin draait nooit mo
 
 In het algemeen is de zeppelin zeer gevoelig voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots Dit is te verklaren door het lichte gewicht, de oppervlakte van de ballonnen en de afstand van de ballonnen tot het massacentrum. \\
 
-Voor het uitvoeren van voorwaartste bewegingen laten we de zeppelin bewegen boven een lintmeter. Het eerste plan was om een functie te vinden die een link legt tussen afstand en tijd dat de motoren moeten draaien. We zouden dan rekening moeten houden met de versnelling (te bepalen uit een aantal metingen) die de motoren geven indien ze op volle kracht draaien. Eventueel zou de opstartfase (tijd en afstand vooraleer de motor op volle kracht draait). Het grote probleem hierbij is het modelleren van het uitbollen of tegensturen. \\
+Voor het uitvoeren van voorwaartste bewegingen laten we de zeppelin bewegen boven een lintmeter. Het eerste plan was om een functie te vinden die een link legt tussen afstand en tijd dat de motoren moeten draaien. We zouden dan rekening moeten houden met de versnelling (te bepalen uit een aantal metingen) die de motoren geven indien ze op volle kracht draaien. Eventueel zou de opstartfase (tijd en afstand vooraleer de motor op volle kracht draait) apart moeten worden gemodelleerd. Het grote probleem hierbij is het modelleren van het uitbollen of tegensturen. \\
 
-Er was een gelijkaardig plan om zijwaartse bewegingen te modelleren, waarbij we draaien boven een roos (cirkel waarop de graden staan aangeduid) en de gedraaide afstand aflezen uit een foto van de camera. Doordat de zeppelin niet mooi boven \'e\'en punt draait is dit echter zeer moeilijk. We zijn op dit moment nog niet toegekomen aan het testen van de zijwaartse bewegingen, om eerst te kunnen focusen op de voorwaartse bewegingen.
+Er was een gelijkaardig plan om zijwaartse bewegingen te modelleren, waarbij we draaien boven een roos (cirkel waarop de graden staan aangeduid) en de gedraaide afstand aflezen uit een foto van de camera. Doordat de zeppelin niet mooi boven \'e\'en punt draait is dit echter zeer moeilijk. We hebben de zijwaartse bewegingen echter nog niet even uitgebreid getest, om eerst te kunnen focusen op de voorwaartse bewegingen.
 
 % == ALGORITMES == %
 \section{Algoritmes}
@@ -227,7 +226,7 @@ Er is een HeightController die dit algoritme implementeert, en die er voor gaat 
 \subsection{Horizontale bewegingen}
 Voor voorwaartse/achterwaartse en zijwaartse bewegingen kunnen we geen gebruik maken van data van een sensor. Zoals reeds vermeld bij het gedeelte over de testen, was het oorspronkelijke plan om gebruik te maken van een functie om een verband te krijgen tussen afstand en tijd dat een motor moet aanstaan. \\
 
-Gedeeltelijk uit tijdsgebrek zijn we overgeschakeld op een na\"ievere aanpak, waarbij we een aantal bewegingen (zoals 10 cm, 25 cm, 100 cm) modelleren en deze oproepen voor een willekeurige afstand. Deze bewegingen worden volledig uitgevoerd, zodat de zeppelin na elke deelbeweging terug stil staat en het tegendraaien gemakkelijker is. Zo is er dus minder invloed van de gevoeligheid van de zeppelin. Op dit moment zijn we nog bezig exacte data te verzamelen voor een aantal afstanden. Voor zijwaartste bewegingen zullen we iets gelijkaardig doen. \\
+Gedeeltelijk uit tijdsgebrek zijn we overgeschakeld op een na\"ievere aanpak, waarbij we een aantal bewegingen (zoals 10 cm, 25 cm, 100 cm) modelleren en deze oproepen voor een willekeurige afstand. Deze bewegingen worden volledig uitgevoerd, zodat de zeppelin na elke deelbeweging terug stil staat en het tegendraaien gemakkelijker is. Zo is er dus minder invloed van de gevoeligheid van de zeppelin. Op dit moment zijn we nog bezig exacte data te verzamelen voor een aantal afstanden. Voor zijwaartste bewegingen doen we iets gelijkaardig, maar hiervoor hebben we nog niet veel data verzameld. \\
 
 Wel was het duidelijk dat het exact uitvoeren bijna onmogelijk gaat zijn, dus hebben we een mechanisme bedacht om de fouten bij te sturen. Ten eerste kunnen we uit afbeeldingen van de camera waarop een QR-code te zien is, bepalen onder welke hoek de zeppelin gedraaid staat ten opzichte van de code. Zo kunnen we aan de hand van feedback van de camera, de hoek van de zeppelin bijsturen. Verder kunnen we de afstand tot een QR-code bepalen. Dit is iets moeilijker omdat we een link moeten leggen tussen het aantal pixels en de afstand in cm. Dit is afhankelijk van de hoogte door middel van een lineaire functie (bepaald door een aantal tests uit te voeren boven een meetlint vanaf verschillende hoogtes):
 
@@ -342,8 +341,6 @@ Na de tussentijdse demo is iedereen gedeeltelijk bezig geweest met het testen va
 
 Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies: \\
 
-TODO aanvullen en updaten
-
 \begin{tabular}{r||r|r|r|r|r}
 Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vince Goossens \\
 \hline \hline 
@@ -355,9 +352,10 @@ Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vi
 04/11 - 10/11 & 15 & 16 & 10 & 16.5 & 10 \\
 11/11 - 17/11 & 17 & 14.5 & 8 & 18.5 & 10 \\
 18/11 - 24/11 & 9.5 & 15 & 9 & 9 & 9 \\
-18/11 - 24/11 & 11.5 & 5 & 11 & 13 & 11 \\
+15/11 - 01/12 & 11.5 & 5 & 11 & 13 & 11 \\
+02/12 - 04/12 & 14.5 & 14 & 12 & 14 & 12.5 \\
 \hline \hline
-Totaal &  &  &  &  &  \\
+Totaal & 120 & 102.5 & 78.75 & 112 & 79.25 \\
 \end{tabular}
 
 \section{Kritische analyse}
