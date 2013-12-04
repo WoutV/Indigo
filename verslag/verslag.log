@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  4 DEC 2013 17:29
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  4 DEC 2013 18:02
 entering extended mode
 **verslag.tex
 (C:\Users\Wout\Documents\GitHub\Indigo\verslag\verslag.tex
@@ -687,11 +687,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 115--116
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 120--121
-
- []
-
 [3pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
@@ -727,11 +722,6 @@ Overfull \hbox (10.28256pt too wide) in paragraph at lines 151--159
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--164
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 169--170
 
  []
@@ -762,16 +752,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--178
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 179--180
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--183
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 186--187
 
  []
@@ -796,12 +776,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 197--198
 
  []
 
-[6]
+
 Underfull \hbox (badness 10000) in paragraph at lines 201--203
 
  []
 
-
+[6]
 Underfull \hbox (badness 10000) in paragraph at lines 204--205
 
  []
@@ -1039,7 +1019,7 @@ C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/
 e1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/wasy/wasy10.pfb>
-Output written on verslag.pdf (15 pages, 5274555 bytes).
+Output written on verslag.pdf (15 pages, 5274562 bytes).
 PDF statistics:
  250 PDF objects out of 1000 (max. 8388607)
  51 named destinations out of 1000 (max. 500000)
