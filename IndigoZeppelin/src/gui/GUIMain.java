@@ -1039,9 +1039,30 @@ public class GUIMain extends javax.swing.JFrame {
 	}
 
 	public static void main(String[] args) {
+		
+		try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
 		GUIMain gui = new GUIMain();
 		gui.setVisible(true);
 		gui.enableAllButtons();
+		
+		gui.guic.showOnCommandLabel("<HTML> Commando 1 : Vlieg 1 meter vooruit <BR>Commando 2 : Vlieg rond de A blok<BR>  Harry is not a wizard</HTML>");
+		gui.setHoogteLabel(1337);
+		gui.displayQRCode("Team Indigo FTW!!");
 	}
 
 	public String getTime(){

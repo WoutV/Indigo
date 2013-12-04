@@ -1,5 +1,6 @@
 package camera;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -53,19 +54,57 @@ public class CameraTest implements Runnable{
 				System.out.println("Taking picture finished...");
 				System.out.println("Time taken to take picture :"+ (System.currentTimeMillis()-time));
 				String filePath = "QRimage.jpg";
-				BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(ImageIO.read(new FileInputStream(filePath)))));
+				BufferedImage bi = ImageIO.read(new FileInputStream(filePath));
+				BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bi)));
 				Transfer transfer= new Transfer();
 				transfer.setImage(new ImageIcon("QRimage.jpg"));
 				Main.getInstance().getSender().sendTransfer(transfer);
 				System.out.println("Loading image completed. Reading QR Code");
 				@SuppressWarnings("unchecked")
 				Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,getMap());
-				
-				
-				
-				System.out.println("Point 1: "+qrCodeResult.getResultPoints()[0].getX()+","+qrCodeResult.getResultPoints()[0].getY());
-				System.out.println("Point 2: "+qrCodeResult.getResultPoints()[1].getX()+","+qrCodeResult.getResultPoints()[1].getY());
-				System.out.println("Point 3: "+qrCodeResult.getResultPoints()[2].getX()+","+qrCodeResult.getResultPoints()[2].getY());
+
+				float[] points=new float[6];
+				points[0]=qrCodeResult.getResultPoints()[0].getX()-bi.getWidth()/2;points[3]=(-1*qrCodeResult.getResultPoints()[0].getY())-bi.getHeight()/2;
+				points[1]=qrCodeResult.getResultPoints()[1].getX()-bi.getWidth()/2;points[4]=(-1*qrCodeResult.getResultPoints()[1].getY())-bi.getHeight()/2;
+				points[2]=qrCodeResult.getResultPoints()[2].getX()-bi.getWidth()/2;points[5]=(-1*qrCodeResult.getResultPoints()[2].getY())-bi.getHeight()/2;
+				System.out.println("Point 1: "+points[0]+","+points[3]);
+				System.out.println("Point 2: "+points[1]+","+points[4]);
+				System.out.println("Point 3: "+points[2]+","+points[5]);
+
+				float[] qrMiddlePoint={(points[2]+points[0])/2,(points[5]+points[3])/2};
+				double clockwise=0;
+				double deg= Math.atan((qrMiddlePoint[1])/(qrMiddlePoint[0]));
+				if(deg>0){
+					if(qrMiddlePoint[0]<0){
+						clockwise =0;
+						deg= Math.PI/2+deg;
+					}
+					else{
+						deg=(Math.PI/2)-deg;
+						clockwise=1;
+					}
+				}
+				else{
+					if(qrMiddlePoint[0]<0){
+						clockwise =0;
+						deg= Math.PI/2+deg;
+					}
+					else{
+						deg=(Math.PI/2)-deg;
+						clockwise=1;
+					}
+				}
+
+				double degree[]= {deg,
+						Math.sqrt((qrMiddlePoint[0])*(qrMiddlePoint[0])
+								+(qrMiddlePoint[1])*(qrMiddlePoint[1])),clockwise};
+				float[] qrHorizontalMPoint={(points[1]+points[0])/2,(points[4]+points[3])/2};
+				double toReturn =Math.atan((qrHorizontalMPoint[0]-points[1])/(qrHorizontalMPoint[1]-points[4]));				
+
+				System.out.println("Angle: "+(degree[0]*180/Math.PI) +
+						"DistancePixels: "+ degree[1]+
+						"Clockwise:"+ degree[2] +
+						"\nOrientation: "+ (toReturn*180/Math.PI));
 				long finishTime = System.currentTimeMillis();
 				System.out.println("Time taken to take picture and decode :"+ (finishTime-time));
 				System.out.println(qrCodeResult.getText());

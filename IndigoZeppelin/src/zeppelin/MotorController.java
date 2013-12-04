@@ -198,7 +198,7 @@ public class MotorController {
 	
 	public void updateCommandList(){
 		Transfer transfer  = new Transfer();
-		String fullList = "<HTML>\n";
+		String fullList = "<HTML>";
 		for(Command command :cc.getCommandList()){
 			fullList=fullList + command.toString() + "<BR>";
 		}
