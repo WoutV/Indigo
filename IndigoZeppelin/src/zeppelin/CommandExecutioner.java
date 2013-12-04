@@ -6,7 +6,8 @@ public class CommandExecutioner {
 
 	private MotorController mc;
 	
-	private HashMap<Double,Double> distanceMap = new HashMap<Double,Double>();
+	private HashMap<Double,Double[]> distanceMap = new HashMap<Double,Double[]>();
+	
 	
 	private static CommandExecutioner ce = new CommandExecutioner();
 	
@@ -17,9 +18,15 @@ public class CommandExecutioner {
 	
 	
 	private void initDistanceMap() {
-		distanceMap.put(10.0, null);
-		distanceMap.put(20.0, null);
-		distanceMap.put(25.0, null);
+		Double[] v = {1400.0,325.0};
+		distanceMap.put(0.5, v);
+		Double[] f = {1100.0,320.0};
+		distanceMap.put(1.0, f);
+		
+	}
+	
+	private void initTurnMap(){
+		
 	}
 
 
