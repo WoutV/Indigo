@@ -41,7 +41,7 @@ public class CommandExecutioner {
 	public void moveDistanceForward(double amount) {
 		System.out.println("it works derp");
 		mc.setCommandIsBeingExecuted(true);
-		while(amount > 100) {
+		while(amount >= 100) {
 			mc.moveForward();
 			try {
 				Thread.sleep((Long.parseLong(distanceMap.get(100.0)[0]+"")));
@@ -55,7 +55,7 @@ public class CommandExecutioner {
 			}
 			amount-=100;
 		}
-		while(amount > 50) {
+		while(amount >= 50) {
 			mc.moveForward();
 			try {
 				Thread.sleep((Long.parseLong(distanceMap.get(50.0)[0]+"")));
