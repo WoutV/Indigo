@@ -21,9 +21,11 @@ import command.*;
  */
 public abstract class QRParser {
 
-	static LinkedList<Command> toAddCommands = new LinkedList<Command>();
-	static int qrCodeOrder=1;
-	static MotorController mc = MotorController.getInstance();
+	private static LinkedList<Command> toAddCommands = new LinkedList<Command>();
+	
+	//next expected QR-no
+	private static int qrCodeOrder=1;
+	private static MotorController mc = MotorController.getInstance();
 
 	private static void tryParsing() throws FileNotFoundException, NotFoundException, IOException{
 			String readQRCode = Camera.readQRCode();
@@ -55,29 +57,28 @@ public abstract class QRParser {
 					toAddCommands.add(new TurnRight(Double.parseDouble(parts[1].trim())));
 					break;
 				case "N":
-					System.out.println("qrCodeOrder: "+ qrCodeOrder);
+					System.out.println("QR read: qrCodeOrder: "+ qrCodeOrder);
 					System.out.println("Before trimming"+ Integer.parseInt(parts[1]));
 					System.out.println("After trimming"+ Integer.parseInt(parts[1].trim()));
 					if(qrCodeOrder==Integer.parseInt(parts[1].trim())){
 						System.out.println("Adding commands");
 						mc.addToCommandList(toAddCommands);
-						System.out.println("qrCodeOrder="+qrCodeOrder);
+						System.out.println("commands added! qrCodeOrder="+qrCodeOrder);
 						qrCodeOrder++;
 						falseFound=false;
 					}
 					else{
 						toAddCommands.clear();
 						falseFound=true;
-						
 					}
 					break;
 				}}
-	
 	}
 	
-	static boolean falseFound=false;
-	static int tried=0;
-	static boolean heightChanged=false;
+	//found a QR code with the wrong no.
+	private static boolean falseFound=false;
+	private static int tried=0;
+	private static boolean heightChanged=false;
 	
 	public static void parseQR(){
 		boolean success=false;
@@ -107,7 +108,7 @@ public abstract class QRParser {
 					}
 				else if(Main.getInstance().getDistanceSensor().getHeight()>150){
 					success=true;
-					System.out.println("QR NOT FOUND. GIVING UP");
+					System.out.println("QR NOT FOUND.");
 				
 				}
 				else{
@@ -118,13 +119,11 @@ public abstract class QRParser {
 					try {
 						Thread.sleep(5000);
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					tried++;
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if(heightChanged){
@@ -132,7 +131,6 @@ public abstract class QRParser {
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

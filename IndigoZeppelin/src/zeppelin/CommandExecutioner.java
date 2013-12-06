@@ -6,9 +6,17 @@ public class CommandExecutioner {
 
 	private MotorController mc;
 	
+	/**
+	 * Destance forward: distance (cm) -> [time to move forward (ms),backward in percent of time forward
+	 * (0.5=50 percent)]
+	 */
 	private HashMap<Double,Double[]> distanceMap = new HashMap<Double,Double[]>();
 	
-	
+	/**
+	 * angle -> [time (ms),opposite direction (percent),amount of runs, time between runs]
+	 */
+	private HashMap<Double,Double[]> turnMap = new HashMap<Double,Double[]>();
+
 	private static CommandExecutioner ce = new CommandExecutioner();
 	
 	private CommandExecutioner() {
@@ -23,9 +31,8 @@ public class CommandExecutioner {
 		Double[] f = {1100.0,3.20};
 		distanceMap.put(100.0, v);
 		distanceMap.put(50.0, f);
-		
 	}
-	private HashMap<Double,Double[]> turnMap = new HashMap<Double,Double[]>();
+	
 	private void initTurnMap(){
 		Double[] v= {1000.0,0.65,2.0,15.0};
 		Double[] f= {1000.0,0.60,1.0,20.0};

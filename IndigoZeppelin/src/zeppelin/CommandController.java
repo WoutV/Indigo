@@ -28,10 +28,13 @@ public class CommandController implements Runnable {
 		commandList = new LinkedList<Command>();
 	}
 
-	boolean correction =true;
+	private boolean correction =true;
+	
 	@Override
 	public  void run() {
 		System.out.println("CommandController started");
+		
+		//nothing while not on autopilot
 		while(true){
 			while(autoPilotInteger==0){
 				try {
@@ -41,7 +44,6 @@ public class CommandController implements Runnable {
 					}
 					System.out.println("AutoPilot is on. Continueing");
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -87,13 +89,10 @@ public class CommandController implements Runnable {
 
 					}
 					catch (NotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
