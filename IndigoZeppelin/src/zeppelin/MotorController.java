@@ -127,8 +127,14 @@ public class MotorController {
 	 */
 	public void moveToHeight(double dest) {
 		hc.moveToHeight(dest);
+		destination=dest;
 	}
-
+	
+	private double destination;
+	
+	public double getDestination(){
+		return destination;
+	}
 	/**
 	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
 	 */
