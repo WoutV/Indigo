@@ -6,10 +6,7 @@ import command.Command;
 
 
 /**
- * Processed QR code, Wordt gebruikt in main? 
- * Bevat Commando's voor de zeppelin om uit te voeren. (ArrayList)?
- * @author Wout
- *
+ * Bevat Commando's voor de zeppelin om uit te voeren.
  */
 public class CommandController implements Runnable {
 
@@ -44,7 +41,7 @@ public class CommandController implements Runnable {
 					e.printStackTrace();
 				}
 			}else{
-				System.out.println("enteredlecommand");
+				System.out.println("enteredlecommand:" + commandList.getFirst());
 				commandList.pop().execute();
 				while(commandIsBeingExecuted){};
 			}
