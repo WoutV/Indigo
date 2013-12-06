@@ -1,6 +1,5 @@
 package command;
 
-import zeppelin.MotorController;
 
 public class MoveUp extends Command {
 

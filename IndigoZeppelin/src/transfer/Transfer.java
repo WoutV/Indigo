@@ -164,11 +164,11 @@ public class Transfer implements Serializable {
 	
 	public void setCommand(String message){
 		this.setType(TransferType.COMMAND);
-		this.setMessage(message);
+		this.message=(message);
 	}
 	
 	public void setQRCode(String txt) {
 		this.setType(TransferType.QRCODE);
-		this.setMessage(message);
+		this.message=(txt);
 	}
 }

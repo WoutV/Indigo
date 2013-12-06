@@ -100,8 +100,6 @@ public class Main{
 		motorController.changeFlyMode(autoPilot);
 		//if switched to automatic control: check for QR-code so
 		//the zepp can start executing commands
-		if(autoPilot)
-			QRParser.parseQR();
 	}
 
 	public MotorController getMotorController() {

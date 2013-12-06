@@ -163,9 +163,9 @@ public class Motor {
 			}
 			
 			
-			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
-			sender.sendTransfer(transfer);
+//			Transfer transfer = new Transfer();
+//			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
+//			sender.sendTransfer(transfer);
 			prevmode = Propellor.Mode.PWM;
 			
 		}

@@ -35,28 +35,33 @@ public abstract class QRParser {
 			String[] commands = readQRCode.split( "\\;" );
 			for(String command: commands){
 				String[] parts = command.split( "\\:" );
-				switch(parts[0]){
+				switch(parts[0].trim()){
 				case "V":
-					toAddCommands.add(new MoveForward(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveForward(Double.parseDouble(parts[1].trim())));
 					break;
 				case "A":
-					toAddCommands.add(new MoveBackward(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveBackward(Double.parseDouble(parts[1].trim())));
 					break;
 				case "S":
-					toAddCommands.add(new MoveUp(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveUp(Double.parseDouble(parts[1].trim())));
 					break;
 				case "D":
-					toAddCommands.add(new MoveDown(Double.parseDouble(parts[1])));
+					toAddCommands.add(new MoveDown(Double.parseDouble(parts[1].trim())));
 					break;
 				case "L":
-					toAddCommands.add(new TurnLeft(Double.parseDouble(parts[1])));
+					toAddCommands.add(new TurnLeft(Double.parseDouble(parts[1].trim())));
 					break;
 				case "R":
-					toAddCommands.add(new TurnRight(Double.parseDouble(parts[1])));
+					toAddCommands.add(new TurnRight(Double.parseDouble(parts[1].trim())));
 					break;
 				case "N":
-					if(qrCodeOrder==Integer.parseInt(parts[1])){
-						addToCommandList();
+					System.out.println("qrCodeOrder: "+ qrCodeOrder);
+					System.out.println("Before trimming"+ Integer.parseInt(parts[1]));
+					System.out.println("After trimming"+ Integer.parseInt(parts[1].trim()));
+					if(qrCodeOrder==Integer.parseInt(parts[1].trim())){
+						System.out.println("Adding commands");
+						mc.addToCommandList(toAddCommands);
+						System.out.println("qrCodeOrder="+qrCodeOrder);
 						qrCodeOrder++;
 						falseFound=false;
 					}
@@ -84,11 +89,11 @@ public abstract class QRParser {
 					success=true;
 				else{
 					mc.moveToHeight(originalHeight-12);
+					System.out.println("Wrong QR Read trying to go to: "+(originalHeight-12));
 					heightChanged=true;
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -107,6 +112,8 @@ public abstract class QRParser {
 				}
 				else{
 					mc.moveToHeight(originalHeight+tried*25);
+					double togo= originalHeight+(tried*25);
+					System.out.println("qr not found going to: "+togo);
 					heightChanged=true;
 					try {
 						Thread.sleep(5000);
@@ -132,11 +139,5 @@ public abstract class QRParser {
 
 		}
 		
-	}
-
-	private static void addToCommandList() {
-		while(!toAddCommands.isEmpty()){
-			mc.addToCommandList(toAddCommands.pop());
-		}
 	}
 }

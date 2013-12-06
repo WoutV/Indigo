@@ -5,6 +5,7 @@ import gui.GUIMain;
 import gui.GuiCommands;
 import transfer.Transfer.Key;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -18,7 +19,7 @@ class ReceiveThread implements Runnable
 	private ObjectInputStream input;
 	GUIMain gui;
 	GuiCommands gc;
-	
+
 	/**
 	 * Handles the transfer received by looking at its type.
 	 * @param information
@@ -55,14 +56,14 @@ class ReceiveThread implements Runnable
 			break;
 		default:
 			break;
-		
+
 		}
 	}
-	
-	
+
+
 	private void command(Transfer information) {
 		gc.showOnCommandLabel(information.getMessage());
-		
+
 	}
 
 
@@ -89,29 +90,27 @@ class ReceiveThread implements Runnable
 	 * If socket closes unexpectedly then exits after 5 seconds.
 	 */
 	public void run() {
-		try{
-			while(true){
-				try{
+		while(true){
+			try{
 				Transfer transferRecieved = null;
 				while((transferRecieved = ( Transfer) input.readObject())!= null){
 					handleReceived(transferRecieved);
 				}
-				}
-				catch(ClassCastException e){
+			}
+			catch(ClassCastException e){
+
+			}catch(EOFException e){
+				e.printStackTrace();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
-		
-		}catch(IOException e){
-		e.printStackTrace();
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		System.exit(0);}
-		catch(Exception ex){
-			ex.printStackTrace();
+			catch(Exception ex){
+				ex.printStackTrace();
+			}
 		}
 	}//end run
 	/**
@@ -127,18 +126,18 @@ class ReceiveThread implements Runnable
 			e.printStackTrace();
 		}
 		System.exit(0);
-	
+
 	}
-	
+
 	//Here on code on how the things are handled.
-	
+
 	public void image(Transfer information){
 		gc.receiveImage(information.getImage());
 	}
 	public void height(Transfer information){
 		gc.receiveHeight(information.getHeight());
 	}
-	
+
 	public void keyPressedEvent(Transfer information){
 		if(information.getKey()==Key.ELEVATE){
 			gc.receivePropellorState(Propellor.UP, true);
@@ -176,7 +175,7 @@ class ReceiveThread implements Runnable
 	public void message(Transfer information){
 		gc.receiveMessage(information.getMessage());
 	}
-	
+
 	public void propellor(Transfer information) {
 		if(information.getPropellorMode() == Propellor.Mode.OFF)
 			gc.receivePropellorState(information.getPropellorId(), false);
@@ -188,12 +187,12 @@ class ReceiveThread implements Runnable
 			else
 				gc.receivePropellorState(information.getPropellorId(), false);
 		}
-			
+
 	}
-	
+
 	public void qrcode(Transfer information) {
 		gc.receiveQRCode(information.getMessage());
 	}
-	
+
 }//end class recievethread
 

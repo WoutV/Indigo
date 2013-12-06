@@ -48,10 +48,11 @@ public abstract class Camera {
 	private static boolean lastQRused=true;
 	private static float[] points= new float[6];
 	private static BufferedImage bi;
+	private static double fotoHeight;
 	/**
 	 * 
 	 * @return
-	 * 			Returns double{which angle the qr code is situated, how much distance,which quarter}
+	 * 			Returns double{which angle the qr code is situated, how much distance,degrees clockwise(1/0)}
 	 * @throws NotFoundException
 	 * 			When the qr code is not found;
 	 * @throws FileNotFoundException
@@ -78,11 +79,18 @@ public abstract class Camera {
 			deg=Math.PI/2-deg;
 			clockwise=1;
 		}
-
-
+		double distance=0;
+		if(bi.getHeight()==600){
+			distance = Math.sqrt((qrMiddlePoint[0])*(qrMiddlePoint[0])
+					+(qrMiddlePoint[1])*(qrMiddlePoint[1]))*0.126*fotoHeight;
+			
+		}
+		else{
+			distance = Math.sqrt((qrMiddlePoint[0])*(qrMiddlePoint[0])
+					+(qrMiddlePoint[1])*(qrMiddlePoint[1]))*0.17*fotoHeight;
+					} 
 		double degree[]= {deg,
-				Math.sqrt((qrMiddlePoint[0])*(qrMiddlePoint[0])
-						+(qrMiddlePoint[1])*(qrMiddlePoint[1])),clockwise};
+				distance,clockwise};
 		return degree;
 	}
 	public static double getOrientation() throws NotFoundException, FileNotFoundException, IOException{
@@ -126,6 +134,7 @@ public abstract class Camera {
 				height=400;
 				width=600;
 			}
+			fotoHeight = altitude;
 			Process p = Runtime.getRuntime().exec("raspistill -t 0 -h "+height+" -w "+width+" -o QRimage.jpg");
 			p.waitFor();
 			isInUse=false;
@@ -145,6 +154,7 @@ public abstract class Camera {
 		points[1]=qrCodeResult.getResultPoints()[1].getX()-bi.getWidth()/2;points[4]=(-1*qrCodeResult.getResultPoints()[1].getY())-bi.getHeight()/2;
 		points[2]=qrCodeResult.getResultPoints()[2].getX()-bi.getWidth()/2;points[5]=(-1*qrCodeResult.getResultPoints()[2].getY())-bi.getHeight()/2;
 		lastQRused=false;
+		System.out.println("QR read:"+qrCodeResult.getText());
 		return qrCodeResult.getText();
 
 	}

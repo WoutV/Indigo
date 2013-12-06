@@ -19,16 +19,16 @@ public class CommandExecutioner {
 	
 	
 	private void initDistanceMap() {
-		Double[] v = {1400.0,325.0};
-		Double[] f = {1100.0,320.0};
+		Double[] v = {1400.0,3.25};
+		Double[] f = {1100.0,3.20};
 		distanceMap.put(100.0, v);
 		distanceMap.put(50.0, f);
 		
 	}
 	private HashMap<Double,Double[]> turnMap = new HashMap<Double,Double[]>();
 	private void initTurnMap(){
-		Double[] v= {1000.0,65.0,2.0,15.0};
-		Double[] f= {1000.0,60.0,1.0,20.0};
+		Double[] v= {1000.0,0.65,2.0,15.0};
+		Double[] f= {1000.0,0.60,1.0,20.0};
 		turnMap.put(180.0, v);
 		turnMap.put(90.0, f);
 	}
@@ -44,9 +44,9 @@ public class CommandExecutioner {
 		while(amount >= 100) {
 			mc.moveForward();
 			try {
-				Thread.sleep((Long.parseLong(distanceMap.get(100.0)[0]+"")));
+				Thread.sleep(distanceMap.get(100.0)[0].longValue());
 				mc.moveBackward();
-				Thread.sleep((Long.parseLong(distanceMap.get(100.0)[0]*distanceMap.get(100.0)[1]+"")));
+				Thread.sleep((long)(distanceMap.get(100.0)[0]*distanceMap.get(100.0)[1]));
 				mc.stopHorizontalMovement();
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -58,9 +58,9 @@ public class CommandExecutioner {
 		while(amount >= 50) {
 			mc.moveForward();
 			try {
-				Thread.sleep((Long.parseLong(distanceMap.get(50.0)[0]+"")));
+				Thread.sleep(distanceMap.get(50.0)[0].longValue());
 				mc.moveBackward();
-				Thread.sleep((Long.parseLong(distanceMap.get(50.0)[0]*distanceMap.get(50.0)[1]+"")));
+				Thread.sleep((long)(distanceMap.get(50.0)[0]*distanceMap.get(50.0)[1]));
 				mc.stopHorizontalMovement();
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -91,10 +91,21 @@ public class CommandExecutioner {
 	 */
 	public void moveVertically(double amount) {
 		mc.setCommandIsBeingExecuted(true);
-		
 		double currentHeight = Main.getInstance().getDistanceSensor().getHeight();
 		double dest = currentHeight + amount;
+		if(dest<15)
+			dest=15;
+		if(dest>250)
+			dest=250;
 		mc.moveToHeight(dest);
+		
+		while(Math.abs(dest-Main.getInstance().getDistanceSensor().getHeight()) > 5) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				
+			}
+		}
 		
 		mc.updateCommandList();
 		mc.setCommandIsBeingExecuted(false);
@@ -107,12 +118,12 @@ public class CommandExecutioner {
 		if(Math.abs(amount-90.0)<=0.001) {
 			mc.turnLeft();
 			try {
-				Thread.sleep(Long.parseLong(turnMap.get(90.0)[0]+""));
+				Thread.sleep(turnMap.get(90.0)[0].longValue());
 				mc.stopHorizontalMovement();
 				mc.turnRight();
-				Thread.sleep(Long.parseLong(turnMap.get(90.0)[0]*turnMap.get(90.0)[1]+""));
+				Thread.sleep((long)(turnMap.get(90.0)[0]*turnMap.get(90.0)[1]));
 				mc.stopHorizontalMovement();
-				Thread.sleep(Long.parseLong(turnMap.get(90.0)[3]+""));
+				Thread.sleep(turnMap.get(90.0)[3].longValue());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
@@ -124,12 +135,12 @@ public class CommandExecutioner {
 			for(int i=0;i<2;i++) {
 				mc.turnLeft();
 				try {
-					Thread.sleep(Long.parseLong(turnMap.get(180.0)[0]+""));
+					Thread.sleep(turnMap.get(180.0)[0].longValue());
 					mc.stopHorizontalMovement();
 					mc.turnRight();
-					Thread.sleep(Long.parseLong(turnMap.get(180.0)[0]*turnMap.get(180.0)[1]+""));
+					Thread.sleep((long)(turnMap.get(180.0)[0]*turnMap.get(180.0)[1]));
 					mc.stopHorizontalMovement();
-					Thread.sleep(Long.parseLong(turnMap.get(180.0)[3]+""));
+					Thread.sleep(turnMap.get(180.0)[3].longValue());
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {

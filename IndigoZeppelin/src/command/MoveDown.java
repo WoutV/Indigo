@@ -1,6 +1,5 @@
 package command;
 
-import zeppelin.MotorController;
 
 public class MoveDown extends Command {
 
@@ -11,7 +10,7 @@ public class MoveDown extends Command {
 
 	@Override
 	public void execute() {
-		ce.moveVertically(amount);
+		ce.moveVertically(-1*amount);
 	}
 	
 	@Override

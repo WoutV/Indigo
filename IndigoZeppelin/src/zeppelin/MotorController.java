@@ -1,5 +1,7 @@
 package zeppelin;
 
+import java.util.LinkedList;
+
 import server.SendToClient;
 import transfer.Transfer;
 
@@ -184,6 +186,7 @@ public class MotorController {
 				hc.moveToHeight(ds.getHeight());
 				hc.startRunning();
 				cc.setAutoPilot(true);
+				
 				}
 		}else if(autoPilot==false){
 			if(cc.isAutoPilot()){
@@ -196,6 +199,10 @@ public class MotorController {
 		cc.addCommand(command);
 		updateCommandList();
 	}
+	public void addToCommandList(LinkedList<Command> toAddCommands){
+		cc.addCommands(toAddCommands);
+		updateCommandList();
+		}
 	
 	public void setCommandIsBeingExecuted(boolean execute){
 		cc.setCommandIsBeingExecuted(execute);
