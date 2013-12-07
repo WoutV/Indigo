@@ -183,6 +183,7 @@ public class GuiCommands {
 			Transfer transfer = new Transfer();
 			transfer.setMode(true);
 			sender.sendTransfer(transfer);
+			receivePropellorState(Propellor.UP,true);
 		}
 	}
 
