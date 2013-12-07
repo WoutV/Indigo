@@ -31,6 +31,7 @@ import transfer.Transfer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -132,11 +133,20 @@ public class GUIMain extends javax.swing.JFrame {
 		automaticButton.setBackground(Color.RED);
 		manualButton.setBackground(Color.GREEN);
 
-		disableAllComponents(this);
+		//initialise tab 3
+		photoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		resource = GUIMain.class.getResourceAsStream("/zepp.jpg");
+		try {
+			Image image = ImageIO.read(resource);
+			photoLabel.setIcon(new ImageIcon(image));
+		} catch (IOException e) {}
 
 		creditsLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		creditsLbl.setText("<html>IndigoZeppelin v2.00: <br> Locomotor Zeppelin <br><br> " +
-				"&copy Team Indigo. All rights reserved. </html>");
+		creditsLbl.setText("<html><p align=\"center\">IndigoZeppelin v2.00: <br> Locomotor Zeppelin <br><br> " +
+				"&copy Team Indigo. All rights reserved. </p></html>");
+
+		disableAllComponents(this);
+
 	}
 
 	/**
@@ -359,6 +369,7 @@ public class GUIMain extends javax.swing.JFrame {
 		filterBtn = new javax.swing.JButton();
 		tab3 = new javax.swing.JPanel();
 		creditsLbl = new javax.swing.JLabel();
+		photoLabel = new javax.swing.JLabel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Zeppelin GUI");
@@ -682,17 +693,21 @@ public class GUIMain extends javax.swing.JFrame {
 		tab3.setLayout(tab3Layout);
 		tab3Layout.setHorizontalGroup(
 				tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(tab3Layout.createSequentialGroup()
+				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab3Layout.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(creditsLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
-						.addContainerGap())
+						.addGroup(tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+								.addComponent(photoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(creditsLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE))
+								.addContainerGap())
 				);
 		tab3Layout.setVerticalGroup(
 				tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(tab3Layout.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(creditsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(43, Short.MAX_VALUE))
+						.addComponent(creditsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addComponent(photoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(42, Short.MAX_VALUE))
 				);
 
 		jTabbedPane.addTab("tab3", tab3);
@@ -900,6 +915,7 @@ public class GUIMain extends javax.swing.JFrame {
 	private javax.swing.JLabel labelHoogteTxt;
 	private javax.swing.JToggleButton leftButton;
 	private javax.swing.JButton manualButton;
+	private javax.swing.JLabel photoLabel;
 	private javax.swing.JLabel prop1Lbl;
 	private javax.swing.JLabel prop2Lbl;
 	private javax.swing.JLabel prop3Lbl;
@@ -1038,29 +1054,27 @@ public class GUIMain extends javax.swing.JFrame {
 	}
 
 	public static void main(String[] args) {
-		
+
 		try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger.getLogger(GUIMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		}
 		GUIMain gui = new GUIMain();
 		gui.setVisible(true);
 		gui.enableAllButtons();
-		
-		gui.guic.showOnCommandLabel("<HTML> Commando 1 : Vlieg 1 meter vooruit <BR>Commando 2 : Vlieg rond de A blok<BR>  Harry is not a wizard</HTML>");
-		gui.setHoogteLabel(1337);
+
 		gui.displayQRCode("Team Indigo FTW!!");
 	}
 
