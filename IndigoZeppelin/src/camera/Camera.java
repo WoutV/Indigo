@@ -89,7 +89,7 @@ public abstract class Camera {
 			distance = Math.sqrt((qrMiddlePoint[0])*(qrMiddlePoint[0])
 					+(qrMiddlePoint[1])*(qrMiddlePoint[1]))*0.17*fotoHeight;
 					} 
-		double degree[]= {deg,
+		double degree[]= {(deg/Math.PI)*180,
 				distance,clockwise};
 		return degree;
 	}
@@ -102,7 +102,7 @@ public abstract class Camera {
 		}
 		float[] qrHorizontalMPoint={(points[1]+points[0])/2,(points[4]+points[3])/2};
 		double toReturn =Math.atan((qrHorizontalMPoint[0]-points[1])/(qrHorizontalMPoint[1]-points[4]));
-		return toReturn;
+		return (toReturn/Math.PI)*180;
 
 	}
 	/**
