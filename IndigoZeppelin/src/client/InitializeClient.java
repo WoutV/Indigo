@@ -67,7 +67,7 @@ public class InitializeClient {
 		
 		try {
 			Socket sock = new Socket(serverIP,6789);
-			Socket imageSock = new Socket(serverIP,6790);
+//			Socket imageSock = new Socket(serverIP,6790);
 			Socket sendSocket = new Socket(serverIP,6791);
 			SendToServer sender = new SendToServer(sendSocket,gui);
 			gui.getGuiCommands().setSender(sender);
@@ -75,9 +75,9 @@ public class InitializeClient {
 			ReceiveThread recieveThread = new ReceiveThread(sock,gui);
 			Thread thread2 =new Thread(recieveThread);thread2.start();
 			gui.showMessage("");
-			ReceiveThread imageReceiver = new ReceiveThread(imageSock,gui);
-			Thread imageThread = new Thread(imageReceiver);
-			imageThread.start();
+//			ReceiveThread imageReceiver = new ReceiveThread(imageSock,gui);
+//			Thread imageThread = new Thread(imageReceiver);
+//			imageThread.start();
 			
 			
 		} catch (Exception e) {

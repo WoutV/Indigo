@@ -1,10 +1,9 @@
 package server;
 import java.io.*;
 import java.net.*;
-import camera.*;
 import server.SendToClient;
 import zeppelin.Main;
-import zeppelin.QRParser;
+
 
 
 public class Server {
@@ -19,12 +18,12 @@ public class Server {
 		System.out.println("Server waiting for connection on port "+port);
 		@SuppressWarnings("resource")
 		ServerSocket ss = new ServerSocket(port);
-		@SuppressWarnings("resource")
-		ServerSocket imageSocket = new ServerSocket(6790);
+//		@SuppressWarnings("resource")
+//		ServerSocket imageSocket = new ServerSocket(6790);
 		@SuppressWarnings("resource")
 		ServerSocket receiveSocket = new ServerSocket(6791);
 		Socket clientSocket = ss.accept();
-		Socket imageSock = imageSocket.accept();
+//		Socket imageSock = imageSocket.accept();
 		Socket receive = receiveSocket.accept();
 //		System.out.println("Recieved connection from "+clientSocket.getInetAddress()+" on port "+clientSocket.getPort());
 		//create two threads to send and recieve from client
@@ -33,7 +32,7 @@ public class Server {
 		thread.start();
 //		System.out.println("ReceiveFromClientThread initialized");
 		SendToClient send = new SendToClient(clientSocket);
-		SendToClient imageSender = new SendToClient(imageSock);
+//		SendToClient imageSender = new SendToClient(imageSock);
 		Main main = Main.getInstance();
 //		System.out.println("Initializing Main");
 		main.init(send);

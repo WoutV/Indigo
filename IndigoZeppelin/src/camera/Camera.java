@@ -93,7 +93,14 @@ public abstract class Camera {
 				distance,clockwise};
 		return degree;
 	}
-	public static double getOrientation() throws NotFoundException, FileNotFoundException, IOException{
+	/**
+	 * Returns the degree that you have to add to get to absoulte 0.{degree, clockwise}.
+	 * @return
+	 * @throws NotFoundException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static double[] getOrientation() throws NotFoundException, FileNotFoundException, IOException{
 		if(lastQRused){
 			readQRCode();
 		}
@@ -102,7 +109,29 @@ public abstract class Camera {
 		}
 		float[] qrHorizontalMPoint={(points[1]+points[0])/2,(points[4]+points[3])/2};
 		double toReturn =Math.atan((qrHorizontalMPoint[0]-points[1])/(qrHorizontalMPoint[1]-points[4]));
-		return (toReturn/Math.PI)*180;
+		double clockwise=0;
+		if(toReturn>0){
+			if(points[1]>qrHorizontalMPoint[0]){
+				toReturn = Math.PI-toReturn;
+				clockwise=1;
+			}
+			if(points[1]<qrHorizontalMPoint[0]){
+				toReturn= Math.PI+toReturn;
+				clockwise=0;
+			}
+		}
+		else if(toReturn<0){
+			if(points[1]>qrHorizontalMPoint[0]){
+				toReturn = Math.PI-toReturn;
+				clockwise=1;
+			}
+			if(points[1]<qrHorizontalMPoint[0]){
+				toReturn= Math.PI+toReturn;
+				clockwise=0;
+			}
+		}
+		double[] toReturnArray={(toReturn/Math.PI)*180,clockwise};
+		return toReturnArray;
 
 	}
 	/**

@@ -1,7 +1,5 @@
 package command;
 
-import zeppelin.MotorController;
-
 public class MoveBackward extends Command {
 
 	public MoveBackward(double amount) {

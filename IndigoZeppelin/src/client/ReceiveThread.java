@@ -100,13 +100,13 @@ class ReceiveThread implements Runnable
 			catch(ClassCastException e){
 
 			}catch(EOFException e){
-				e.printStackTrace();
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+//				e.printStackTrace();
+//				try {
+//					Thread.sleep(500);
+//				} catch (InterruptedException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 			}
 			catch(Exception ex){
 				ex.printStackTrace();

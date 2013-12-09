@@ -1,8 +1,5 @@
 package command;
 
-import zeppelin.CommandExecutioner;
-import zeppelin.MotorController;
-
 public class MoveForward extends Command {
 
 	public MoveForward(double amount) {

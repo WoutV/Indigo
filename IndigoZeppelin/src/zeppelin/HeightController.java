@@ -27,12 +27,12 @@ public class HeightController implements Runnable{
 	public  void run() {
 		//wait for reliable data
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		destination = ds.getHeight();
+		destination = MotorController.getInstance().getDestination();
 
 		makePid();
 		while(true){

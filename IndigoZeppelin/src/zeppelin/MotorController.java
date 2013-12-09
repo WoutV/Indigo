@@ -132,7 +132,7 @@ public class MotorController {
 		destination=dest;
 	}
 	
-	private double destination;
+	private double destination=100;
 	
 	public double getDestination(){
 		return destination;

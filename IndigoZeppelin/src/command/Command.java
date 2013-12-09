@@ -1,7 +1,6 @@
 package command;
 
 import zeppelin.CommandExecutioner;
-import zeppelin.MotorController;
 
 public abstract class Command {
 
@@ -12,7 +11,10 @@ public abstract class Command {
 	public Command(double amount) {
 		this.amount = amount;
 	}
-
+	
+	public double getAmount(){
+		return amount;
+	}
 	public abstract void execute();
 
 	public abstract String toString();

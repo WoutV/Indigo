@@ -106,7 +106,7 @@ public abstract class QRParser {
 				if(tried==0){
 						tried++;
 					}
-				else if(Main.getInstance().getDistanceSensor().getHeight()>150){
+				else if((originalHeight+tried*25)>150){
 					success=true;
 					System.out.println("QR NOT FOUND.");
 				

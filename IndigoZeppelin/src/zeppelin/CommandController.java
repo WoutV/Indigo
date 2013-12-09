@@ -51,6 +51,7 @@ public class CommandController implements Runnable {
 				//empty --> take new picture to check for more commands
 				QRParser.parseQR();
 				if(correction){
+					//DistanceCorrection
 					try {
 						double degreeDistance[] = Camera.getDegreeAndDistanceQR();
 						double distanceToMove = 0;
@@ -86,6 +87,26 @@ public class CommandController implements Runnable {
 						cmd.execute();
 						cmd = new MoveForward(distanceToMove);
 						cmd.execute();
+						
+						//AngleCorrection
+						double[] orientation= Camera.getOrientation();
+						if(orientation[1]==1){
+							cmd = new TurnRight(Math.abs(orientation[0]));
+							cmd.execute();
+						}
+						if(orientation[1]==0){
+							cmd = new TurnLeft(Math.abs(orientation[0]));
+							cmd.execute();
+						}
+						if(angle>0){
+							cmd = new TurnRight(Math.abs(angle));
+							cmd.execute();
+						}
+						if(angle<0){
+							cmd = new TurnLeft(Math.abs(angle));
+							cmd.execute();
+						}
+						
 
 					}
 					catch (NotFoundException e) {
@@ -95,7 +116,10 @@ public class CommandController implements Runnable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+				
+				
 				}
+				
 
 			}
 			System.out.println("enteredlecommand:" + commandList.peek());
@@ -118,7 +142,8 @@ public class CommandController implements Runnable {
 
 
 	}
-
+	
+	double angle=0;
 	public boolean isCommandIsBeingExecuted() {
 		return commandIsBeingExecuted;
 	}
@@ -178,6 +203,12 @@ public class CommandController implements Runnable {
 	public synchronized void addCommands(LinkedList<Command> toAddCommands) {
 		while(!toAddCommands.isEmpty()){
 			Command cm= toAddCommands.pop();
+			if(cm instanceof TurnLeft){
+				angle-=cm.getAmount();
+			}
+			if(cm instanceof TurnRight){
+				angle+=cm.getAmount();
+			}
 			commandList.add(cm);
 			System.out.println("addingCommand: "+cm.toString());
 		}
