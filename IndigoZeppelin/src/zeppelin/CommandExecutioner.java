@@ -34,11 +34,14 @@ public class CommandExecutioner {
 	}
 	
 	private void initTurnMap(){
-		Double[] v= {1000.0,0.65,2.0,15.0};
-		Double[] f= {1000.0,0.60,1.0,20.0};
+		Double[] v= {5000.0,0.5,1.0,0.0};
+		Double[] f= {3000.0,1.0,1.0,0.0};
+		Double[] s= {1300.0,1.0,1.0,0.0};
 		turnMap.put(180.0, v);
 		turnMap.put(90.0, f);
+		turnMap.put(45.0, s);
 	}
+	
 
 
 	public static CommandExecutioner getInstance() {
@@ -122,6 +125,23 @@ public class CommandExecutioner {
 
 	public void turnDegreesLeft(double amount) {
 		mc.setCommandIsBeingExecuted(true);
+		
+		if(Math.abs(amount-45.0)<=0.001) {
+			mc.turnLeft();
+			try {
+				Thread.sleep(turnMap.get(45.0)[0].longValue());
+				mc.stopHorizontalMovement();
+				mc.turnRight();
+				Thread.sleep((long)(turnMap.get(45.0)[0]*turnMap.get(45.0)[1]));
+				mc.stopHorizontalMovement();
+				Thread.sleep(turnMap.get(45.0)[3].longValue());
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if(Math.abs(amount-90.0)<=0.001) {
 			mc.turnLeft();
 			try {
@@ -139,7 +159,6 @@ public class CommandExecutioner {
 		}
 		
 		if(Math.abs(amount-180.0)<=0.001) {
-			for(int i=0;i<2;i++) {
 				mc.turnLeft();
 				try {
 					Thread.sleep(turnMap.get(180.0)[0].longValue());
@@ -153,7 +172,6 @@ public class CommandExecutioner {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			}
 		}
 		
 		mc.updateCommandList();
@@ -173,6 +191,22 @@ public class CommandExecutioner {
 				Thread.sleep(Long.parseLong(turnMap.get(90.0)[0]*turnMap.get(90.0)[1]+""));
 				mc.stopHorizontalMovement();
 				Thread.sleep(Long.parseLong(turnMap.get(90.0)[3]+""));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(Math.abs(amount-45.0)<=0.001) {
+			mc.turnRight();
+			try {
+				Thread.sleep(Long.parseLong(turnMap.get(45.0)[0]+""));
+				mc.stopHorizontalMovement();
+				mc.turnLeft();
+				Thread.sleep(Long.parseLong(turnMap.get(45.0)[0]*turnMap.get(45.0)[1]+""));
+				mc.stopHorizontalMovement();
+				Thread.sleep(Long.parseLong(turnMap.get(45.0)[3]+""));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {

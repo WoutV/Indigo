@@ -28,7 +28,7 @@ public class CommandController implements Runnable {
 		commandList = new LinkedList<Command>();
 	}
 
-	private boolean correction =true;
+	private boolean correction =false;
 	
 	@Override
 	public  void run() {
@@ -51,15 +51,19 @@ public class CommandController implements Runnable {
 				//empty --> take new picture to check for more commands
 				QRParser.parseQR();
 				if(correction){
+					System.out.println("Correction on. Making distance Correction");
 					//DistanceCorrection
 					try {
 						double degreeDistance[] = Camera.getDegreeAndDistanceQR();
 						double distanceToMove = 0;
-						if((25+12.5)>degreeDistance[1]&& degreeDistance[1]>12.5){
+						boolean correctionNeeded=false;
+						if((25+12.5)>degreeDistance[1]&& degreeDistance[1]>25){
 							distanceToMove = 25;
+							correctionNeeded=true;
 						}
 						if(degreeDistance[1]>(25+12.5)){
 							distanceToMove = 50;
+							correctionNeeded=true;
 						}
 						double amountToTurn=0;
 						if(22.5>degreeDistance[0]){
@@ -79,16 +83,21 @@ public class CommandController implements Runnable {
 						}
 						Command cmd=null;
 						if(degreeDistance[2]==1){
-							cmd = new TurnRight(amountToTurn);
+							cmd = new TurnRight(Math.abs(amountToTurn));
 						}
 						else{
-							cmd= new TurnLeft(amountToTurn);
+							cmd= new TurnLeft(Math.abs(amountToTurn));
 						}
-						cmd.execute();
-						cmd = new MoveForward(distanceToMove);
-						cmd.execute();
+						if(correctionNeeded){
+							System.out.println("Turning towards the qr: "+cmd.getAmount()+" degrees");
+							cmd.execute();
+							System.out.println("Moving forward for: "+distanceToMove+" cms");
+							cmd = new MoveForward(distanceToMove);
+							cmd.execute();
+						}
 						
 						//AngleCorrection
+						System.out.println("Distance Correction done. Correcting angle");
 						double[] orientation= Camera.getOrientation();
 						if(orientation[1]==1){
 							cmd = new TurnRight(Math.abs(orientation[0]));
