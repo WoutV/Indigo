@@ -15,10 +15,10 @@
 \def\thetitle{}
 \def\thepagelimit{100}
 \DeclareOption{tt}{%
-  \def\thetitle{Tussentijds verslag\\ ~\\ Versie 1: Wingardium Leviosa}%
+  \def\thetitle{Tussentijds verslag\\  Versie 1: Wingardium Leviosa}%
   \def\thepagelimit{20}}
 \DeclareOption{eind}{%
-  \def\thetitle{Eindverslag \\ ~\\ Versie 2: Locomotor Zeppelin}%
+  \def\thetitle{Eindverslag \\ Versie 2: Locomotor Zeppelin}%
   \def\thepagelimit{20}}
 \ProcessOptions
 \LoadClass[10pt,a4paper]{article}
