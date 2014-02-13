@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Study/Downloads/rabbitmq-java-client-bin-3.2.3.tar/rabbitmq-java-client-bin-3.2.3/rabbitmq-java-client-bin-3.2.3/commons-cli-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Study/Downloads/rabbitmq-java-client-bin-3.2.3.tar/rabbitmq-java-client-bin-3.2.3/rabbitmq-java-client-bin-3.2.3/commons-io-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Study/Downloads/rabbitmq-java-client-bin-3.2.3.tar/rabbitmq-java-client-bin-3.2.3/rabbitmq-java-client-bin-3.2.3/junit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Study/Downloads/rabbitmq-java-client-bin-3.2.3.tar/rabbitmq-java-client-bin-3.2.3/rabbitmq-java-client-bin-3.2.3/rabbitmq-client.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Study/Downloads/rabbitmq-java-client-bin-3.2.3.tar/rabbitmq-java-client-bin-3.2.3/rabbitmq-java-client-bin-3.2.3/rabbitmq-client-tests.jar"/>
+	<classpathentry kind="lib" path="JARS/commons-cli-1.1.jar"/>
+	<classpathentry kind="lib" path="JARS/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="JARS/junit.jar"/>
+	<classpathentry kind="lib" path="JARS/rabbitmq-client-tests.jar"/>
+	<classpathentry kind="lib" path="JARS/rabbitmq-client.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
