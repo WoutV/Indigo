@@ -7,5 +7,22 @@
 	<classpathentry kind="lib" path="JARS/junit.jar"/>
 	<classpathentry kind="lib" path="JARS/rabbitmq-client-tests.jar"/>
 	<classpathentry kind="lib" path="JARS/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="JARS/core-2.2.jar"/>
+	<classpathentry kind="lib" path="JARS/javase-2.2.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-core-javadoc.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-core-sources.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-core.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-device-javadoc.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-device-sources.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-device.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-example-javadoc.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-example-sources.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-example.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-gpio-extension-javadoc.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-gpio-extension-sources.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-gpio-extension.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-service-javadoc.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-service-sources.jar"/>
+	<classpathentry kind="lib" path="JARS/pi4j-service.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
