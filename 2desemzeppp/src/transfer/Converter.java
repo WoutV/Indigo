@@ -42,4 +42,28 @@ public class Converter {
 		}
 		  return obj;     
 	}
+	
+/*
+ * Wou kortere code schrijven... failed :p	
+ */
+//	public static byte[] serialize(Transfer obj) throws IOException {
+//	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+//	    ObjectOutputStream os = new ObjectOutputStream(out);
+//	    os.writeObject(obj);
+//	    return out.toByteArray();
+//	}
+//	public static Transfer deserialize(byte[] data) throws IOException, ClassNotFoundException {
+//	    
+//	    Transfer transfer = null;
+//	    try{
+//	    	ByteArrayInputStream in = new ByteArrayInputStream(data);
+//		    ObjectInputStream is = new ObjectInputStream(in);
+//	    	transfer= (Transfer) is.readObject();
+//	    }catch(IOException e){
+//	    	System.out.println("derp");
+//	    }catch(ClassNotFoundException e){
+//	    	System.out.println("doublederp");
+//	    }
+//	    return transfer;
+//	}
 }
