@@ -6,8 +6,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class Converter {
+public abstract class Converter {
 
+	/**
+	 * Converts the transfer object to an array of bits.
+	 * @param transfer
+	 * 			The transfer object to be converted.
+	 * @return
+	 * 			Bit array of the transfer object.
+	 */
 	public static byte[] toBytes(Transfer transfer) {
 	      byte[]bytes; 
 	      ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
@@ -25,6 +32,13 @@ public class Converter {
 	      }         
 	      return bytes; 
 	    }
+	/**
+	 * Converts the given byte array to transfer object.
+	 * @param body
+	 * 			Byte array of the transfer object.
+	 * @return
+	 * 			Transfer representing the given byte array.
+	 */
 	public static Transfer fromBytes(byte[] body) {
 		Transfer obj = null;
 		try {
