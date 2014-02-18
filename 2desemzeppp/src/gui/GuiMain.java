@@ -91,22 +91,6 @@ public class GuiMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        overviewTab = new javax.swing.JLayeredPane();
-        mapPanel = new javax.swing.JPanel();
-        statusPanel = new javax.swing.JPanel();
-        eigenHoogteTxt = new javax.swing.JLabel();
-        eigenHoogteDisplay = new javax.swing.JLabel();
-        enemyHoogteTxt = new javax.swing.JLabel();
-        enemyHoogteDisplay = new javax.swing.JLabel();
-        rightPropDisplay = new javax.swing.JLabel();
-        upPropDisplay = new javax.swing.JLabel();
-        leftPropDisplay = new javax.swing.JLabel();
-        leftPropTxt = new javax.swing.JLabel();
-        rightPropTxt = new javax.swing.JLabel();
-        upPropTxt = new javax.swing.JLabel();
-        commandPanel = new javax.swing.JPanel();
-        eventOverviewPanel = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         commandlistTab = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         shownGUIEventList = new javax.swing.JTextArea();
@@ -115,6 +99,22 @@ public class GuiMain extends javax.swing.JFrame {
         credittab = new javax.swing.JPanel();
         creditsLbl = new javax.swing.JLabel();
         photoLabel = new javax.swing.JLabel();
+        overviewTab = new javax.swing.JLayeredPane();
+        mapPanel = new javax.swing.JPanel();
+        statusPanel = new javax.swing.JPanel();
+        eigenHoogteTxt = new javax.swing.JLabel();
+        eigenHoogteDisplay = new javax.swing.JLabel();
+        enemyHoogteTxt = new javax.swing.JLabel();
+        enemyHoogteDisplay = new javax.swing.JLabel();
+        upPropDisplay = new javax.swing.JLabel();
+        leftPropDisplay = new javax.swing.JLabel();
+        leftPropTxt = new javax.swing.JLabel();
+        upPropTxt = new javax.swing.JLabel();
+        commandPanel = new javax.swing.JPanel();
+        eventOverviewPanel = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        rightPropDisplay = new javax.swing.JLabel();
+        rightPropTxt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -123,137 +123,6 @@ public class GuiMain extends javax.swing.JFrame {
         jTabbedPane1.setToolTipText("Zeppelin Indigo");
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(800, 600));
-
-        mapPanel.setPreferredSize(new java.awt.Dimension(400, 400));
-
-        javax.swing.GroupLayout mapPanelLayout = new javax.swing.GroupLayout(mapPanel);
-        mapPanel.setLayout(mapPanelLayout);
-        mapPanelLayout.setHorizontalGroup(
-            mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        mapPanelLayout.setVerticalGroup(
-            mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-
-        mapPanel.setBounds(10, 0, 400, 400);
-        overviewTab.add(mapPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        eigenHoogteTxt.setText("Eigen hoogte : ");
-
-        eigenHoogteDisplay.setBackground(new java.awt.Color(0, 0, 0));
-        eigenHoogteDisplay.setForeground(new java.awt.Color(0, 255, 0));
-        eigenHoogteDisplay.setText("Hier komt de hoogte!");
-        eigenHoogteDisplay.setOpaque(true);
-
-        enemyHoogteTxt.setText("Enemy hoogte : ");
-
-        enemyHoogteDisplay.setBackground(new java.awt.Color(0, 0, 0));
-        enemyHoogteDisplay.setForeground(new java.awt.Color(255, 0, 51));
-        enemyHoogteDisplay.setText("Hier komt enemy ho!");
-        enemyHoogteDisplay.setOpaque(true);
-
-        rightPropDisplay.setText("jLabel1");
-        rightPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        rightPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
-
-        upPropDisplay.setText("jLabel1");
-        upPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        upPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
-
-        leftPropDisplay.setText("jLabel1");
-        leftPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        leftPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
-
-        leftPropTxt.setText("Left");
-
-        rightPropTxt.setText("Right");
-
-        upPropTxt.setText("Up");
-
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(eigenHoogteTxt)
-                    .addComponent(enemyHoogteTxt))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(upPropTxt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(eigenHoogteDisplay)
-                            .addComponent(enemyHoogteDisplay))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(leftPropTxt))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rightPropTxt)))))
-        );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(eigenHoogteTxt)
-                            .addComponent(eigenHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enemyHoogteTxt)
-                    .addComponent(enemyHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(leftPropTxt)
-                    .addComponent(rightPropTxt))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(upPropTxt))
-                .addContainerGap(22, Short.MAX_VALUE))
-        );
-
-        statusPanel.setBounds(10, 400, 400, 150);
-        overviewTab.add(statusPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        eventOverviewPanel.setViewportView(jTextArea1);
-
-        javax.swing.GroupLayout commandPanelLayout = new javax.swing.GroupLayout(commandPanel);
-        commandPanel.setLayout(commandPanelLayout);
-        commandPanelLayout.setHorizontalGroup(
-            commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(commandPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(eventOverviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        commandPanelLayout.setVerticalGroup(
-            commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(commandPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(312, Short.MAX_VALUE))
-        );
-
-        commandPanel.setBounds(410, 0, 370, 550);
-        overviewTab.add(commandPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jTabbedPane1.addTab("overview", overviewTab);
 
         shownGUIEventList.setColumns(20);
         shownGUIEventList.setRows(5);
@@ -324,6 +193,151 @@ public class GuiMain extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("credits", credittab);
+
+        mapPanel.setPreferredSize(new java.awt.Dimension(400, 400));
+
+        javax.swing.GroupLayout mapPanelLayout = new javax.swing.GroupLayout(mapPanel);
+        mapPanel.setLayout(mapPanelLayout);
+        mapPanelLayout.setHorizontalGroup(
+            mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        mapPanelLayout.setVerticalGroup(
+            mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+
+        overviewTab.add(mapPanel);
+        mapPanel.setBounds(10, 0, 400, 400);
+
+        eigenHoogteTxt.setText("Eigen hoogte : ");
+
+        eigenHoogteDisplay.setBackground(new java.awt.Color(0, 0, 0));
+        eigenHoogteDisplay.setForeground(new java.awt.Color(0, 255, 0));
+        eigenHoogteDisplay.setText("Hier komt de hoogte!");
+        eigenHoogteDisplay.setOpaque(true);
+
+        enemyHoogteTxt.setText("Enemy hoogte : ");
+
+        enemyHoogteDisplay.setBackground(new java.awt.Color(0, 0, 0));
+        enemyHoogteDisplay.setForeground(new java.awt.Color(255, 0, 51));
+        enemyHoogteDisplay.setText("Hier komt enemy ho!");
+        enemyHoogteDisplay.setOpaque(true);
+
+        upPropDisplay.setText("jLabel1");
+        upPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        upPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
+
+        leftPropDisplay.setText("jLabel1");
+        leftPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        leftPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
+
+        leftPropTxt.setText("Left");
+
+        upPropTxt.setText("Up");
+
+        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
+        statusPanel.setLayout(statusPanelLayout);
+        statusPanelLayout.setHorizontalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(eigenHoogteTxt)
+                    .addComponent(enemyHoogteTxt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(statusPanelLayout.createSequentialGroup()
+                        .addComponent(enemyHoogteDisplay)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(statusPanelLayout.createSequentialGroup()
+                        .addComponent(eigenHoogteDisplay)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(statusPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(leftPropTxt))
+                            .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
+                        .addComponent(upPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        statusPanelLayout.setVerticalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(statusPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(eigenHoogteTxt)
+                            .addComponent(eigenHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(statusPanelLayout.createSequentialGroup()
+                        .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(upPropTxt))
+                    .addGroup(statusPanelLayout.createSequentialGroup()
+                        .addComponent(leftPropTxt)
+                        .addGap(19, 19, 19)
+                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(enemyHoogteTxt)
+                            .addComponent(enemyHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        overviewTab.add(statusPanel);
+        statusPanel.setBounds(10, 400, 400, 150);
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        eventOverviewPanel.setViewportView(jTextArea1);
+
+        rightPropDisplay.setText("jLabel1");
+        rightPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        rightPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
+
+        rightPropTxt.setText("Right");
+
+        javax.swing.GroupLayout commandPanelLayout = new javax.swing.GroupLayout(commandPanel);
+        commandPanel.setLayout(commandPanelLayout);
+        commandPanelLayout.setHorizontalGroup(
+            commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(commandPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(commandPanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(rightPropTxt)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(commandPanelLayout.createSequentialGroup()
+                        .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(eventOverviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                            .addGroup(commandPanelLayout.createSequentialGroup()
+                                .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
+        );
+        commandPanelLayout.setVerticalGroup(
+            commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(commandPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rightPropTxt)
+                .addGap(86, 86, 86))
+        );
+
+        overviewTab.add(commandPanel);
+        commandPanel.setBounds(410, 0, 370, 550);
+
+        jTabbedPane1.addTab("overview", overviewTab);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
