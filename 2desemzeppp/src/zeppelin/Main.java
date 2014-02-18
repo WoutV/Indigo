@@ -41,16 +41,6 @@ public class Main{
 			
 	}
 	
-
-
-
-	public void setFloatPwm(int pwm) {
-		System.out.println("i dont get itµ");
-		motorController.setFloatPwm(pwm);
-	}
-
-
-
 	public MotorController getMotorController() {
 		return motorController;
 	}
