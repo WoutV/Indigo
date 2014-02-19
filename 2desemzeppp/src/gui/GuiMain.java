@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 
@@ -421,6 +422,10 @@ public class GuiMain extends javax.swing.JFrame {
                 GuiMain gui = new GuiMain();
         		gui.setVisible(true);
         		gui.enableAllButtons();
+        		JLabel mapofplayingfield = new JLabel();
+        		mapofplayingfield.setSize(495, 495);
+        		mapofplayingfield.setIcon(MapDemo.getMap());
+        		gui.mapPanel.add(mapofplayingfield);
             }
         });
     }
