@@ -31,14 +31,13 @@
         Dimitri Jonckers\\
         Sunil Tandan\\
 Wout Vekemans} % teamleden
-\maketitlepage
+\textsl{}\maketitlepage
 
 
 % == SAMENVATTING == %
 \begin{abstract}
 \noindent
-Dit rapport documenteert onze analyse en oplossing van het volgende probleem : de constructie en operatie van een zeppelin in wedstrijdverband. De zeppelin maakt gebruik van een gekend grondplan in roostervorm voor navigatie. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op beeldherkenning. Via het rooster moet hij sneller dan een andere zeppelin naar een bepaalde positie vliegen, en een andere, nog onbekende opdracht uitvoeren. Beide zeppelins dienen met een RabbitMQ-server te communiceren om informatie uit te wisselen met hun sturende laptop, en met elkaar. Een GUI dient de toestand van het speelveld met beide zeppelins te visualiseren. Al deze functionaliteiten worden ge\"implementeerd in Java. Op dit moment staan alle delen van de software nog in de steigers, maar werkende functies zijn niet veraf. 
-
+Dit rapport documenteert onze analyse en oplossing van het volgende probleem : de constructie en operatie van een zeppelin in wedstrijdverband. De zeppelin maakt gebruik van een gekend grondplan in roostervorm voor navigatie. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op beeldherkenning. Via het rooster moet hij sneller dan een andere zeppelin naar een bepaalde positie vliegen, en een andere, nog onbekende opdracht uitvoeren. Beide zeppelins dienen met een RabbitMQ-server te communiceren om informatie uit te wisselen met hun sturende laptop, en met elkaar. Een GUI dient de toestand van het speelveld met beide zeppelins te visualiseren. Al deze functionaliteiten worden ge\"implementeerd in Java. Op dit moment staan alle delen van de software nog in de steigers, maar werkende functionaliteit is niet veraf. 
 
 Deze opdrachten, die via QR-codes worden meegegeven, moeten autonoom door de zeppelin worden uitgevoerd. Het uiteindelijke doel is om zo een traject af te leggen dat door de commando's wordt bepaald. Hiervoor hebben we Java-software ontwikkeld die op de Pi draait. Deze regelt de motoren en verwerkt de commando's. Ook kan de gebruiker via een GUI op de client-pc kiezen voor manuele of automatische besturing en de status van de zeppelin bekijken. \\
 Via een PID-regelaar controleren we op elk moment de hoogte van de zeppelin. Voor horizontale bewegingen maken we gebruik van gegevens voor enkele afstanden door deze te combineren om de gevraagde afstand af te leggen. Dit is echter nog niet volledig ge\"implementeerd door veel problemen met de invloed van de wind. Wel kan de zeppelin uit foto's van QR-codes zijn fout in hoek en afstand bepalen, zodat aan de hand hiervan kan worden bijgestuurd.
