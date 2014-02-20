@@ -37,7 +37,7 @@
 % == SAMENVATTING == %
 \begin{abstract}
 \noindent
-
+Dit rapport documenteert onze analyse en oplossing van het volgende probleem : de construc- tie en operatie van een zeppelin in wedstrijdverband. De zeppelin maakt gebruik van een gekend grondplan in roostervorm voor navigatie. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op beeldherkenning. Via het rooster moet hij sneller dan een andere zeppelin naar een bepaalde positie vliegen, en een andere, nog onbekende opdracht uit- voeren. Beide zeppelins dienen met een RabbitMQ-server te communiceren om informatie uit te wisselen met hun sturende laptop, en met elkaar. Een GUI dient de toestand van het speel- veld met beide zeppelins te visualiseren. Al deze functionaliteiten worden ge¨ımplementeerd in Java. Op dit moment staan alle delen van de software nog in de steigers, maar werkende functies zijn niet veraf.
 \end{abstract}
 
 
@@ -127,6 +127,7 @@ In het eerste semester hebben we uitgebreide testen gedaan over de testen en de 
 
 % == ALGORITMES == %
 \section{Algoritmes}
+Voor het tweede deel was er een geheel nieuw bewegingsalgoritme nodig. Er moet gebruik gemaakt worden van de camera-input om de positie bij te sturen. Aan de hand van de ﬁguren op de vloer kan er genavigeerd worden. BLABLABLABLABLABLABLA HIER KOMT HET NIEUWE BEWEGINGSALGORITME
 \subsection{Verticale bewegingen}
 Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{http://www.csimn.com/CSI\_pages/PIDforDummies.html}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Tenslotte is er de integraal, die fouten uit het verleden voorstelt. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Het algoritme wordt aangepast aan het gewicht van onze zeppelin en de kracht van de gegeven motoren. \\
 De output wordt berekend op basis van deze formule:
@@ -155,6 +156,9 @@ De User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding 
 De eerste tab (`overview') toont de huidige hoogtes en de toestand van de propellers van de eigen zeppelin. Op de kaart van het speelveld worden de locaties van de zeppelins weergegeven. Daarnaast wordt de opdracht van de zeppelin getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de client en de zeppelin. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. Er is een mogelijkheid om berichten te filteren op type. \\
+
+Voor het tweede deel van de opdracht was er een vorm van image recognition. Hiervoor hebben we gebruik gemaakt van de Java-library OpenCV. Hiermee kan detectie van vormen en kleuren worden ge¨ımplementeerd. Connectie Ook de verbinding is helemaal veranderd in het tweede deel van de opdracht. De twee zeppelins moeten nu communiceren via een server. Die maakt gebruik van de RabbitMQ library.
+\\
 
 \\
 
