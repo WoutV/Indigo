@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
@@ -16,6 +20,30 @@ public class MapDemo {
 
 	public static int width = 495;
 
+	public static ImageIcon getMap(File file) {
+		try {
+			FileReader fr = new FileReader(file);
+			BufferedReader read = new BufferedReader(fr);
+			String list = read.readLine();
+			read.close();
+			String[] symbols = list.split(";");
+			
+			return makeMap(symbols);
+		}
+		catch (IOException exc) {
+			return null;
+		}
+		
+		
+	}
+	
+	public static ImageIcon makeMap(String[] symbols) {
+		int length = symbols.length;
+		if(symbols.length > 120) 
+			length = 120;
+		int  
+	}
+	
 	public static ImageIcon getMap() {
 		BufferedImage image = new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
 
