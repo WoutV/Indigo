@@ -37,8 +37,18 @@ public class MapDemo {
 		map0.setColor(Color.BLUE);
 		map0.fillPolygon(rcportrait);
 		
+		Polygon star = Shapes.getShiftedStar(90, 80);
+		map0.fillPolygon(star);
+		
 		int[] circledata = getShiftedCircleData(380, 380);
 		map0.fillOval(circledata[0],circledata[1],circledata[2],circledata[3]);
+		
+		Polygon triangle = Shapes.getShiftedTriangle(210, 210);
+		map0.setColor(Color.YELLOW);
+		map0.fillPolygon(triangle);
+		
+		Polygon square = Shapes.getShiftedSquare(440, 440);
+		map0.fillPolygon(square);
 		
 		ImageIcon ii = new ImageIcon(image);
 
