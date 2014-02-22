@@ -424,7 +424,7 @@ public class GuiMain extends javax.swing.JFrame {
         		gui.enableAllButtons();
         		JLabel mapofplayingfield = new JLabel();
         		mapofplayingfield.setSize(495, 495);
-        		mapofplayingfield.setIcon(MapDemo.getMap());
+        		mapofplayingfield.setIcon(MapMaker.getInstance().getMap("/shapesDemo.csv"));
         		gui.mapPanel.add(mapofplayingfield);
             }
         });

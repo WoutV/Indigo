@@ -144,4 +144,20 @@ public class Shapes {
 		}
 		return new Polygon(xs,ys,starx.length);
 	}
+	
+	/**
+	 * Given the coordinates of the center, gives the data used for drawing the circle with this center.
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static int[] getShiftedCircleData(int x, int y) {
+		int[] a = new int[4];
+		a[0] = x - 8;
+		a[1] = y - 8;
+		a[2] = 16;
+		a[3] = 16;
+		return a;
+	}
 }
