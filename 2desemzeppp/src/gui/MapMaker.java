@@ -2,25 +2,34 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
  * Given a file of objects, creates a map displaying the objects in a similar way they are positioned
  * on the playing field.
  *
+ * The file should be a comma separated value file.
+ * Each value in this file looks as follows:
+ * 0/1: is this line odd (0) (aligned to the left) or even (1) (aligned to the right)
+ * R/W/Y/B/G: colour: red,white,yellow,blue,green
+ * H/S/C/R: shape: heart,star,circle,rectangle
+ * 
+ * Examples:
+ * 		0RR: a red rectangle
+ * 		0RH: a red heart
+ * 
+ * A maximum of 120 figures is allowed on the map: 10 on each line, 12 lines
+ * In case fewer figures are supplied, part of the map is not filled.
+ * In case more figures are supplied, only the first 120 are displayed.
  */
 public class MapMaker {
 
@@ -35,6 +44,13 @@ public class MapMaker {
 
 	private BoardLayout boardlayout = BoardLayout.getInstance();
 
+	/**
+	 * Given a filename, gives the ImageIcon with the corresponding map.
+	 * The filename should refer to a file in the resources folder, and should be a
+	 * comma separated value file.
+	 * The filename should start with "/" and contain the extension.
+	 * @param file
+	 */
 	public ImageIcon getMap(String filename) {
 		try {
 			InputStream resource = GuiMain.class.getResourceAsStream(filename);
@@ -143,6 +159,9 @@ public class MapMaker {
 		return ii;
 	}
 
+	/**
+	 * Gives a map containing some shapes.
+	 */
 	public ImageIcon getMapDemo() {
 		BufferedImage image = new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
 
