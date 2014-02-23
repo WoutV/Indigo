@@ -4,6 +4,7 @@ package transfer;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 
+import zeppelin.Propellor;
 
 public class Transfer implements Serializable {
 	/**
@@ -18,6 +19,7 @@ public class Transfer implements Serializable {
 	
 	private TransferType type;
 	private double height;
+	private Key keyevent;
 	private String message;
 	private ImageIcon image;
 	public Transfer(){
@@ -58,6 +60,23 @@ public class Transfer implements Serializable {
 		message = "Transferring float pwm supplied by user";
 	}
 	
+	
+	/**
+	 * Sets the keyevent to given keyevent as well as the type. 
+	 * @param keyevent
+	 * @param type
+	 */
+	public void setKeyEvent(Key key, TransferType type){
+		this.keyevent = key;
+		this.type = type;
+		message = "Transfering keyevent type: " + key.toString() ;
+	}
+	
+	public Key getKey(){
+		return keyevent;
+	}
+	
+	
 	/**
 	 * Only use this to set Exit type.
 	 * @param type
@@ -87,5 +106,69 @@ public class Transfer implements Serializable {
 		return image;
 	}
 	
+	/**
+	 * Enum die de verschillende keys aangeeft.
+	 */
+	public enum Key{
+		LEFT,RIGHT,UP,DOWN,ELEVATE;
+	}
 	
+	private Propellor id;
+	private Propellor.Mode mode;
+	private Propellor.Direction direction;
+	private int pwmvalue;
+	public boolean isAutoPilot() {
+		return autoPilot;
+	}
+
+	private boolean autoPilot;
+
+	/**
+	 * Configures this object to send a propellor update
+	 * @param id
+	 * @param mode
+	 * @param direction
+	 * 		only necessary if mode == ON
+	 * @param pwmvalue
+	 * 		only necessary if mode == PWM
+	 */
+	public void setPropellor(Propellor id, Propellor.Mode mode, Propellor.Direction direction, int pwmvalue) {
+		this.setType(Transfer.TransferType.PROPELLOR);
+		message = "Transferring propellor update";
+		this.id = id;
+		this.mode = mode;
+		this.direction = direction;
+		this.pwmvalue = pwmvalue;
+	}
+
+	public Propellor getPropellorId() {
+		return id;
+	}
+
+	public Propellor.Mode getPropellorMode() {
+		return mode;
+	}
+
+	public Propellor.Direction getPropellorDirection() {
+		return direction;
+	}
+
+	public int getPropellorPwm() {
+		return pwmvalue;
+	}
+	
+	public void setMode(boolean autoPilot){
+		this.autoPilot=autoPilot;
+		this.setType(TransferType.FLYMODE);
+	}
+	
+	public void setCommand(String message){
+		this.setType(TransferType.COMMAND);
+		this.message=(message);
+	}
+	
+	public void setQRCode(String txt) {
+		this.setType(TransferType.QRCODE);
+		this.message=(txt);
+	}
 }

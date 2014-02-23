@@ -5,6 +5,8 @@ package zeppelin;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
+import connection.SenderPi;
+
 public class Main{
 
 
@@ -13,7 +15,7 @@ public class Main{
 	private DistanceSensor distanceSensor;
 	private Thread distanceSensorThread;
 	
-	private SendToClient sender;
+	private SenderPi sender;
 
 	private static Main main = new Main();
 
@@ -29,7 +31,7 @@ public class Main{
 	 * Mag maar een keer opgeroepen worden.
 	 * Sender moet worden meegegeven.
 	 */
-	public void init(SendToClient sender) {
+	public void init(SenderPi sender) {
 			this.sender = sender;
 			System.out.println("Sender Set");
 			
@@ -45,7 +47,7 @@ public class Main{
 		return motorController;
 	}
 	
-	public SendToClient getSender() {
+	public SenderPi getSender() {
 		return sender;
 	}
 	

@@ -10,6 +10,8 @@ import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 
+import connection.SenderPi;
+
 
 /**
  * Controller voor de drie motoren.
@@ -31,7 +33,7 @@ public class MotorController {
 
 
 	
-	private SendToClient sender;
+	private SenderPi sender;
 	private static MotorController mc = new MotorController();
 	private HeightController hc;
 	private DistanceSensor ds;
@@ -60,7 +62,7 @@ public class MotorController {
 	 * Mag maar een keer opgeroepen worden.
 	 * GpioController moet worden meegegeven (nodig voor de motoren)
 	 */
-	public void init(GpioController gpio,DistanceSensor distanceSensor,SendToClient sender) {
+	public void init(GpioController gpio,DistanceSensor distanceSensor,SenderPi sender) {
 		System.out.println("Initializing Motor before if test");
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;

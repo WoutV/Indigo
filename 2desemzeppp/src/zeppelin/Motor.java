@@ -6,6 +6,8 @@ import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
 
+import connection.SenderPi;
+
 
 public class Motor {
 	private GpioPinDigitalOutput forwardPin;
@@ -22,9 +24,9 @@ public class Motor {
 	private Propellor.Mode prevmode = Propellor.Mode.OFF;
 	private Propellor.Direction prevdirection;
 
-	private SendToClient sender;
+	private SenderPi sender;
 
-	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SendToClient sender) {
+	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SenderPi sender) {
 		gpiocontroller = gpio;
 		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin,"forward");
 		reversePin = gpiocontroller.provisionDigitalOutputPin(rvPin,"backward");

@@ -9,6 +9,8 @@ import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.RaspiPin;
 
+import connection.SenderPi;
+
 public class DistanceSensor implements Runnable{
 	private CircularDoubleArray distanceArray;
 
@@ -37,9 +39,9 @@ public class DistanceSensor implements Runnable{
 	private final GpioPinDigitalInput echoPin;
 	private final GpioPinDigitalOutput trigPin;
 
-	private SendToClient sender;
+	private SenderPi sender;
 
-	public DistanceSensor(SendToClient sender) {
+	public DistanceSensor(SenderPi sender) {
 		this.echoPin = gpio.provisionDigitalInputPin( RaspiPin.GPIO_02 );
 		this.trigPin = gpio.provisionDigitalOutputPin( RaspiPin.GPIO_03 );
 		this.trigPin.low();
