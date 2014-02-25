@@ -253,7 +253,7 @@ public class GuiMain extends javax.swing.JFrame {
         );
 
         overviewTab.add(commandPanel);
-        commandPanel.setBounds(520, 0, 260, 550);
+        commandPanel.setBounds(520, 0, 280, 550);
 
         mapPanel.setMinimumSize(new java.awt.Dimension(50, 500));
         mapPanel.setPreferredSize(new java.awt.Dimension(400, 400));
