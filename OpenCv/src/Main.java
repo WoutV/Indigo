@@ -15,7 +15,7 @@ public class Main {
       //or ...     System.loadLibrary("opencv_java244");       
 
       //make the JFrame
-      JFrame frame = new JFrame("WebCam Capture - Face detection");  
+      JFrame frame = new JFrame("WebCam Capture");  
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
       frame facePanel = new frame();  
       frame.setSize(400,400); //give the frame some arbitrary size 
