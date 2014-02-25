@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  20 FEB 2014 12:02
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  25 FEB 2014 16:18
 entering extended mode
 **template.tex
 ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.tex"
@@ -612,38 +612,10 @@ LaTeX Font Info:    Try loading font information for U+wasy on input line 34.
 
 (C:\Users\Wout\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\uwasy.fd
 File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
-)
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.34 \maketitlepage
-                   
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-[1
+) [1
 
 {C:/Users/Wout/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/Users/Wou
 t/Documents/GitHub/Indigo/semester 2 verslag 1/sedes.pdf>]
-
-! Package inputenc Error: Unicode char \u8:¨ not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.40 ...ren. Al deze functionaliteiten worden ge¨
-                                                  ımplementeerd in Java. Op...
-
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
 ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.toc")
 \tf@toc=\write4
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
@@ -737,21 +709,6 @@ l.115 \section
               {Testen} <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 versla
 g 1/lowerFrame.png> <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1
 /zeppelinFrame.jpg>]
-
-! Package inputenc Error: Unicode char \u8:ﬁ not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.130 ...tie bij te sturen. Aan de hand van de ﬁ
-                                                  guren op de vloer kan er g...
-
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
@@ -777,78 +734,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 158--159
  []
 
 
-! Package inputenc Error: Unicode char \u8:¨ not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.160 ...etectie van vormen en kleuren worden ge¨
-                                                  ımplementeerd. Connectie ...
-
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 160--162
 
  []
 
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.164 
-      
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.171 
-      
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 183--184
+Underfull \hbox (badness 10000) in paragraph at lines 181--182
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 185--192
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 183--190
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 198.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 196.
 [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 198.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 196.
  ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 198.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 198.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 196.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 196.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 198.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 196.
  ) 
 Here is how much of TeX's memory you used:
- 6967 strings out of 493921
- 99007 string characters out of 3144879
- 192912 words of memory out of 3000000
- 10133 multiletter control sequences out of 15000+200000
+ 6965 strings out of 493921
+ 98996 string characters out of 3144879
+ 191912 words of memory out of 3000000
+ 10131 multiletter control sequences out of 15000+200000
  13147 words of font info for 48 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,8n,31p,870b,357s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -868,7 +785,7 @@ eX 2.9/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/Program Files (x86)/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
 onts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Wout/AppData/Roaming/MiKTeX/
 2.9/fonts/type1/public/wasy/wasy10.pfb>
-Output written on template.pdf (7 pages, 2509029 bytes).
+Output written on template.pdf (7 pages, 2508954 bytes).
 PDF statistics:
  180 PDF objects out of 1000 (max. 8388607)
  29 named destinations out of 1000 (max. 500000)
