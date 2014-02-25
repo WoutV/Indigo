@@ -42,7 +42,7 @@ public class SenderClient {
 		return dateFormat.format(cal.getTime());
 	}
 	/*
-	 * Stuurt transfer objecten van de pi naar de client.
+	 * 
 	 */
 	public void sendTransfer(Transfer transfer) {
 		byte[] message = Converter.toBytes(transfer);
