@@ -104,6 +104,7 @@ public class MapMaker {
 			String currentsymbol = symbols[i];
 
 			//odd or even line
+			// hier moet dus iets gedaan worden met ENKEL HET EERSTE KARAKTER 
 			boolean even = true;
 			if(currentsymbol.charAt(0) == '0')
 				even = false;
