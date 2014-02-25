@@ -2,6 +2,8 @@ package zeppelin;
 
 
 
+import transfer.Transfer;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
@@ -53,6 +55,26 @@ public class Main{
 	
 	public DistanceSensor getDistanceSensor() {
 		return distanceSensor;
+	}
+
+	public void activateMotor1(Transfer information) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void activateMotor2(Transfer information) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void activateMotor3(Transfer information) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void goToDestination(Transfer information) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

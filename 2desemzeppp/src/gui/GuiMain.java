@@ -584,6 +584,14 @@ public class GuiMain extends javax.swing.JFrame {
 				s = s + g.text + "\n";
 		shownGUIEventList.setText(s);
 	}
+
+	public GuiCommands getGuic() {
+		return guic;
+	}
+
+	public void setGuic(GuiCommands guic) {
+		this.guic = guic;
+	}
 	
 	
 	

@@ -61,11 +61,6 @@ public class GuiCommands {
 		gui.setImageDisplay(image);
 	}
 
-//	private SendToServer sender;
-//
-//	public void setSender(SendToServer sender){
-//		this.sender=sender;
-//	}
 
 //	/**
 //	 * Methode om een boodschap weer te geven in het commandodisplay op tab 1 in de GUI

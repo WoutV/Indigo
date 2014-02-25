@@ -13,14 +13,11 @@ public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{
-		IMAGE, HEIGHT, KEYPRESSEDEVENT, KEYRELEASEDEVENT, EXIT , MESSAGE, PWM, PROPELLOR,FLYMODE, COMMAND,
-		QRCODE;
+		IMAGE, HEIGHT, PROPELLOR,MOTOR1,MOTOR2,MOTOR3,DESTINATION;
 	}
-	
+	private String message;
 	private TransferType type;
 	private double height;
-	private Key keyevent;
-	private String message;
 	private ImageIcon image;
 	public Transfer(){
 	
@@ -45,36 +42,11 @@ public class Transfer implements Serializable {
 	public void setHeight(double height){
 		this.height = height;
 		this.type  = TransferType.HEIGHT;
-		message = "Transfering height details";
-	}
-	
-	private int pwm;
-	
-	public int getPwm() {
-		return pwm;
-	}
-	
-	public void setPwm(int pwm) {
-		this.type = TransferType.PWM;
-		this.pwm = pwm;
-		message = "Transferring float pwm supplied by user";
+		
 	}
 	
 	
-	/**
-	 * Sets the keyevent to given keyevent as well as the type. 
-	 * @param keyevent
-	 * @param type
-	 */
-	public void setKeyEvent(Key key, TransferType type){
-		this.keyevent = key;
-		this.type = type;
-		message = "Transfering keyevent type: " + key.toString() ;
-	}
 	
-	public Key getKey(){
-		return keyevent;
-	}
 	
 	
 	/**
@@ -86,43 +58,26 @@ public class Transfer implements Serializable {
 	}
 	
 	
-	public void setMessage(String message){
-		this.type= TransferType.MESSAGE;
-		this.message = message;
-	}
-	
-	public String getMessage(){
-		return message;
-	}
-	
 
 	public void setImage(ImageIcon image){
 		this.type=TransferType.IMAGE;
 		this.image= image;
-		this.message= "Sending Image";
+		
 	}
 	
 	public ImageIcon getImage(){
 		return image;
 	}
 	
-	/**
-	 * Enum die de verschillende keys aangeeft.
-	 */
-	public enum Key{
-		LEFT,RIGHT,UP,DOWN,ELEVATE;
-	}
+	
 	
 	private Propellor id;
 	private Propellor.Mode mode;
 	private Propellor.Direction direction;
 	private int pwmvalue;
-	public boolean isAutoPilot() {
-		return autoPilot;
-	}
+	
 
-	private boolean autoPilot;
-
+	
 	/**
 	 * Configures this object to send a propellor update
 	 * @param id
@@ -134,7 +89,7 @@ public class Transfer implements Serializable {
 	 */
 	public void setPropellor(Propellor id, Propellor.Mode mode, Propellor.Direction direction, int pwmvalue) {
 		this.setType(Transfer.TransferType.PROPELLOR);
-		message = "Transferring propellor update";
+		
 		this.id = id;
 		this.mode = mode;
 		this.direction = direction;
@@ -156,19 +111,32 @@ public class Transfer implements Serializable {
 	public int getPropellorPwm() {
 		return pwmvalue;
 	}
-	
-	public void setMode(boolean autoPilot){
-		this.autoPilot=autoPilot;
-		this.setType(TransferType.FLYMODE);
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
-	public void setCommand(String message){
-		this.setType(TransferType.COMMAND);
-		this.message=(message);
+	public void setMotor1(int pwmvalue){
+		this.pwmvalue = pwmvalue;
+		this.setType(Transfer.TransferType.MOTOR1);
 	}
-	
-	public void setQRCode(String txt) {
-		this.setType(TransferType.QRCODE);
-		this.message=(txt);
+	public void setMotor2(int pwmvalue){
+		this.pwmvalue = pwmvalue;
+		this.setType(Transfer.TransferType.MOTOR2);
+	}
+	public void setMotor3(int pwmvalue){
+		this.pwmvalue = pwmvalue;
+		this.setType(Transfer.TransferType.MOTOR3);
+	}
+	private int x;
+	private int y;
+	public void setDestination(int x,int y){
+		this.x=x;
+		this.y=y;
+		this.setType(Transfer.TransferType.DESTINATION);
 	}
 }

@@ -9,7 +9,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import zeppelin.Main;
-import zeppelin.MotorController;
+
 
 
 /*
@@ -18,11 +18,32 @@ import zeppelin.MotorController;
  */
 public class ReceiverPi implements Runnable{
 	private Main main = Main.getInstance();
-	private MotorController mc;
+	
 	private final String EXCHANGE_NAME = "server";
 	
 	public ReceiverPi(){
-		mc = main.getMotorController();
+		
+	}
+	
+	
+	private void handleReceived(Transfer information){
+		switch(information.getTransferType()){
+		case MOTOR1:
+			main.activateMotor1(information);
+			break;
+		case MOTOR2:
+			main.activateMotor2(information);
+			break;
+		
+		case MOTOR3:
+			main.activateMotor3(information);
+			break;
+		case DESTINATION:
+			main.goToDestination(information);
+		default:
+			break;
+
+		}
 	}
 	
 	/*
@@ -55,10 +76,7 @@ public class ReceiverPi implements Runnable{
 	      while (true) {
 	        QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 	        Transfer information = Converter.fromBytes(delivery.getBody());
-	        String message = information.getMessage();
-	        String routingKey = delivery.getEnvelope().getRoutingKey();
-
-	        System.out.println(" [x] Received '" + routingKey + "':'" + message + "'");   
+	        handleReceived(information);   
 	      }
 	    }
 	    catch  (Exception e) {
