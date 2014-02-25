@@ -40,8 +40,9 @@ class frame extends JPanel{
      }  
      public void paintComponent(Graphics g){  
           super.paintComponent(g);   
-          if (this.image==null) return;         
-           g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null);
+          if (this.image==null) return;  
+          double ratio = this.image.getWidth()/this.image.getHeight();
+          g.drawImage(this.image,10,10,800,600, null);
      }
         
 }  

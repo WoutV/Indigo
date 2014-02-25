@@ -126,7 +126,7 @@ public class hsvtest {
 		
 		
 		static int H_Min=0;
-		static int H_Max=179;
+		static int H_Max=180;
 		static int S_Min=0;
 		static int S_Max=255;
 		static int V_Max=255;
@@ -143,11 +143,11 @@ public class hsvtest {
 		     frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		     JPanel frame=new JPanel(new GridLayout(0,2));
 		     JSlider H_Min= new JSlider(JSlider.HORIZONTAL,
-                     0, 179, 0);
+                     0, 180, 0);
 		     H_Min.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
-		    		 if(((JSlider) ce.getSource()).getValue() < hsvtest.H_Max){
+		    		 if(((JSlider) ce.getSource()).getValue() <= hsvtest.H_Max){
 		    			 hsvtest.H_Min= ((JSlider) ce.getSource()).getValue();
 		    			 h2.setText("H-Min:"+hsvtest.H_Min);
 		    		 }
@@ -157,11 +157,11 @@ public class hsvtest {
 				}
 		     });
 		     JSlider H_Max= new JSlider(JSlider.HORIZONTAL,
-                     0, 179, 179);
+                     0, 180, 180);
 		     H_Max.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
-		    		 if(((JSlider) ce.getSource()).getValue() > hsvtest.H_Min){
+		    		 if(((JSlider) ce.getSource()).getValue() >= hsvtest.H_Min){
 		    			 hsvtest.H_Max= ((JSlider) ce.getSource()).getValue();
 		    			 h1.setText("H-Max:"+hsvtest.H_Max);
 		    		 }
@@ -175,7 +175,7 @@ public class hsvtest {
 		     S_Min.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
-		    		 if(((JSlider) ce.getSource()).getValue() < hsvtest.S_Max){
+		    		 if(((JSlider) ce.getSource()).getValue() <= hsvtest.S_Max){
 		    			 hsvtest.S_Min= ((JSlider) ce.getSource()).getValue();
 		    			 s2.setText("S-Min:"+hsvtest.S_Min);
 		    		 }
@@ -189,7 +189,7 @@ public class hsvtest {
 		     S_Max.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
-		    		 if(((JSlider) ce.getSource()).getValue() > hsvtest.S_Min){
+		    		 if(((JSlider) ce.getSource()).getValue() >= hsvtest.S_Min){
 		    			 hsvtest.S_Max= ((JSlider) ce.getSource()).getValue();
 		    			 s1.setText("S-Max:"+hsvtest.S_Max);
 		    		 }
@@ -203,7 +203,7 @@ public class hsvtest {
 		     V_Min.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) { 
-		    		 if(((JSlider) ce.getSource()).getValue() < hsvtest.V_Max){
+		    		 if(((JSlider) ce.getSource()).getValue() <= hsvtest.V_Max){
 		    			 hsvtest.V_Min= ((JSlider) ce.getSource()).getValue();
 		    			 v2.setText("V-Min:"+hsvtest.V_Min);
 		    		 }
@@ -217,7 +217,7 @@ public class hsvtest {
 		     V_Max.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
-		    		 if(((JSlider) ce.getSource()).getValue() > hsvtest.V_Min){
+		    		 if(((JSlider) ce.getSource()).getValue() >= hsvtest.V_Min){
 		    			 hsvtest.V_Max= ((JSlider) ce.getSource()).getValue();
 		    			 v1.setText("V-Max:"+hsvtest.V_Max);
 		    		 }
