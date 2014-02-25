@@ -2,25 +2,26 @@ package zeppelin;
 
 import zeppelin.utils.Pid;
 
-public class HeightController implements Runnable{
+public class PositionController implements Runnable {
+	
+	//TODO ONDERSCHEID MAKEN TUSSEN X EN Y CONTROLLER. HOE???
 
 	private Boolean stop=false;
 
 	private double destination;
-	private DistanceSensor ds;
-	private Motor up;
+	private double[] destinationArray;
+	private Motor motor;
 
 	private double Kp,Ki,Kd;
 	private int dt = 100;
 
 	private Pid pid;
 
-	public HeightController(double Kp,double Ki, double Kd,DistanceSensor ds,Motor up){
+	public PositionController(double Kp,double Ki, double Kd, Motor motor, int pwmPin){
 		this.Kp=Kp;
 		this.Kd=Kd;
 		this.Ki=Ki;
-		this.ds=ds;
-		this.up =up;
+		this.motor = motor;
 	}
 
 	@Override
@@ -32,8 +33,9 @@ public class HeightController implements Runnable{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		destination = MotorController.getInstance().getDestination();
-
+		
+		destination = destinationArray[0];
+		
 		makePid();
 		while(true){
 			if(stop){
@@ -46,17 +48,16 @@ public class HeightController implements Runnable{
 					e.printStackTrace();
 				}
 			}
-			double height = ds.getHeight();
-			//							System.out.println("going to : " + destination);
-			double output = pid.getOutput(height);
+			double position = 0;
+			double output = pid.getOutput(position);
 
 			//TODO map pid output to 700-1024 value??
-			up.setPwmValue((int) output);
+			motor.setPwmValue((int) output);
 			try {
 				Thread.sleep(dt);
 			} catch (InterruptedException e) {
 			}
-			height = ds.getHeight();
+			position = 0;
 			//				System.out.println("Output: " +output );
 
 		}
@@ -112,6 +113,5 @@ public class HeightController implements Runnable{
 	public void setZweefpwm() {
 		makePid();
 	}
-
-
+	
 }

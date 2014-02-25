@@ -7,7 +7,7 @@ package zeppelin.utils;
  * Kp, Ki and Kd are constants determining the output.
  *
  */
-public class Pid3 {
+public class Pid {
 	protected double Kp, Ki, Kd;
 	
 	protected double previous_error = 0;
@@ -27,7 +27,7 @@ public class Pid3 {
 	 * @param dt
 	 * 		The sampling frequency in ms
 	 */
-	public Pid3(double Kp, double Ki, double Kd, double dest, int dt){
+	public Pid(double Kp, double Ki, double Kd, double dest, int dt){
 		this.Kp = Kp;
 		this.Ki = Ki;
 		this.Kd = Kd;

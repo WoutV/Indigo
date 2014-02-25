@@ -22,12 +22,15 @@ import connection.SenderPi;
  */
 public class MotorController {
 	private Motor up;
-	private Motor left;
-	private Motor right;
+	private Motor xMotor;
+	private Motor yMotor;
 
-	private Pin leftfw = RaspiPin.GPIO_11, leftrv = RaspiPin.GPIO_13, upfw = RaspiPin.GPIO_00,
-			uprv = RaspiPin.GPIO_04, rightfw = RaspiPin.GPIO_07, rightrv = RaspiPin.GPIO_05;
+	private Pin xfw = RaspiPin.GPIO_11, xrv = RaspiPin.GPIO_13, upfw = RaspiPin.GPIO_00,
+			uprv = RaspiPin.GPIO_04, yfw = RaspiPin.GPIO_07, yrv = RaspiPin.GPIO_05;
 
+	private int pwmPinX;
+	private int pwmPinY;
+	//TODO PINNEN NUMMERS NODIG !!!!!!!
 
 	private GpioController gpiocontroller;
 
@@ -36,6 +39,10 @@ public class MotorController {
 	private SenderPi sender;
 	private static MotorController mc = new MotorController();
 	private HeightController hc;
+	
+	private PositionController xController;
+	private PositionController yController;
+	
 	private DistanceSensor ds;
 	
 	
@@ -72,11 +79,11 @@ public class MotorController {
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
 			System.out.println("Initializing Motor");
-			left = new Motor(leftfw,leftrv,gpiocontroller,Propellor.LEFT,pwm,sender);
-			left.setOff();
-			right = new Motor(rightfw,rightrv,gpiocontroller,Propellor.RIGHT, pwm, sender);
-			right.setOff();
-			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender);
+			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.LEFT,pwm,sender, pwmPinX);
+			xMotor.setOff();
+			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.RIGHT, pwm, sender, pwmPinY);
+			yMotor.setOff();
+			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender, 0);
 			up.setOff();
 			up.PwmOn();
 			hc = new HeightController(Kp, Ki, Kd, distanceSensor, up);
@@ -85,27 +92,10 @@ public class MotorController {
 			hct.start();
 			System.out.println("HeightController Thread Started");
 			
+			xController = new PositionController(Kp, Ki, Kd, xMotor, 0);
+			yController = new PositionController(Kp, Ki, Kd, yMotor, 0);
+			
 		}
-	}
-
-	public void moveForward() {
-		left.setForward();
-		right.setForward();
-	}
-
-	public void moveBackward() {
-		left.setReverse();
-		right.setReverse();
-	}
-
-	public void turnLeft() {
-		right.setReverse();
-		left.setForward();
-	}
-
-	public void turnRight() {
-		left.setReverse();
-		right.setForward();
 	}
 
 	/**
@@ -140,8 +130,8 @@ public class MotorController {
 	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
 	 */
 	public void stopHorizontalMovement() {
-		right.setOff();
-		left.setOff();
+		xMotor.setOff();
+		yMotor.setOff();
 		
 		
 	}
@@ -152,6 +142,12 @@ public class MotorController {
 	public void stopElevate() {
 		hc.stop();
 		up.setOff();
+	}
+
+	private double[] horizontalDestination = {100,100};
+	
+	public double[] getHorizontalDestination() {
+		return horizontalDestination;
 	}	
 	
 	

@@ -5,6 +5,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
+import com.pi4j.wiringpi.SoftPwm;
 
 import connection.SenderPi;
 
@@ -25,14 +26,23 @@ public class Motor {
 	private Propellor.Direction prevdirection;
 
 	private SenderPi sender;
+	private int softPwmPin;
 
-	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SenderPi sender) {
+	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SenderPi sender, int softPwmPin) {
 		gpiocontroller = gpio;
 		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin,"forward");
 		reversePin = gpiocontroller.provisionDigitalOutputPin(rvPin,"backward");
-		this.pwmPin = pwmPin; 
+		
 		this.id = id;
 		this.sender = sender;
+		this.softPwmPin = softPwmPin;
+		
+		if(id != Propellor.UP) {
+			SoftPwm.softPwmCreate(softPwmPin, 0, 100);
+			//TODO PIN NUMMER !!!!! EERSTE ARGUMENT
+		} else {
+			this.pwmPin = pwmPin; 
+		}
 
 		//status wanneer de app wordt afgesloten
 		forwardPin.setShutdownOptions(true,PinState.LOW);
@@ -145,17 +155,33 @@ public class Motor {
 	public void setPwmValue(int value) {
 		if(pwmEnabled) {
 			if(value > 0){
-				pwmPin.setPwm(1024);
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(1024);
+					} else {
+						SoftPwm.softPwmWrite(softPwmPin, 100);
+					}
 				fw();
 				off();
+				if(id==Propellor.UP) {
 				pwmPin.setPwm(value);
+				} else {
+					SoftPwm.softPwmWrite(softPwmPin, value*100/1024);
+				}
 				fw();
 			}
 			else{
-				pwmPin.setPwm(1024);
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(1024);
+					} else {
+						SoftPwm.softPwmWrite(softPwmPin, 100);
+					}
 				rv();
 				off();
-				pwmPin.setPwm(Math.abs(value));
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(-value);
+					} else {
+						SoftPwm.softPwmWrite(softPwmPin, -value*100/1024);
+					}
 				rv();
 			}
 			
