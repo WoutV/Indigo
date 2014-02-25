@@ -34,6 +34,9 @@ import javax.swing.ImageIcon;
 public class MapMaker {
 
 	private static MapMaker instance = new MapMaker();
+	
+	private int numberOnRow;
+	private int height; 
 
 	public static MapMaker getInstance() {
 		return instance;
@@ -42,7 +45,7 @@ public class MapMaker {
 	//size of the map (in px)
 	private int width = 495;
 
-	private BoardLayout boardlayout = BoardLayout.getInstance();
+	private BoardLayout boardlayout;
 
 	/**
 	 * Given a filename, gives the ImageIcon with the corresponding map.
@@ -56,9 +59,21 @@ public class MapMaker {
 			InputStream resource = GuiMain.class.getResourceAsStream(filename);
 			InputStreamReader reader = new InputStreamReader(resource);
 			BufferedReader read = new BufferedReader(reader);
-			String list = read.readLine();
+			String list = "";
+			String newString = read.readLine();
+			while(newString!=null) {
+				list += newString+",";
+				height++;
+				newString = read.readLine();
+			}
 			read.close();
-			String[] symbols = list.split(";");
+			System.out.println(list);
+			String[] symbols = list.split(",");
+			System.out.println(symbols.length);
+			numberOnRow = (symbols.length)/height;
+			boardlayout = new BoardLayout(numberOnRow, height);
+			System.out.println(height);
+			System.out.println(numberOnRow);
 			return makeMap(symbols);
 		}
 		catch (IOException exc) {
@@ -76,8 +91,7 @@ public class MapMaker {
 			BufferedReader read = new BufferedReader(fr);
 			String list = read.readLine();
 			read.close();
-			String[] symbols = list.split(";");
-
+			String[] symbols = list.split(",");
 			return makeMap(symbols);
 		}
 		catch (IOException exc) {
@@ -98,19 +112,12 @@ public class MapMaker {
 		map0.fillRect(0, 0, width, width);
 
 		int length = symbols.length;
-		if(symbols.length > 120) 
-			length = 120;
+		boolean even = false;
 		for(int i = 0; i<length;i++) {
-			String currentsymbol = symbols[i];
-
-			//odd or even line
-			// hier moet dus iets gedaan worden met ENKEL HET EERSTE KARAKTER 
-			boolean even = true;
-			if(currentsymbol.charAt(0) == '0')
-				even = false;
+			String currentsymbol = symbols[i].trim();
 
 			//colour
-			char colour = currentsymbol.charAt(1);
+			char colour = currentsymbol.charAt(0);
 			switch(colour) {
 			case 'Y':
 				map0.setColor(Color.YELLOW);
@@ -127,12 +134,15 @@ public class MapMaker {
 			case 'G':
 				map0.setColor(Color.GREEN);
 				break;
+			case 'X':
+				map0.setColor(Color.LIGHT_GRAY);
 			}
 
 			//shape
-			char shape = currentsymbol.charAt(2);
-			int no = i%10;
-			int line = i/10;
+			char shape = currentsymbol.charAt(1);
+			int no = i%numberOnRow;
+			int line = i/numberOnRow;
+			even = (line%2!=0);
 			int x = boardlayout.getX(no, even);
 			int y = boardlayout.getY(line);
 			switch(shape) {
@@ -144,7 +154,7 @@ public class MapMaker {
 				Polygon star = Shapes.getShiftedStar(x, y);
 				map0.fillPolygon(star);
 				break;
-			case 'C':
+			case 'O':
 				int[] circledata = Shapes.getShiftedCircleData(x, y);
 				map0.fillOval(circledata[0],circledata[1],circledata[2],circledata[3]);
 				break;
