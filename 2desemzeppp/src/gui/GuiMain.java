@@ -134,7 +134,8 @@ public class GuiMain extends javax.swing.JFrame {
         rightPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         rightPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
 
-        rightPropTxt.setText("Right");
+        rightPropTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rightPropTxt.setText("Y");
 
         upPropDisplay.setText("jLabel1");
         upPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -146,7 +147,8 @@ public class GuiMain extends javax.swing.JFrame {
         leftPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         leftPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
 
-        leftPropTxt.setText("Left");
+        leftPropTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        leftPropTxt.setText("X");
 
         eigenHoogteTxt.setText("Eigen hoogte : ");
 
@@ -182,21 +184,17 @@ public class GuiMain extends javax.swing.JFrame {
                             .addComponent(enemyHoogteDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                             .addComponent(eigenHoogteDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(statusPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(leftPropTxt))
-                            .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
                                 .addComponent(upPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(statusPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(rightPropTxt))
-                            .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(rightPropDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rightPropTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -217,7 +215,7 @@ public class GuiMain extends javax.swing.JFrame {
                                 .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(upPropTxt))
-                            .addComponent(leftPropTxt))))
+                            .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(eigenHoogteTxt)
