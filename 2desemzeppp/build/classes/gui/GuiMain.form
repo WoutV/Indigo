@@ -137,12 +137,9 @@
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                              <Component id="leftPropTxt" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                      <Group type="103" groupAlignment="1" attributes="0">
                                           <Component id="leftPropDisplay" min="-2" max="-2" attributes="0"/>
+                                          <Component id="leftPropTxt" min="-2" pref="51" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="upPropDisplay" min="-2" max="-2" attributes="0"/>
@@ -151,12 +148,9 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                              <Component id="rightPropTxt" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="rightPropDisplay" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="rightPropDisplay" max="32767" attributes="0"/>
+                                          <Component id="rightPropTxt" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
@@ -179,12 +173,12 @@
                                       <Component id="leftPropDisplay" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
                                               <Component id="upPropDisplay" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="upPropTxt" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="leftPropTxt" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="leftPropTxt" min="-2" pref="14" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -219,7 +213,8 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="rightPropTxt">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Right"/>
+                        <Property name="horizontalAlignment" type="int" value="0"/>
+                        <Property name="text" type="java.lang.String" value="Y"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="upPropDisplay">
@@ -255,7 +250,8 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="leftPropTxt">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Left"/>
+                        <Property name="horizontalAlignment" type="int" value="0"/>
+                        <Property name="text" type="java.lang.String" value="X"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="eigenHoogteTxt">
