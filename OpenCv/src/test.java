@@ -1,10 +1,10 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfInt4;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
@@ -177,23 +177,31 @@ public class test {
 	    MatOfPoint2f mMOP2f1 = new MatOfPoint2f();
 		MatOfPoint2f mMOP2f2 = new MatOfPoint2f();
 		if(filter)
-			contours = filterContours(contours);
+			contours = addContours(contours);
 	    for( int i = 0; i< contours.size(); i++ )
 	     {
-	    	if (Imgproc.contourArea(contours.get(i)) > 10){
+	    	if (Imgproc.contourArea(contours.get(i)) >10){
 	    		contoursToDraw.add(new MatOfPoint(contours.get(i).clone()));
 	    		contours.get(i).convertTo(mMOP2f1, CvType.CV_32FC2);  
-	    		Imgproc.approxPolyDP(mMOP2f1, mMOP2f2, 2, true); 
+	    		Imgproc.approxPolyDP(mMOP2f1, mMOP2f2, 10, true); 
 	    		mMOP2f2.convertTo(contours.get(i), CvType.CV_32S);
 	    		System.out.println("Points In Contour: " +mMOP2f2.toList().size());
 	    			Core.circle(image,findCenter(mMOP2f2.toList()), 10, new Scalar(255,0,0),3);
-	    			isCircle(mMOP2f2.toList(),findCenter(mMOP2f2.toList()));
+	    			if(isCircle(mMOP2f2.toList(),findCenter(mMOP2f2.toList()))){
+	    				Core.circle(image,findCenter(mMOP2f2.toList()), (int)averageRadius, new Scalar(255,0,0),3);
+	    			}
+	    			if(i==1){
+	    			List<Point> returnedPoint = isRectangle(mMOP2f2.toList());
+	    			for(int z=0;z<returnedPoint.size();z++){
+	    			Core.circle(image, returnedPoint.get(z), 20, new Scalar(0,0,255),5);
+	    			}
+	    			}
 	    			
 	    		
-//	    		for(int index=0;index < mMOP2f2.toList().size() ; index++){
-//	    			Core.circle(image,mMOP2f2.toList().get(index), 10, new Scalar(255,0,0),3);
-//	    			
-//	    		}
+	    		for(int index=0;index < mMOP2f2.toList().size() ; index++){
+	    			Core.circle(image,mMOP2f2.toList().get(index), 10, new Scalar(0,255,0),3);
+	    			
+	    		}
 	    		
 //				Core.circle(image, new Point(contours.get(i).get(0, 0)[0],contours.get(i).get(0, 0)[1]), 10, new Scalar(255,0,0),3);
 	    	}
@@ -208,25 +216,40 @@ public class test {
 	    Highgui.imwrite("C:/Users/Study/Desktop/test2.png",image);
 		
 	}
-	private static List<MatOfPoint> filterContours(List<MatOfPoint> contours) {
+	private static List<MatOfPoint> addContours(List<MatOfPoint> contours) {
 		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+		HashMap<Integer,Integer> fuzzyContours = new HashMap<>();
 		for(int i = 0 ; i< contours.size();i++){
 			MatOfPoint contour1= contours.get(i);
 			for(int index = i+1; index <contours.size();index++ ){
 				MatOfPoint contour2 = contours.get(index);
-				if(pointsEquals(contour1.get(0, 0),contour2.get(0, 0))){
+				if(pointsEquals(contour1.get(0, 0),contour2.get(0, 0),250)){
+					fuzzyContours.put(i, index);
 					toRemove.add(contour2);
 				}
 			}
 		}
+		for(int j=0; j< fuzzyContours.size(); j++){
+			int a = (int) fuzzyContours.keySet().toArray()[j];
+			int b = fuzzyContours.get(fuzzyContours.keySet().toArray()[j]);
+			ArrayList<Point> firstone = new ArrayList<>(contours.get(a).toList());
+			ArrayList<Point> secondone = new ArrayList<>(contours.get(b).toList());
+			for(int q=0;q<firstone.size();q++){
+				secondone.add(firstone.get(q));
+			}
+			contours.get(a).fromList(secondone);
+		}
+		
 		for(MatOfPoint p: toRemove ){
 			contours.remove(p);
 		}
 		System.out.println("removed: " + toRemove.size());
 		return contours;
 	}
-	private static boolean pointsEquals(double[] point1, double[] point2){
-		if(Math.sqrt((point1[0]-point2[0])*(point1[0]-point2[0])+(point1[1]-point2[1])*(point1[1]-point2[1]))<10)
+	private static boolean pointsEquals(double[] point1, double[] point2,int epsilon){
+		double distance = Math.sqrt((point1[0]-point2[0])*(point1[0]-point2[0])+(point1[1]-point2[1])*(point1[1]-point2[1]));
+		System.out.println("Distance:="+distance);
+		if(distance<epsilon)
 			return true;
 		return false;
 	}
@@ -245,6 +268,7 @@ public class test {
 		return new Point(x/approx.size(),y/approx.size());
 	}
 	
+	static double averageRadius=0;
 	public static boolean isCircle(List<Point> approx, Point center){
 		double radiussum=0;
 		double x;
@@ -254,10 +278,58 @@ public class test {
 			y= approx.get(i).y;
 			radiussum += Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
 		}
-		System.out.println(radiussum/approx.size()<100 && approx.size() > 15);
-		if(radiussum/approx.size()<10 && approx.size() > 15)
+
+		averageRadius=radiussum/approx.size();
+		double difference=0;
+		for(int j=0; j<approx.size();j++){
+			x= approx.get(j).x;
+			y= approx.get(j).y;
+			double radius = Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
+			difference += (averageRadius - radius )*(averageRadius - radius );
+		}
+		
+		System.out.println(difference/approx.size());
+		if(difference<16*approx.size())
 			return true;
 		return false;
+	}
+	
+	public static List<Point> isRectangle(List<Point> approx){
+		ArrayList<Point> newApprox= new ArrayList<Point>(approx);
+		ArrayList<Point> lonelyPoints= new ArrayList<Point>();
+		List<Point> fuzzyPoints = new ArrayList<Point>();
+		double[] point1 = new double[2];
+		double[] point2 = new double[2];
+		boolean lone=true;
+		for(int i=0; i<approx.size();i++){
+			point1[0]=approx.get(i).x;
+			point1[1]=approx.get(i).y;
+			for(int j=i+1;j<approx.size();j++){
+				point2[0]=approx.get(j).x;
+				point2[1]=approx.get(j).y;
+				System.out.println("Test");
+				if(pointsEquals(point1,point2,10)){
+					fuzzyPoints.add(approx.get(j));
+					System.out.println("index fuzzy:=" + j);
+					lone = false;
+				}
+			}
+			if(lone){
+				lonelyPoints.add(approx.get(i));
+				System.out.println("lonely point:="+ i);
+			}
+			lone = true;
+			
+		}
+		for(int k=0; k<fuzzyPoints.size();k++){
+			if(newApprox.contains(fuzzyPoints.get(k)))
+				newApprox.remove(fuzzyPoints.get(k));
+		}
+		for(int p=0; p<lonelyPoints.size(); p++){
+			if(newApprox.contains(lonelyPoints.get(p)))
+				newApprox.remove(lonelyPoints.get(p));
+		}
+		return newApprox;
 	}
 
 }
