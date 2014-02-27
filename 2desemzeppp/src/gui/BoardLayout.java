@@ -42,11 +42,11 @@ public class BoardLayout {
 	 */
 	public BoardLayout(int figuresPerRow, int rows) {
 		int availablePx = 495-16-16;
-		double needed = figuresPerRow + 0.5;
+		double needed = figuresPerRow - 0.5;
 		int distanceBetweenHor = (int) (availablePx/needed);
 		if(distanceBetweenHor%2==1)
 			distanceBetweenHor--;
-		int startLine1 = (495-figuresPerRow*distanceBetweenHor)/2;
+		int startLine1 = (int) (495-(figuresPerRow-0.5)*distanceBetweenHor)/2;
 		int startLine2 = startLine1 + distanceBetweenHor/2;
 		horodd = new int[figuresPerRow];
 		horeven = new int[figuresPerRow];
@@ -59,8 +59,8 @@ public class BoardLayout {
 			current+=distanceBetweenHor;
 		}
 		
-		int distanceBetweenY = (int) (availablePx/(rows));
-		int startY = (495-rows*distanceBetweenY)/2;
+		int distanceBetweenY = availablePx/(rows-1);
+		int startY = (495-(rows-1)*distanceBetweenY)/2;
 		ys = new int[rows];
 		for(int i=0,current=startY;i<rows;i++) {
 			ys[i] = current;
@@ -95,9 +95,4 @@ public class BoardLayout {
 			return 0;
 		return ys[no];
 	}
-	
-	public static void main(String[] args) {
-		BoardLayout b = new BoardLayout(10,12);
-	}
-
 }

@@ -24,6 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 
+import map.Map;
+
 import zeppelin.Propellor;
 
 public class GuiMain extends javax.swing.JFrame {
@@ -423,7 +425,8 @@ public class GuiMain extends javax.swing.JFrame {
         		gui.enableAllButtons();
         		JLabel mapofplayingfield = new JLabel();
         		mapofplayingfield.setSize(495, 495);
-        		mapofplayingfield.setIcon(MapMaker.getInstance().getMap("/shapesDemo.csv"));
+        		Map map = new Map("/shapesDemo.csv");
+        		mapofplayingfield.setIcon(MapMaker.getInstance().getMap(map));
         		gui.mapPanel.add(mapofplayingfield);
             }
         });

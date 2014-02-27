@@ -84,7 +84,7 @@ public class Map {
 	
 	private void readMap(BufferedReader read) throws IOException {
 		LinkedList<String> rows = new LinkedList<>();
-		int row = 1;
+		int row = 0;
 		String currentLine = read.readLine();
 		while(currentLine!=null) {
 			row++;
@@ -97,7 +97,7 @@ public class Map {
 			String[] thisRow = current.split(",");
 			map[i] = new Symbol[thisRow.length];
 			for(int j=0;j<thisRow.length;j++) {
-				Symbol symbol = new Symbol(current);
+				Symbol symbol = new Symbol(thisRow[j].trim());
 				map[i][j] = symbol;
 			}
 		}
@@ -129,6 +129,6 @@ public class Map {
 	public Symbol getSymbol(int no, int line) {
 		if(no < 0 || no >= symbolsOnRow || line < 0 || line >= height)
 			return null;
-		return map[no][line];
+		return map[line][no];
 	}
 }

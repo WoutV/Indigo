@@ -14,11 +14,11 @@ package map;
 public class Symbol {
 	
 	public enum Colour {
-		WHITE, YELLOW, RED, GREEN, BLUE
+		WHITE, YELLOW, RED, GREEN, BLUE, BLANK
 	}
 	
 	public enum Shape {
-		CIRCLE,STAR,HEART,RECTANGLE
+		CIRCLE,STAR,HEART,RECTANGLE,EMPTY
 	}
 	
 	private Colour colour;
@@ -47,6 +47,9 @@ public class Symbol {
 		case 'B':
 			this.colour = Colour.BLUE;
 			break;
+		case 'X':
+			this.colour = Colour.BLANK;
+			break;
 		}
 		switch(shape) {
 		case 'O':
@@ -60,6 +63,9 @@ public class Symbol {
 			break;
 		case 'R':
 			this.shape = Shape.RECTANGLE;
+			break;
+		case 'X':
+			this.shape = Shape.EMPTY;
 			break;
 		}
 	}

@@ -29,7 +29,7 @@ public class MapMaker {
 
 	private BoardLayout boardlayout;
 
-	private ImageIcon getMap(Map map) {
+	public ImageIcon getMap(Map map) {
 		BufferedImage image = new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
 		image.createGraphics();
 
