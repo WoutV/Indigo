@@ -37,7 +37,7 @@
 % == SAMENVATTING == %
 \begin{abstract}
 \noindent
-Dit rapport documenteert onze analyse en oplossing van het volgende probleem : de constructie en operatie van een zeppelin in wedstrijdverband. De zeppelin maakt gebruik van een gekend grondplan in roostervorm voor navigatie. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op beeldherkenning. Via het rooster moet hij sneller dan een andere zeppelin naar een bepaalde positie vliegen, en een andere, nog onbekende opdracht uitvoeren. Beide zeppelins dienen met een RabbitMQ-server te communiceren om informatie uit te wisselen met hun sturende laptop, en met elkaar. Een GUI dient de toestand van het speelveld met beide zeppelins te visualiseren. Al deze functionaliteiten worden ge\"{i}mplementeerd in Java. Op dit moment staan alle delen van de software nog in de steigers, maar werkende functies zijn niet veraf.
+Dit rapport documenteert onze analyse en oplossing van het volgende probleem : de constructie en operatie van een zeppelin in wedstrijdverband. Navigatie gebeurt op basis van een op voorhand gekend grondplan dat wordt ingeladen in de software. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op beeldherkenning. Via het rooster dient de zeppelin sneller dan een andere zeppelin naar een bepaalde positie te vliegen, en een andere, nog onbekende opdracht uitvoeren. Beide zeppelins wisselen informatie uit met elkaar en met hun sturende pc via een server gebaseerd op RabbitMQ. Een GUI dient de toestand van het speelveld met beide zeppelins te visualiseren. Al deze functionaliteiten worden ge\"{i}mplementeerd in Java.
 \end{abstract}
 
 
@@ -68,7 +68,7 @@ TODO !!!! schema figuur
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere de 3 propellers bevestigd. Twee hiervan dienen om naar links en rechts te draaien. Om vooruit te bewegen worden deze samen geactiveerd met dezelfde kracht. Deze propellers bevinden zich aan de uiteindes van de vleugels. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. Het is slechts mogelijk om \'e\'en propeller aan te sturen met pwm. We hebben hiervoor de motor voor verticale bewegingen genomen. Zo is het mogelijk de hoogte accuraat te regelen. ~\\
+De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere de 3 propellers bevestigd. Twee hiervan dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame gemonteerd. De derde propeller, om de zeppelin te laten stijgen, is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de wired pwm op het motorbordje, terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
 
 \begin{figure}[h!]
 \centering
@@ -98,18 +98,20 @@ In de Raspberry Pi zit een SD-kaart van 4 GB. Hierop staat Raspbian, het standaa
 
 Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 \begin{itemize}
-\item \emph{De camera} laat toe foto's te nemen met een maximum resolutie van 5 MP. Hiermee kunnen we onder andere beelden maken van QR-codes. Daarnaast kan de camera video's maken met resoluties tot 1080p.
-\item \emph{De afstandssensor} kan worden gebruikt om met ultrasone trillingen de afstand te meten tussen de zeppelin en de grond of muur. Het bereik gaat van 2-400 cm. \\
+\item \emph{De camera} laat toe foto's te nemen met een maximum resolutie van 5 MP. Deze wordt in deze opdracht vooral gebruikt voor het bepalen van de positie van de zeppelin. Hiervoor neemt hij foto's van de patronen op de grond die gematcht worden met het gekende grondplan. Daarnaast kan de camera video's maken met resoluties tot 1080p.
+\item \emph{De afstandssensor} kan worden gebruikt om met ultrasone trillingen de afstand te meten tussen de zeppelin en de grond of muur. De sensor heeft een bereik van 2-400 cm. Onze afstandssensor is vooral gebruikt voor het aansturen van het hoogteregelend PID-algoritme.  \\
 \end{itemize}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[height=60mm]{zeppelinFrame.jpg}
-\caption{Frame met gemonteerde onderdelen}
-\label{zeppFrame}
-\end{figure}
 
-Om het geheel te monteren, hebben we gebruik gemaakt van plakband en zipties (bundelbandjes). We hebben bekertjes bevestigd om ballast te dragen, zodat het geheel lichtjes zakt wanneer de motor geen kracht naar boven zet. Als gewicht gebruiken we zout, zodat het mogelijk is om nauwkeurig het gewicht te regelen. \\
+{\Large NEED FOR AN UPDATED FIGURE!!! }\\
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[height=60mm]{zeppelinFrame.jpg}
+%\caption{Frame met gemonteerde onderdelen}
+%\label{zeppFrame}
+%\end{figure}
+
+Om het geheel te monteren, hebben we gebruik gemaakt van plakband en zipties (bundelbandjes). We hebben bekertjes bevestigd om ballast te dragen, zodat het geheel lichtjes zakt wanneer de motor geen kracht naar boven zet. Als gewicht gebruiken we zout, zodat het mogelijk is om nauwkeurig het gewicht te regelen. Tijdens het landen steunt het geheel op twee pootjes, gemaakt van piepschuimen bekertjes. \\
 
 % == Testen == %
 \section{Testen}
@@ -120,10 +122,12 @@ Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt
 Voor gedetailleerde gegevens verwijzen we naar het verslag onze zeppelin van het eerste semester (versie 2). Hier hadden we gemerkt dat een enkele waarde van de sensor niet noodzakelijk de correcte afstand weergeeft. Daarom houdt de afstandssensor de laatste 10 gemeten waardes bij. De huidige hoogte wordt gegeven als het gemiddelde van deze waardes (rolling median techniek). Het interval tussen twee metingen hebben we kunnen terugbrengen tot 20 ms.
 
 \subsection{Camera en image processing}
-
+VINCE OF SUNIL HIER MOETEN JULLIE NOG IETS SCHRIJVEN
 
 \subsection{Motoren}
-In het eerste semester hebben we uitgebreide testen gedaan over de testen en de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots. 
+In het eerste semester hebben we uitgebreide testen gedaan over de testen en de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
+
+In het tweede semester hebben we enkele nieuwe testen moeten uitvoeren, voornamelijk gerelateerd aan het gebruik van SoftPWM. Er moest bepaald worden tussen welke percentages het vermogen groot genoeg was om de motor effectief te laten draaien, net zoals we in het eerste semester hebben moeten doen. Dit gebeurde door middel van trial-and-error.  
 
 % == ALGORITMES == %
 \section{Algoritmes}
@@ -148,12 +152,12 @@ Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-ge
 
 Alle software voor dit project is in Java geschreven. Dit is gekozen omdat dit voor het hele team de meest gebruikte programmeertaal was. Dit gaf wel een verschillende moeilijkheden bij het implementeren van een aantal aspecten (image recognition, \ldots). 
 
-TODO!! afbeelding
+TODO!! afbeelding\\
 
 \textbf{GUI} \\
 De Graphical User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld en de co\"{o}rdinaten van de zeppelingss.  \\
 
-De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelings weer. Daarnaast wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de client en de zeppelin. \\
+De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. Voor het maken van deze kaart wordt gebruik gemaakt van een CSV-bestand(comma separated value). Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de client-pc en de zeppelin. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. Er is een mogelijkheid om berichten te filteren op type. \\
 
