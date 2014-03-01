@@ -531,8 +531,6 @@ public class GuiMain extends javax.swing.JFrame {
 		enemyHeightDisplay.setText(s+" cm");
     }
     
-
-	
 	/**
 	 * Update de status van een propellor wanneer deze is ingeschakeld.
 	 * @param nbPropellor
