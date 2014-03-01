@@ -214,7 +214,7 @@ public class Motor {
 			mode = Propellor.Mode.OFF;
 		if(prevmode != mode) {
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, mode, null, value);
+			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
 			sender.sendTransfer(transfer);
 		}
 		

@@ -66,9 +66,9 @@ public class GuiMain extends javax.swing.JFrame {
 			propnotact = new ImageIcon(image);
 		} catch (IOException e) {}
 
-		propellorNotActive(Propellor.LEFT);
+		propellorNotActive(Propellor.X);
 		propellorNotActive(Propellor.UP);
-		propellorNotActive(Propellor.RIGHT);
+		propellorNotActive(Propellor.Y);
 
 		//initialise tab 3
 		photoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -538,7 +538,7 @@ public class GuiMain extends javax.swing.JFrame {
 	 * @param nbPropellor
 	 */
 	public void propellorActive(Propellor nbPropellor){
-		if(nbPropellor==Propellor.LEFT){
+		if(nbPropellor==Propellor.X){
 			leftPropDisplay.setIcon(propact);
 			addToGUIEventList(GUIEvent.EventType.PropStatus, "- Left propellor activated ");
 		}else if(nbPropellor==Propellor.UP){
@@ -555,7 +555,7 @@ public class GuiMain extends javax.swing.JFrame {
 	 * @param nbPropellor
 	 */
 	public void propellorNotActive(Propellor nbPropellor){
-		if(nbPropellor==Propellor.LEFT){
+		if(nbPropellor==Propellor.X){
 			leftPropDisplay.setIcon(propnotact);
 			addToGUIEventList(GUIEvent.EventType.PropStatus, " - Left propellor turned off " );
 		}else if(nbPropellor==Propellor.UP){

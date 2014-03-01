@@ -4,7 +4,7 @@ package zeppelin;
  * A set of enums pertaining to propellors
  */
 public enum Propellor {
-	LEFT,RIGHT,UP;
+	X,Y,UP;
 	
 	public enum Mode {
 		ON,OFF,PWM;

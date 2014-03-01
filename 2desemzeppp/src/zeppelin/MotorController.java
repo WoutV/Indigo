@@ -35,8 +35,6 @@ public class MotorController {
 	//TODO PINNEN NUMMERS NODIG !!!!!!!
 
 	private GpioController gpiocontroller;
-
-
 	
 	private SenderPi sender;
 	private static MotorController mc = new MotorController();
@@ -46,30 +44,35 @@ public class MotorController {
 	private PositionController yController;
 	
 	private DistanceSensor ds;
+		
+	public double Kpup=30;
+	public double Kdup=90;
+	public double Kiup=2;
+	public double Kpx=30;
+	public double Kdx=90;
+	public double Kix=2;
+	public double Kpy=30;
+	public double Kdy=90;
+	public double Kiy=2;
 	
+	private double zDestination=100;
+	private double[] horizontalDestination = {100,100};
 	
-	public double Kp=30;
-	public double Kd=90;
-	public double Ki=2;
-	
-	
-
 	private MotorController() {
 	}
 
 	/**
-	 * Geeft de enige instantie van deze singleton klasse terug
-	 * Motors zijn hierin nog niet geinitialiseerd
-	 * Hierna moet init() worden opgeroepen
+	 * Get the only instance of this singleton class.
+	 * Motors are not yet initialised.
+	 * Afterwards, the init() method should be called.
 	 */
 	public static MotorController getInstance() {
 		return mc;
 	}
 
 	/**
-	 * Initialiseert de motoren.
-	 * Mag maar een keer opgeroepen worden.
-	 * GpioController moet worden meegegeven (nodig voor de motoren)
+	 * Initialises the motors.
+	 * Should only be called once.
 	 */
 	public void init(GpioController gpio,DistanceSensor distanceSensor,SenderPi sender) {
 		if(gpiocontroller == null) {
@@ -79,22 +82,21 @@ public class MotorController {
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
-			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.LEFT,pwm,sender, pwmPinX);
+			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.X,pwm,sender, pwmPinX);
 			xMotor.setOff();
 			xMotor.PwmOn();
-			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.RIGHT, pwm, sender, pwmPinY);
+			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.Y, pwm, sender, pwmPinY);
 			yMotor.setOff();
 			yMotor.PwmOn();
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender, 0);
 			up.setOff();
 			up.PwmOn();
-			hc = new HeightController(Kp, Ki, Kd, distanceSensor, up);
+			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);
 			Thread hct = new Thread(hc);
 			hct.start();
 			
-			xController = new PositionController(Kp, Ki, Kd, xMotor, 0);
-			yController = new PositionController(Kp, Ki, Kd, yMotor, 0);
-			
+			xController = new PositionController(Kpx, Kix, Kdx, xMotor, true);
+			yController = new PositionController(Kpy, Kiy, Kdy, yMotor, false);		
 		}
 	}
 
@@ -108,26 +110,39 @@ public class MotorController {
 		up.setForward();
 	}
 	
-	
-	
 	/**
-	 * Laat de zeppelin naar een bepaalde hoogte bewegen
-	 * Deze methode gebruikt het PID-algoritme
+	 * Move the zeppelin to a given height.
+	 * This method uses the PID-algorithm.
 	 * @param dest
-	 * 		hoogte (in cm) waar naartoe moet worden bewogen
+	 * 		height (in cm) to go to
 	 */
 	public void moveToHeight(double dest) {
 		hc.moveToHeight(dest);
-		destination=dest;
+		zDestination=dest;
 	}
-	
-	private double destination=100;
 	
 	public double getDestination(){
-		return destination;
+		return zDestination;
 	}
+	
 	/**
-	 * Zet alle horizontale bewegingen (links draaien, rechts draaien, voorwaarts, achterwaarts) stop.
+	 * Move the zeppelin to a given horizontal location.
+	 * This method uses the PID-algorithm.
+	 * @param dest
+	 * 		dest[0] = x coordinate (in cm)
+	 * 		dest[1] = y coordinate (in cm)
+	 */
+	public void moveToHorizontalLocation(double[] dest) {
+		
+		horizontalDestination=dest;
+	}
+	
+	public double[] getHorizontalDestination(){
+		return horizontalDestination;
+	}
+	
+	/**
+	 * Stop all horizontal movement (left, right, forward, backward).
 	 */
 	public void stopHorizontalMovement() {
 		xMotor.setOff();
@@ -135,26 +150,20 @@ public class MotorController {
 	}
 
 	/**
-	 * Zet verticale bewegingen stop (concreet wordt overgeschakeld naar zweef-pwm)
+	 * Stop all vertical movement.
 	 */
 	public void stopElevate() {
 		hc.stop();
 		up.setOff();
-	}
-
-	private double[] horizontalDestination = {100,100};
-	
-	public double[] getHorizontalDestination() {
-		return horizontalDestination;
 	}	
 	
 	/**
-	 * Zet een bepaalde motor op een bepaalde pwm-stand.
+	 * Set a given engine to a given pwm value.
 	 * @param motor
-	 * 			Het nummer van de motor.
+	 * 			The number of the motor.
 	 * 			1 -> x , 2 -> y , 3-> up.
 	 * @param pwm
-	 * 			De pwm-value: range -100 -> 100.
+	 * 			The pwm-value: range -100 -> 100.
 	 */
 	public void setMotor(int motor,int pwm) {
 		if(pwm < -100)
@@ -162,12 +171,10 @@ public class MotorController {
 		if(pwm > 100)
 			pwm = 100;
 		if(motor == 1)
-			xMotor.setPwmValue(pwm);
+			xMotor.setSoftPwmValue(pwm);
 		if(motor == 2)
-			yMotor.setPwmValue(pwm);
+			yMotor.setSoftPwmValue(pwm);
 		if(motor == 3)
-			up.setPwmValue(pwm);
+			up.setSoftPwmValue(pwm);
 	}
-	
-	
 }
