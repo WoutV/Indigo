@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.ImageProducer;
-import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
 import map.*;
@@ -34,7 +32,18 @@ public class MapMaker {
 	private BufferedImage image;
 	private BoardLayout boardlayout;
 
-	public ImageIcon getLocations(double[] own, double[] enemy, double[] dest, Map map) {
+	/**
+	 * Get the map with the locations of supplied zeppelins and target.
+	 * @param own
+	 * 			coordinates of own zeppelin, in cm on the map
+	 * 			own[0]: x, own[1]: y
+	 * @param enemy
+	 * 			coordinates of enemy zeppelin, in cm on the map
+	 * 			enemy[0]: x, own[1]: y
+	 * @param dest
+	 * 			coordinates of the target, in cm on the map
+	 */
+	public ImageIcon getLocations(double[] own, double[] enemy, double[] dest) {
 		ColorModel colormodel =  image.getColorModel();
 		boolean isAlpha = colormodel.isAlphaPremultiplied();	
 		WritableRaster raster = image.copyData(null);
@@ -67,7 +76,11 @@ public class MapMaker {
 		return ii;
 	}
 
-	
+	/**
+	 * Creates and gets the map containing the symbols.
+	 * No zeppelin or target is added.
+	 * @param map
+	 */
 	public ImageIcon getMap(Map map) {
 		image = new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
 		image.createGraphics();

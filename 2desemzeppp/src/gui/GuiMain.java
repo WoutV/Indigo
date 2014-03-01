@@ -482,8 +482,8 @@ public class GuiMain extends javax.swing.JFrame {
         		double[] own = {40,40};
         		double[] enemy = {80,80};
         		double[] target = {240,240};
-        		mapofplayingfield.setIcon(MapMaker.getInstance().getLocations(own, enemy, target, map));
-        		gui.mapPanel.add(mapofplayingfield);
+        		mapofplayingfield.setIcon(MapMaker.getInstance().getLocations(own, enemy, target));
+        		gui.mapPanel.add(mapofplayingfield);		
             }
         });
     }
