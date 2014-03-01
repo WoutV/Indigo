@@ -34,7 +34,6 @@ public class ReceiverPi implements Runnable{
 		case MOTOR2:
 			main.activateMotor2(information);
 			break;
-		
 		case MOTOR3:
 			main.activateMotor3(information);
 			break;

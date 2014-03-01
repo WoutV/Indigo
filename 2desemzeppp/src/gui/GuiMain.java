@@ -99,17 +99,19 @@ public class GuiMain extends javax.swing.JFrame {
         eventOverviewPanel = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         statusPanel = new javax.swing.JPanel();
+        ownHeightTxt = new javax.swing.JLabel();
+        ownHeightDisplay = new javax.swing.JLabel();
+        enemyHeightDisplay = new javax.swing.JLabel();
+        enemyHeightTxt = new javax.swing.JLabel();
+        leftPropDisplay = new javax.swing.JLabel();
+        leftPropTxt = new javax.swing.JLabel();
         rightPropDisplay = new javax.swing.JLabel();
         rightPropTxt = new javax.swing.JLabel();
         upPropDisplay = new javax.swing.JLabel();
+        setTarget = new javax.swing.JButton();
         upPropTxt = new javax.swing.JLabel();
-        leftPropDisplay = new javax.swing.JLabel();
-        leftPropTxt = new javax.swing.JLabel();
-        eigenHoogteTxt = new javax.swing.JLabel();
-        eigenHoogteDisplay = new javax.swing.JLabel();
-        enemyHoogteDisplay = new javax.swing.JLabel();
-        enemyHoogteTxt = new javax.swing.JLabel();
         mapPanel = new javax.swing.JPanel();
+        mapDisplay = new javax.swing.JLabel();
         commandlistTab = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         shownGUIEventList = new javax.swing.JTextArea();
@@ -120,10 +122,10 @@ public class GuiMain extends javax.swing.JFrame {
         photoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setTitle("Indigo Zeppelin");
         setResizable(false);
 
-        jTabbedPane1.setToolTipText("Zeppelin Indigo");
+        jTabbedPane1.setToolTipText("");
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(800, 600));
 
@@ -131,6 +133,58 @@ public class GuiMain extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         eventOverviewPanel.setViewportView(jTextArea1);
+
+        ownHeightTxt.setText("Own height : ");
+
+        ownHeightDisplay.setBackground(new java.awt.Color(0, 0, 0));
+        ownHeightDisplay.setForeground(new java.awt.Color(0, 255, 0));
+        ownHeightDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ownHeightDisplay.setText("Hier komt de hoogte!");
+        ownHeightDisplay.setOpaque(true);
+
+        enemyHeightDisplay.setBackground(new java.awt.Color(0, 0, 0));
+        enemyHeightDisplay.setForeground(new java.awt.Color(255, 0, 51));
+        enemyHeightDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        enemyHeightDisplay.setText("Hier komt enemy hoogte!");
+        enemyHeightDisplay.setOpaque(true);
+
+        enemyHeightTxt.setText("Enemy height : ");
+
+        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
+        statusPanel.setLayout(statusPanelLayout);
+        statusPanelLayout.setHorizontalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enemyHeightTxt)
+                    .addComponent(ownHeightTxt, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enemyHeightDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(ownHeightDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        statusPanelLayout.setVerticalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ownHeightTxt)
+                    .addComponent(ownHeightDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enemyHeightTxt)
+                    .addComponent(enemyHeightDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
+        );
+
+        leftPropDisplay.setText("jLabel1");
+        leftPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        leftPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
+
+        leftPropTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        leftPropTxt.setText("X");
 
         rightPropDisplay.setText("jLabel1");
         rightPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -143,91 +197,14 @@ public class GuiMain extends javax.swing.JFrame {
         upPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         upPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
 
+        setTarget.setText("Target ...");
+        setTarget.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setTargetActionPerformed(evt);
+            }
+        });
+
         upPropTxt.setText("Up");
-
-        leftPropDisplay.setText("jLabel1");
-        leftPropDisplay.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        leftPropDisplay.setPreferredSize(new java.awt.Dimension(51, 44));
-
-        leftPropTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        leftPropTxt.setText("X");
-
-        eigenHoogteTxt.setText("Eigen hoogte : ");
-
-        eigenHoogteDisplay.setBackground(new java.awt.Color(0, 0, 0));
-        eigenHoogteDisplay.setForeground(new java.awt.Color(0, 255, 0));
-        eigenHoogteDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        eigenHoogteDisplay.setText("Hier komt de hoogte!");
-        eigenHoogteDisplay.setOpaque(true);
-
-        enemyHoogteDisplay.setBackground(new java.awt.Color(0, 0, 0));
-        enemyHoogteDisplay.setForeground(new java.awt.Color(255, 0, 51));
-        enemyHoogteDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        enemyHoogteDisplay.setText("Hier komt enemy hoogte!");
-        enemyHoogteDisplay.setOpaque(true);
-
-        enemyHoogteTxt.setText("Enemy hoogte : ");
-
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(statusPanelLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(eigenHoogteTxt))
-                            .addComponent(enemyHoogteTxt, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(enemyHoogteDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                            .addComponent(eigenHoogteDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
-                                .addComponent(upPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(rightPropDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rightPropTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rightPropTxt))
-                    .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(statusPanelLayout.createSequentialGroup()
-                                .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(upPropTxt))
-                            .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(eigenHoogteTxt)
-                    .addComponent(eigenHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enemyHoogteTxt)
-                    .addComponent(enemyHoogteDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
-        );
 
         javax.swing.GroupLayout commandPanelLayout = new javax.swing.GroupLayout(commandPanel);
         commandPanel.setLayout(commandPanelLayout);
@@ -235,21 +212,53 @@ public class GuiMain extends javax.swing.JFrame {
             commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(commandPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, commandPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, commandPanelLayout.createSequentialGroup()
+                            .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(commandPanelLayout.createSequentialGroup()
+                                    .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(rightPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addContainerGap(121, Short.MAX_VALUE)))
+                    .addGroup(commandPanelLayout.createSequentialGroup()
+                        .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(setTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 22, Short.MAX_VALUE))))
+            .addGroup(commandPanelLayout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addComponent(upPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         commandPanelLayout.setVerticalGroup(
             commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(commandPanelLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rightPropTxt)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(upPropTxt)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(setTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
 
         overviewTab.add(commandPanel);
@@ -262,15 +271,23 @@ public class GuiMain extends javax.swing.JFrame {
         mapPanel.setLayout(mapPanelLayout);
         mapPanelLayout.setHorizontalGroup(
             mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         mapPanelLayout.setVerticalGroup(
             mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         overviewTab.add(mapPanel);
-        mapPanel.setBounds(10, 0, 510, 550);
+        mapPanel.setBounds(10, 0, 500, 500);
+
+        mapDisplay.setBackground(new java.awt.Color(204, 102, 255));
+        mapDisplay.setForeground(new java.awt.Color(255, 255, 255));
+        mapDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mapDisplay.setText("map display");
+        mapDisplay.setOpaque(true);
+        overviewTab.add(mapDisplay);
+        mapDisplay.setBounds(10, 500, 500, 28);
 
         jTabbedPane1.addTab("overview", overviewTab);
 
@@ -352,7 +369,7 @@ public class GuiMain extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -389,6 +406,40 @@ public class GuiMain extends javax.swing.JFrame {
         typevisibility.put(type, true);
         remakeGUIEvents();
     }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void setTargetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTargetActionPerformed
+    	JLabel lbl = new JLabel("<html>Set a new target location for the zeppelin (in cm): <br> " + 
+    			"Values between 0 and 400. <br> (left,up) is (0,0). <br> " +
+    			"Input format: ---- x , y ---- OR  ---- ( x , y ) ---- </html>");
+    	
+        String a = JOptionPane.showInputDialog(lbl);
+        boolean noinput = true;
+        if(a != null) {
+           String[] coord = a.split(",");
+           if(coord.length == 2) {
+        	   String x0 = coord[0].trim();
+        	   if(x0.charAt(0) == '(') 
+        		   x0 = x0.substring(1,x0.length()).trim();
+        	   String y0 = coord[1].trim();
+        	   if(y0.charAt(y0.length()-1) == ')') 
+        		   y0 = y0.substring(0,y0.length()-1).trim();
+        	   int x = 0;
+        	   int y = 0;
+        	   try {
+        		   x = Integer.parseInt(x0);
+        		   y = Integer.parseInt(y0);
+        		   guic.sendTarget(x,y);
+        		   noinput = false;
+        	   }
+        	   catch (NumberFormatException exc){
+        	   }
+           }
+        }
+        if(noinput) {
+        	JOptionPane.showMessageDialog(this, "No new target sent.");
+        }
+        
+    }//GEN-LAST:event_setTargetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,10 +488,8 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JPanel commandlistTab;
     private javax.swing.JLabel creditsLbl;
     private javax.swing.JPanel credittab;
-    private javax.swing.JLabel eigenHoogteDisplay;
-    private javax.swing.JLabel eigenHoogteTxt;
-    private javax.swing.JLabel enemyHoogteDisplay;
-    private javax.swing.JLabel enemyHoogteTxt;
+    private javax.swing.JLabel enemyHeightDisplay;
+    private javax.swing.JLabel enemyHeightTxt;
     private javax.swing.JScrollPane eventOverviewPanel;
     private javax.swing.JButton filterBtn;
     private javax.swing.JScrollPane jScrollPane2;
@@ -448,11 +497,15 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel leftPropDisplay;
     private javax.swing.JLabel leftPropTxt;
+    private javax.swing.JLabel mapDisplay;
     private javax.swing.JPanel mapPanel;
     private javax.swing.JLayeredPane overviewTab;
+    private javax.swing.JLabel ownHeightDisplay;
+    private javax.swing.JLabel ownHeightTxt;
     private javax.swing.JLabel photoLabel;
     private javax.swing.JLabel rightPropDisplay;
     private javax.swing.JLabel rightPropTxt;
+    private javax.swing.JButton setTarget;
     private javax.swing.JTextArea shownGUIEventList;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JLabel upPropDisplay;
@@ -468,14 +521,14 @@ public class GuiMain extends javax.swing.JFrame {
     public void setEigenHoogte(double hoogte) {
     	DecimalFormat df = new DecimalFormat("#.##");
 		String s = df.format(hoogte);
-		eigenHoogteDisplay.setText(s+" cm");
+		ownHeightDisplay.setText(s+" cm");
 		
 	}
     
     public void setEnemyHoogte(double hoogte){
     	DecimalFormat df = new DecimalFormat("#.##");
 		String s = df.format(hoogte);
-		enemyHoogteDisplay.setText(s+" cm");
+		enemyHeightDisplay.setText(s+" cm");
     }
     
 

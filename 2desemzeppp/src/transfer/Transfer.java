@@ -15,10 +15,12 @@ public class Transfer implements Serializable {
 	public enum TransferType{
 		IMAGE, HEIGHT, PROPELLOR,MOTOR1,MOTOR2,MOTOR3,DESTINATION;
 	}
+	
 	private String message;
 	private TransferType type;
 	private double height;
 	private ImageIcon image;
+	
 	public Transfer(){
 	
 	}
@@ -28,15 +30,14 @@ public class Transfer implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @return	Returns Height 
+	 * Get height.
 	 */
 	public double getHeight(){
 		return height;
 	}
 	
 	/**
-	 * The height is set aswell as the type is set to TransferType.HEIGHT
+	 * The height is set as well as the type is set to TransferType.HEIGHT
 	 * @param height
 	 */
 	public void setHeight(double height){
@@ -44,10 +45,6 @@ public class Transfer implements Serializable {
 		this.type  = TransferType.HEIGHT;
 		
 	}
-	
-	
-	
-	
 	
 	/**
 	 * Only use this to set Exit type.
@@ -57,26 +54,27 @@ public class Transfer implements Serializable {
 		this.type = type;
 	}
 	
-	
-
+	/**
+	 * Send an image through this transfer.
+	 * @param image
+	 */
 	public void setImage(ImageIcon image){
 		this.type=TransferType.IMAGE;
 		this.image= image;
 		
 	}
 	
+	/**
+	 * Get image.
+	 */
 	public ImageIcon getImage(){
 		return image;
 	}
-	
-	
 	
 	private Propellor id;
 	private Propellor.Mode mode;
 	private Propellor.Direction direction;
 	private int pwmvalue;
-	
-
 	
 	/**
 	 * Configures this object to send a propellor update
@@ -124,16 +122,20 @@ public class Transfer implements Serializable {
 		this.pwmvalue = pwmvalue;
 		this.setType(Transfer.TransferType.MOTOR1);
 	}
+	
 	public void setMotor2(int pwmvalue){
 		this.pwmvalue = pwmvalue;
 		this.setType(Transfer.TransferType.MOTOR2);
 	}
+	
 	public void setMotor3(int pwmvalue){
 		this.pwmvalue = pwmvalue;
 		this.setType(Transfer.TransferType.MOTOR3);
 	}
+	
 	private int x;
 	private int y;
+	
 	public void setDestination(int x,int y){
 		this.x=x;
 		this.y=y;

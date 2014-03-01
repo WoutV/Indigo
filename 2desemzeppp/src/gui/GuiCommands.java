@@ -3,8 +3,9 @@ package gui;
 import zeppelin.Propellor;
 import javax.swing.ImageIcon;
 
+import connection.SenderClient;
+
 import transfer.Transfer;
-import transfer.Transfer.TransferType;
 
 
 /**
@@ -15,6 +16,7 @@ import transfer.Transfer.TransferType;
 public class GuiCommands {
 
 	private GuiMain gui;
+	private SenderClient sender;
 
 	public GuiCommands(GuiMain gui){
 		this.gui=gui;
@@ -41,7 +43,6 @@ public class GuiCommands {
 	 * Via deze methode stuurt de zeppelin de staat van één van zijn propellors door.
 	 * @param prop
 	 * 			De propellor waarvan de staat wordt doorgestuurd
-	 * 			!! voorlopig met enum, dit evt veranderen adhv interne werking zeppelin
 	 * @param running
 	 * 			true = propellor aan
 	 * 			false = propellor uit
@@ -54,7 +55,7 @@ public class GuiCommands {
 	}
 
 	/**
-	 * Geeft de ontvangen afbeelding weer in een label in tab 1 van window 1 van GUI.
+	 * Geeft de ontvangen afbeelding weer in tab 1 van de GUI.
 	 * @param image
 	 */
 	public void receiveImage(ImageIcon image) {
@@ -77,6 +78,23 @@ public class GuiCommands {
 	 */
 	public void showInfo(String message){
 		gui.addToGUIEventList(GUIEvent.EventType.Misc,message);
+	}
+	
+	/**
+	 * Methode om een target location naar de zeppelin te sturen.
+	 * @param x
+	 * @param y
+	 */
+	public void sendTarget(int x,int y) {
+		if(sender != null) {
+			Transfer transfer = new Transfer();
+			transfer.setDestination(x,y);
+			sender.sendTransfer(transfer);
+		}
+	}
+	
+	public void setSender(SenderClient sender) {
+		this.sender = sender;
 	}
 
 }
