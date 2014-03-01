@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
 import map.Map;
@@ -477,7 +478,11 @@ public class GuiMain extends javax.swing.JFrame {
         		JLabel mapofplayingfield = new JLabel();
         		mapofplayingfield.setSize(495, 495);
         		Map map = new Map("/shapesDemo.csv");
-        		mapofplayingfield.setIcon(MapMaker.getInstance().getMap(map));
+        		MapMaker.getInstance().getMap(map);
+        		double[] own = {40,40};
+        		double[] enemy = {80,80};
+        		double[] target = {240,240};
+        		mapofplayingfield.setIcon(MapMaker.getInstance().getLocations(own, enemy, target, map));
         		gui.mapPanel.add(mapofplayingfield);
             }
         });

@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageProducer;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 
 import map.*;
 
@@ -27,10 +31,45 @@ public class MapMaker {
 	//size of the map (in px)
 	private int width = 495;
 
+	private BufferedImage image;
 	private BoardLayout boardlayout;
 
+	public ImageIcon getLocations(double[] own, double[] enemy, double[] dest, Map map) {
+		ColorModel colormodel =  image.getColorModel();
+		boolean isAlpha = colormodel.isAlphaPremultiplied();	
+		WritableRaster raster = image.copyData(null);
+		BufferedImage image2 = new BufferedImage(colormodel,raster,isAlpha,null);
+		
+		image2.createGraphics();
+
+		Graphics2D map0 = (Graphics2D) image2.getGraphics();
+
+		//own zeppelin
+		int[] ownZepp = boardlayout.getPx(own);
+		int[] ownZeppdata = Shapes.getShiftedZeppelinData(ownZepp[0], ownZepp[1]);
+		map0.setColor(Color.ORANGE);
+		map0.fillOval(ownZeppdata[0],ownZeppdata[1],ownZeppdata[2],ownZeppdata[3]);
+		
+		//enemy zeppelin
+		int[] enemyZepp = boardlayout.getPx(enemy);
+		int[] enemyZeppdata = Shapes.getShiftedZeppelinData(enemyZepp[0], enemyZepp[1]);
+		map0.setColor(Color.RED);
+		map0.fillOval(enemyZeppdata[0],enemyZeppdata[1],enemyZeppdata[2],enemyZeppdata[3]);
+		
+		//target
+		int[] target = boardlayout.getPx(dest);
+		int[] targetdata = Shapes.getShiftedTargetData(target[0], target[1]);
+		map0.setColor(Color.RED);
+		map0.drawRect(targetdata[0],targetdata[1],targetdata[2],targetdata[3]);
+		
+		ImageIcon ii = new ImageIcon(image2);
+		
+		return ii;
+	}
+
+	
 	public ImageIcon getMap(Map map) {
-		BufferedImage image = new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
 		image.createGraphics();
 
 		Graphics2D map0 = (Graphics2D) image.getGraphics();
@@ -42,6 +81,39 @@ public class MapMaker {
 		int symbolsOnRow = map.getSymbolsOnRow();
 		int lines = map.getRows();
 		boardlayout = new BoardLayout(symbolsOnRow,lines);
+		
+		map0.setColor(Color.BLACK);
+		
+		for(int i = 0; i<lines;i++) {
+			int y = boardlayout.getY(i);
+			boolean even = i%2 != 0;
+			
+			for(int j=0;j<symbolsOnRow-1;j++) {
+				map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j+1, even),y);
+			}
+			
+			if(!even) {
+				if(i<lines-1) {
+					int nexty = boardlayout.getY(i+1);
+				
+					map0.drawLine(boardlayout.getX(0, even),y,boardlayout.getX(0, !even),nexty);
+					for(int j=1;j<symbolsOnRow;j++) {
+						map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j-1, !even),nexty);
+						map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j, !even),nexty);
+					}
+				}
+				if(i>0) {
+					int prevy = boardlayout.getY(i-1);
+				
+					map0.drawLine(boardlayout.getX(0, even),y,boardlayout.getX(0, !even),prevy);
+					for(int j=1;j<symbolsOnRow;j++) {
+						map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j-1, !even),prevy);
+						map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j, !even),prevy);
+					}
+				}
+			}
+		}
+		
 		for(int i = 0; i<lines;i++) {
 			for(int j=0;j<symbolsOnRow;j++) {
 			Symbol currentSymbol = map.getSymbol(j, i);
@@ -84,7 +156,7 @@ public class MapMaker {
 		}
 
 		ImageIcon ii = new ImageIcon(image);
-
+		
 		return ii;
 	}
 

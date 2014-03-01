@@ -19,6 +19,12 @@ public class BoardLayout {
 	private int figuresPerRow;
 	private int rows;
 	
+	//size of the map (in cm)
+	private int size = 400;
+	
+	//size of the map (px)
+	private int sizemap = 495;
+	
 	/**
 	 * Creates a default BoardLayout with 10 figures on each line, 12 lines.
 	 */
@@ -41,12 +47,12 @@ public class BoardLayout {
 	 * 		How many rows?
 	 */
 	public BoardLayout(int figuresPerRow, int rows) {
-		int availablePx = 495-16-16;
+		int availablePx = sizemap-16-16;
 		double needed = figuresPerRow - 0.5;
 		int distanceBetweenHor = (int) (availablePx/needed);
 		if(distanceBetweenHor%2==1)
 			distanceBetweenHor--;
-		int startLine1 = (int) (495-(figuresPerRow-0.5)*distanceBetweenHor)/2;
+		int startLine1 = (int) (sizemap-(figuresPerRow-0.5)*distanceBetweenHor)/2;
 		int startLine2 = startLine1 + distanceBetweenHor/2;
 		horodd = new int[figuresPerRow];
 		horeven = new int[figuresPerRow];
@@ -60,7 +66,7 @@ public class BoardLayout {
 		}
 		
 		int distanceBetweenY = availablePx/(rows-1);
-		int startY = (495-(rows-1)*distanceBetweenY)/2;
+		int startY = (sizemap-(rows-1)*distanceBetweenY)/2;
 		ys = new int[rows];
 		for(int i=0,current=startY;i<rows;i++) {
 			ys[i] = current;
@@ -94,5 +100,19 @@ public class BoardLayout {
 		if(no < 0 || no >= rows)
 			return 0;
 		return ys[no];
+	}
+	
+	/**
+	 * Given the coordinates of a location (in cm), gives
+	 * the coordinates of the center in px.
+	 * @param coords
+	 * 			coords[0]: x-coord
+	 * 			coords[1]: y-coord
+	 */
+	public int[] getPx(double[] coords) {
+		int x = (int) (1.0*coords[0]/size*sizemap);
+		int y = (int) (1.0*coords[1]/size*sizemap);
+		int[] r = {x,y};
+		return r;
 	}
 }

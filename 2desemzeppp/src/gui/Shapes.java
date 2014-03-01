@@ -160,4 +160,52 @@ public class Shapes {
 		a[3] = 16;
 		return a;
 	}
+	
+	/**
+	 * Given the coordinates of the center, gives the data used for drawing the target with this center.
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static int[] getShiftedTargetData(int x, int y) {
+		int[] a = new int[4];
+		a[0] = x - 20;
+		if(a[0] < 0)
+			a[0] = 0;
+		a[1] = y - 20;
+		if(a[1] < 0)
+			a[1] = 0;
+		a[2] = 41;
+		if(a[0] + a[2] > 495)
+			a[2] = 495 - a[0];
+		a[3] = 41;
+		if(a[1] + a[3] > 495)
+			a[3] = 495 - a[1];
+		return a;
+	}
+	
+	/**
+	 * Given the coordinates of the center, gives the data used for drawing the zeppelin with this center.
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static int[] getShiftedZeppelinData(int x, int y) {
+		int[] a = new int[4];
+		a[0] = x - 20;
+		if(a[0] < 0)
+			a[0] = 0;
+		a[1] = y - 20;
+		if(a[1] < 0)
+			a[1] = 0;
+		a[2] = 40;
+		if(a[0] + a[2] > 495)
+			a[2] = 495 - a[0];
+		a[3] = 40;
+		if(a[1] + a[3] > 495)
+			a[3] = 495 - a[1];
+		return a;
+	}
 }
