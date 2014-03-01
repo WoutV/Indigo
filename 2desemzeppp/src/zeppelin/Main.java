@@ -57,19 +57,16 @@ public class Main{
 		return distanceSensor;
 	}
 
-	public void activateMotor1(Transfer information) {
-		// TODO Auto-generated method stub
-		
+	public void activateMotor1(int pwm) {
+		motorController.setMotor(1, pwm);
 	}
 
-	public void activateMotor2(Transfer information) {
-		// TODO Auto-generated method stub
-		
+	public void activateMotor2(int pwm) {
+		motorController.setMotor(2, pwm);
 	}
 
-	public void activateMotor3(Transfer information) {
-		// TODO Auto-generated method stub
-		
+	public void activateMotor3(int pwm) {
+		motorController.setMotor(1, pwm);
 	}
 
 	public void goToDestination(Transfer information) {

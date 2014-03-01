@@ -23,10 +23,12 @@ public class ReceiverClient implements Runnable{
 	private final GuiMain gui;
 	private final GuiCommands gc;
 	private final String EXCHANGE_NAME = "server";
+	
 	public ReceiverClient(GuiMain gui){
 		this.gui=gui;
 		gc = gui.getGuic();
 	}
+	
 	private String getTime(){
 		DateFormat dateFormat = new SimpleDateFormat(" HH:mm:ss:SSS");
 		Calendar cal = Calendar.getInstance();

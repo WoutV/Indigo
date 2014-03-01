@@ -19,6 +19,8 @@ import connection.SenderPi;
  * 		up: motor 2 in doc (17,23)	
  * 		left : motor 3 in doc (9,7)
  * Usage: getInstance(), daarna: init met een GpioController
+ * 
+ * Motor 1 = x, motor 2 = y, motor 3 = up
  */
 public class MotorController {
 	private Motor up;
@@ -70,7 +72,6 @@ public class MotorController {
 	 * GpioController moet worden meegegeven (nodig voor de motoren)
 	 */
 	public void init(GpioController gpio,DistanceSensor distanceSensor,SenderPi sender) {
-		System.out.println("Initializing Motor before if test");
 		if(gpiocontroller == null) {
 			gpiocontroller = gpio;
 			this.sender = sender;
@@ -78,19 +79,18 @@ public class MotorController {
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
-			System.out.println("Initializing Motor");
 			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.LEFT,pwm,sender, pwmPinX);
 			xMotor.setOff();
+			xMotor.PwmOn();
 			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.RIGHT, pwm, sender, pwmPinY);
 			yMotor.setOff();
+			yMotor.PwmOn();
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender, 0);
 			up.setOff();
 			up.PwmOn();
 			hc = new HeightController(Kp, Ki, Kd, distanceSensor, up);
 			Thread hct = new Thread(hc);
-			System.out.println("Starting heightController Thread ");
 			hct.start();
-			System.out.println("HeightController Thread Started");
 			
 			xController = new PositionController(Kp, Ki, Kd, xMotor, 0);
 			yController = new PositionController(Kp, Ki, Kd, yMotor, 0);
@@ -131,9 +131,7 @@ public class MotorController {
 	 */
 	public void stopHorizontalMovement() {
 		xMotor.setOff();
-		yMotor.setOff();
-		
-		
+		yMotor.setOff();	
 	}
 
 	/**
@@ -150,7 +148,26 @@ public class MotorController {
 		return horizontalDestination;
 	}	
 	
-	
+	/**
+	 * Zet een bepaalde motor op een bepaalde pwm-stand.
+	 * @param motor
+	 * 			Het nummer van de motor.
+	 * 			1 -> x , 2 -> y , 3-> up.
+	 * @param pwm
+	 * 			De pwm-value: range -100 -> 100.
+	 */
+	public void setMotor(int motor,int pwm) {
+		if(pwm < -100)
+			pwm = -100;
+		if(pwm > 100)
+			pwm = 100;
+		if(motor == 1)
+			xMotor.setPwmValue(pwm);
+		if(motor == 2)
+			yMotor.setPwmValue(pwm);
+		if(motor == 3)
+			up.setPwmValue(pwm);
+	}
 	
 	
 }

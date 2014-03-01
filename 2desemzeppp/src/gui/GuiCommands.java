@@ -7,7 +7,6 @@ import connection.SenderClient;
 
 import transfer.Transfer;
 
-
 /**
  * Klasse om de client / de GUI te linken met de zeppelin.
  * Communicatie van GUI naar zeppelin: send..
@@ -38,7 +37,6 @@ public class GuiCommands {
 		gui.addToGUIEventList(GUIEvent.EventType.HeightReceived," - New height received from Zeppelin : "+hoogte);
 	}
 
-
 	/**
 	 * Via deze methode stuurt de zeppelin de staat van één van zijn propellors door.
 	 * @param prop
@@ -61,7 +59,6 @@ public class GuiCommands {
 	public void receiveImage(ImageIcon image) {
 		gui.setImageDisplay(image);
 	}
-
 
 //	/**
 //	 * Methode om een boodschap weer te geven in het commandodisplay op tab 1 in de GUI

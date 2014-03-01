@@ -29,13 +29,13 @@ public class ReceiverPi implements Runnable{
 	private void handleReceived(Transfer information){
 		switch(information.getTransferType()){
 		case MOTOR1:
-			main.activateMotor1(information);
+			main.activateMotor1(information.getPropellorPwm());
 			break;
 		case MOTOR2:
-			main.activateMotor2(information);
+			main.activateMotor2(information.getPropellorPwm());
 			break;
 		case MOTOR3:
-			main.activateMotor3(information);
+			main.activateMotor3(information.getPropellorPwm());
 			break;
 		case DESTINATION:
 			main.goToDestination(information);
