@@ -27,7 +27,7 @@ public class SenderClient {
 			channel = connection.createChannel();
 
 			channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-			routingKey = "indigo.private";
+			routingKey = "indigo.private.fromclient";
 		}
 		catch  (Exception e) {
 			e.printStackTrace();

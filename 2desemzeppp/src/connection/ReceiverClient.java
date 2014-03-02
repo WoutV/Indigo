@@ -67,7 +67,7 @@ public class ReceiverClient implements Runnable{
 			channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 			String queueName = channel.queueDeclare().getQueue();
 
-			String bindingKey = "indigo.private";
+			String bindingKey = "indigo.private.frompi";
 			channel.queueBind(queueName, EXCHANGE_NAME, bindingKey);
 
 

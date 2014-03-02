@@ -33,7 +33,7 @@ public class SenderPi {
 	      channel = connection.createChannel();
 
 	      channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-		  routingKey = "indigo.private";
+		  routingKey = "indigo.private.frompi";
 	    }
 	    catch  (Exception e) {
 	      e.printStackTrace();
