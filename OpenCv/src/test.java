@@ -116,49 +116,6 @@ public class test {
 	    Highgui.imwrite("C:/Users/Study/Desktop/test2.png",image);
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	static void SimpleForms(){
 		Mat image = Highgui.imread(filePath, Imgproc.COLOR_BGR2GRAY);
 		Mat grayImage = new Mat();

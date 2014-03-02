@@ -18,8 +18,8 @@ import org.opencv.highgui.VideoCapture;
 public class hsvtest {
 	
 	
-	static boolean camera = true;
-	static String filePath = "C:/Users/Study/Desktop/OpenCv/symbols.jpg";
+	static boolean camera = false;
+	static String filePath = "C:/Users/Study/Desktop/OpenCv/s1.jpg";
 	/**
 	 * @param args
 	 * @throws InterruptedException 

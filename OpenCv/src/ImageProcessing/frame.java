@@ -1,3 +1,4 @@
+package ImageProcessing;
 /*  
  * Captures the camera stream with OpenCV  
  * Search for the faces  
@@ -44,14 +45,14 @@ class frame extends JPanel{
           if (this.image==null) return;  
           Size frameSize= new Size();
 			if(image.getHeight()>=image.getWidth()){
-				frameSize = new Size(800, 800/(image.getHeight()/image.getWidth()));
+				frameSize = new Size(1000*image.getWidth()/image.getHeight(), 1000);
 			}
 			else{
-				frameSize = new Size(800*image.getHeight()/image.getWidth(),800);
+				frameSize = new Size(1500,1500*image.getHeight()/image.getWidth());
 			}
-          
-          System.out.println("s"+frameSize.toString());
-          g.drawImage(this.image,10,10,(int)frameSize.width,(int)frameSize.height, null);
+        
+      
+        g.drawImage(this.image,10,10,(int)frameSize.width-50,(int)frameSize.height-50, null);
      }
         
 }  
