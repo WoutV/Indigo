@@ -165,7 +165,7 @@ De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uit
 Voor het tweede deel van de opdracht was er een vorm van image recognition. Hiervoor hebben we gebruik gemaakt van de Java-library OpenCV. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. \\
 
 \textbf{Connectie}\\
- Ook de verbinding is helemaal veranderd in het tweede deel van de opdracht. De twee zeppelins moeten nu communiceren via een server. Die maakt gebruik van de RabbitMQ library.\footnote{https://www.rabbitmq.com/}
+ De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informatie uitgewisseld door middel van sockets, waar de client(laptop) op poort 6789 connecteerde. De Pi fungeerde dan als server omdat deze de sockets initialiseerde. Deze opdracht verplicht ons gebruik te maken van een RabbitMQ server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo zal de server op één van onze eigen laptops worden gestart, omdat er geen communicatie met een andere zeppelin nodig is. De laptop is nu de server en de Pi is client. Zowel laptop als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap dat wordt uitgewisseld krijgt een bepaalde sleutel toegewezen. een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen.  Zowel de laptop als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van rabbitmq in onze code moesten er welke enkele libraries toegevoegd worden(unable to insert link. libraries unknown). 
 \\
 
 
