@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 17:29
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 17:45
 entering extended mode
 **template.tex
 ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.tex"
@@ -631,59 +631,60 @@ Underfull \hbox (badness 10000) in paragraph at lines 58--60
 <Schema.jpg, id=83, 545.03625pt x 283.0575pt>
 File: Schema.jpg Graphic file (type jpg)
  <use Schema.jpg>
-Package pdftex.def Info: Schema.jpg used on input line 64.
+Package pdftex.def Info: Schema.jpg used on input line 63.
 (pdftex.def)             Requested size: 301.33438pt x 156.49014pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--72
+Underfull \hbox (badness 10000) in paragraph at lines 70--71
 
  []
+
+<upperFrame.png, id=87, 965.10562pt x 148.30406pt>
+File: upperFrame.png Graphic file (type png)
+ <use upperFrame.png>
+Package pdftex.def Info: upperFrame.png used on input line 74.
+(pdftex.def)             Requested size: 289.53392pt x 44.49155pt.
 
 [2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.72 
-      <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/Schema.jpg>]
-<upperFrame.png, id=98, 965.10562pt x 148.30406pt>
-File: upperFrame.png Graphic file (type png)
- <use upperFrame.png>
-Package pdftex.def Info: upperFrame.png used on input line 75.
-(pdftex.def)             Requested size: 289.53392pt x 44.49155pt.
-
-<lowerFrame.png, id=99, 682.80093pt x 234.1247pt>
+l.76 \end{figure}
+                  <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/S
+chema.jpg>] <lowerFrame.png, id=101, 682.80093pt x 234.1247pt>
 File: lowerFrame.png Graphic file (type png)
- <use lowerFrame.png>
-Package pdftex.def Info: lowerFrame.png used on input line 81.
+
+<use lowerFrame.png>
+Package pdftex.def Info: lowerFrame.png used on input line 80.
 (pdftex.def)             Requested size: 204.84186pt x 70.23795pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
+Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 92.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 91.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 92.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 91.
 
-Underfull \hbox (badness 10000) in paragraph at lines 99--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 104--105
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--115
+Underfull \hbox (badness 10000) in paragraph at lines 103--104
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
+Underfull \hbox (badness 10000) in paragraph at lines 107--114
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 115--116
 
  []
 
@@ -692,90 +693,90 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.119 \section
+l.118 \section
               {Testen} <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 versla
 g 1/upperFrame.png> <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1
 /lowerFrame.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 127--136
+Underfull \hbox (badness 10000) in paragraph at lines 126--135
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 138--139
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 152--153
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 154--155
+Underfull \hbox (badness 10000) in paragraph at lines 153--154
 
  []
 
 
-LaTeX Warning: Command \textendash invalid in math mode on input line 158.
+LaTeX Warning: Command \textendash invalid in math mode on input line 157.
 
 
-LaTeX Warning: Command \textendash invalid in math mode on input line 158.
+LaTeX Warning: Command \textendash invalid in math mode on input line 157.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--159
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 160--163
+Underfull \hbox (badness 10000) in paragraph at lines 156--158
 
  []
 
-[5] <patternrecognition.png, id=120, 4369.32375pt x 1951.29pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--162
+
+ []
+
+[5] <patternrecognition.png, id=121, 4369.32375pt x 1951.29pt>
 File: patternrecognition.png Graphic file (type png)
 
 <use patternrecognition.png>
-Package pdftex.def Info: patternrecognition.png used on input line 175.
+Package pdftex.def Info: patternrecognition.png used on input line 174.
 (pdftex.def)             Requested size: 341.43437pt x 152.47392pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--187
+Underfull \hbox (badness 10000) in paragraph at lines 185--186
 
  []
 
-<GUI.png, id=121, 614.295pt x 483.30562pt>
+<GUI.png, id=122, 614.295pt x 483.30562pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
-Package pdftex.def Info: GUI.png used on input line 190.
+Package pdftex.def Info: GUI.png used on input line 189.
 (pdftex.def)             Requested size: 256.07741pt x 201.47517pt.
  [6pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.195 
+l.194 
        <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/patternrecog
 nition.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 196--198
+Underfull \hbox (badness 10000) in paragraph at lines 195--197
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 199--200
+Underfull \hbox (badness 10000) in paragraph at lines 198--199
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 201--202
+Underfull \hbox (badness 10000) in paragraph at lines 200--201
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 205--207
+Underfull \hbox (badness 10000) in paragraph at lines 204--206
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 208--211
+Underfull \hbox (badness 10000) in paragraph at lines 207--210
 
  []
 
@@ -784,43 +785,43 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.211 
+l.210 
        <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/GUI.png>]
-<PiToClientCommunication.png, id=141, 1224.07312pt x 471.26062pt>
+<PiToClientCommunication.png, id=142, 1224.07312pt x 471.26062pt>
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
-Package pdftex.def Info: PiToClientCommunication.png used on input line 214.
+Package pdftex.def Info: PiToClientCommunication.png used on input line 213.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
  [8pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.232 \newpage
+l.231 \newpage
               \makeappendix <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 v
 erslag 1/PiToClientCommunication.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 240--241
+Underfull \hbox (badness 10000) in paragraph at lines 239--240
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 242--249
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 241--248
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 255.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 254.
 [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 255.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 254.
  ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 255.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 255.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 254.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 254.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 255.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 254.
  ) 
 Here is how much of TeX's memory you used:
  6986 strings out of 493921
@@ -829,7 +830,7 @@ Here is how much of TeX's memory you used:
  10141 multiletter control sequences out of 15000+200000
  12979 words of font info for 47 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,8n,31p,1856b,357s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,8n,31p,1856b,372s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/P
@@ -847,9 +848,9 @@ fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
 nts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Wout/AppData/Roaming/MiKTeX/2.9
 /fonts/type1/public/wasy/wasy10.pfb>
-Output written on template.pdf (10 pages, 6719780 bytes).
+Output written on template.pdf (10 pages, 6730289 bytes).
 PDF statistics:
- 217 PDF objects out of 1000 (max. 8388607)
+ 218 PDF objects out of 1000 (max. 8388607)
  39 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

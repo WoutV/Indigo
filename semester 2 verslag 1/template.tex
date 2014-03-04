@@ -58,7 +58,6 @@ De zeppelin bestaat uit een houten frame waaraan 2 heliumballonnen ($\diameter$9
 ~\\
 De meeste software draait inwendig op de Pi (uitlezen sensoren, aansturen motoren, image processing). Op de client-pc draai een GUI die de status van het speelveld weergeeft. Alle software is geschreven in Java. De communicatie tussen de zeppelin en de client gebeurt via een RabbitMQ server, waarlangs commando's moeten passeren die aan een vooraf afgesproken formaat voldoen. (Zie figuur \ref{schema}). \\
 
-TODO !!!! schema figuur
 \begin{figure}[ht!]
 \centering
 \includegraphics[height=55mm]{Schema.jpg}
@@ -68,7 +67,7 @@ TODO !!!! schema figuur
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere de 3 propellers bevestigd. Twee hiervan dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame gemonteerd. Dit staat toe om een horizontale beweging te reduceren tot een beweging in x- en y-richting, zodat het niet nodig is om te draaien (tijdens het vorige semester werd al duidelijk dat dit voor sterke afwijkingen van de zeppelin zorgt). De derde propeller dient om de zeppelin te laten stijgen, en is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de hardware-pwm op het motorbordje, terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
+De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere de 3 propellers bevestigd. Twee hiervan dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame(zie figuur \ref{frame}) gemonteerd. Dit staat toe om een horizontale beweging te reduceren tot een beweging in x- en y-richting, zodat het niet nodig is om te draaien (tijdens het vorige semester werd al duidelijk dat dit voor sterke afwijkingen van de zeppelin zorgt). De derde propeller dient om de zeppelin te laten stijgen, en is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de hardware-pwm op het motorbordje, terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
 
 \begin{figure}[h!]
 \centering
