@@ -69,12 +69,41 @@ public class Symbol {
 			break;
 		}
 	}
+	private double x,y;
 	
+	
+	public double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+
 	public Shape getShape() {
 		return shape;
 	}
 
 	public Colour getColour() {
 		return colour;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Symbol){
+			Symbol os = (Symbol) o;
+			if(os.getShape()==this.getShape() && os.getColour()==this.getColour())
+				return true;
+			return false;
+		}
+		return false;
 	}
 }
