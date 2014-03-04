@@ -131,7 +131,6 @@ In het tweede semester hebben we enkele nieuwe testen moeten uitvoeren, voorname
 
 % == ALGORITMES == %
 \section{Algoritmes}
-ALGORITME
 \subsection{Verticale bewegingen}
 Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{http://www.csimn.com/CSI\_pages/PIDforDummies.html}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Tenslotte is er de integraal, die fouten uit het verleden voorstelt. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Het algoritme wordt aangepast aan het gewicht van onze zeppelin en de kracht van de gegeven motoren. \\
 De output wordt berekend op basis van deze formule:
@@ -156,24 +155,39 @@ Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het p
 % == SOFTWARE == %
 \section{Software}
 
-Alle software voor dit project is in Java geschreven. Dit is gekozen omdat dit voor het hele team de meest gebruikte programmeertaal was. Dit gaf wel een verschillende moeilijkheden bij het implementeren van een aantal aspecten (image recognition, \ldots). 
+Alle software voor dit project is in Java geschreven. Dit is gekozen omdat dit voor het hele team de meest gebruikte programmeertaal was. Dit gaf wel een verschillende moeilijkheden bij het implementeren van een aantal aspecten (image recognition, \ldots). \\
 
-TODO!! afbeelding\\
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{GUI.png}
+\end{center}
+\caption{GUI}
+\label{GUI}
+\end{figure}
 
 \textbf{GUI} \\
-De Graphical User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld en de co\"{o}rdinaten van de zeppelingss.  \\
+De Graphical User Interface stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld en de co\"{o}rdinaten van de zeppelins.  \\
 
 De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. Voor het maken van deze kaart wordt gebruik gemaakt van een CSV-bestand(comma separated value). Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de client-pc en de zeppelin. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. Er is een mogelijkheid om berichten te filteren op type. \\
 
-\textbf{Image recognition}\\
+
+
+\textbf{Pattern recognition}\\
 De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. \\
 
 \textbf{Connectie}\\
-De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informatie uitgewisseld door middel van sockets, waar de client(laptop) op poort 6789 connecteerde. De Pi fungeerde dan als server omdat deze de sockets initialiseerde. Deze opdracht verplicht ons gebruik te maken van een RabbitMQ server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo zal de server op één van onze eigen laptops worden gestart, omdat er geen communicatie met een andere zeppelin nodig is. De laptop is nu de server en de Pi is client. Zowel laptop als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap dat wordt uitgewisseld krijgt een bepaalde sleutel toegewezen. een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen.  Zowel de laptop als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van rabbitmq in onze code moesten er welke enkele libraries toegevoegd worden(unable to insert link. libraries unknown). 
+De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informatie uitgewisseld door middel van sockets, waar de client(laptop) op poort 6789 connecteerde. De Pi fungeerde dan als server omdat deze de sockets initialiseerde. Deze opdracht verplicht ons gebruik te maken van een RabbitMQ server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo zal de server op één van onze eigen laptops worden gestart, omdat er geen communicatie met een andere zeppelin nodig is. De laptop is nu de server en de Pi is client. Zowel laptop als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap dat wordt uitgewisseld krijgt een bepaalde sleutel toegewezen. een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen.  Zowel de laptop als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van rabbitmq in onze code moesten er welke enkele libraries\footnote{http://www.rabbitmq.com/java-client.html} toegevoegd worden. Voor een sequentiediagram van de communicatie, zie bijgevoegde figuur.
 \\
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\textwidth]{PiToClientCommunication.png}
+\end{center}
+\caption{Sequentiediagram van de communicatie}
+\label{Sequence}
+\end{figure}
 
 
 
