@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 15:14
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 15:28
 entering extended mode
 **template.tex
 ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.tex"
@@ -701,22 +701,37 @@ has been already used, duplicate ignored
 l.123 
        <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/lowerFrame.p
 ng>]
-Underfull \hbox (badness 10000) in paragraph at lines 125--132
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 135--136
+Underfull \hbox (badness 10000) in paragraph at lines 127--129
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 130--132
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--135
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 149--150
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 151--152
+Underfull \hbox (badness 10000) in paragraph at lines 154--155
 
  []
 
@@ -724,25 +739,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 151--152
 File: patternrecognition.png Graphic file (type png)
 
 <use patternrecognition.png>
-Package pdftex.def Info: patternrecognition.png used on input line 163.
+Package pdftex.def Info: patternrecognition.png used on input line 166.
 (pdftex.def)             Requested size: 341.43437pt x 152.47392pt.
  [5]
-Underfull \hbox (badness 10000) in paragraph at lines 174--175
+Underfull \hbox (badness 10000) in paragraph at lines 177--178
 
  []
 
 <GUI.png, id=120, 614.295pt x 483.30562pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
-Package pdftex.def Info: GUI.png used on input line 178.
+Package pdftex.def Info: GUI.png used on input line 181.
 (pdftex.def)             Requested size: 256.07741pt x 201.47517pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 184--186
+Underfull \hbox (badness 10000) in paragraph at lines 187--189
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 187--188
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
 
  []
 
@@ -751,28 +766,28 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.189 D
+l.192 D
        e tweede tab geeft een uitgebreider overzicht van alle informatie die...
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
 s been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.189 D
+l.192 D
        e tweede tab geeft een uitgebreider overzicht van alle informatie die...
  <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/patternrecognition
 .png> <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/GUI.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 189--190
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--195
+Underfull \hbox (badness 10000) in paragraph at lines 196--198
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 196--199
+Underfull \hbox (badness 10000) in paragraph at lines 199--202
 
  []
 
@@ -780,37 +795,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 196--199
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
-Package pdftex.def Info: PiToClientCommunication.png used on input line 202.
+Package pdftex.def Info: PiToClientCommunication.png used on input line 205.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
  [7pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.221 \newpage
+l.224 \newpage
               \makeappendix <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 v
 erslag 1/PiToClientCommunication.png (PNG copy)>] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 229--230
+Underfull \hbox (badness 10000) in paragraph at lines 232--233
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 231--238
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 234--241
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 244.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 247.
 [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 244.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
  ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 244.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 244.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 244.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 247.
  ) 
 Here is how much of TeX's memory you used:
  6988 strings out of 493921
@@ -836,7 +851,7 @@ eX 2.9/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/Program Files (x86)/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
 onts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Wout/AppData/Roaming/MiKTeX/
 2.9/fonts/type1/public/wasy/wasy10.pfb>
-Output written on template.pdf (10 pages, 6704623 bytes).
+Output written on template.pdf (10 pages, 6704629 bytes).
 PDF statistics:
  212 PDF objects out of 1000 (max. 8388607)
  39 named destinations out of 1000 (max. 500000)
