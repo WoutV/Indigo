@@ -121,8 +121,15 @@ Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt
 \subsection{Afstandssensor}
 Voor gedetailleerde gegevens verwijzen we naar het verslag onze zeppelin van het eerste semester (versie 2). Hier hadden we gemerkt dat een enkele waarde van de sensor niet noodzakelijk de correcte afstand weergeeft. Daarom houdt de afstandssensor de laatste 10 gemeten waardes bij. De huidige hoogte wordt gegeven als het gemiddelde van deze waardes (rolling median techniek). Het interval tussen twee metingen hebben we kunnen terugbrengen tot 20 ms.
 
-\subsection{Camera en image processing}
-VINCE OF SUNIL HIER MOETEN JULLIE NOG IETS SCHRIJVEN
+\subsection{Camera en pattern recognition}
+De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, betrekken zich grotendeels tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.\\
+\textbf{Lichtintensiteit}\\
+De intensiteit van het licht beinvloedt de detectie van de contouren en de kleuren. De belangrijkste fout bevindt zich bij de kleuren. Met behulp van een regelbare lichtbron en voldoende afschermeing van buitenaf neemt de camera foto’s van een patroon. Hierbij wordt de minimale benodigde lichtintensiteit geregistreert en dit wordt vergeleken met de lichtintensiteit aanwezig tijdens de uitvoering. \\
+\textbf{Hoogte}\\
+De hoogte van de zeppelin tijdens de fotoregistratie heeft gevolgen voor het aantal vormen die geregistreerd worden en de afstand tussen de vormen op de foto. Er is een minimaal aantal vormen nodig om de positie te bepalen (3 figuren). Indien er nog extra redundantie nodig is zodat indien een vorm de software een vorm niet herkent de plaatsbepaling toch succesvol is, zal er een minimale hoogte nodig zijn voor de zeppelin om foto’s te nemen. Het aantal pixels tussen de verschillende contouren kan ook een negatief effect hebben op de differentiatie van de verschillende vormen. De camera neemt foto’s van een patroon van vormen gepositioneerd onder de zeppelin waarbij de hoogte steeds varieert.\\ 
+\textbf{Tijdens de beweging}\\
+Als de zeppelin beweegt, kan dit effect hebben op de geregistreerde vormen. Een dilatie van de vormen kan plaatsvinden, waardoor een rechthoek zich tot een ruit omvormt bijvoorbeeld. Een ander mogelijk probleem constateert zich in het wazig worden van de foto’s waardoor image recognition niet met goede nauwkeurigheid plaatsvindt. Deze proef test het effect van de beweging  alsook de snelheid van de zeppelin op de dilatie van de figuren en de wazigheid van de foto’s.  \\
+
 
 \subsection{Motoren}
 In het eerste semester hebben we uitgebreide testen gedaan over de testen en de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
