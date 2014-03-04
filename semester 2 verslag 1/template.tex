@@ -125,11 +125,14 @@ Voor gedetailleerde gegevens verwijzen we naar het verslag onze zeppelin van het
 \subsection{Camera en pattern recognition}
 De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, betrekken zich grotendeels tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.
 \\
-We hebben nog niet alle testen die hieronder beschreven staan uitgebreid uitgevoerd.
+We hebben nog niet alle testen die hieronder beschreven staan uitgebreid uitgevoerd.\\
+
 \textbf{Lichtintensiteit}\\
 De intensiteit van het licht be\"{i}nvloedt de detectie van de contouren en de kleuren. De belangrijkste fout bevindt zich bij de kleuren. Met behulp van een regelbare lichtbron en voldoende afschermeing van buitenaf neemt de camera foto’s van een patroon. Hierbij wordt de minimale benodigde lichtintensiteit geregistreerd en dit wordt vergeleken met de lichtintensiteit aanwezig tijdens de uitvoering. \\
+
 \textbf{Hoogte}\\
 De hoogte van de zeppelin tijdens de fotoregistratie heeft gevolgen voor het aantal vormen die geregistreerd worden en de afstand tussen de vormen op de foto. Er is een minimaal aantal vormen nodig om de positie te bepalen (3 figuren). Indien er nog extra redundantie nodig is zodat indien een vorm de software een vorm niet herkent de plaatsbepaling toch succesvol is, zal er een minimale hoogte nodig zijn voor de zeppelin om foto’s te nemen. Het aantal pixels tussen de verschillende contouren kan ook een negatief effect hebben op de differentiatie van de verschillende vormen. De camera neemt foto’s van een patroon van vormen gepositioneerd onder de zeppelin waarbij de hoogte steeds varieert.\\ 
+
 \textbf{Tijdens de beweging}\\
 Als de zeppelin beweegt, kan dit effect hebben op de geregistreerde vormen. Een dilatie van de vormen kan plaatsvinden, waardoor bijvoorbeeld een rechthoek verandert in een ruit. Een ander mogelijk probleem constateert zich in het wazig worden van de foto’s waardoor image recognition niet met goede nauwkeurigheid plaatsvindt. Dit is belangrijk omdat het bewegen van de zeppelin tijdens het nemen van de foto dit effect kan teweeg brengen. Deze proef test het effect van de beweging, alsook de snelheid van de zeppelin op de dilatie van de figuren en de wazigheid van de foto’s.  \\
 
@@ -160,7 +163,15 @@ Vervolgens doen we een draaiing volgens de hoek alpha waarmee de zeppelin gedraa
 \centerline{$x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)$}\\
 \centerline{$y_{new} = -x_{shifted}*sin(\alpha) + y_{shifted}*cos(\alpha)$}\\
 
-Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat via PID de juiste motor wordt bijgestuurd.
+Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat via PID de juiste motor wordt bijgestuurd. Zie hieronder voor het UML-schema met de klassen die gebruikt worden voor horizontale navigatie.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\textwidth]{XYNavigation.png}
+\end{center}
+\caption{UML-schema horizontale bewegingen}
+\label{navigation}
+\end{figure}
 
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld worden dezelfde sequentie van operaties uitgevoerd. \\
