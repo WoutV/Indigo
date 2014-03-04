@@ -37,7 +37,7 @@
 % == SAMENVATTING == %
 \begin{abstract}
 \noindent
-Dit rapport documenteert onze analyse en oplossing van het volgende probleem: de constructie en operatie van een zeppelin in wedstrijdverband. Navigatie gebeurt op basis van een op voorhand gekend grondplan dat wordt ingeladen in de software. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op beeldherkenning. Via het rooster dient de zeppelin sneller dan een andere zeppelin naar een bepaalde positie te vliegen, en een andere, nog onbekende opdracht uit te voeren. Beide zeppelins wisselen informatie uit met elkaar en met hun sturende pc via een server gebaseerd op RabbitMQ. Een GUI dient de toestand van het speelveld en beide zeppelins te visualiseren. Al deze functionaliteiten worden ge\"{i}mplementeerd in Java.
+Dit rapport documenteert onze analyse en oplossing van het volgende probleem: de constructie en operatie van een zeppelin in wedstrijdverband. Navigatie gebeurt op basis van een op voorhand gekend grondplan dat wordt ingeladen in de software. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op pattern recognition. Via het rooster dient de zeppelin sneller dan een andere zeppelin naar een bepaalde positie te vliegen, en een andere, nog onbekende opdracht uit te voeren. Beide zeppelins wisselen informatie uit met elkaar en met hun sturende pc via een server gebaseerd op RabbitMQ. Een GUI dient de toestand van het speelveld en beide zeppelins te visualiseren. Al deze functionaliteiten worden ge\"{i}mplementeerd in Java.
 \end{abstract}
 
 
@@ -47,7 +47,7 @@ Dit rapport documenteert onze analyse en oplossing van het volgende probleem: de
 
 % == INLEIDING == %
 \section{Inleiding}
-Dit tweede deel van de bachelorproef draait nog steeds rond het aansturen van een zeppelin op basis van een Raspberry Pi. De zeppelin moet nog steeds kunnen bewegen in de 3D-ruimte. Dit semester zal de zeppelin zich steeds boven een speelveld bevinden waarop figuren liggen. Er kan dus image processing worden gebruikt om de positie exact te bepalen. De eigen zeppelin speelt een race tegen een vijandige zeppelin van een andere team. Beiden proberen om als eerste een opgegeven bestemming te bereiken.
+Dit tweede deel van de bachelorproef draait nog steeds rond het aansturen van een zeppelin op basis van een Raspberry Pi. De zeppelin moet nog steeds kunnen bewegen in de 3D-ruimte. Dit semester zal de zeppelin zich steeds boven een speelveld bevinden waarop figuren liggen. Er kan dus image processing worden gebruikt om de positie exact te bepalen. De eigen zeppelin speelt een wedstrijd tegen een vijandige zeppelin van een andere team. Beiden proberen om als eerste een opgegeven bestemming te bereiken.
 
 \paragraph{Fysisch ontwerp}
 ~\\
@@ -56,7 +56,7 @@ De zeppelin bestaat uit een houten frame waaraan 2 heliumballonnen ($\diameter$9
 
 \paragraph{Software ontwerp}
 ~\\
-De meeste software draait inwendig op de Pi (uitlezen sensoren, aansturen motoren, image processing). Op de client-pc draai een GUI die de status van het speelveld weergeeft. Alle software is geschreven in Java. De communicatie tussen de zeppelin en de client gebeurt via een RabbitMQ server, waarlangs commando's moeten passeren die aan een vooraf afgesproken formaat voldoen. (Zie figuur \ref{schema}). \\
+De meeste software draait inwendig op de Pi (uitlezen sensoren, aansturen motoren, image processing). Op de sturende pc draait een GUI die de status van het speelveld weergeeft. Alle software is geschreven in Java. De communicatie tussen de zeppelins en de laptop gebeurt via een RabbitMQ server, waarlangs commando's moeten passeren die aan een vooraf afgesproken formaat voldoen. (Zie figuur \ref{schema}). \\
 
 \begin{figure}[ht!]
 \centering
@@ -67,7 +67,7 @@ De meeste software draait inwendig op de Pi (uitlezen sensoren, aansturen motore
 
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
-De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere de 3 propellers bevestigd. Twee hiervan dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame(zie figuur \ref{frame}) gemonteerd. Dit staat toe om een horizontale beweging te reduceren tot een beweging in x- en y-richting, zodat het niet nodig is om te draaien (tijdens het vorige semester werd al duidelijk dat dit voor sterke afwijkingen van de zeppelin zorgt). De derde propeller dient om de zeppelin te laten stijgen, en is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de hardware-pwm op het motorbordje, terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
+De zeppelin bestaat uit een frame waaraan alle onderdelen zijn vastgemaakt. Hierop worden onder andere de 3 propellers bevestigd. Twee hiervan dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame (zie figuur \ref{frame}) gemonteerd. Dit staat toe om een horizontale beweging te reduceren tot een beweging in x- en y-richting, zodat het niet nodig is om te draaien (tijdens het vorige semester werd al duidelijk dat dit voor sterke afwijkingen van de zeppelin zorgt). De derde propeller dient om de zeppelin te laten stijgen, en is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de hardware-pwm op het motorbordje, terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
 
 \begin{figure}[h!]
 \centering
@@ -99,7 +99,7 @@ In de Raspberry Pi zit een SD-kaart van 4 GB. Hierop staat Raspbian, het standaa
 
 Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 \begin{itemize}
-\item \emph{De camera} laat toe foto's te nemen met een maximum resolutie van 5 MP. Deze wordt in deze opdracht vooral gebruikt voor het bepalen van de positie van de zeppelin. Hiervoor neemt hij foto's van de patronen op de grond die gematcht worden met het gekende grondplan. Daarnaast kan de camera video's maken met resoluties tot 1080p.
+\item \emph{De camera} laat toe foto's te nemen met een maximum resolutie van 5 MP. Hij wordt in deze opdracht vooral gebruikt voor het bepalen van de positie van de zeppelin. Hiervoor neemt hij foto's van de patronen op de grond die vergeleken worden met het gekende grondplan. Daarnaast kan de camera video's maken met resoluties tot 1080p.
 \item \emph{De afstandssensor} kan worden gebruikt om met ultrasone trillingen de afstand te meten tussen de zeppelin en de grond of muur. De sensor heeft een bereik van 2-400 cm. Onze afstandssensor is vooral gebruikt voor het aansturen van het hoogteregelend PID-algoritme.  \\
 \end{itemize}
 
@@ -123,7 +123,7 @@ Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt
 Voor gedetailleerde gegevens verwijzen we naar het verslag onze zeppelin van het eerste semester (versie 2). Hier hadden we gemerkt dat een enkele waarde van de sensor niet noodzakelijk de correcte afstand weergeeft. Daarom houdt de afstandssensor de laatste 10 gemeten waardes bij. De huidige hoogte wordt gegeven als het gemiddelde van deze waardes (rolling median techniek). Het interval tussen twee metingen hebben we kunnen terugbrengen tot 20 ms.
 
 \subsection{Camera en pattern recognition}
-De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, betrekken zich grotendeels tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.
+De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, hebben vooral betrekking tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.
 \\
 We hebben nog niet alle testen die hieronder beschreven staan uitgebreid uitgevoerd.\\
 
@@ -131,13 +131,13 @@ We hebben nog niet alle testen die hieronder beschreven staan uitgebreid uitgevo
 De intensiteit van het licht be\"{i}nvloedt de detectie van de contouren en de kleuren. De belangrijkste fout bevindt zich bij de kleuren. Met behulp van een regelbare lichtbron en voldoende afschermeing van buitenaf neemt de camera foto’s van een patroon. Hierbij wordt de minimale benodigde lichtintensiteit geregistreerd en dit wordt vergeleken met de lichtintensiteit aanwezig tijdens de uitvoering. \\
 
 \textbf{Hoogte}\\
-De hoogte van de zeppelin tijdens de fotoregistratie heeft gevolgen voor het aantal vormen die geregistreerd worden en de afstand tussen de vormen op de foto. Er is een minimaal aantal vormen nodig om de positie te bepalen (3 figuren). Indien er nog extra redundantie nodig is zodat indien een vorm de software een vorm niet herkent de plaatsbepaling toch succesvol is, zal er een minimale hoogte nodig zijn voor de zeppelin om foto’s te nemen. Het aantal pixels tussen de verschillende contouren kan ook een negatief effect hebben op de differentiatie van de verschillende vormen. De camera neemt foto’s van een patroon van vormen gepositioneerd onder de zeppelin waarbij de hoogte steeds varieert.\\ 
+De hoogte van de zeppelin tijdens de fotoregistratie heeft gevolgen voor het aantal vormen die geregistreerd worden en de afstand tussen de vormen op de foto. Er is een minimaal aantal vormen nodig om de positie te bepalen (3 figuren). Een succesvolle verwerking vereist een minimale hoogte, die we bij deze test bepalen. Te weinig vormen op de foto zorgen ervoor dat de positie niet bepaald kan worden. Het aantal pixels tussen de verschillende contouren kan ook een negatief effect hebben op de differentiatie van de verschillende vormen. De camera neemt foto’s van een patroon van vormen gepositioneerd onder de zeppelin waarbij de hoogte steeds varieert.\\ 
 
-\textbf{Tijdens de beweging}\\
+\textbf{Beweging}\\
 Als de zeppelin beweegt, kan dit effect hebben op de geregistreerde vormen. Een dilatie van de vormen kan plaatsvinden, waardoor bijvoorbeeld een rechthoek verandert in een ruit. Een ander mogelijk probleem constateert zich in het wazig worden van de foto’s waardoor image recognition niet met goede nauwkeurigheid plaatsvindt. Dit is belangrijk omdat het bewegen van de zeppelin tijdens het nemen van de foto dit effect kan teweeg brengen. Deze proef test het effect van de beweging, alsook de snelheid van de zeppelin op de dilatie van de figuren en de wazigheid van de foto’s.  \\
 
 \subsection{Motoren}
-In het eerste semester hebben we uitgebreide testen gedaan over de testen en de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
+In het eerste semester hebben we uitgebreide testen gedaan over de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
 
 In het tweede semester hebben we enkele nieuwe testen moeten uitvoeren, voornamelijk gerelateerd aan het gebruik van SoftPWM. Er moest bepaald worden tussen welke percentages het vermogen groot genoeg was om de motor effectief te laten draaien, net zoals we in het eerste semester hebben moeten doen. Dit gebeurde door middel van trial-and-error.  
 
@@ -156,10 +156,10 @@ Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden w
 Er is een HeightController die dit PID-algoritme implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de pwm-waarde bijsturen. \\
 
 \subsection{Horizontale bewegingen}
-Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en de draaiing ten opzichte van het veld. Dan kunnen we de af te leggen afstand omzetten naar een beweging in het x- en y-frame. De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming hierin, bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetten gebeurt in 2 stappen, met eerst een verschuiving:\\
+Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en de draaiing ten opzichte van het veld. Dan kunnen we de af te leggen afstand omzetten naar een beweging in het x- en y-vlak. De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming hierin, bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:\\
 \centerline{$x_{shifted} = x_{destination} – x_{zeppelin}, y_{shifted} = y_{destination} – y_{zeppelin}$}\\
 
-Vervolgens doen we een draaiing volgens de hoek alpha waarmee de zeppelin gedraaid staat ten opzichte van het frame:\\
+Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het frame:\\
 \centerline{$x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)$}\\
 \centerline{$y_{new} = -x_{shifted}*sin(\alpha) + y_{shifted}*cos(\alpha)$}\\
 
@@ -174,8 +174,8 @@ Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende 
 \end{figure}
 
 \subsection{Pattern recognition}
-De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld worden dezelfde sequentie van operaties uitgevoerd. \\
-Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart, ruit).Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten,\ldots \\
+De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
+Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart).Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten,\ldots \\
 Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. 
 
 Hierbij dient wel vermeld te worden dat de pattern recognition not niet volledig werkt. Het werken met OpenCV in Java bracht heel wat problemen met zich mee. Op het moment van het schrijven van dit verslag lukt het in de meeste afbeeldingen om figuren te herkennen (maar nog niet het hart en de ster). Verder hebben we ook nog niet veel getest met het herkennen van images die genomen zijn terwijl de zeppelin beweegt.
@@ -204,9 +204,9 @@ Alle software voor dit project is in Java geschreven. Deze keuze is tijdens het 
 \end{figure}
 
 \textbf{GUI} \\
-De GUI stelt de gebruiker in staat om vanaf een client-pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming.  \\
+De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming.  \\
 
-De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. Voor het maken van deze kaart wordt gebruik gemaakt van een CSV-bestand (comma separated value). Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de client-pc en de zeppelin. \\
+De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. Voor het maken van deze kaart wordt gebruik gemaakt van een CSV-bestand (comma separated value). Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. Er is een mogelijkheid om berichten te filteren op type. \\
 
