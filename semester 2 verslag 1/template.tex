@@ -147,6 +147,12 @@ Er is een HeightController die dit PID-algoritme implementeert, en die er voor g
 \subsection{Horizontale bewegingen}
 Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Er wordt gebruik gemaakt van de huidige positie van de zeppelin, de co\"{o}rdinaten van de bestemming, en de rotatie van de zeppelin. De positie en rotatie zijn af te leiden van de gegevens die de camera doorstuurt. De verwerking van die gegevens leidt tot de benodigde co\"{o}rdinaten.
 
+\subsection{Pattern recognition}
+De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld worden dezelfde sequentie van operaties uitgevoerd. 
+Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart, ruit). De vormherkenningalgoritmes (pattern recognition) registreren de contouren van deze vormen en halen de nuttige contouren uit het waargenomen beeld. De contourbenadering kan contouren herkennen die niet bij de vormen horen en dus onnuttig zijn en verwijderd worden. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten... 
+Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de aanwezige vorm. 
+
+
 % == SOFTWARE == %
 \section{Software}
 
@@ -162,11 +168,13 @@ De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toesta
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. Er is een mogelijkheid om berichten te filteren op type. \\
 
 \textbf{Image recognition}\\
-Voor het tweede deel van de opdracht was er een vorm van image recognition. Hiervoor hebben we gebruik gemaakt van de Java-library OpenCV. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. \\
+De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. \\
 
 \textbf{Connectie}\\
- Ook de verbinding is helemaal veranderd in het tweede deel van de opdracht. De twee zeppelins moeten nu communiceren via een server. Die maakt gebruik van de RabbitMQ library.\footnote{https://www.rabbitmq.com/}
+De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informatie uitgewisseld door middel van sockets, waar de client(laptop) op poort 6789 connecteerde. De Pi fungeerde dan als server omdat deze de sockets initialiseerde. Deze opdracht verplicht ons gebruik te maken van een RabbitMQ server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo zal de server op één van onze eigen laptops worden gestart, omdat er geen communicatie met een andere zeppelin nodig is. De laptop is nu de server en de Pi is client. Zowel laptop als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap dat wordt uitgewisseld krijgt een bepaalde sleutel toegewezen. een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen.  Zowel de laptop als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van rabbitmq in onze code moesten er welke enkele libraries toegevoegd worden(unable to insert link. libraries unknown). 
 \\
+
+
 
 
 
@@ -174,7 +182,9 @@ Voor het tweede deel van de opdracht was er een vorm van image recognition. Hier
 
 % == BESLUIT == %
 \section{Besluit}
+De uitvoering van de toevoegingen aan soft- en hardware zijn vrij goed gelukt. Het implementeren van pattern recognition en de bijhorende navigatie bracht wel enkele moeilijkheden met zich mee. Na veel nattevingerwerk is het gelukt om dit helemaal werkend te krijgen. Het communiceren met een RabbitMQ-server hadden we vrij snel onder de knie en was dus snel ge\"{i}mplementeerd. De GUI slaagt erin om een ingelezen map duidelijk weer te geven, en de positie van de eigen zeppelin kan getekend worden. 
 
+Tegen de volgende deadline moeten we meer vliegtesten uitvoeren. Ook moeten we de zeppelin in contact brengen met een andere zeppelin. Hij moet hiermee draadloos kunnen communiceren via de server. Ook moeten de zeppelins er zelf voor zorgen dat ze niet botsen. Hiervoor moet er nog software geschreven worden. 
 
 
 % == APPENDICES == %

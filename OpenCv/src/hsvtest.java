@@ -126,7 +126,7 @@ public class hsvtest {
 		
 		
 		static int H_Min=0;
-		static int H_Max=180;
+		static int H_Max=360;
 		static int S_Min=0;
 		static int S_Max=255;
 		static int V_Max=255;
@@ -143,7 +143,7 @@ public class hsvtest {
 		     frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		     JPanel frame=new JPanel(new GridLayout(0,2));
 		     JSlider H_Min= new JSlider(JSlider.HORIZONTAL,
-                     0, 180, 0);
+                     0, 360, 0);
 		     H_Min.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
@@ -157,7 +157,7 @@ public class hsvtest {
 				}
 		     });
 		     JSlider H_Max= new JSlider(JSlider.HORIZONTAL,
-                     0, 180, 180);
+                     0, 360, 360);
 		     H_Max.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
