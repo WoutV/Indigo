@@ -1,7 +1,8 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 17:51
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  4 MAR 2014 23:49
 entering extended mode
 **template.tex
-("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.tex"
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.tex
+"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -13,11 +14,13 @@ german-x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
 ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
 an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
 ishmax, welsh, loaded.
-("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\penoverslag.cls"
+
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\penoverslag.
+cls"
 Document Class: penoverslag 2012/09/25 v1.0 P&O verslag document class
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\article.cls"
+(F:\MiKTeX\tex\latex\base\article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\size10.clo"
+(F:\MiKTeX\tex\latex\base\size10.clo
 File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -31,20 +34,18 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\inputenc.sty"
+) (F:\MiKTeX\tex\latex\base\inputenc.sty
 Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks14
 \inpenc@posthook=\toks15
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\utf8.def"
+(F:\MiKTeX\tex\latex\base\utf8.def
 File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OML ...
 ... no UTF-8 mapping file for font encoding OML
 Now handling font encoding T1 ...
 ... processing UTF-8 mapping file for font encoding T1
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\t1enc.dfu"
+ (F:\MiKTeX\tex\latex\base\t1enc.dfu
 File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -194,7 +195,7 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OT1 ...
 ... processing UTF-8 mapping file for font encoding OT1
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ot1enc.dfu"
+(F:\MiKTeX\tex\latex\base\ot1enc.dfu
 File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -224,8 +225,7 @@ File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 )
 Now handling font encoding OMS ...
 ... processing UTF-8 mapping file for font encoding OMS
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omsenc.dfu"
+ (F:\MiKTeX\tex\latex\base\omsenc.dfu
 File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A7 (decimal 167)
    defining Unicode char U+00B6 (decimal 182)
@@ -249,33 +249,31 @@ Now handling font encoding U ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\babel.sty"
+(F:\MiKTeX\tex\generic\babel\babel.sty
 Package: babel 2008/07/08 v3.8m The Babel package
 
 *************************************
 * Local config file bblopts.cfg used
 *
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\bblopts.cfg"
+(F:\MiKTeX\tex\latex\00miktex\bblopts.cfg
 File: bblopts.cfg 2006/07/31 v1.0 MiKTeX 'babel' configuration
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\dutch.ldf"
+(F:\MiKTeX\tex\generic\babel\dutch.ldf
 Language: dutch 2005/03/30 v3.8i Dutch support from the babel system
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\babel.def"
+ (F:\MiKTeX\tex\generic\babel\babel.def
 File: babel.def 2008/07/08 v3.8m Babel common definitions
 \babel@savecnt=\count87
 \U@D=\dimen103
 )
 Package babel Info: Making " an active character on input line 132.
-))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty"
+)) (F:\MiKTeX\tex\latex\hyperref\hyperref.sty
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\hobsub-hyperref.sty"
+(F:\MiKTeX\tex\generic\oberdiek\hobsub-hyperref.sty
 Package: hobsub-hyperref 2012/04/25 v1.12 Bundle oberdiek, subset hyperref (HO)
 
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\hobsub-generic.sty"
+(F:\MiKTeX\tex\generic\oberdiek\hobsub-generic.sty
 Package: hobsub-generic 2012/04/25 v1.12 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2012/04/25 v1.12 Construct package bundles (HO)
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
@@ -316,31 +314,31 @@ Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
 Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+(F:\MiKTeX\tex\latex\graphics\keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks16
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
+(F:\MiKTeX\tex\generic\ifxetex\ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\auxhook.sty"
+(F:\MiKTeX\tex\latex\oberdiek\auxhook.sty
 Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+(F:\MiKTeX\tex\latex\oberdiek\kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
 \@linkdim=\dimen104
 \Hy@linkcounter=\count88
 \Hy@pagecounter=\count89
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\pd1enc.def"
+(F:\MiKTeX\tex\latex\hyperref\pd1enc.def
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
 \Hy@SavedSpaceFactor=\count90
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\hyperref.cfg"
+(F:\MiKTeX\tex\latex\00miktex\hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 4319.
@@ -353,7 +351,7 @@ Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
 \c@Hy@tempcnt=\count91
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ltxmisc\url.sty"
+(F:\MiKTeX\tex\latex\ltxmisc\url.sty
 \Urlmuskip=\muskip10
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
@@ -378,34 +376,32 @@ LaTeX Info: Redefining \pageref on input line 6369.
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hpdftex.def"
+(F:\MiKTeX\tex\latex\hyperref\hpdftex.def
 File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
 \Fld@listcount=\count96
 \c@bookmark@seq@number=\count97
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\rerunfilecheck.sty"
+(F:\MiKTeX\tex\latex\oberdiek\rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
 \Hy@SectionHShift=\skip43
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty"
+(F:\MiKTeX\tex\latex\graphics\color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
+ (F:\MiKTeX\tex\latex\00miktex\color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+ (F:\MiKTeX\tex\latex\pdftex-def\pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 \Gread@gobject=\count98
 ))
-(C:\Users\Wout\AppData\Roaming\MiKTeX\2.9\tex\latex\everypage\everypage.sty
+(F:\MiKTeX\tex\latex\everypage\everypage.sty
 Package: everypage 2007/06/20 1.1 Hooks to run on every page
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
+(F:\MiKTeX\tex\latex\geometry\geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
 \Gm@cnth=\count99
 \Gm@cntv=\count100
@@ -420,17 +416,17 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 \Gm@layoutvoffset=\dimen115
 \Gm@dimlist=\toks17
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+(F:\MiKTeX\tex\latex\geometry\geometry.cfg))
+(F:\MiKTeX\tex\latex\graphics\graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+(F:\MiKTeX\tex\latex\graphics\graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+(F:\MiKTeX\tex\latex\graphics\trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+(F:\MiKTeX\tex\latex\00miktex\graphics.cfg
 File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
@@ -438,24 +434,24 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 \Gin@req@height=\dimen116
 \Gin@req@width=\dimen117
 ))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
+(F:\MiKTeX\tex\latex\amsmath\amsmath.sty
 Package: amsmath 2013/01/14 v2.14 AMS math features
 \@mathmargin=\skip44
 
 For additional information on amsmath, use the `?' option.
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amstext.sty"
+(F:\MiKTeX\tex\latex\amsmath\amstext.sty
 Package: amstext 2000/06/29 v2.01
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty"
+(F:\MiKTeX\tex\latex\amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks18
 \ex@=\dimen118
 ))
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty"
+(F:\MiKTeX\tex\latex\amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen119
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty"
+(F:\MiKTeX\tex\latex\amsmath\amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count102
@@ -496,21 +492,19 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 LaTeX Info: Redefining \[ on input line 2665.
 LaTeX Info: Redefining \] on input line 2666.
 )
-(C:\Users\Wout\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\wasysym.sty
+(F:\MiKTeX\tex\latex\wasysym\wasysym.sty
 Package: wasysym 2003/10/30 v2.0 Wasy-2 symbol support package
 \symwasy=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `wasy' in version `bold'
 (Font)                  U/wasy/m/n --> U/wasy/b/n on input line 90.
-)
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\float\float.sty"
+) (F:\MiKTeX\tex\latex\float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count114
 \float@exts=\toks23
 \float@box=\box28
 \@float@everytoks=\toks24
 \@floatcapt=\box29
-)
-(C:\Users\Wout\AppData\Roaming\MiKTeX\2.9\tex\latex\wrapfig\wrapfig.sty
+) (F:\MiKTeX\tex\latex\wrapfig\wrapfig.sty
 \wrapoverhang=\dimen127
 \WF@size=\dimen128
 \c@WF@wrappedlines=\count115
@@ -518,7 +512,8 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \WF@everypar=\toks25
 Package: wrapfig 2003/01/31  v 3.6
 )
-("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.aux"
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.aux
+"
 
 LaTeX Warning: Label `frame' multiply defined.
 
@@ -539,10 +534,10 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
 \AtBeginShipoutBox=\box31
 Package hyperref Info: Link coloring ON on input line 24.
- ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
+ (F:\MiKTeX\tex\latex\hyperref\nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
+(F:\MiKTeX\tex\generic\oberdiek\gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count116
@@ -551,11 +546,12 @@ LaTeX Info: Redefining \ref on input line 24.
 LaTeX Info: Redefining \pageref on input line 24.
 LaTeX Info: Redefining \nameref on input line 24.
 
-("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.out")
-("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.out")
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.out
+")
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.out
+")
 \@outlinefile=\write3
-
-(C:\Users\Wout\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+ (F:\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count117
 \scratchdimen=\dimen129
@@ -610,13 +606,14 @@ Package pdftex.def Info: sedes.pdf used on input line 34.
 (pdftex.def)             Requested size: 57.48257pt x 96.73918pt.
 LaTeX Font Info:    Try loading font information for U+wasy on input line 34.
 
-(C:\Users\Wout\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\uwasy.fd
+(F:\MiKTeX\tex\latex\wasysym\uwasy.fd
 File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
 ) [1
 
-{C:/Users/Wout/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/Users/Wou
-t/Documents/GitHub/Indigo/semester 2 verslag 1/sedes.pdf>]
-("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.toc")
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <G:/Burgerlijk Ingenieur/3
+ CwsElt/P&O/Indigo/semester 2 verslag 1/sedes.pdf>]
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.toc
+")
 \tf@toc=\write4
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
@@ -628,7 +625,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 58--60
 
  []
 
-<Schema.jpg, id=83, 545.03625pt x 283.0575pt>
+<Schema.jpg, id=85, 545.03625pt x 283.0575pt>
 File: Schema.jpg Graphic file (type jpg)
  <use Schema.jpg>
 Package pdftex.def Info: Schema.jpg used on input line 63.
@@ -638,7 +635,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--71
 
  []
 
-<upperFrame.png, id=87, 965.10562pt x 148.30406pt>
+<upperFrame.png, id=89, 965.10562pt x 148.30406pt>
 File: upperFrame.png Graphic file (type png)
  <use upperFrame.png>
 Package pdftex.def Info: upperFrame.png used on input line 74.
@@ -650,8 +647,8 @@ has been already used, duplicate ignored
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.76 \end{figure}
-                  <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/S
-chema.jpg>] <lowerFrame.png, id=101, 682.80093pt x 234.1247pt>
+                  <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 versl
+ag 1/Schema.jpg>] <lowerFrame.png, id=103, 682.80093pt x 234.1247pt>
 File: lowerFrame.png Graphic file (type png)
 
 <use lowerFrame.png>
@@ -663,7 +660,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 87--88
  []
 
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 91.
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+(F:\MiKTeX\tex\latex\base\omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
@@ -694,9 +691,9 @@ has been already used, duplicate ignored
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.118 \section
-              {Testen} <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 versla
-g 1/upperFrame.png> <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1
-/lowerFrame.png>]
+              {Testen} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 
+verslag 1/upperFrame.png> <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester
+ 2 verslag 1/lowerFrame.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 126--129
 
  []
@@ -747,43 +744,51 @@ Underfull \hbox (badness 10000) in paragraph at lines 162--165
 
  []
 
-[5] <XYNavigation.png, id=121, 610.53094pt x 359.84438pt>
-File: XYNavigation.png Graphic file (type png)
 
-<use XYNavigation.png>
-Package pdftex.def Info: XYNavigation.png used on input line 170.
-(pdftex.def)             Requested size: 426.79135pt x 251.55989pt.
+Underfull \hbox (badness 10000) in paragraph at lines 171--174
 
-<patternrecognition.png, id=122, 4369.32375pt x 1951.29pt>
+ []
+
+[5] <patternrecognition.png, id=123, 4369.32375pt x 1951.29pt>
 File: patternrecognition.png Graphic file (type png)
 
 <use patternrecognition.png>
-Package pdftex.def Info: patternrecognition.png used on input line 185.
+Package pdftex.def Info: patternrecognition.png used on input line 179.
 (pdftex.def)             Requested size: 341.43437pt x 152.47392pt.
  [6pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.190 
-       <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/XYNavigation
-.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 196--197
+l.191 \section
+              {Software} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 
+2 verslag 1/patternrecognition.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
 
  []
 
-<GUI.png, id=129, 614.295pt x 483.30562pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 197--199
+
+ []
+
+<GUI.png, id=130, 614.295pt x 483.30562pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
-Package pdftex.def Info: GUI.png used on input line 200.
+Package pdftex.def Info: GUI.png used on input line 202.
 (pdftex.def)             Requested size: 256.07741pt x 201.47517pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 206--208
+Underfull \hbox (badness 10000) in paragraph at lines 208--209
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 209--210
+Underfull \hbox (badness 10000) in paragraph at lines 210--211
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 214--216
 
  []
 
@@ -792,95 +797,99 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.210 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-5}) has been already used, duplicate ignored
+l.216 
+       <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/GUI.pn
+g>] <XYNavigation.png, id=140, 610.53094pt x 359.84438pt>
+File: XYNavigation.png Graphic file (type png)
+
+<use XYNavigation.png>
+Package pdftex.def Info: XYNavigation.png used on input line 219.
+(pdftex.def)             Requested size: 426.79135pt x 251.55989pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 225--228
+
+ []
+
+[8pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.210 
-       <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/patternrecog
-nition.png> <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/GUI.png
->]
-Underfull \hbox (badness 10000) in paragraph at lines 211--212
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--217
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 218--221
-
- []
-
-<PiToClientCommunication.png, id=142, 1224.07312pt x 471.26062pt>
+l.228 
+       <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/XYNavi
+gation.png (PNG copy)>]
+<PiToClientCommunication.png, id=152, 1224.07312pt x 471.26062pt>
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
-Package pdftex.def Info: PiToClientCommunication.png used on input line 224.
+Package pdftex.def Info: PiToClientCommunication.png used on input line 231.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
- [8pdfTeX warning (ext4): destination with the same identifier (name{figure.6})
- has been already used, duplicate ignored
+
+Underfull \hbox (badness 10000) in paragraph at lines 244--247
+
+ []
+
+[9pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.240 
-       <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/PiToClientCo
-mmunication.png (PNG copy)>] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 250--251
+l.249 \newpage
+              \makeappendix <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semest
+er 2 verslag 1/PiToClientCommunication.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 256--257
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 252--259
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+
+ []
+
+
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 267--277
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 265.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 283.
 [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 265.
- ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 265.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 265.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 283.
+
+("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.aux
+")
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 283.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 283.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 265.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 283.
  ) 
 Here is how much of TeX's memory you used:
- 6994 strings out of 493921
- 99450 string characters out of 3144879
- 195037 words of memory out of 3000000
+ 6995 strings out of 493921
+ 96912 string characters out of 3154503
+ 196037 words of memory out of 3000000
  10146 multiletter control sequences out of 15000+200000
  12979 words of font info for 47 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,8n,31p,1856b,372s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Pr
-ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x8
-6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/Program Files (x86)/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Wout/AppData/Roaming/MiKTeX/2.9
-/fonts/type1/public/wasy/wasy10.pfb>
-Output written on template.pdf (11 pages, 6752498 bytes).
+<F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><F:/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmbx12.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pf
+b><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><F:/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmmi10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.p
+fb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><F:/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmr12.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb>
+<F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><F:/MiKTeX/fonts/type1/publi
+c/amsfonts/cm/cmr8.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><F:/M
+iKTeX/fonts/type1/public/amsfonts/cm/cmss17.pfb><F:/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><F:/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><F:/MiKTeX/fonts/type1/public/
+wasy/wasy10.pfb>
+Output written on template.pdf (11 pages, 6756607 bytes).
 PDF statistics:
- 224 PDF objects out of 1000 (max. 8388607)
- 41 named destinations out of 1000 (max. 500000)
+ 226 PDF objects out of 1000 (max. 8388607)
+ 42 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
