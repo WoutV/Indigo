@@ -3,16 +3,16 @@
 \contentsline {paragraph}{Fysisch ontwerp}{2}{section*.2}
 \contentsline {paragraph}{Software ontwerp}{2}{section*.3}
 \contentsline {section}{\numberline {2}Beschrijving materiaal en bouw zeppelin}{2}{section.2}
-\contentsline {section}{\numberline {3}Testen}{3}{section.3}
+\contentsline {section}{\numberline {3}Testen}{4}{section.3}
 \contentsline {subsection}{\numberline {3.1}Afstandssensor}{4}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Camera en pattern recognition}{4}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Motoren}{4}{subsection.3.3}
 \contentsline {section}{\numberline {4}Algoritmes}{5}{section.4}
 \contentsline {subsection}{\numberline {4.1}Verticale bewegingen}{5}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Horizontale bewegingen}{5}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Pattern recognition}{5}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.3}Pattern recognition}{6}{subsection.4.3}
 \contentsline {section}{\numberline {5}Software}{6}{section.5}
-\contentsline {section}{\numberline {6}Besluit}{7}{section.6}
+\contentsline {section}{\numberline {6}Besluit}{8}{section.6}
 \setcounter {tocdepth}{1}
 \contentsline {section}{\numberline {A}Beschrijving van het proces}{9}{appendix.A}
 \contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{9}{appendix.B}

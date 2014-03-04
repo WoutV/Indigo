@@ -146,7 +146,7 @@ Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\f
 De output wordt berekend op basis van deze formule:
 
 \begin{center}
-\texttt{output = Kp*error + Ki*integral + Kd*derivative}\\
+$output = Kp*error + Ki*integral + Kd*derivative$\\
 \end{center}
 
 Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij. Bij de start van het tweede semester hebben we de waardes van deze constanten opnieuw getuned, aangezien er nieuwe volle ballonnen gegeven waren. \\
@@ -154,12 +154,14 @@ Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden w
 Er is een HeightController die dit PID-algoritme implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de pwm-waarde bijsturen. \\
 
 \subsection{Horizontale bewegingen}
-Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en de draaiing ten opzichte van het veld. Dan kunnen we de af te leggen afstand omzetten naar een beweging in het x- en y-frame. De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming hierin, bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetten gebeurt in 2 stappen, met eerst een verschuiving:
-\texttt{x_shifted = x_original – x_zeppelin, y_shifted = y_original – y_zeppelin}
-Vervolgens doen we een draaiing volgens de hoek alpha waarmee de zeppelin gedraaid staat ten opzichte van het frame:
-\texttt{x_new = x_shifted*cos(alpha) + y_shifted*sin(alpha)}
-\texttt{y_new = -x_shifted*sin(alpha) + y_shifted*cos(alpha)}
-Nu geven we de x- en y-bestemmingen door aan de bijbehorende PositionController, zodat via PID de juiste motor wordt bijgestuurd.
+Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en de draaiing ten opzichte van het veld. Dan kunnen we de af te leggen afstand omzetten naar een beweging in het x- en y-frame. De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming hierin, bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetten gebeurt in 2 stappen, met eerst een verschuiving:\\
+\centerline{$x_{shifted} = x_{destination} – x_{zeppelin}, y_{shifted} = y_{destination} – y_{zeppelin}$}\\
+
+Vervolgens doen we een draaiing volgens de hoek alpha waarmee de zeppelin gedraaid staat ten opzichte van het frame:\\
+\centerline{$x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)$}\\
+\centerline{$y_{new} = -x_{shifted}*sin(\alpha) + y_{shifted}*cos(\alpha)$}\\
+
+Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat via PID de juiste motor wordt bijgestuurd.
 
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld worden dezelfde sequentie van operaties uitgevoerd. \\
