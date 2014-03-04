@@ -14,6 +14,6 @@
 \contentsline {section}{\numberline {5}Software}{6}{section.5}
 \contentsline {section}{\numberline {6}Besluit}{7}{section.6}
 \setcounter {tocdepth}{1}
-\contentsline {section}{\numberline {A}Beschrijving van het proces}{8}{appendix.A}
-\contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{8}{appendix.B}
-\contentsline {section}{\numberline {C}Kritische analyse}{8}{appendix.C}
+\contentsline {section}{\numberline {A}Beschrijving van het proces}{9}{appendix.A}
+\contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{9}{appendix.B}
+\contentsline {section}{\numberline {C}Kritische analyse}{9}{appendix.C}

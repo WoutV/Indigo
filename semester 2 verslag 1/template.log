@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 14:59
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.7)  4 MAR 2014 15:14
 entering extended mode
 **template.tex
 ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.tex"
@@ -720,38 +720,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 151--152
 
  []
 
+<patternrecognition.png, id=113, 4369.32375pt x 1951.29pt>
+File: patternrecognition.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--166
+<use patternrecognition.png>
+Package pdftex.def Info: patternrecognition.png used on input line 163.
+(pdftex.def)             Requested size: 341.43437pt x 152.47392pt.
+ [5]
+Underfull \hbox (badness 10000) in paragraph at lines 174--175
 
  []
 
-[5] <GUI.png, id=119, 614.295pt x 483.30562pt>
+<GUI.png, id=120, 614.295pt x 483.30562pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
-Package pdftex.def Info: GUI.png used on input line 169.
-(pdftex.def)             Requested size: 192.0548pt x 151.099pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 175--177
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 178--179
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 180--181
-
- []
-
+Package pdftex.def Info: GUI.png used on input line 178.
+(pdftex.def)             Requested size: 256.07741pt x 201.47517pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 184--186
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 187--190
+Underfull \hbox (badness 10000) in paragraph at lines 187--188
 
  []
 
@@ -760,49 +751,72 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.190 
-       <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/GUI.png>]
+l.189 D
+       e tweede tab geeft een uitgebreider overzicht van alle informatie die...
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
+s been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.189 D
+       e tweede tab geeft een uitgebreider overzicht van alle informatie die...
+ <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/patternrecognition
+.png> <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 verslag 1/GUI.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 193--195
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 196--199
+
+ []
+
 <PiToClientCommunication.png, id=133, 1224.07312pt x 471.26062pt>
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
-Package pdftex.def Info: PiToClientCommunication.png used on input line 193.
+Package pdftex.def Info: PiToClientCommunication.png used on input line 202.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
- [7pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
+ [7pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.212 \newpage
+l.221 \newpage
               \makeappendix <C:/Users/Wout/Documents/GitHub/Indigo/semester 2 v
-erslag 1/PiToClientCommunication.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 220--221
+erslag 1/PiToClientCommunication.png (PNG copy)>] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 229--230
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 222--229
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 231--238
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 235.
-[8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 235.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 244.
+[9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 244.
  ("C:\Users\Wout\Documents\GitHub\Indigo\semester 2 verslag 1\template.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 235.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 235.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 244.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 244.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 235.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 244.
  ) 
 Here is how much of TeX's memory you used:
- 6980 strings out of 493921
- 99192 string characters out of 3144879
- 193941 words of memory out of 3000000
- 10137 multiletter control sequences out of 15000+200000
+ 6988 strings out of 493921
+ 99345 string characters out of 3144879
+ 193982 words of memory out of 3000000
+ 10142 multiletter control sequences out of 15000+200000
  13147 words of font info for 48 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,8n,31p,1231b,357s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -822,9 +836,9 @@ eX 2.9/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/Program Files (x86)/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
 onts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Wout/AppData/Roaming/MiKTeX/
 2.9/fonts/type1/public/wasy/wasy10.pfb>
-Output written on template.pdf (9 pages, 437212 bytes).
+Output written on template.pdf (10 pages, 6704623 bytes).
 PDF statistics:
- 206 PDF objects out of 1000 (max. 8388607)
- 37 named destinations out of 1000 (max. 500000)
- 103 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 212 PDF objects out of 1000 (max. 8388607)
+ 39 named destinations out of 1000 (max. 500000)
+ 108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

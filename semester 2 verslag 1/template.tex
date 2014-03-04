@@ -154,9 +154,18 @@ Er is een HeightController die dit PID-algoritme implementeert, en die er voor g
 Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Er wordt gebruik gemaakt van de huidige positie van de zeppelin, de co\"{o}rdinaten van de bestemming, en de rotatie van de zeppelin. De positie en rotatie zijn af te leiden van de gegevens die de camera doorstuurt. De verwerking van die gegevens leidt tot de benodigde co\"{o}rdinaten.
 
 \subsection{Pattern recognition}
-De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld worden dezelfde sequentie van operaties uitgevoerd. 
-Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart, ruit). De vormherkenningalgoritmes (pattern recognition) registreren de contouren van deze vormen en halen de nuttige contouren uit het waargenomen beeld. De contourbenadering kan contouren herkennen die niet bij de vormen horen en dus onnuttig zijn en verwijderd worden. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten... 
-Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de aanwezige vorm. 
+De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld worden dezelfde sequentie van operaties uitgevoerd. \\
+Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart, ruit).Een omvorming naar zwart=wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten,\ldots \\
+Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{patternrecognition.png}
+\end{center}
+\caption{Pattern Recognition}
+\label{Patterns}
+\end{figure}
+
 
 
 % == SOFTWARE == %
@@ -166,7 +175,7 @@ Alle software voor dit project is in Java geschreven. Dit is gekozen omdat dit v
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=0.45\textwidth]{GUI.png}
+\includegraphics[width=0.6\textwidth]{GUI.png}
 \end{center}
 \caption{GUI}
 \label{GUI}
