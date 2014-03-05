@@ -192,7 +192,7 @@ Alle software voor dit project is in Java geschreven. Deze keuze is tijdens het 
 
 Een gedeelte van de code is overgenomen van ons project van vorig semester. Deze is echter volledig opgefrist, waardoor de code veel overzichtelijker is geworden. Stukken software die toen door tijdsgebrek ergens werden bijgezet, zijn verplaatst naar waar ze echt thuis horen. Enkele basiselementen zoals het aansturen van de motoren zijn echter hetzelfde gebleven.\\
 
-\textbf{GUI} \\
+\subsection{GUI} \\
 De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming. \\
 
 \begin{figure}[H]
@@ -209,8 +209,8 @@ De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uit
 
 
 
-\textbf{Pattern recognition, locatiebepaling en horizontale beweging}\\
-De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. Het is de bedoeling dat de image recognition zelf op de Pi gebeurt, maar op dit moment hebben we enkel nog maar kunnen testen met het verwerken van afbeeldingen op een pc. Hieronder is een klassediagram te vinden waarop de belangrijkste klasses voor pattern recognition zichtbaar zijn. De motorcontroller gaat op geregelde tijdstippen een foto nemen. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. De LocationLocator kan hieruit de huidige positie van de zeppelin bepalen. Nu gaat de PositionController de af te leggen afstand in x- en y-richting bepalen. Beide richtingen hebben een Controller, die met een PID-algoritme de respectievelijke motoren aansturen.\\
+\subsection{Pattern recognition, locatiebepaling en horizontale beweging}\\
+De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. Het is de bedoeling dat de image recognition zelf op de Pi gebeurt, maar op dit moment hebben we enkel nog maar kunnen testen met het verwerken van afbeeldingen op een pc. Hieronder is een klassediagram te vinden waarop de belangrijkste klasses voor pattern recognition zichtbaar zijn. De motorcontroller gaat op geregelde tijdstippen een foto nemen via de camera. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. De LocationLocator kan hieruit de huidige positie van de zeppelin bepalen. Nu gaat de PositionController de af te leggen afstand in x- en y-richting bepalen. Beide richtingen hebben een Controller, die met een PID-algoritme de respectievelijke motoren aansturen.\\
 
 \begin{figure}[H]
 \begin{center}
@@ -220,7 +220,7 @@ De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library
 \label{navigation}
 \end{figure}
 
-\textbf{Connectie}\\
+\subsection{Connectie}\\
 De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informatie uitgewisseld door middel van sockets, op een virtueel netwerk gehost vanuit een laptop. Communicatie verliep via sockets over dit netwerk. De Pi werd toen de server genoemd omdat deze de sockets initialiseerde. Deze opdracht verplicht ons gebruik te maken van een RabbitMQ server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo zal de server op een eigen laptop worden gestart, omdat er geen communicatie met een andere zeppelin nodig is. We hebben nu dus de server (de exchange) die losstaat van de rest van het programma, en twee clients: de zeppelin (Pi) en de GUI. Zowel GUI als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap die wordt uitgewisseld krijgt een bepaalde sleutel toegewezen, die aangeeft wat de boodschap bevat en voor wie ze bestemd is. Een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen. Zowel de GUI als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van rabbitMQ in onze code moesten er enkele libraries\footnote{http://www.rabbitmq.com/java-client.html} toegevoegd worden. Het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-levelopdracht voor het aanschakelen van de motoren aan een bepaalde snelheid wordt doorgegeven vanaf een client naar de Pi. Vanuit de GUI wordt er steeds via de klasse GUICommands gegaan, die een abstractie geeft naar buiten toe. Klasses voor communicatie versturen en ontvangen de boodschap (met toevoeging van correcte sleutel) via RabbitMQ. De MotorController gaat uiteindelijk bepalen dat de x-motor aan een bepaalde SoftPwm-value moet draaien.
 \\
 
@@ -232,9 +232,10 @@ De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informati
 \label{Sequence}
 \end{figure}
 
-
-
-
+\{Simulator}
+Naar de toekomst toe zijn we van plan een simulator te maken, die de toestand van het spel simuleert. Dit stelt ons in staat om algoritmes (bijvoorbeeld om een tegenstander te ontwijken) uit te testen zonder dat we echt met twee zeppelins op het speelveld moeten zitten.\\
+Momenteel is deze nog niet geschreven, maar het plan is dat deze een kaart maakt of een gegeven kaart gebruikt, en hierop een bestemming kiest. De image processing zal worden uitgeschakeld, en de zeppelin zal een reeks symbolen krijgen van de simulator die normaal door de image processing herkend zouden zijn. Voor de rest gaat de zeppelin zich gedragen zoals ook in realiteit het geval is: de informatie over de symbolen binnenkrijgen, hieruit zijn plaats bepalen, en zijn positie bijsturen. Deze moet dan worden doorgegeven aan de simulator in plaats van aan de motoren. We zijn ook van plan om een optie toe te voegen die op geregelde tijdstippen een afwijking op de beweging zet, omdat dit iets is wat in realiteit ook onvermijdelijk zal gebeuren.\\
+De stukken van de zeppelin die we hiervoor dynamisch gaan moeten wijzigen zijn de input van herkende symbolen, en de output naar simulator in plaats van motoren van de PositionController.
 
 
 % == BESLUIT == %
