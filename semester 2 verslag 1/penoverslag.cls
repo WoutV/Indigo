@@ -15,7 +15,9 @@
 \def\thetitle{}
 \def\thepagelimit{100}
 \DeclareOption{tt}{%
-  \def\thetitle{Tussentijds verslag}%
+  \def\thetitle{Tussentijds verslag\\
+  ~\\ 
+  Episode III: Revenge of the Bloons}%
   \def\thepagelimit{10}}
 \DeclareOption{eind}{%
   \def\thetitle{Eindverslag}%

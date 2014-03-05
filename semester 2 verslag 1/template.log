@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  4 MAR 2014 23:49
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  5 MAR 2014 13:47
 entering extended mode
 **template.tex
 ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.tex
@@ -676,12 +676,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 103--104
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--114
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 115--116
+Underfull \hbox (badness 10000) in paragraph at lines 113--114
 
  []
 
@@ -690,105 +685,110 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.118 \section
-              {Testen} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 
-verslag 1/upperFrame.png> <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester
- 2 verslag 1/lowerFrame.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 126--129
+l.120 \subsection
+                 {Afstandssensor} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/
+semester 2 verslag 1/upperFrame.png> <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indi
+go/semester 2 verslag 1/lowerFrame.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 124--127
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 130--132
+Underfull \hbox (badness 10000) in paragraph at lines 128--130
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 133--135
+Underfull \hbox (badness 10000) in paragraph at lines 131--133
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--138
+Underfull \hbox (badness 10000) in paragraph at lines 134--136
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 140--141
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
 
  []
 
 [4]
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 154--155
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--157
+LaTeX Warning: Command \textendash invalid in math mode on input line 158.
+
+
+LaTeX Warning: Command \textendash invalid in math mode on input line 158.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--159
 
  []
 
 
-LaTeX Warning: Command \textendash invalid in math mode on input line 160.
-
-
-LaTeX Warning: Command \textendash invalid in math mode on input line 160.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 159--161
+Underfull \hbox (badness 10000) in paragraph at lines 160--163
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 162--165
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--174
-
- []
-
-[5] <patternrecognition.png, id=123, 4369.32375pt x 1951.29pt>
+[5] <patternrecognition.png, id=126, 4369.32375pt x 1951.29pt>
 File: patternrecognition.png Graphic file (type png)
 
 <use patternrecognition.png>
-Package pdftex.def Info: patternrecognition.png used on input line 179.
+Package pdftex.def Info: patternrecognition.png used on input line 177.
 (pdftex.def)             Requested size: 341.43437pt x 152.47392pt.
- [6pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
- has been already used, duplicate ignored
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--192
+
+ []
+
+[6pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.191 \section
-              {Software} <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 
-2 verslag 1/patternrecognition.png>]
+l.192 
+       <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/patter
+nrecognition.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 193--194
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 197--199
+Underfull \hbox (badness 10000) in paragraph at lines 195--197
 
  []
 
-<GUI.png, id=130, 614.295pt x 483.30562pt>
+<GUI.png, id=133, 614.295pt x 483.30562pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
-Package pdftex.def Info: GUI.png used on input line 202.
+Package pdftex.def Info: GUI.png used on input line 200.
 (pdftex.def)             Requested size: 256.07741pt x 201.47517pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 206--207
+
+ []
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 208--209
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--211
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 214--216
+Underfull \hbox (badness 10000) in paragraph at lines 212--214
 
  []
 
@@ -797,35 +797,34 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.216 
+l.214 
        <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/GUI.pn
-g>] <XYNavigation.png, id=140, 610.53094pt x 359.84438pt>
+g>] <XYNavigation.png, id=143, 610.53094pt x 359.84438pt>
 File: XYNavigation.png Graphic file (type png)
 
 <use XYNavigation.png>
-Package pdftex.def Info: XYNavigation.png used on input line 219.
+Package pdftex.def Info: XYNavigation.png used on input line 217.
 (pdftex.def)             Requested size: 426.79135pt x 251.55989pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 225--228
+Underfull \hbox (badness 10000) in paragraph at lines 223--226
 
  []
 
-[8pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
-has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.228 
-       <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/XYNavi
-gation.png (PNG copy)>]
-<PiToClientCommunication.png, id=152, 1224.07312pt x 471.26062pt>
+<PiToClientCommunication.png, id=147, 1224.07312pt x 471.26062pt>
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
-Package pdftex.def Info: PiToClientCommunication.png used on input line 231.
+Package pdftex.def Info: PiToClientCommunication.png used on input line 229.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
+ [8pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
+ has been already used, duplicate ignored
 
-Underfull \hbox (badness 10000) in paragraph at lines 244--247
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.233 \end{figure}
+                   <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 vers
+lag 1/XYNavigation.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 242--245
 
  []
 
@@ -834,43 +833,43 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.249 \newpage
+l.247 \newpage
               \makeappendix <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semest
 er 2 verslag 1/PiToClientCommunication.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 256--257
+Underfull \hbox (badness 10000) in paragraph at lines 254--255
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 265--266
+Underfull \hbox (badness 10000) in paragraph at lines 263--264
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 267--277
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 265--275
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 283.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 281.
 [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 283.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 281.
 
 ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.aux
 ")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 283.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 283.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 281.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 281.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 283.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 281.
  ) 
 Here is how much of TeX's memory you used:
  6995 strings out of 493921
  96912 string characters out of 3154503
- 196037 words of memory out of 3000000
+ 196076 words of memory out of 3000000
  10146 multiletter control sequences out of 15000+200000
  12979 words of font info for 47 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
@@ -887,9 +886,9 @@ iKTeX/fonts/type1/public/amsfonts/cm/cmss17.pfb><F:/MiKTeX/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><F:/
 MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><F:/MiKTeX/fonts/type1/public/
 wasy/wasy10.pfb>
-Output written on template.pdf (11 pages, 6756607 bytes).
+Output written on template.pdf (11 pages, 6755259 bytes).
 PDF statistics:
- 226 PDF objects out of 1000 (max. 8388607)
+ 228 PDF objects out of 1000 (max. 8388607)
  42 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
