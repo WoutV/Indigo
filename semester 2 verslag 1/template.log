@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  5 MAR 2014 13:47
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.7)  5 MAR 2014 20:21
 entering extended mode
 **template.tex
 ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.tex
@@ -625,7 +625,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 58--60
 
  []
 
-<Schema.jpg, id=85, 545.03625pt x 283.0575pt>
+<Schema.jpg, id=93, 545.03625pt x 283.0575pt>
 File: Schema.jpg Graphic file (type jpg)
  <use Schema.jpg>
 Package pdftex.def Info: Schema.jpg used on input line 63.
@@ -635,7 +635,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--71
 
  []
 
-<upperFrame.png, id=89, 965.10562pt x 148.30406pt>
+<upperFrame.png, id=97, 965.10562pt x 148.30406pt>
 File: upperFrame.png Graphic file (type png)
  <use upperFrame.png>
 Package pdftex.def Info: upperFrame.png used on input line 74.
@@ -648,7 +648,7 @@ has been already used, duplicate ignored
                                                   \fi \fi 
 l.76 \end{figure}
                   <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 versl
-ag 1/Schema.jpg>] <lowerFrame.png, id=103, 682.80093pt x 234.1247pt>
+ag 1/Schema.jpg>] <lowerFrame.png, id=111, 682.80093pt x 234.1247pt>
 File: lowerFrame.png Graphic file (type png)
 
 <use lowerFrame.png>
@@ -744,7 +744,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 169--172
 
  []
 
-[5] <patternrecognition.png, id=126, 4369.32375pt x 1951.29pt>
+[5] <patternrecognition.png, id=134, 4369.32375pt x 1951.29pt>
 File: patternrecognition.png Graphic file (type png)
 
 <use patternrecognition.png>
@@ -768,11 +768,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 193--194
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--197
+Underfull \hbox (badness 10000) in paragraph at lines 196--197
 
  []
 
-<GUI.png, id=133, 614.295pt x 483.30562pt>
+<GUI.png, id=141, 614.295pt x 483.30562pt>
 File: GUI.png Graphic file (type png)
  <use GUI.png>
 Package pdftex.def Info: GUI.png used on input line 200.
@@ -788,7 +788,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 208--209
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 212--214
+Underfull \hbox (badness 10000) in paragraph at lines 213--214
 
  []
 
@@ -799,32 +799,33 @@ has been already used, duplicate ignored
                                                   \fi \fi 
 l.214 
        <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/GUI.pn
-g>] <XYNavigation.png, id=143, 610.53094pt x 359.84438pt>
+g>] <XYNavigation.png, id=150, 610.53094pt x 359.84438pt>
 File: XYNavigation.png Graphic file (type png)
 
 <use XYNavigation.png>
 Package pdftex.def Info: XYNavigation.png used on input line 217.
 (pdftex.def)             Requested size: 426.79135pt x 251.55989pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 223--226
+Underfull \hbox (badness 10000) in paragraph at lines 224--226
 
  []
 
-<PiToClientCommunication.png, id=147, 1224.07312pt x 471.26062pt>
+[8pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.226 
+       <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 verslag 1/XYNavi
+gation.png (PNG copy)>]
+<PiToClientCommunication.png, id=162, 1224.07312pt x 471.26062pt>
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
 Package pdftex.def Info: PiToClientCommunication.png used on input line 229.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
- [8pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
- has been already used, duplicate ignored
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.233 \end{figure}
-                   <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semester 2 vers
-lag 1/XYNavigation.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 242--245
+Underfull \hbox (badness 10000) in paragraph at lines 243--246
 
  []
 
@@ -833,42 +834,42 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.247 \newpage
+l.248 \newpage
               \makeappendix <G:/Burgerlijk Ingenieur/3 CwsElt/P&O/Indigo/semest
 er 2 verslag 1/PiToClientCommunication.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 254--255
+Underfull \hbox (badness 10000) in paragraph at lines 255--256
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 263--264
+Underfull \hbox (badness 10000) in paragraph at lines 264--265
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 265--275
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 266--276
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 281.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 282.
 [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 281.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 282.
 
 ("G:\Burgerlijk Ingenieur\3 CwsElt\P&O\Indigo\semester 2 verslag 1\template.aux
 ")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 281.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 281.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 282.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 282.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 96591A2D5C1B715814C6C5629FB3DD8B;483.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 281.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 282.
  ) 
 Here is how much of TeX's memory you used:
- 6995 strings out of 493921
- 96912 string characters out of 3154503
+ 6999 strings out of 493921
+ 96968 string characters out of 3154503
  196076 words of memory out of 3000000
  10146 multiletter control sequences out of 15000+200000
  12979 words of font info for 47 fonts, out of 3000000 for 9000
@@ -886,9 +887,9 @@ iKTeX/fonts/type1/public/amsfonts/cm/cmss17.pfb><F:/MiKTeX/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb><F:/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><F:/
 MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><F:/MiKTeX/fonts/type1/public/
 wasy/wasy10.pfb>
-Output written on template.pdf (11 pages, 6755259 bytes).
+Output written on template.pdf (11 pages, 6757354 bytes).
 PDF statistics:
- 228 PDF objects out of 1000 (max. 8388607)
- 42 named destinations out of 1000 (max. 500000)
+ 237 PDF objects out of 1000 (max. 8388607)
+ 46 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
