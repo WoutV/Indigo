@@ -52,7 +52,8 @@ class frame extends JPanel{
 			}
         
       
-        g.drawImage(this.image,10,10,(int)frameSize.width-50,(int)frameSize.height-50, null);
+        //g.drawImage(this.image,10,10,(int)frameSize.width-50,(int)frameSize.height-50, null);
+			g.drawImage(this.image.getScaledInstance(800, -1, this.image. SCALE_SMOOTH),10,10,(int)frameSize.width-50,(int)frameSize.height-50, null);
      }
         
 }  

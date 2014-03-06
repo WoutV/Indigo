@@ -1,4 +1,4 @@
-package Colors;
+package ImageProcessing;
 
 import org.opencv.core.Scalar;
 
@@ -17,11 +17,11 @@ public class Colors {
 	}
 
 	public static Scalar getRedMaxScalar() {
-		return new Scalar(50,0,255);
+		return new Scalar(200,100,255);
 	}
 
 	public static Scalar getWhiteMinScalar() {
-		return new Scalar(150,0,0);
+		return new Scalar(150,0,150);
 	}
 
 	public static Scalar getWhiteMaxScalar() {
@@ -33,15 +33,15 @@ public class Colors {
 	}
 
 	public static Scalar getGreenMaxScalar() {
-		return new Scalar(100,255,50);
+		return new Scalar(100,255,65);
 	}
 
 	public static Scalar getBlueMinScalar() {
-		return new Scalar(75,0,0);
+		return new Scalar(100,0,0);
 	}
 
 	public static Scalar getBlueMaxScalar() {
-		return new Scalar(180,255,0);
+		return new Scalar(180,255,80);
 	}
 
 }

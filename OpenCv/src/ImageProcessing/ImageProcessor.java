@@ -9,14 +9,14 @@ import org.opencv.imgproc.Imgproc;
 public class ImageProcessor {
 	public static void main(String[] args) {
 		 System.loadLibrary("opencv_java248");
-		 ImageProcessor ip = new ImageProcessor("C:/Users/Study/Desktop/OpenCv/s1.jpg");
+		 ImageProcessor ip = new ImageProcessor("C:/Users/Vince/Desktop/test.jpg");
 		 ip.processImage();
 	}
 	
 	
 	private Size blurSize=new Size(3,3);
 	private Mat originalImage;
-	private String openCvFolder="C:/Users/Study/Desktop/OpenCv/Processed/";
+	private String openCvFolder="C:/Users/Vince/Desktop/";
 	/**
 	 * 
 	 * @param filePath

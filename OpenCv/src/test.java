@@ -17,7 +17,7 @@ import org.opencv.imgproc.Imgproc;
 
 
 public class test {
-	static String filePath ="C:/Users/Study/Desktop/OpenCv/s1.jpg";
+	static String filePath ="C:/Users/Vince/Desktop/8.jpg";
 	static boolean filter= true;
 	/**
 	 * @param args
@@ -37,7 +37,7 @@ public class test {
 	    Imgproc.GaussianBlur(imageHSV, imageBlurr, new Size(5,5), 0);
 	    Imgproc.adaptiveThreshold(imageBlurr, imageA, 255,Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY,7, 5);
 	    
-	    Highgui.imwrite("C:/Users/Study/Desktop/test1.png",imageBlurr);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/test1.jpg",imageBlurr);
 	    MatOfPoint2f approx = new MatOfPoint2f();
 	    List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	    List<MatOfPoint> contoursToDraw = new ArrayList<MatOfPoint>();   
@@ -63,8 +63,8 @@ public class test {
 	    
 	    System.out.println("Detected: " +detected);
 	    Imgproc.drawContours(Emptyimage, contoursToDraw, -1, new Scalar(255,50,50));
-	    Highgui.imwrite("C:/Users/Study/Desktop/contours.png",Emptyimage);
-	    Highgui.imwrite("C:/Users/Study/Desktop/test2.png",image);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/contours.png",Emptyimage);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/test2.png",image);
 	
 		
 	}
@@ -89,8 +89,8 @@ public class test {
 
 	    }
 	    
-	    Highgui.imwrite("C:/Users/Study/Desktop/contours.png",Emptyimage);
-	    Highgui.imwrite("C:/Users/Study/Desktop/test2.png",image);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/contours.png",Emptyimage);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/test2.png",image);
 
 	}
 	static void HoughCircles(){
@@ -112,8 +112,8 @@ public class test {
 	          Core.circle(Emptyimage, start , (int) r, new Scalar(255,0,0),3);
 	    }
 	    System.out.println("circles detected: ");
-	    Highgui.imwrite("C:/Users/Study/Desktop/contours.png",Emptyimage);
-	    Highgui.imwrite("C:/Users/Study/Desktop/test2.png",image);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/contours.png",Emptyimage);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/test2.png",image);
 		
 	}
 	static void SimpleForms(){
@@ -121,12 +121,12 @@ public class test {
 		Mat grayImage = new Mat();
 		Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
 		Imgproc.blur(grayImage, grayImage, new Size(3,3));
-		Highgui.imwrite("C:/Users/Study/Desktop/gray_image.png",grayImage);
+		Highgui.imwrite("C:/Users/Vince/Desktop/gray_image.png",grayImage);
 	   	Mat Emptyimage = new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(255,255,255));
 	   	Mat Emptyimage1 = new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(255,255,255));
 	   	Mat canny_output = new Mat(image.size(),Core.DEPTH_MASK_8U);
 	   	Imgproc.Canny(grayImage, canny_output, 100, 200);
-	   	Highgui.imwrite("C:/Users/Study/Desktop/cannny_output.png",canny_output);
+	   	Highgui.imwrite("C:/Users/Vince/Desktop/cannny_output.png",canny_output);
 	   	List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	   	List<MatOfPoint> contoursToDraw = new ArrayList<MatOfPoint>();
 	    //List<MatOfInt4> hierarchy;
@@ -168,9 +168,9 @@ public class test {
 	   	//System.out.println(contoursToDraw.size());
 	    Imgproc.drawContours(Emptyimage, contours, -1, new Scalar(50,50,50),10);
 	    Imgproc.drawContours(Emptyimage1, contoursToDraw, -1, new Scalar(50,50,50),10);
-	    Highgui.imwrite("C:/Users/Study/Desktop/contours_approx.png",Emptyimage);
-	    Highgui.imwrite("C:/Users/Study/Desktop/contours.png",Emptyimage1);
-	    Highgui.imwrite("C:/Users/Study/Desktop/test2.png",image);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/contours_approx.png",Emptyimage);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/contours.png",Emptyimage1);
+	    Highgui.imwrite("C:/Users/Vince/Desktop/test2.png",image);
 		
 	}
 	private static List<MatOfPoint> addContours(List<MatOfPoint> contours) {

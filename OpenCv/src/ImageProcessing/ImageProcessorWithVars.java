@@ -2,7 +2,6 @@ package ImageProcessing;
 
 
 import java.awt.BorderLayout;
-import Colors.Colors;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.*;
@@ -24,7 +23,7 @@ public class ImageProcessorWithVars {
 	public static void main(String[] args) {
 		 System.loadLibrary("opencv_java248");
 		 try {
-			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/2.jpg");
+			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Vince/Desktop/9.jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,9 +38,9 @@ public class ImageProcessorWithVars {
 	private int erodesize=3;
 	private int dilatesize=3;
 	private Mat originalImage;
-	private String openCvFolder="C:/Users/Study/Desktop/OpenCv/Processed/";
-	private int cannyThreshold=100;
-	private int minArea=10;
+	private String openCvFolder="C:/Users/Vince/Desktop/";
+	private int cannyThreshold=35;
+	private int minArea=100;
 	private int epsilonApprox=10;
 	private int pointsEqualEpsilon=116;
 	private int pointsEqualEpsilonPoints=52;
@@ -57,10 +56,12 @@ public class ImageProcessorWithVars {
 		createToolbars();
 		Size frameSize= new Size();
 			if(originalImage.height()>=originalImage.width()){
-				frameSize = new Size(700*originalImage.width()/originalImage.height(), 700);
+				//frameSize = new Size(700*originalImage.width()/originalImage.height(), 700);
+				frameSize = new Size(800, 700);
 			}
 			else{
-				frameSize = new Size(800,800*originalImage.height()/originalImage.width());
+//				frameSize = new Size(800,800*originalImage.height()/originalImage.width());
+				frameSize = new Size(800,700);
 			}
 		
 	    //make the JFrame
@@ -91,7 +92,7 @@ public class ImageProcessorWithVars {
 	      frame facePanel = new frame();  
 	      frame.setSize((int)frameSize.width,(int)frameSize.height); //give the frame some arbitrary size 
 	      frame.setBackground(Color.BLUE);
-	      frame.add(facePanel,BorderLayout.CENTER);       
+	      frame.add(facePanel,BorderLayout.CENTER); 
 	      frame.setVisible(true); 
 	      return facePanel;
 	}
@@ -606,7 +607,7 @@ public class ImageProcessorWithVars {
 	     
 	     
 	     JSlider minAreaSlider= new JSlider(JSlider.HORIZONTAL,
-	                1, 100, minArea);
+	                1, 10000, minArea);
 	     minAreaSlider.addChangeListener(new ChangeListener() {
 		    	 @Override
 				public void stateChanged(ChangeEvent ce) {
