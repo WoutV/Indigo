@@ -2,6 +2,7 @@ package ImageProcessing;
 
 
 import java.awt.BorderLayout;
+import Colors.Colors;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.*;
@@ -23,7 +24,7 @@ public class ImageProcessorWithVars {
 	public static void main(String[] args) {
 		 System.loadLibrary("opencv_java248");
 		 try {
-			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/s1.jpg");
+			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/2.jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,13 +69,16 @@ public class ImageProcessorWithVars {
 	      frame facePanel2 = makeFrame("Eroded Output", frameSize); 
 	      frame facePanel3 = makeFrame("Dilated Output", frameSize);
 	      findContourFrame = makeFrame("Result", frameSize);
+//	      HoughLineFrame = makeFrame("Line",frameSize);
 	      while(true){
 	    	  Thread.sleep(200);
 	    	  processImage(facePanel, facePanel2, facePanel3);
+	    	  
 	      }
 	 
 	}
-	private frame findContourFrame;
+	private frame findContourFrame; 
+	private frame HoughLineFrame;
 	/**
 	 * The title of the frame
 	 * @param Title
@@ -102,7 +106,7 @@ public class ImageProcessorWithVars {
 		Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
 		//Blurring the image within three by three matrix and writing it as grayimage.png
 		Imgproc.blur(grayImage, grayImage,new Size(blur,blur));
-		//Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
+//		Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
 		//Making some more matrixes to see the ongoing operations.
 	   	Mat emptyImage = new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(0,0,0));
 	   	//Mat Emptyimage1 = new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(255,255,255));
@@ -112,7 +116,7 @@ public class ImageProcessorWithVars {
 	   	
 	   	cannyoutput.matToBufferedImage(canny_output);  
 	   	cannyoutput.repaint();  
-	   	//Highgui.imwrite(openCvFolder+"cannny_output.png",canny_output);
+//	   	Highgui.imwrite(openCvFolder+"cannny_output.png",canny_output);
 	   	
 	   	//eroding the image to reduce the noise;
 	   	Mat erodedImage = canny_output.clone();
@@ -132,14 +136,15 @@ public class ImageProcessorWithVars {
 	   	//Trying different methods.
 	   	findContours(dilatedImage.clone(), image.clone(), emptyImage.clone());
 	   	//HoughCircles(dilatedImage.clone(), image.clone(), emptyImage.clone());
-	   	//HoughLines(dilatedImage.clone(), image.clone(), emptyImage.clone());
+//	   	HoughLines(dilatedImage.clone(), image.clone(), emptyImage.clone());
 	   	
 		
 	}
 	
 	
-	private void findContours(Mat canny_output, Mat image, Mat emptyImage){
+	private void findContours(Mat canny_output, Mat image1, Mat emptyImage){
 		Mat emptyImage1 = emptyImage.clone();
+		Mat image = image1.clone();
 	 	//Making some list to put the points.
 	   	List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	   	List<MatOfPoint> contoursToDraw = new ArrayList<MatOfPoint>();
@@ -159,31 +164,33 @@ public class ImageProcessorWithVars {
 	    for( int i = 0; i< contours.size(); i++ )
 	     {
 	    	if (Imgproc.contourArea(contours.get(i)) >minArea){
+	    		
 	    		contoursToDraw.add(new MatOfPoint(contours.get(i).clone()));
 	    		contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);  
 	    		Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox, epsilonApprox, true); 
 	    		MatOfPoint2fApprox.convertTo(contours.get(i), CvType.CV_32S);
 	    		//System.out.println("Points In Contour: " +MatOfPoint2fApprox.toList().size());
-	    			Core.circle(image,findCenter(MatOfPoint2fApprox.toList()), 10, new Scalar(255,0,0),3);
-	    			Point contourCenter =findCenter(MatOfPoint2fApprox.toList());
-	    			if(isCircle(MatOfPoint2fApprox.toList(),contourCenter)){
-	    				Core.circle(image,findCenter(MatOfPoint2fApprox.toList()), (int)averageRadius, new Scalar(255,0,0),3);
-	    				
-	    			}
-	    			
-	    			
-	    			List<Point> returnedPoint = reduceEqualPoints(MatOfPoint2fApprox.toList());
-	    			for(int z=0;z<returnedPoint.size();z++){
-	    				Core.circle(image, returnedPoint.get(z), 20, new Scalar(0,0,255),5);
-	    				}
-	    			if(returnedPoint.size()==4){
-						Core.putText(image, "rectangle", contourCenter, Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
-	    			}
-	    			
-	    		
+    			Core.circle(image,findCenter(MatOfPoint2fApprox.toList()), 10, new Scalar(255,0,0),3);
+    			Point contourCenter =findCenter(MatOfPoint2fApprox.toList());
+    			if(isCircle(MatOfPoint2fApprox.toList(),contourCenter)){
+    				Core.circle(image,contourCenter, (int)averageRadius, new Scalar(255,0,0),3);
+    				
+    			}
+    			
+    			String Color= getColor(image1,contourCenter);
+    			List<Point> returnedPoint = reduceEqualPoints(MatOfPoint2fApprox.toList());
+    			for(int z=0;z<returnedPoint.size();z++){
+    				Core.circle(image, returnedPoint.get(z), 5, new Scalar(0,0,255),5);
+    				}
+    			if(returnedPoint.size()==4){
+    				Core.putText(image, Color+"REC", contourCenter, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+    			}
+    			else
+    				Core.putText(image, Color, contourCenter, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+    		
 	    		for(int index=0;index < MatOfPoint2fApprox.toList().size() ; index++){
-	    			Core.circle(image,MatOfPoint2fApprox.toList().get(index), 10, new Scalar(0,255,0),3);
-	    			Core.putText(image, "C:"+i, MatOfPoint2fApprox.toList().get(index), Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
+	    			Core.circle(image,MatOfPoint2fApprox.toList().get(index), 2, new Scalar(0,255,0),3);
+	    			//Core.putText(image, "C:"+i, MatOfPoint2fApprox.toList().get(index), Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
 	    		}
 	    		
 //				Core.circle(image, new Point(contours.get(i).get(0, 0)[0],contours.get(i).get(0, 0)[1]), 10, new Scalar(255,0,0),3);
@@ -197,13 +204,50 @@ public class ImageProcessorWithVars {
 	   	//System.out.println(contoursToDraw.size());
 	    Imgproc.drawContours(emptyImage, contours, -1, new Scalar(50,50,50),10);
 	    Imgproc.drawContours(emptyImage1, contoursToDraw, -1, new Scalar(50,50,50),10);
-	    //Highgui.imwrite(openCvFolder+"contours_approx.png",emptyImage);
-	    //Highgui.imwrite(openCvFolder+"contours.png",emptyImage1);
+//	    Highgui.imwrite(openCvFolder+"contours_approx.png",emptyImage);
+//	    Highgui.imwrite(openCvFolder+"contours.png",emptyImage1);
 	    findContourFrame.matToBufferedImage(image);
 	    findContourFrame.repaint();
-	    //Highgui.imwrite(openCvFolder+"findContourResult.png",image);
+//	    Highgui.imwrite(openCvFolder+"findContourResult.png",image);
 	}
 	
+	private String getColor(Mat image, Point contourCenter) {
+		Mat bitImage = image.clone();
+		//Checking for white
+		Core.inRange(image.clone(), Colors.getWhiteMinScalar(), Colors.getWhiteMaxScalar(), bitImage);
+		double[] col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
+		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		if(col[0]>=150)
+		return "W";
+		
+		//Checking for Yellow
+		Core.inRange(image.clone(), Colors.getYellowMinScalar(), Colors.getYellowMaxScalar(), bitImage);
+		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
+		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		if(col[0]>=150)
+		return "Y";
+		
+		Core.inRange(image.clone(), Colors.getRedMinScalar(), Colors.getRedMaxScalar(), bitImage);
+		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
+		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		if(col[0]>=150)
+		return "R";
+		
+		Core.inRange(image.clone(), Colors.getBlueMinScalar(), Colors.getBlueMaxScalar(), bitImage);
+		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
+		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		if(col[0]>=150)
+		return "B";
+		
+		Core.inRange(image.clone(), Colors.getGreenMinScalar(), Colors.getGreenMaxScalar(), bitImage);
+		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
+		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		if(col[0]>=150)
+		return "G";
+			
+		System.out.println("col:"+col +"MatrixSize:"+ image.height() +","+image.width());
+		return "NI";
+	}
 	/**
 	 * Tries to find the lines in the photo.
 	 * @param canny_output
@@ -230,9 +274,10 @@ public class ImageProcessorWithVars {
 
 	    }
 	    
-	    Highgui.imwrite(openCvFolder+"HoughLinecontours.png",Emptyimage);
-	    Highgui.imwrite(openCvFolder+"HoughLineResult.png",image);
-
+//	    Highgui.imwrite(openCvFolder+"HoughLinecontours.png",Emptyimage);
+//	    Highgui.imwrite(openCvFolder+"HoughLineResult.png",image);
+	    HoughLineFrame.matToBufferedImage(image);
+	    HoughLineFrame.repaint();
 	}
 	
 	/**
@@ -257,8 +302,8 @@ public class ImageProcessorWithVars {
 	          Core.circle(Emptyimage, start , (int) r, new Scalar(255,0,0),3);
 	    }
 	    System.out.println("circles detected: "+circles.cols());
-	    Highgui.imwrite(openCvFolder+"Circlecontours.png",Emptyimage);
-	    Highgui.imwrite(openCvFolder+"HoughCircleResult.png",image);
+//	    Highgui.imwrite(openCvFolder+"Circlecontours.png",Emptyimage);
+//	    Highgui.imwrite(openCvFolder+"HoughCircleResult.png",image);
 		
 	}
 		

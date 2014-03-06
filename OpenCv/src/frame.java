@@ -49,8 +49,7 @@ class frame extends JPanel{
 			else{
 				frameSize = new Size(800*image.getHeight()/image.getWidth(),800);
 			}
-          
-          System.out.println("s"+frameSize.toString());
+     
           g.drawImage(this.image,10,10,(int)frameSize.width,(int)frameSize.height, null);
      }
         

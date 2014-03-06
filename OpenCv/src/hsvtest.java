@@ -19,7 +19,7 @@ public class hsvtest {
 	
 	
 	static boolean camera = false;
-	static String filePath = "C:/Users/Study/Desktop/OpenCv/s1.jpg";
+	static String filePath = "C:/Users/Study/Desktop/OpenCv/2.jpg";
 	/**
 	 * @param args
 	 * @throws InterruptedException 
