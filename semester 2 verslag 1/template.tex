@@ -103,8 +103,6 @@ Verder zijn er nog 2 devices waarvan de zeppelin gebruik maakt:
 \item \emph{De afstandssensor} kan worden gebruikt om met ultrasone trillingen de afstand te meten tussen de zeppelin en de grond of muur. De sensor heeft een bereik van 2-400 cm. Onze afstandssensor is vooral gebruikt voor het aansturen van het hoogteregelend PID-algoritme.  \\
 \end{itemize}
 
-
-{\Large NEED FOR AN UPDATED FIGURE!!! }\\
 %\begin{figure}[ht!]
 %\centering
 %\includegraphics[height=60mm]{zeppelinFrame.jpg}
@@ -125,7 +123,7 @@ Voor gedetailleerde gegevens verwijzen we naar het verslag onze zeppelin van het
 \subsection{Camera en pattern recognition}
 De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, hebben vooral betrekking tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.
 \\
-We hebben nog niet alle testen die hieronder beschreven staan uitgebreid uitgevoerd.\\
+We hebben nog niet alle beschreven testen uitgebreid uitgevoerd.\\
 
 \textbf{Lichtintensiteit}\\
 De intensiteit van het licht be\"{i}nvloedt de detectie van de contouren en de kleuren. De belangrijkste fout bevindt zich bij de kleuren. Met behulp van een regelbare lichtbron en voldoende afschermeing van buitenaf neemt de camera foto’s van een patroon. Hierbij wordt de minimale benodigde lichtintensiteit geregistreerd en dit wordt vergeleken met de lichtintensiteit aanwezig tijdens de uitvoering. \\
@@ -139,7 +137,7 @@ Als de zeppelin beweegt, kan dit effect hebben op de geregistreerde vormen. Een 
 \subsection{Motoren}
 In het eerste semester hebben we uitgebreide testen gedaan over de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
 
-In het tweede semester hebben we enkele nieuwe testen moeten uitvoeren, voornamelijk gerelateerd aan het gebruik van SoftPWM. Er moest bepaald worden tussen welke percentages het vermogen groot genoeg was om de motor effectief te laten draaien, net zoals we in het eerste semester hebben moeten doen. Dit gebeurde door middel van trial-and-error.  
+In het tweede semester zullen we enkele testen opnieuw moeten uitvoeren, voornamelijk gerelateerd aan het gebruik van SoftPWM. Er moet bepaald worden tussen welke grenzen het vermogen groot genoeg is om de motor effectief te laten draaien. Op het moment van indienen van dit verslag zijn deze testen nog niet uitgevoerd.
 
 % == ALGORITMES == %
 \section{Algoritmes}
@@ -156,29 +154,23 @@ Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden w
 Er is een HeightController die dit PID-algoritme implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de pwm-waarde bijsturen. \\
 
 \subsection{Horizontale bewegingen}
-Voor bewegingen in het horizontale vlak maken we eveneens gebruik van een PID-gebaseerd algoritme. Hiervoor zijn er twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en de draaiing ten opzichte van het veld. Dan kunnen we de af te leggen afstand omzetten naar een beweging in het x- en y-vlak. De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming hierin, bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:\\
+Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebaseerde algoritmes. We gebruiken twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en draaiing ten opzichte van het veld. Dan kunnen we de af te leggen afstand ontbinden in een twee loodrechte bewegingen (x- en y-richting ten opzichte van het veld). De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming in het geroteerde en verschoven assenstelsel bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:\\
 \centerline{$x_{shifted} = x_{destination} – x_{zeppelin}, y_{shifted} = y_{destination} – y_{zeppelin}$}\\
 
 Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het frame:\\
 \centerline{$x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)$}\\
 \centerline{$y_{new} = -x_{shifted}*sin(\alpha) + y_{shifted}*cos(\alpha)$}\\
 
-Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat via PID de juiste motor wordt bijgestuurd. Zie hieronder voor het UML-schema met de klassen die gebruikt worden voor horizontale navigatie.
+Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat de PID-regelaar de juiste motor bijstuurt. Zie verder voor het UML-schema met de klassen die gebruikt worden voor horizontale navigatie (figuur \ref{navigation}).
 
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=\textwidth]{XYNavigation.png}
-\end{center}
-\caption{UML-schema horizontale bewegingen}
-\label{navigation}
-\end{figure}
+
 
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
 Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart).Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten,\ldots \\
-Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. 
+Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. Voor een visualisatie van de verschillende stappen, zie figuur \ref{Patterns}. \\
 
-Hierbij dient wel vermeld te worden dat de pattern recognition not niet volledig werkt. Het werken met OpenCV in Java bracht heel wat problemen met zich mee. Op het moment van het schrijven van dit verslag lukt het in de meeste afbeeldingen om figuren te herkennen (maar nog niet het hart en de ster). Verder hebben we ook nog niet veel getest met het herkennen van images die genomen zijn terwijl de zeppelin beweegt.
+Hierbij dient wel vermeld te worden dat de pattern recognition nog niet volledig werkt. Het werken met OpenCV in Java bracht heel wat problemen met zich mee. Op het moment van het schrijven van dit verslag lukt het in de meeste afbeeldingen om figuren te herkennen (maar nog niet het hart en de ster). Dit werkt echter enkel nog maar op de pc, aangezien het installeren van OpenCV die werkt met Java op de Pi nog problemen oplevert. Verder hebben we ook nog niet veel getest met het herkennen van images die genomen zijn terwijl de zeppelin beweegt.
 
 \begin{figure}[H]
 \begin{center}
@@ -188,12 +180,20 @@ Hierbij dient wel vermeld te worden dat de pattern recognition not niet volledig
 \label{Patterns}
 \end{figure}
 
-
+\subsection{Locatiebepaling}
+De locatiebepaling kan gebeuren nadat een aantal figuren zijn herkend door de pattern recognition, en nadat de kaart (een csv-bestand) ingelezen is. \\
+Het uitlezen van de kaart gebeurt door een CSV-bestand (comma separated value), dat volgens een afgesproken formaat de figuren voorstelt. Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. \\
+Wanneer we dan een afbeelding hebben met herkende figuren gaan we op zoek waar deze plaats zich op de kaart bevindt. Eerst filteren we zodanig dat enkel de 3 middenste figuren op de foto in beschouwing worden genomen. We kiezen dan een referentiefiguur, en gaan alle plaatsen op de kaart af op zoek naar deze figuur. Bij al deze overeenkomsten gaan we vervolgens kijken naar de 6 omliggende figuren. Dit betekent dat de complexiteit O(n+6m) is, met n het aantal elementen in het veld (inclusief 'lege' plaatsen om het geheel vierkant te maken) en m het aantal matches de referentiefiguur.
 
 % == SOFTWARE == %
 \section{Software}
 
 Alle software voor dit project is in Java geschreven. Deze keuze is tijdens het eerste semester al gemaakt omdat dit voor het hele team de gebruikte programmeertaal was, en omdat er voldoende voorbeeldcode te vinden was om te programmeren op de Pi. We hebben in het eerste semester ook geen problemen gehad met het implementeren van functionaliteit in Java (aansturen motoren, QR-codes). Dit semester zijn we wel op veel moeilijkheden gestoten bij het implementeren van image recognition. \\
+
+Een gedeelte van de code is overgenomen van ons project van vorig semester. Deze is echter volledig opgefrist, waardoor de code veel overzichtelijker is geworden. Stukken software die toen door tijdsgebrek ergens werden bijgezet, zijn verplaatst naar waar ze echt thuis horen. Enkele basiselementen zoals het aansturen van de motoren zijn echter hetzelfde gebleven.\\
+
+\subsection{GUI}
+De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming. \\
 
 \begin{figure}[H]
 \begin{center}
@@ -203,19 +203,24 @@ Alle software voor dit project is in Java geschreven. Deze keuze is tijdens het 
 \label{GUI}
 \end{figure}
 
-\textbf{GUI} \\
-De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming.  \\
-
-De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. Voor het maken van deze kaart wordt gebruik gemaakt van een CSV-bestand (comma separated value). Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. \\
+De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. De kaart wordt uitgelezen (zoals al beschreven bij het algoritme voor plaatsbepaling) en omgezet naar een afbeelding. Op de afbeelding verschijnen ook de posities van de eigen zeppelin en de vijandige zeppelin, en de bestemming. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen de GUI en zeppelin, met een indicatie van de tijd. Er is een mogelijkheid om berichten te filteren op type. \\
 
 
 
-\textbf{Pattern recognition}\\
-De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. Voor meer informatie over hoe dit precies werkt verwijzen we naar de sectie over algoritmes. \\
+\subsection{Pattern recognition, locatiebepaling en horizontale beweging}
+De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. Het is de bedoeling dat de image recognition zelf op de Pi gebeurt, maar op dit moment hebben we enkel nog maar kunnen testen met het verwerken van afbeeldingen op een pc. Hieronder is een klassediagram te vinden waarop de belangrijkste klasses voor pattern recognition zichtbaar zijn. De motorcontroller gaat op geregelde tijdstippen een foto nemen via de camera. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. De LocationLocator kan hieruit de huidige positie van de zeppelin bepalen. Nu gaat de PositionController de af te leggen afstand in x- en y-richting bepalen. Beide richtingen hebben een Controller, die met een PID-algoritme de respectievelijke motoren aansturen.\\
 
-\textbf{Connectie}\\
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\textwidth]{XYNavigation.png}
+\end{center}
+\caption{UML-schema horizontale bewegingen}
+\label{navigation}
+\end{figure}
+
+\subsection{Connectie}
 De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informatie uitgewisseld door middel van sockets, op een virtueel netwerk gehost vanuit een laptop. Communicatie verliep via sockets over dit netwerk. De Pi werd toen de server genoemd omdat deze de sockets initialiseerde. Deze opdracht verplicht ons gebruik te maken van een RabbitMQ server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo zal de server op een eigen laptop worden gestart, omdat er geen communicatie met een andere zeppelin nodig is. We hebben nu dus de server (de exchange) die losstaat van de rest van het programma, en twee clients: de zeppelin (Pi) en de GUI. Zowel GUI als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap die wordt uitgewisseld krijgt een bepaalde sleutel toegewezen, die aangeeft wat de boodschap bevat en voor wie ze bestemd is. Een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen. Zowel de GUI als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van rabbitMQ in onze code moesten er enkele libraries\footnote{http://www.rabbitmq.com/java-client.html} toegevoegd worden. Het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-levelopdracht voor het aanschakelen van de motoren aan een bepaalde snelheid wordt doorgegeven vanaf een client naar de Pi. Vanuit de GUI wordt er steeds via de klasse GUICommands gegaan, die een abstractie geeft naar buiten toe. Klasses voor communicatie versturen en ontvangen de boodschap (met toevoeging van correcte sleutel) via RabbitMQ. De MotorController gaat uiteindelijk bepalen dat de x-motor aan een bepaalde SoftPwm-value moet draaien.
 \\
 
@@ -227,16 +232,17 @@ De verbinding tussen Pi en laptop is volledig veranderd. Voordien werd informati
 \label{Sequence}
 \end{figure}
 
-
-
-
+\subsection{Simulator}
+Naar de toekomst toe zijn we van plan een simulator te maken, die de toestand van het spel simuleert. Dit stelt ons in staat om algoritmes (bijvoorbeeld om een tegenstander te ontwijken) uit te testen zonder dat we echt met twee zeppelins op het speelveld moeten zitten.\\
+Momenteel is deze nog niet geschreven, maar het plan is dat deze een kaart maakt of een gegeven kaart gebruikt, en hierop een bestemming kiest. De image processing zal worden uitgeschakeld, en de zeppelin zal een reeks symbolen krijgen van de simulator die normaal door de image processing herkend zouden zijn. Voor de rest gaat de zeppelin zich gedragen zoals ook in realiteit het geval is: de informatie over de symbolen binnenkrijgen, hieruit zijn plaats bepalen, en zijn positie bijsturen. Deze moet dan worden doorgegeven aan de simulator in plaats van aan de motoren. We zijn ook van plan om een optie toe te voegen die op geregelde tijdstippen een afwijking op de beweging zet, omdat dit iets is wat in realiteit ook onvermijdelijk zal gebeuren.\\
+De stukken van de zeppelin die we hiervoor dynamisch gaan moeten wijzigen zijn de input van herkende symbolen, en de output naar simulator in plaats van motoren van de PositionController.
 
 
 % == BESLUIT == %
 \section{Besluit}
-De uitvoering van de toevoegingen aan soft- en hardware zijn vrij goed gelukt. We zijn tevreden over de kwaliteit van de code, die sterk opgekuist is ten opzichte van het vorige semester. Het implementeren van pattern recognition en de bijhorende navigatie brachten wel enkele moeilijkheden met zich mee. Het communiceren met een RabbitMQ-server hadden we vrij snel onder de knie en dit bracht slechts kleine aanpassingen met zich mee. Het probleem op dit moment is de navigatie en positieherkenning. De navigatie op zich zou kunnen werken, maar hiervoor is positieherkenning nodig en moet dus de image processing goed werken.
-Naar de demo toe gaan we nog zoveel mogelijk proberen te testen op het herkennen van images en op vliegen.
-Naar de volgende demo toe zal de software moeten uitgebreid moeten worden om volledig aan het afgesproken protocol voor communicatie te voldoen en om te zorgen dat de zeppelin Ook moeten we de zeppelin in contact brengen met een andere zeppelin. 
+De uitvoering van de toevoegingen aan soft- en hardware zijn vrij goed gelukt. We zijn tevreden over de kwaliteit van de code, die sterk opgekuist is ten opzichte van het vorige semester. Het implementeren van pattern recognition en de bijhorende navigatie brachten wel enkele moeilijkheden met zich mee. Het communiceren met een RabbitMQ-server hadden we vrij snel onder de knie en dit bracht slechts kleine aanpassingen met zich mee. Het probleem op dit moment is de navigatie en positieherkenning. De navigatie op zich zou kunnen werken, maar hiervoor is positieherkenning nodig en moet dus de image processing goed werken. \\
+Naar de demo toe gaan we nog zoveel mogelijk proberen te testen op het herkennen van images en op vliegen. \\
+Naar de volgende demo toe zal de software moeten uitgebreid moeten worden om volledig aan het afgesproken protocol voor communicatie te voldoen en om te zorgen dat de zeppelin Ook moeten we de zeppelin in contact brengen met een andere zeppelin. \\
 
 % == APPENDICES == %
 \newpage\makeappendix
@@ -246,15 +252,26 @@ Dit onderdeel maakt geen deel uit van dit verslag.
 
 
 \section{Beschrijving van de werkverdeling}
+Een overzicht van de taken van de groepsleden: \\
+\begin{itemize}
+\item Wander Bavin: Vervulde de rol van co\"ordinator en van vertegenwoordiger in de scheidsrechtercommissie. Hiervoor heeft hij zich beziggehouden met onderzoek van RabbitMQ, met het schrijven van een deel van de software voor de server, en met voorstellen voor een protocol voor de voorstelling van commando's. Hij heeft ook het gedeelte van de communicatie verzorgt, en in het begin even meegewerkt aan de nieuwe GUI. Heeft zich ook beziggehouden met het opruimen van code van het eerste semester en het maken van UML-diagrammen.
+\item Dimitri Jonckers: Heeft de GUI herschreven en zich bezig gehouden met het opruimen van code van het eerste semester. Heeft gewerkt aan het verslag en de UML-diagrammen. Heeft een deel van de nieuwe code voor de zeppelin geschreven (positiecontrole, bewegingsalgoritme). Verder heeft hij het uitlezen van de map verzorgt.
+\item Sunil Tandan: Heeft zich grotendeels beziggehouden met onderzoek naar pattern recognition en hier software voor geschreven. Verder heeft hij gewerkt aan een algoritme voor het bepalen van de plaats op basis van de figuren.
+\item Wout Vekemans: Vervulde de rol van secretaris. Heeft zich voor een groot stuk beziggehouden met het verslag. Heeft een deel van de nieuwe code voor de zeppelin geschreven (positiecontrole). Hij ligt ook mee aan de basis van de nieuwe GUI. 
+\item Vince Goossens: Heeft zich grotendeels beziggehouden met onderzoek naar pattern recognition en hier software voor geschreven. Verder heeft hij gewerkt aan een algoritme voor het bepalen van de plaats op basis van de figuren.
+\end{itemize}
 
 Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies: \\
 
 \begin{tabular}{r||r|r|r|r|r}
 Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vince Goossens \\
 \hline \hline
-09/02 - 15/02 &  &  &  &  &  \\
+10/02 - 16/02 & 9 & 12.5 & 7 & 11 & 9 \\
+17/02 - 23/02 & 17.5 & 16.5 & 7.5 & 7.5 & 11 \\
+24/02 - 02/03 & 15 & 6 & 9.5 & 18.5 & 9.25 \\
+03/02 - 05/02 & 6 & 5 & 8 & 9 & 9 \\
 \hline \hline
-Totaal &  &  &  &  &  \\
+Totaal & 47.5 & 40 & 32 & 46 & 38.25 \\
 \end{tabular}
 
 
