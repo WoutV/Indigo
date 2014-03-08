@@ -175,13 +175,17 @@ public class PureColourLocator {
 	private class AngleComparator implements Comparator<Symbol> {
 		@Override
 		public int compare(Symbol s1, Symbol s2) {
+			if(s1 == null)
+				return -1;
+			if(s2 == null)
+				return 1;
 			if(s1.getY()==0 && s1.getX()>0)
 				return -1;
 			if(s2.getY()==0 && s2.getX()>0)
 				return 1;
 			if(s1.getY()>0 && s2.getY()<0)
 				return 1;
-			if(s2.getY()>0 && s1.getX()<0)
+			if(s2.getY()>0 && s1.getY()<0)
 				return -1;
 			if(s1.getX()*s2.getY()-s1.getY()*s2.getX()>0)
 				return 1;
