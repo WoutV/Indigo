@@ -1,4 +1,4 @@
-package ImageProcessing;
+package imageProcessing;
 
 
 import java.awt.BorderLayout;

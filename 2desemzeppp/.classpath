@@ -25,5 +25,11 @@
 	<classpathentry kind="lib" path="JARS/pi4j-service-sources.jar"/>
 	<classpathentry kind="lib" path="JARS/pi4j-service.jar"/>
 	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="lib" path="E:/opencv/build/java/opencv-248.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="E:/opencv/build/java/x64"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/opencv/build/include"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

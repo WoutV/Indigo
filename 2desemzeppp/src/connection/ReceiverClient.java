@@ -3,9 +3,13 @@ package connection;
 import gui.GuiCommands;
 import gui.GuiMain;
 
+import imageProcessing.ImageProcessor;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import javax.swing.ImageIcon;
 
 import transfer.Converter;
 import transfer.Transfer;
@@ -96,6 +100,9 @@ public class ReceiverClient implements Runnable{
 	}
 	public void image(Transfer information){
 		gc.receiveImage(information.getImage());
+		ImageProcessor.processImage(information.getImage());
+		//TODO:
+		//Purecolorlocator must be called here to process the information
 		// vraag hier de image om te gebruiken in image recognition.
 	}
 	public void height(Transfer information){
