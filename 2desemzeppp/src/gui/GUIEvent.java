@@ -3,7 +3,7 @@ package gui;
 public class GUIEvent {
 
 	public enum EventType {
-		HeightReceived,PropStatus,KeyEvent,ReceivedOther,SentOther,Misc;
+		HeightReceived,PropStatus,ReceivedLocation,ReceivedOther,SentOther,Misc;
 	}
 	
 	EventType type;
