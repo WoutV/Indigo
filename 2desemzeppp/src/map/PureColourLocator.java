@@ -467,6 +467,7 @@ public class PureColourLocator {
 
 		//if(loc != null)
 			//JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);	
+		
 		List<ColorSymbol> list2 = new LinkedList<>();
 		double[] coor0 = {50,50};
 		ColorSymbol center2 = new ColorSymbol(coor0,Symbol.Colour.BLUE);
