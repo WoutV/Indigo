@@ -4,12 +4,19 @@ import gui.GuiCommands;
 import gui.GuiMain;
 
 import imageProcessing.ImageProcessor;
+import imageProcessing.frame;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 import transfer.Converter;
 import transfer.Transfer;
@@ -98,14 +105,60 @@ public class ReceiverClient implements Runnable{
 			}
 		}
 	}
+	//TEMP METHOD
+	boolean framemade= false;
+	private void imagePanel(BufferedImage bi){
+		JFrame frame = new JFrame("Pi Photo");  
+	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+	      this.facePanel = new frame();  
+	      frame.setSize((int)bi.getWidth(),(int)bi.getHeight()); //give the frame some arbitrary size 
+	      frame.setBackground(Color.BLUE);
+	      frame.add(facePanel,BorderLayout.CENTER); 
+	      frame.setVisible(true);
+	      framemade=true;
+	}
+	private frame facePanel;
 	public void image(Transfer information){
 		System.out.println("We will be victorious!");
+		BufferedImage bi = toBufferedImage(information.getImage().getImage());
+		 if(!framemade)
+			 imagePanel(bi);
+	    
 		//		gc.receiveImage(information.getImage());
-		//ImageProcessor.processImage(information.getImage());
+		ImageProcessor.processImage(information.getImage());
+		facePanel.matToBufferedImage(ImageProcessor.matAfterRework);
+		facePanel.repaint();
 		//TODO:
 		//Purecolorlocator must be called here to process the information
 		// vraag hier de image om te gebruiken in image recognition.
 	}
+	
+	/**
+	 * Converts a given Image into a BufferedImage
+	 *
+	 * @param img The Image to be converted
+	 * @return The converted BufferedImage
+	 */
+	public static BufferedImage toBufferedImage(Image img)
+	{
+	    if (img instanceof BufferedImage)
+	    {
+	        return (BufferedImage) img;
+	    }
+
+	    // Create a buffered image with transparency
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_3BYTE_BGR);
+
+	    // Draw the image on to the buffered image
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+
+	    // Return the buffered image
+	    return bimage;
+	}
+	
+	
 	public void height(Transfer information){
 		gc.receiveHeight(information.getHeight(),true);
 	}
