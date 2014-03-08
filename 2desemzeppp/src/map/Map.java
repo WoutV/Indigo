@@ -57,6 +57,23 @@ public class Map {
 			
 			symbolsOnRow = map[0].length;
 			height = map.length;
+			
+			//set the x and y coordinates of each symbol
+			double distBetweenX = boardSize/(symbolsOnRow-0.5);
+			double distBetweenY = 1.0*boardSize/(height-1);
+			for(int i = 0;i<height;i++) {
+				boolean even = (i%2!=0);
+				for(int j = 0;j<symbolsOnRow;j++) {
+					double x;
+					if(even)
+						x = (j+0.5)*distBetweenX;
+					else
+						x = j*distBetweenX;
+					double y = i*distBetweenY;
+					map[i][j].setX(x);
+					map[i][j].setY(y);
+				}
+			}
 		}
 		catch (IOException exc) {
 			symbolsOnRow = 0;
@@ -81,7 +98,7 @@ public class Map {
 			
 			//set the x and y coordinates of each symbol
 			double distBetweenX = boardSize/(symbolsOnRow-0.5);
-			double distBetweenY = boardSize/(height);
+			double distBetweenY = 1.0*boardSize/(height-1);
 			for(int i = 0;i<height;i++) {
 				boolean even = (i%2!=0);
 				for(int j = 0;j<symbolsOnRow;j++) {

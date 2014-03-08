@@ -475,8 +475,10 @@ public class GuiMain extends javax.swing.JFrame {
                 GuiMain gui = new GuiMain();
         		gui.setVisible(true);
         		gui.enableAllButtons();
-        		//gui.setMap("/shapesDemo.csv");
-        		//gui.setOwnLocation(200, 200);
+        		gui.setMap("/shapesDemo.csv");
+        		gui.setOwnLocation(200, 200);
+        		gui.setEnemyLocation(300, 300);
+        		gui.setTargetLocation(210, 210);
         		
             }
         });
@@ -551,7 +553,7 @@ public class GuiMain extends javax.swing.JFrame {
     public void setOwnLocation(double x, double y) {
     	double[] loc = {x,y};
     	own = loc;
-    	tab1LabelDisplay.setIcon(mapmaker.getLocations(own, enemy, target));
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
     	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location own zeppelin received.");
     	updateMapDisplay();
     }
