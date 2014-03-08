@@ -172,7 +172,7 @@ public class PureColourLocator {
 	 * Compares angles and orders them according to polar coordinates.
 	 * Lowest value is far right ==> 0°. Angles increase in clockwise order.
 	 */
-	private class AngleComparator implements Comparator<Symbol> {
+	private static class AngleComparator implements Comparator<Symbol> {
 		@Override
 		public int compare(Symbol s1, Symbol s2) {
 			if(s1 == null)
@@ -184,25 +184,90 @@ public class PureColourLocator {
 			if(s2.getY()==0 && s2.getX()>0)
 				return 1;
 			if(s1.getY()>0 && s2.getY()<0)
-				return 1;
-			if(s2.getY()>0 && s1.getY()<0)
+				//!!because y-frame points in opposite direction
 				return -1;
-			if(s1.getX()*s2.getY()-s1.getY()*s2.getX()>0)
+			if(s2.getY()>0 && s1.getY()<0)
+				//!! because y-frame points in opposite direction
+				return 1;
+			if(-1*s1.getX()*s2.getY()+s1.getY()*s2.getX()>0)
 				return 1;
 			return -1;
 		}
 	}
 	
 	/**
-	 * Sort a list of symbols according to their polar coordinates.
+	 * Sort a list of symbols according to their polar coordinates, around the center.
 	 * The lowest value is the far right ==> 0°
 	 * Angles increase in clockwise order.
 	 * @param list
 	 * @return
 	 */
-	private List<Symbol> sortPolar(List<Symbol> list) {
-		Collections.sort(list,new AngleComparator());
-		return list;
+	private static List<Symbol> sortPolar(List<Symbol> list,Symbol center) {
+		List<Symbol> sorted = new LinkedList<>();
+		if(list.contains(center)) {
+			list.remove(center);
+		}
+		for(Symbol s : list) {
+			Symbol copy = s.copy();
+			//coordinate transformation
+			double x0 = copy.getX() - center.getX();
+			double y0 = copy.getY() - center.getY();
+			copy.setX(x0);
+			copy.setY(y0);
+			sorted.add(copy);
+		}
+		Collections.sort(sorted,new AngleComparator());
+		return sorted;
+	}
+	
+	/**
+	 * Sort a list of coloursymbols according to their polar coordinates.
+	 * The lowest value is the far right ==> 0°
+	 * Angles increase in clockwise order.
+	 * @param list
+	 * @return
+	 */
+	private static List<ColorSymbol> sortColourSymbolPolar(List<ColorSymbol> list,ColorSymbol center) {
+		List<ColorSymbol> sorted = new LinkedList<>();
+		if(list.contains(center)) {
+			list.remove(center);
+		}
+		for(ColorSymbol s : list) {
+			ColorSymbol copy = s.copy();
+			//coordinate transformation
+			copy.coordinate[0] = copy.coordinate[0] - center.coordinate[0];
+			copy.coordinate[1] = copy.coordinate[1] - center.coordinate[1];
+			sorted.add(copy);
+		}
+		Collections.sort(sorted,ColorSymbol.getAngularComparator());
+		return sorted;
+	}
+	
+	public static void main(String[] args) {
+		//test ColourSymbolCompare
+		List<ColorSymbol> list = new LinkedList<>();
+		double[] coords = {50,50};
+		ColorSymbol center = new ColorSymbol(coords,Symbol.Colour.RED);
+		list.add(center);
+		double[] coords1 = {60,50};
+		list.add(new ColorSymbol(coords1,Symbol.Colour.RED));
+		double[] coords2 = {60,60};
+		list.add(new ColorSymbol(coords2,Symbol.Colour.RED));
+		double[] coords3 = {50,70};
+		list.add(new ColorSymbol(coords3,Symbol.Colour.RED));
+		double[] coords4 = {40,40};
+		list.add(new ColorSymbol(coords4,Symbol.Colour.RED));
+		double[] coords5 = {60,40};
+		list.add(new ColorSymbol(coords5,Symbol.Colour.RED));
+		double[] coords6 = {40,50};
+		list.add(new ColorSymbol(coords6,Symbol.Colour.RED));
+		List<ColorSymbol> sort = sortColourSymbolPolar(list,center);
+		JOptionPane.showMessageDialog(null,sort.get(0).coordinate[0] + "," + sort.get(0).coordinate[1] + "\n" + 
+				sort.get(1).coordinate[0] + "," + sort.get(1).coordinate[1] + "\n" + 
+				sort.get(2).coordinate[0] + "," + sort.get(2).coordinate[1] + "\n" + 
+				sort.get(3).coordinate[0] + "," + sort.get(3).coordinate[1] + "\n" + 
+				sort.get(4).coordinate[0] + "," + sort.get(4).coordinate[1] + "\n" + 
+				sort.get(5).coordinate[0] + "," + sort.get(5).coordinate[1] + "\n");
 	}
 
 }

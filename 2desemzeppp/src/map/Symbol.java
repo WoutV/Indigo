@@ -70,6 +70,11 @@ public class Symbol {
 		}
 	}
 	
+	private Symbol(Colour colour,Shape shape) {
+		this.colour = colour;
+		this.shape = shape;
+	}
+	
 	private double x,y;
 	
 	
@@ -106,5 +111,16 @@ public class Symbol {
 			return false;
 		}
 		return false;
+	}
+	
+	/**
+	 * Get a copy of this Symbol.
+	 * @return
+	 */
+	public Symbol copy() {
+		Symbol s = new Symbol(colour,shape);
+		s.x = x;
+		s.y = y;
+		return s;
 	}
 }

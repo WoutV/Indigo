@@ -18,7 +18,7 @@ public class ColorSymbol {
 	/**
 	 * Retrieves a comparator used for angular sort.
 	 */
-	public Comparator<ColorSymbol> getAngularComparator() {
+	public static Comparator<ColorSymbol> getAngularComparator() {
 		return new Comparator<ColorSymbol>() {
 
 			@Override
@@ -41,6 +41,16 @@ public class ColorSymbol {
 			}
 			
 		};
+	}
+	
+	/**
+	 * Get a copy of this ColourSymbol.
+	 */
+	public ColorSymbol copy() {
+		double[] newcoords = new double[2];
+		newcoords[0] = coordinate[0];
+		newcoords[1] = coordinate[1];
+		return new ColorSymbol(newcoords,colour);
 	}
 
 }
