@@ -4,8 +4,12 @@ package imageProcessing;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.util.*;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -23,7 +27,7 @@ public class ImageProcessorWithVars {
 	public static void main(String[] args) {
 		 System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		 try {
-			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/9.jpg");
+			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/11.jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,7 +38,7 @@ public class ImageProcessorWithVars {
 	
 	private int erodeTimes=0;
 	private int dilateTimes=2;
-	private int blur=3;
+	private int blur=5;
 	private int erodesize=3;
 	private int dilatesize=3;
 	private Mat originalImage;
@@ -52,7 +56,13 @@ public class ImageProcessorWithVars {
 	 */
 	public ImageProcessorWithVars(String filePath) throws InterruptedException{
 		System.loadLibrary("opencv_java248");
-		this.originalImage = Highgui.imread(filePath, Imgproc.COLOR_BGR2GRAY);
+		BufferedImage buffered = ImageProcessor.toBufferedImage(new ImageIcon(filePath).getImage());
+		byte[] pixels = ((DataBufferByte) buffered.getRaster().getDataBuffer())
+		            .getData();
+		
+		    originalImage = new Mat(buffered.getHeight(), buffered.getWidth(), CvType.CV_8UC3);
+		    originalImage.put(0, 0, pixels);
+		//this.originalImage = Highgui.imread(filePath, Imgproc.COLOR_BGR2GRAY);
 		createToolbars();
 		Size frameSize= new Size();
 			if(originalImage.height()>=originalImage.width()){

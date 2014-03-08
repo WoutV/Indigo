@@ -1,9 +1,13 @@
 package imageProcessing;
 
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -18,7 +22,7 @@ public class ImageProcessor {
 	
 	private static int erodeTimes=0;
 	private static int dilateTimes=2;
-	private static int blur=3;
+	private static int blur=5;
 	private static int erodesize=3;
 	private static int dilatesize=3;
 	private static Mat originalImage = new Mat(new Size(800,800), Core.DEPTH_MASK_8U);
@@ -29,16 +33,43 @@ public class ImageProcessor {
 	private static int pointsEqualEpsilon=116;
 	private int pointsEqualEpsilonPoints=52;
 
+	
+	/**
+	 * Converts a given Image into a BufferedImage
+	 *
+	 * @param img The Image to be converted
+	 * @return The converted BufferedImage
+	 */
+	public static BufferedImage toBufferedImage(Image img)
+	{
+	    if (img instanceof BufferedImage)
+	    {
+	        return (BufferedImage) img;
+	    }
+
+	    // Create a buffered image with transparency
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_3BYTE_BGR);
+
+	    // Draw the image on to the buffered image
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+
+	    // Return the buffered image
+	    return bimage;
+	}
 	/**
 	 * Processes the image and returns the found color symbols.
 	 * @return 
 	 */
 	public static ArrayList<ColorSymbol> processImage(ImageIcon imageicon){
-		Image imageimage = imageicon.getImage();
-		BufferedImage buffered = (BufferedImage) imageimage;
-		byte[] pixels = ((DataBufferByte)buffered.getRaster().getDataBuffer()).getData();
+		BufferedImage buffered = toBufferedImage(imageicon.getImage());
+		byte[] pixels = ((DataBufferByte) buffered.getRaster().getDataBuffer())
+		            .getData();
+		
+		    originalImage = new Mat(buffered.getHeight(), buffered.getWidth(), CvType.CV_8UC3);
+		    originalImage.put(0, 0, pixels);
 		//clone the originalImage in case we need original image later.
-		originalImage.put(0, 0, pixels);
 		Mat image = originalImage.clone();
 		//Changing to black & white
 		Mat grayImage = new Mat();

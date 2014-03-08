@@ -39,7 +39,10 @@ class frame extends JPanel{
                return false; // Error  
           }  
        return true; // Successful  
-     }  
+     } 
+     public void bufferedImage(BufferedImage bi){
+    	 this.image=bi;
+     }
      public void paintComponent(Graphics g){  
           super.paintComponent(g);   
           if (this.image==null) return;  

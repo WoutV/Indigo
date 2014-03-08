@@ -34,7 +34,7 @@ public class ImageProcessorWithVars {
 	
 	private int erodeTimes=0;
 	private int dilateTimes=2;
-	private int blur=3;
+	private int blur=5;
 	private int erodesize=3;
 	private int dilatesize=3;
 	private Mat originalImage;
