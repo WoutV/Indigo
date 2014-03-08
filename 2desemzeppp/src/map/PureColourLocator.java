@@ -1,9 +1,13 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import map.Symbol.Colour;
 
@@ -162,6 +166,39 @@ public class PureColourLocator {
 		center[0]=1.0*x/colors.size();
 		center[1]=1.0*y/colors.size();
 		return center;
+	}
+	
+	/**
+	 * Compares angles and orders them according to polar coordinates.
+	 * Lowest value is far right ==> 0°. Angles increase in clockwise order.
+	 */
+	private class AngleComparator implements Comparator<Symbol> {
+		@Override
+		public int compare(Symbol s1, Symbol s2) {
+			if(s1.getY()==0 && s1.getX()>0)
+				return -1;
+			if(s2.getY()==0 && s2.getX()>0)
+				return 1;
+			if(s1.getY()>0 && s2.getY()<0)
+				return 1;
+			if(s2.getY()>0 && s1.getX()<0)
+				return -1;
+			if(s1.getX()*s2.getY()-s1.getY()*s2.getX()>0)
+				return 1;
+			return -1;
+		}
+	}
+	
+	/**
+	 * Sort a list of symbols according to their polar coordinates.
+	 * The lowest value is the far right ==> 0°
+	 * Angles increase in clockwise order.
+	 * @param list
+	 * @return
+	 */
+	private List<Symbol> sortPolar(List<Symbol> list) {
+		Collections.sort(list,new AngleComparator());
+		return list;
 	}
 
 }

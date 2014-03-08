@@ -69,6 +69,7 @@ public class Symbol {
 			break;
 		}
 	}
+	
 	private double x,y;
 	
 	
