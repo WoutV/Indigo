@@ -7,6 +7,7 @@ package gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -49,11 +50,11 @@ public class GuiMain extends javax.swing.JFrame {
 
 		//initialise all GUIEvents to true
 		typevisibility.put(GUIEvent.EventType.HeightReceived, true);
-		typevisibility.put(GUIEvent.EventType.KeyEvent, true);
 		typevisibility.put(GUIEvent.EventType.Misc, true);
 		typevisibility.put(GUIEvent.EventType.SentOther, true);
 		typevisibility.put(GUIEvent.EventType.ReceivedOther, true);
 		typevisibility.put(GUIEvent.EventType.PropStatus, true);
+		typevisibility.put(GUIEvent.EventType.ReceivedLocation, true);
 
 		//initialise the propellor icons
 		resource = GuiMain.class.getResourceAsStream("/propelloractive.jpg");
@@ -80,10 +81,15 @@ public class GuiMain extends javax.swing.JFrame {
 		} catch (IOException e) {}
 
 		creditsLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		creditsLbl.setText("<html><p align=\"center\">IndigoZeppelin v3.00: <br> <br> " +
+		creditsLbl.setText("<html><p align=\"center\">IndigoZeppelin v3.00: " +
+				"Episode III: Revenge of the Bloons <br> " +
 				"&copy Team Indigo. All rights reserved. </p></html>");
 
-		//disableAllComponents(this);
+		//add map of playing field
+		mapofplayingfield.setSize(495, 495);
+		mapPanel.add(mapofplayingfield);
+		
+		disableAllComponents(this);
 	}
 
     /**
@@ -97,8 +103,6 @@ public class GuiMain extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         overviewTab = new javax.swing.JLayeredPane();
         commandPanel = new javax.swing.JPanel();
-        eventOverviewPanel = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         statusPanel = new javax.swing.JPanel();
         ownHeightTxt = new javax.swing.JLabel();
         ownHeightDisplay = new javax.swing.JLabel();
@@ -111,6 +115,7 @@ public class GuiMain extends javax.swing.JFrame {
         upPropDisplay = new javax.swing.JLabel();
         setTarget = new javax.swing.JButton();
         upPropTxt = new javax.swing.JLabel();
+        tab1LabelDisplay = new javax.swing.JLabel();
         mapPanel = new javax.swing.JPanel();
         mapDisplay = new javax.swing.JLabel();
         commandlistTab = new javax.swing.JPanel();
@@ -129,11 +134,6 @@ public class GuiMain extends javax.swing.JFrame {
         jTabbedPane1.setToolTipText("");
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(800, 600));
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        eventOverviewPanel.setViewportView(jTextArea1);
 
         ownHeightTxt.setText("Own height : ");
 
@@ -214,35 +214,35 @@ public class GuiMain extends javax.swing.JFrame {
             .addGroup(commandPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, commandPanelLayout.createSequentialGroup()
-                            .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(commandPanelLayout.createSequentialGroup()
-                                    .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(rightPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(121, Short.MAX_VALUE)))
+                    .addGroup(commandPanelLayout.createSequentialGroup()
+                        .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(commandPanelLayout.createSequentialGroup()
+                                .addComponent(leftPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(upPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rightPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rightPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(121, 121, 121))
                     .addGroup(commandPanelLayout.createSequentialGroup()
                         .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(setTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 22, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(commandPanelLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(upPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(commandPanelLayout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(upPropTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tab1LabelDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         commandPanelLayout.setVerticalGroup(
             commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(commandPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(eventOverviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tab1LabelDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(commandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(leftPropDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -380,18 +380,18 @@ public class GuiMain extends javax.swing.JFrame {
         //checkbox voor elke GUIEvent.EventType
         JCheckBox heightreceived = new JCheckBox("Height Received");
         JCheckBox propstatus = new JCheckBox("PropStatus");
-        JCheckBox keyevent = new JCheckBox("KeyEvent");
+        JCheckBox receivedlocation = new JCheckBox("Received Location");
         JCheckBox receivedother = new JCheckBox("ReceivedOther");
         JCheckBox sentother = new JCheckBox("SentOther");
         JCheckBox misc = new JCheckBox("Misc");
-        Object[] p = {"Choose which GUIEvents are shown:",heightreceived,propstatus,keyevent,receivedother,
-            sentother,misc};
+        Object[] p = {"Choose which GUIEvents are shown:",heightreceived,propstatus,receivedother,
+            receivedlocation,sentother,misc};
         int a = JOptionPane.showConfirmDialog(this, p,"Filter GUI events",JOptionPane.OK_CANCEL_OPTION);
         if(a == JOptionPane.OK_OPTION) {
             //update typevisibility
             typevisibility.put(GUIEvent.EventType.HeightReceived,heightreceived.isSelected());
             typevisibility.put(GUIEvent.EventType.PropStatus,propstatus.isSelected());
-            typevisibility.put(GUIEvent.EventType.KeyEvent,keyevent.isSelected());
+            typevisibility.put(GUIEvent.EventType.ReceivedLocation,receivedother.isSelected());
             typevisibility.put(GUIEvent.EventType.ReceivedOther,receivedother.isSelected());
             typevisibility.put(GUIEvent.EventType.SentOther,sentother.isSelected());
             typevisibility.put(GUIEvent.EventType.Misc,misc.isSelected());
@@ -475,15 +475,9 @@ public class GuiMain extends javax.swing.JFrame {
                 GuiMain gui = new GuiMain();
         		gui.setVisible(true);
         		gui.enableAllButtons();
-        		JLabel mapofplayingfield = new JLabel();
-        		mapofplayingfield.setSize(495, 495);
-        		Map map = new Map("/shapesDemo.csv");
-        		MapMaker.getInstance().getMap(map);
-        		double[] own = {40,40};
-        		double[] enemy = {80,80};
-        		double[] target = {240,240};
-        		mapofplayingfield.setIcon(MapMaker.getInstance().getLocations(own, enemy, target));
-        		gui.mapPanel.add(mapofplayingfield);		
+        		//gui.setMap("/shapesDemo.csv");
+        		//gui.setOwnLocation(200, 200);
+        		
             }
         });
     }
@@ -495,11 +489,9 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JPanel credittab;
     private javax.swing.JLabel enemyHeightDisplay;
     private javax.swing.JLabel enemyHeightTxt;
-    private javax.swing.JScrollPane eventOverviewPanel;
     private javax.swing.JButton filterBtn;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel leftPropDisplay;
     private javax.swing.JLabel leftPropTxt;
     private javax.swing.JLabel mapDisplay;
@@ -513,6 +505,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JButton setTarget;
     private javax.swing.JTextArea shownGUIEventList;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JLabel tab1LabelDisplay;
     private javax.swing.JLabel upPropDisplay;
     private javax.swing.JLabel upPropTxt;
     // End of variables declaration//GEN-END:variables
@@ -523,17 +516,125 @@ public class GuiMain extends javax.swing.JFrame {
 	private LinkedList<GUIEvent> fullGUIEventList = new LinkedList<GUIEvent>();
 	private HashMap<GUIEvent.EventType,Boolean> typevisibility = new HashMap<>();
 	
+	//map, mapmaker, and most recent locations.
+	private MapMaker mapmaker = MapMaker.getInstance();
+	private JLabel mapofplayingfield = new JLabel();
+	private Map map;
+	private double[] own;
+	private double[] enemy;
+	private double[] target;
+	
     public void setEigenHoogte(double hoogte) {
     	DecimalFormat df = new DecimalFormat("#.##");
 		String s = df.format(hoogte);
 		ownHeightDisplay.setText(s+" cm");
-		
+		addToGUIEventList(GUIEvent.EventType.HeightReceived," - New height received from own Zeppelin : "+hoogte);
 	}
     
     public void setEnemyHoogte(double hoogte){
     	DecimalFormat df = new DecimalFormat("#.##");
 		String s = df.format(hoogte);
 		enemyHeightDisplay.setText(s+" cm");
+		addToGUIEventList(GUIEvent.EventType.HeightReceived," - New height received from enemy Zeppelin : "+hoogte);
+    }
+    
+    /**
+     * Geeft de locatie van de eigen zeppelin weer op de kaart.
+     * Locatie wordt gegeven door x- en y-coordinaat in cm.
+     * Coordinaten volgens de richting van de kaart.
+     * 
+     * @param x
+     * 			x in cm. X loopt van links naar rechts.
+     * @param y
+     * 			y in cm. Y loopt van boven naar beneden.
+     */
+    public void setOwnLocation(double x, double y) {
+    	double[] loc = {x,y};
+    	own = loc;
+    	tab1LabelDisplay.setIcon(mapmaker.getLocations(own, enemy, target));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location own zeppelin received.");
+    	updateMapDisplay();
+    }
+    
+    /**
+     * Geeft de locatie van de enemy zeppelin weer op de kaart.
+     * Locatie wordt gegeven door x- en y-coordinaat in cm.
+     * Coordinaten volgens de richting van de kaart.
+     * 
+     * @param x
+     * 			x in cm. X loopt van links naar rechts.
+     * @param y
+     * 			y in cm. Y loopt van boven naar beneden.
+     */
+    public void setEnemyLocation(double x, double y) {
+    	double[] loc = {x,y};
+    	enemy = loc;
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location enemy zeppelin received.");
+    	updateMapDisplay();
+    }
+    
+    /**
+     * Geeft de locatie van de bestemming weer op de kaart.
+     * Locatie wordt gegeven door x- en y-coordinaat in cm.
+     * Coordinaten volgens de richting van de kaart.
+     * 
+     * @param x
+     * 			x in cm. X loopt van links naar rechts.
+     * @param y
+     * 			y in cm. Y loopt van boven naar beneden.
+     */
+    public void setTargetLocation(double x, double y) {
+    	double[] loc = {x,y};
+    	target = loc;
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location target received.");
+    	updateMapDisplay();
+    }
+    
+    /**
+     * Sets the map to the map contained in the file the path refers to.
+     * The filename should refer to a file in the resources folder, and should be a
+	 * comma separated value file.
+	 * The filename should start with "/" and contain the extension.
+	 * 
+	 * Constraints on the content of the file can be found in map>Map class documentation
+     */
+    public void setMap(String filepath) {
+    	map = new Map(filepath);
+    	mapofplayingfield.setIcon(mapmaker.getMap(map));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New map.");
+    }
+    
+    /**
+     * Sets the map to the map contained in the file.
+     * 
+     * Constraints on the content of the file can be found in map>Map class documentation
+     */
+    public void setMap(File file) {
+    	map = new Map(file);
+    	mapofplayingfield.setIcon(MapMaker.getInstance().getMap(map));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New map.");
+    }
+    
+    private void updateMapDisplay() {
+    	String s = "";
+    	s = s + "Indigo: ";
+    	if(own != null)
+    		s = s + "(" + own[0] + "," + own[1] + ")";
+    	else
+    		s = s + "(_,_)";
+    	s = s + "  |  Enemy: " ;
+    	if(enemy != null)
+    		s = s + "(" + enemy[0] + "," + enemy[1] + ")";
+    	else
+    		s = s + "(_,_)";
+    	s = s + "  |  Target: ";
+    	if(target != null)
+    		s = s + "(" + target[0] + "," + target[1] + ")";
+    	else
+    		s = s + "(_,_)";
+    	mapDisplay.setText(s);
     }
     
 	/**
@@ -589,16 +690,16 @@ public class GuiMain extends javax.swing.JFrame {
 	}
 	
 	/**
-	 * Geeft een image weer in tab 1 window1.
+	 * Geeft een image weer in het label display van tab 1.
 	 * @param image
 	 */
 	public void setImageDisplay(ImageIcon image){
-//		if(image.getIconHeight()>275 || image.getIconWidth()>360) {
-//			Image resizedImg = image.getImage().getScaledInstance(360, 275, Image.SCALE_DEFAULT);
-//			image = new ImageIcon(resizedImg);
-//		}
-//		tab1window1Lbl.setIcon(image);
-//		addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New image received from Zeppelin ");
+		if(image.getIconHeight()>245 || image.getIconWidth()>265) {
+			Image resizedImg = image.getImage().getScaledInstance(265, 245, Image.SCALE_DEFAULT);
+			image = new ImageIcon(resizedImg);
+		}
+		tab1LabelDisplay.setIcon(image);
+		addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New image received.");
 	}
 
 	/**

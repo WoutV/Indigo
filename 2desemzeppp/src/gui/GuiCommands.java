@@ -34,7 +34,6 @@ public class GuiCommands {
 			gui.setEigenHoogte(hoogte);
 		else 
 			gui.setEnemyHoogte(hoogte);
-		gui.addToGUIEventList(GUIEvent.EventType.HeightReceived," - New height received from Zeppelin : "+hoogte);
 	}
 
 	/**
@@ -50,6 +49,26 @@ public class GuiCommands {
 			gui.propellorActive(prop);
 		else
 			gui.propellorNotActive(prop);
+	}
+	
+	/**
+	 * Via deze methode stuurt een zeppelin zijn huidige locatie door.
+	 * Deze wordt dan in de GUI weergegeven.
+	 * De locatie wordt gegeven door x- en y-coordinaten volgens het x- en y-frame
+	 * van de kaart.
+	 * 
+	 * @param x
+	 * 			x in mm. X loopt van links naar rechts
+	 * @param y
+	 * 			y in mm. Y loopt van boven naar beneden
+	 * @param eigen
+	 * 			Eigen zeppelin (true) of enemy (false)
+	 */
+	public void receiveLocation(double x, double y, boolean eigen) {
+		if(eigen)
+			gui.setOwnLocation(x/10,y/10);
+		else
+			gui.setEnemyLocation(x/10,y/10);
 	}
 
 	/**

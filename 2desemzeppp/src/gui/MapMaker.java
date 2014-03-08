@@ -48,31 +48,37 @@ public class MapMaker {
 		boolean isAlpha = colormodel.isAlphaPremultiplied();	
 		WritableRaster raster = image.copyData(null);
 		BufferedImage image2 = new BufferedImage(colormodel,raster,isAlpha,null);
-		
+
 		image2.createGraphics();
 
 		Graphics2D map0 = (Graphics2D) image2.getGraphics();
 
 		//own zeppelin
-		int[] ownZepp = boardlayout.getPx(own);
-		int[] ownZeppdata = Shapes.getShiftedZeppelinData(ownZepp[0], ownZepp[1]);
-		map0.setColor(Color.ORANGE);
-		map0.fillOval(ownZeppdata[0],ownZeppdata[1],ownZeppdata[2],ownZeppdata[3]);
-		
+		if(own != null) {
+			int[] ownZepp = boardlayout.getPx(own);
+			int[] ownZeppdata = Shapes.getShiftedZeppelinData(ownZepp[0], ownZepp[1]);
+			map0.setColor(Color.MAGENTA);
+			map0.fillOval(ownZeppdata[0],ownZeppdata[1],ownZeppdata[2],ownZeppdata[3]);
+		}
+
 		//enemy zeppelin
-		int[] enemyZepp = boardlayout.getPx(enemy);
-		int[] enemyZeppdata = Shapes.getShiftedZeppelinData(enemyZepp[0], enemyZepp[1]);
-		map0.setColor(Color.RED);
-		map0.fillOval(enemyZeppdata[0],enemyZeppdata[1],enemyZeppdata[2],enemyZeppdata[3]);
-		
+		if(enemy != null) {
+			int[] enemyZepp = boardlayout.getPx(enemy);
+			int[] enemyZeppdata = Shapes.getShiftedZeppelinData(enemyZepp[0], enemyZepp[1]);
+			map0.setColor(Color.RED);
+			map0.fillOval(enemyZeppdata[0],enemyZeppdata[1],enemyZeppdata[2],enemyZeppdata[3]);
+		}
+
 		//target
-		int[] target = boardlayout.getPx(dest);
-		int[] targetdata = Shapes.getShiftedTargetData(target[0], target[1]);
-		map0.setColor(Color.RED);
-		map0.drawRect(targetdata[0],targetdata[1],targetdata[2],targetdata[3]);
-		
+		if(dest != null) {
+			int[] target = boardlayout.getPx(dest);
+			int[] targetdata = Shapes.getShiftedTargetData(target[0], target[1]);
+			map0.setColor(Color.RED);
+			map0.drawRect(targetdata[0],targetdata[1],targetdata[2],targetdata[3]);
+		}
+
 		ImageIcon ii = new ImageIcon(image2);
-		
+
 		return ii;
 	}
 
@@ -94,21 +100,21 @@ public class MapMaker {
 		int symbolsOnRow = map.getSymbolsOnRow();
 		int lines = map.getRows();
 		boardlayout = new BoardLayout(symbolsOnRow,lines);
-		
+
 		map0.setColor(Color.BLACK);
-		
+
 		for(int i = 0; i<lines;i++) {
 			int y = boardlayout.getY(i);
 			boolean even = i%2 != 0;
-			
+
 			for(int j=0;j<symbolsOnRow-1;j++) {
 				map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j+1, even),y);
 			}
-			
+
 			if(!even) {
 				if(i<lines-1) {
 					int nexty = boardlayout.getY(i+1);
-				
+
 					map0.drawLine(boardlayout.getX(0, even),y,boardlayout.getX(0, !even),nexty);
 					for(int j=1;j<symbolsOnRow;j++) {
 						map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j-1, !even),nexty);
@@ -117,7 +123,7 @@ public class MapMaker {
 				}
 				if(i>0) {
 					int prevy = boardlayout.getY(i-1);
-				
+
 					map0.drawLine(boardlayout.getX(0, even),y,boardlayout.getX(0, !even),prevy);
 					for(int j=1;j<symbolsOnRow;j++) {
 						map0.drawLine(boardlayout.getX(j, even),y,boardlayout.getX(j-1, !even),prevy);
@@ -126,50 +132,50 @@ public class MapMaker {
 				}
 			}
 		}
-		
+
 		for(int i = 0; i<lines;i++) {
 			for(int j=0;j<symbolsOnRow;j++) {
-			Symbol currentSymbol = map.getSymbol(j, i);
+				Symbol currentSymbol = map.getSymbol(j, i);
 
-			//colour
-			Symbol.Colour colour = currentSymbol.getColour();
-			if(colour == Symbol.Colour.YELLOW)
-				map0.setColor(Color.YELLOW);
-			if(colour == Symbol.Colour.WHITE)
-				map0.setColor(Color.WHITE);
-			if(colour == Symbol.Colour.BLUE)
-				map0.setColor(Color.BLUE);
-			if(colour == Symbol.Colour.RED)
-				map0.setColor(Color.RED);
-			if(colour == Symbol.Colour.GREEN)
-				map0.setColor(Color.GREEN);
+				//colour
+				Symbol.Colour colour = currentSymbol.getColour();
+				if(colour == Symbol.Colour.YELLOW)
+					map0.setColor(Color.YELLOW);
+				if(colour == Symbol.Colour.WHITE)
+					map0.setColor(Color.WHITE);
+				if(colour == Symbol.Colour.BLUE)
+					map0.setColor(Color.BLUE);
+				if(colour == Symbol.Colour.RED)
+					map0.setColor(Color.RED);
+				if(colour == Symbol.Colour.GREEN)
+					map0.setColor(Color.GREEN);
 
-			//shape
-			Symbol.Shape shape = currentSymbol.getShape();
-			boolean even = (i%2!=0);
-			int x = boardlayout.getX(j, even);
-			int y = boardlayout.getY(i);
-			if(shape == Symbol.Shape.HEART) {
-				Polygon heart = Shapes.getShiftedHeart(x, y);
-				map0.fillPolygon(heart);
-			}
-			if(shape == Symbol.Shape.STAR) {
-				Polygon star = Shapes.getShiftedStar(x, y);
-				map0.fillPolygon(star);
-			}
-			if(shape == Symbol.Shape.CIRCLE) {
-				int[] circledata = Shapes.getShiftedCircleData(x, y);
-				map0.fillOval(circledata[0],circledata[1],circledata[2],circledata[3]);
-			}
-			if(shape == Symbol.Shape.RECTANGLE) {
-				Polygon rclandscape = Shapes.getShiftedLandscapeRectangle(x, y);
-				map0.fillPolygon(rclandscape);
-			}
+				//shape
+				Symbol.Shape shape = currentSymbol.getShape();
+				boolean even = (i%2!=0);
+				int x = boardlayout.getX(j, even);
+				int y = boardlayout.getY(i);
+				if(shape == Symbol.Shape.HEART) {
+					Polygon heart = Shapes.getShiftedHeart(x, y);
+					map0.fillPolygon(heart);
+				}
+				if(shape == Symbol.Shape.STAR) {
+					Polygon star = Shapes.getShiftedStar(x, y);
+					map0.fillPolygon(star);
+				}
+				if(shape == Symbol.Shape.CIRCLE) {
+					int[] circledata = Shapes.getShiftedCircleData(x, y);
+					map0.fillOval(circledata[0],circledata[1],circledata[2],circledata[3]);
+				}
+				if(shape == Symbol.Shape.RECTANGLE) {
+					Polygon rclandscape = Shapes.getShiftedLandscapeRectangle(x, y);
+					map0.fillPolygon(rclandscape);
+				}
 			}
 		}
 
 		ImageIcon ii = new ImageIcon(image);
-		
+
 		return ii;
 	}
 
