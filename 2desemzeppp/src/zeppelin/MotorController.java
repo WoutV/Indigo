@@ -91,9 +91,9 @@ public class MotorController {
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender, 0);
 			up.setOff();
 			up.PwmOn();
-			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);
-			Thread hct = new Thread(hc);
-			hct.start();
+//			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);
+//			Thread hct = new Thread(hc);
+//			hct.start();
 			
 			xController = new PositionController(Kpx, Kix, Kdx, xMotor, true);
 			yController = new PositionController(Kpy, Kiy, Kdy, yMotor, false);		
