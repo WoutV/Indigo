@@ -1,26 +1,14 @@
 package imageProcessing;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.*;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import map.ColorSymbol;
 import map.Symbol;
-import map.Symbol.Colour;
-
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
@@ -40,21 +28,9 @@ public class ImageProcessor {
 	private static int epsilonApprox=10;
 	private static int pointsEqualEpsilon=116;
 	private int pointsEqualEpsilonPoints=52;
-	/**
-	 * 
-	 * @param filePath
-	 * 		   The path where file is located. Can be changed later to receive a image matrix.
-	 * @throws InterruptedException 
-	 */
-	public ImageProcessor(String filePath) throws InterruptedException{
-		System.loadLibrary("opencv_java248");
-		this.originalImage = Highgui.imread(filePath, Imgproc.COLOR_BGR2GRAY);
 
-	        
-	 
-	}
 	/**
-	 * Process the image and writes the output images on the folder specified.
+	 * Processes the image and returns the found color symbols.
 	 * @return 
 	 */
 	public static ArrayList<ColorSymbol> processImage(ImageIcon imageicon){
