@@ -1,8 +1,11 @@
 package initialise;
+import org.opencv.core.Core;
+
 import connection.ReceiverClient;
 import gui.GuiMain;;
 public class InitialiseClient {
 	public static void main(String[] args) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		final GuiMain gui = new GuiMain();
 		gui.enableAllButtons();
 		gui.setVisible(true);

@@ -27,22 +27,15 @@ public abstract class Camera {
 	 */
 	public static ImageIcon getImage(){
 		BufferedImage image = null;
-		if(isInUse){
-			return new ImageIcon("image.jpg");
-		}
-		try
-		{
-
-			isInUse=true;
-			Process p = Runtime.getRuntime().exec("raspistill -t 0 -n -h 150 -w 150 -o image.jpg");
-			//image = ImageIO.read(p.getInputStream());
+		try {
+			Process p = Runtime.getRuntime().exec("raspistill -t 10 -n -h 800 -w 800 -o image.jpg");
+			image = ImageIO.read(p.getInputStream());
 			p.waitFor();
-			isInUse=false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch (Exception ieo)
-		{
-			ieo.printStackTrace();
-		}
+		System.out.println("image from inputstream"+image);
 		return new ImageIcon("image.jpg");
 	}
 
