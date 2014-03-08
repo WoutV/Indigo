@@ -14,6 +14,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 
 public class SenderPi {
+	public static String serverIP="192.168.137.1";
 	private final String EXCHANGE_NAME = "server";
 	private String routingKey;
 	private Channel channel;
@@ -27,7 +28,7 @@ public class SenderPi {
 	    channel = null;
 	    try {
 	      ConnectionFactory factory = new ConnectionFactory();
-	      factory.setHost("localhost");
+	      factory.setHost(serverIP);
 	  
 	      connection = factory.newConnection();
 	      channel = connection.createChannel();

@@ -99,8 +99,9 @@ public class ReceiverClient implements Runnable{
 		}
 	}
 	public void image(Transfer information){
-		gc.receiveImage(information.getImage());
-		ImageProcessor.processImage(information.getImage());
+		System.out.println("We will be victorious!");
+		//		gc.receiveImage(information.getImage());
+		//ImageProcessor.processImage(information.getImage());
 		//TODO:
 		//Purecolorlocator must be called here to process the information
 		// vraag hier de image om te gebruiken in image recognition.

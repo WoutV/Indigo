@@ -55,7 +55,7 @@ public class ReceiverPi implements Runnable{
 	    Channel channel = null;
 	    try {
 	      ConnectionFactory factory = new ConnectionFactory();
-	      factory.setHost("localhost");
+	      factory.setHost(SenderPi.serverIP);
 	  
 	      connection = factory.newConnection();
 	      channel = connection.createChannel();
