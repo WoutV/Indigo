@@ -262,12 +262,50 @@ public class PureColourLocator {
 		double[] coords6 = {40,50};
 		list.add(new ColorSymbol(coords6,Symbol.Colour.RED));
 		List<ColorSymbol> sort = sortColourSymbolPolar(list,center);
-		JOptionPane.showMessageDialog(null,sort.get(0).coordinate[0] + "," + sort.get(0).coordinate[1] + "\n" + 
-				sort.get(1).coordinate[0] + "," + sort.get(1).coordinate[1] + "\n" + 
-				sort.get(2).coordinate[0] + "," + sort.get(2).coordinate[1] + "\n" + 
-				sort.get(3).coordinate[0] + "," + sort.get(3).coordinate[1] + "\n" + 
-				sort.get(4).coordinate[0] + "," + sort.get(4).coordinate[1] + "\n" + 
-				sort.get(5).coordinate[0] + "," + sort.get(5).coordinate[1] + "\n");
+//		JOptionPane.showMessageDialog(null,sort.get(0).coordinate[0] + "," + sort.get(0).coordinate[1] + "\n" + 
+//				sort.get(1).coordinate[0] + "," + sort.get(1).coordinate[1] + "\n" + 
+//				sort.get(2).coordinate[0] + "," + sort.get(2).coordinate[1] + "\n" + 
+//				sort.get(3).coordinate[0] + "," + sort.get(3).coordinate[1] + "\n" + 
+//				sort.get(4).coordinate[0] + "," + sort.get(4).coordinate[1] + "\n" + 
+//				sort.get(5).coordinate[0] + "," + sort.get(5).coordinate[1] + "\n");
+//		
+		//test SymbolCompare
+		List<Symbol> list0 = new LinkedList<>();
+		Symbol center0 = new Symbol("RR");
+		center0.setX(50);
+		center0.setY(50);
+		list0.add(center0);
+		Symbol s1 = new Symbol("RR");
+		s1.setX(60);
+		s1.setY(50);
+		list0.add(s1);
+		Symbol s2 = new Symbol("RR");
+		s2.setX(60);
+		s2.setY(60);
+		list0.add(s2);
+		Symbol s3 = new Symbol("RR");
+		s3.setX(50);
+		s3.setY(70);
+		list0.add(s3);
+		Symbol s4 = new Symbol("RR");
+		s4.setX(40);
+		s4.setY(40);
+		list0.add(s4);
+		Symbol s5 = new Symbol("RR");
+		s5.setX(60);
+		s5.setY(40);
+		list0.add(s5);
+		Symbol s6 = new Symbol("RR");
+		s6.setX(40);
+		s6.setY(50);
+		list0.add(s6);
+		List<Symbol> sort0 = sortPolar(list0,center0);
+		JOptionPane.showMessageDialog(null,sort0.get(0).getX() + "," + sort0.get(0).getY() + "\n" + 
+				sort0.get(1).getX() + "," + sort0.get(1).getY() + "\n" + 
+				sort0.get(2).getX() + "," + sort0.get(2).getY() + "\n" + 
+				sort0.get(3).getX() + "," + sort0.get(3).getY() + "\n" + 
+				sort0.get(4).getX() + "," + sort0.get(4).getY() + "\n" + 
+				sort0.get(5).getX() + "," + sort0.get(5).getY() + "\n");
 	}
 
 }
