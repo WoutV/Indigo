@@ -36,30 +36,133 @@ public class PureColourLocator {
 		ColorSymbol middle = nearestSymbol(colors, totalCenter);
 		colors.remove(middle);
 		ColorSymbol nextBestSymbol = nearestSymbol(colors,middle.coordinate);
-
 		//try to get the 6 symbols surrounding the middle symbol
 		//technically, all of these are at the same distance
 		//using a margin of 1.2 here
 		double [] mid = middle.coordinate;
 		double [] nearestToMid= nextBestSymbol.coordinate;
 		double dist = euclideanDistance(mid, nearestToMid);
-		List<ColorSymbol> neighbours = filter(colors,10*dist,mid);
+		List<ColorSymbol> neighbours = filter(colors,1.6*dist,mid);
 		if(neighbours.size() == 6) {
 			//all 6 neighbours are known
 			//sort them
 			neighbours = sortColourSymbolPolar(neighbours, middle);
-			double[] r = find6(neighbours,middle,map);
+			double[] r = find6(neighbours,middle);
 			if(r != null)
 				return r;
 		}
+		neighbours = sortColourSymbolPolar(neighbours, middle);
+		
+		List<double[]> possiblelocs = new LinkedList<>();
+//		JOptionPane.showMessageDialog(null, middle.colour + "," + neighbours.get(0).colour + 
+//				"," + neighbours.get(1).colour + "," + neighbours.get(2).colour);
+		for(int i = 0;i<neighbours.size();i++) {
+			if(euclideanDistance(neighbours.get(i).coordinate,neighbours.get((i+1)%neighbours.size()).coordinate) < 1.4*dist
+					&& neighbours.get(i).coordinate[0]*neighbours.get((i+1)%neighbours.size()).coordinate[1]-
+					neighbours.get(i).coordinate[1]*neighbours.get((i+1)%neighbours.size()).coordinate[0]<0) {
+			List<double[]> r = find3(neighbours.get(i),neighbours.get((i+1)%neighbours.size()),middle);
+			for(double[] loc:r) {
+				//assumes first symbol of neighbours is in right corner
+				//loc[2] = loc[2] + 120 - i*60;
+				if(loc[2] < -180)
+					loc[2] = loc[2] + 360;
+				if(loc[2] > 180)
+					loc[2] = loc[2] - 360;
+				if(neighbours.get(i).coordinate[0] < 0 && neighbours.get(i).coordinate[1] == 0)
+					loc[2] = loc[2] + 300;
+				if(neighbours.get(i).coordinate[0] > 0 && neighbours.get(i).coordinate[1] > 0)
+					loc[2] = loc[2] + 60;
+				if(neighbours.get(i).coordinate[0] > 0 && neighbours.get(i).coordinate[1] == 0)
+					loc[2] = loc[2] + 120;
+				if(neighbours.get(i).coordinate[0] > 0 && neighbours.get(i).coordinate[1] < 0)
+					loc[2] = loc[2] + 180;
+				if(neighbours.get(i).coordinate[0] < 0 && neighbours.get(i).coordinate[1] < 0)
+					loc[2] = loc[2] + 240;
+				if(loc[2] > 180)
+					loc[2] = loc[2] - 360;
+				possiblelocs.add(loc);
+			}
+			}
+		}
+		String s = "";
+		for(double[] r:possiblelocs) {
+			s = s + r[0] + "," + r[1] + "||" + r[2] + "\n";
+		}
+		JOptionPane.showMessageDialog(null, s);
 		return null;
 		//select a triangle: 2 symbols who are at about the same distance
-		//from mid and from eachother
 	}
 
-	private List<List<ColorSymbol>> getTriangles(List<ColorSymbol> neighbours, ColorSymbol middle){
-		return null;
-	}	
+	private List<double[]> find3(ColorSymbol symbol1,ColorSymbol symbol2,ColorSymbol center) {
+		//for now, linear search
+		//might use priority queue instead
+		int symbolsPerRow = map.getSymbolsOnRow();
+		int lines = map.getRows();
+		List<double[]> possiblelocs = new LinkedList<>();
+		//odd lines (index even) => left aligned => i,i-1
+		//even lines (index odd) => right aligned => i,i+1
+		for(int i=0;i<lines;i++) {
+			for(int j=0;j<symbolsPerRow;j++) {
+				if(center.colour==map.getSymbol(j, i).getColour()) {
+					//potential mid
+					Symbol leftup,rightup,leftdown,rightdown;
+					if(i%2==0) {
+						leftup = map.getSymbol(j-1, i-1);
+						rightup = map.getSymbol(j, i-1);
+						leftdown = map.getSymbol(j-1, i+1);
+						rightdown = map.getSymbol(j, i+1);
+					}
+					else {
+						leftup = map.getSymbol(j, i-1);
+						rightup = map.getSymbol(j+1, i-1);
+						leftdown = map.getSymbol(j, i+1);
+						rightdown = map.getSymbol(j+1, i+1);
+					}
+
+					Symbol left = map.getSymbol(j-1, i);
+					Symbol right = map.getSymbol(j+1, i);
+					LinkedList<Symbol> symbols = new LinkedList<>();
+					symbols.add(right);symbols.add(rightdown);symbols.add(leftdown);
+					symbols.add(left);symbols.add(leftup);symbols.add(rightup);
+					for(int k=0;k<6;k++) {
+						if(match3(symbol1,symbol2,symbols,k)) {
+							//example: sorted coloursymbols s1,s2 = left up, right up
+							//match at k = 0 ==> left up in image = right in map
+							//alpha = 120
+							//match at k = 1 ==> left up in image = right bottom in map
+							//alpha = 180
+							//coordinates of zeppelin
+							double x = map.getSymbol(j, i).getX();
+							double y = map.getSymbol(j, i).getY();
+							double alpha = 120+k*60; //120=>480
+							if(alpha > 180)
+								alpha = alpha - 360; //-180 => 180
+							double[] r = {x,y,alpha};
+							possiblelocs.add(r);
+						}
+					}
+				}
+			}
+		}
+		return possiblelocs;
+	}
+	
+	/**
+	 * For 2 images next to each other (around a center) on the image, checks if they match any group of
+	 * 2 in the list of neighbour symbols around the center.
+	 * @param symbolImage1
+	 * @param symbolImage2
+	 * @param symbolsOnMap
+	 * @param i
+	 * @return
+	 */
+	private boolean match3(ColorSymbol symbolImage1, ColorSymbol symbolImage2, List<Symbol> symbolsOnMap,int i) {
+		Symbol s1 = symbolsOnMap.get(i);
+		Symbol s2 = symbolsOnMap.get((i+1)%6);
+		if(s1 == null || s2 == null)
+			return false;
+		return (symbolImage1.colour == s1.getColour() && symbolImage2.colour == s2.getColour());
+	}
 
 	/**
 	 * For a list of ColorSymbol objects, selects only those objects
@@ -82,12 +185,11 @@ public class PureColourLocator {
 	 * @param mid
 	 * @param map
 	 */
-	public double[] find6(List<ColorSymbol> neighbours,ColorSymbol mid,Map map) {
+	public double[] find6(List<ColorSymbol> neighbours,ColorSymbol mid) {
 		//for now, linear search
 		//might use priority queue instead
 		int symbolsPerRow = map.getSymbolsOnRow();
 		int lines = map.getRows();
-		JOptionPane.showMessageDialog(null,symbolsPerRow + "," + lines);
 		//odd lines (index even) => left aligned => i,i-1
 		//even lines (index odd) => right aligned => i,i+1
 		for(int i=0;i<lines;i++) {
@@ -356,15 +458,28 @@ public class PureColourLocator {
 		list1.add(new ColorSymbol(coord4,Symbol.Colour.WHITE));
 		double[] coord5 = {40,40};
 		list1.add(new ColorSymbol(coord5,Symbol.Colour.RED));
-		double[] coord6 = {40,50};
+		double[] coord6 = {30,50};
 		list1.add(new ColorSymbol(coord6,Symbol.Colour.BLUE));
 		PureColourLocator locator = new PureColourLocator(new Map("/shapesDemo.csv"));
-		double[] loc = locator.locate(list1);
-		if(loc == null)
-			JOptionPane.showMessageDialog(null,"null");
+		//double[] loc = locator.locate(list1);
+		//if(loc == null)
+			//JOptionPane.showMessageDialog(null,"null");
 
-		if(loc != null)
-			JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);
+		//if(loc != null)
+			//JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);	
+		List<ColorSymbol> list2 = new LinkedList<>();
+		double[] coor0 = {50,50};
+		ColorSymbol center2 = new ColorSymbol(coor0,Symbol.Colour.BLUE);
+		list2.add(center2);
+		double[] coor1 = {42,60};
+		list2.add(new ColorSymbol(coor1,Symbol.Colour.YELLOW));
+		double[] coor2 = {58,60};
+		list2.add(new ColorSymbol(coor2,Symbol.Colour.WHITE));
+//		double[] coor3 = {66,50};
+//		list2.add(new ColorSymbol(coor3,Symbol.Colour.WHITE));
+		//JOptionPane.showMessageDialog(null,locator.euclideanDistance(coor1, coor2) +
+		//		"," + locator.euclideanDistance(coor1, coor2) + "," + locator.euclideanDistance(coor1, coor2));
+		double[] loc0 = locator.locate(list2);
 	}
 
 }
