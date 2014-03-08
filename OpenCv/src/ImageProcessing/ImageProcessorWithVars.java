@@ -21,9 +21,9 @@ import org.opencv.imgproc.Imgproc;
 public class ImageProcessorWithVars {
 	
 	public static void main(String[] args) {
-		 System.loadLibrary("opencv_java248");
+		 System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		 try {
-			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Vince/Desktop/9.jpg");
+			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/1.jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,7 +38,7 @@ public class ImageProcessorWithVars {
 	private int erodesize=3;
 	private int dilatesize=3;
 	private Mat originalImage;
-	private String openCvFolder="C:/Users/Vince/Desktop/";
+	private String openCvFolder="C:/Users/Study/Desktop/OpenCv/Processed/";
 	private int cannyThreshold=35;
 	private int minArea=100;
 	private int epsilonApprox=10;
