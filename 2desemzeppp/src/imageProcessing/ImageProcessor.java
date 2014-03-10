@@ -149,7 +149,7 @@ public class ImageProcessor {
 	}
 	public static Mat matAfterRework; 
 	private static ColorSymbol getColor(Mat image, Point contourCenter) {
-		double[] coordinate = {contourCenter.y,contourCenter.x};
+		double[] coordinate = {contourCenter.x,contourCenter.y};
 		Mat bitImage = image.clone();
 		//Checking for white
 		Core.inRange(image.clone(), Colors.getWhiteMinScalar(), Colors.getWhiteMaxScalar(), bitImage);
