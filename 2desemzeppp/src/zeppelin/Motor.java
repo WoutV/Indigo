@@ -1,5 +1,4 @@
 package zeppelin;
-
 import transfer.Transfer;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
@@ -10,6 +9,7 @@ import com.pi4j.wiringpi.SoftPwm;
 
 import connection.SenderPi;
 
+
 public class Motor {
 	private GpioPinDigitalOutput forwardPin;
 	private GpioPinDigitalOutput reversePin;
@@ -17,13 +17,13 @@ public class Motor {
 	private int fwPin;
 	private int revPin;
 
-	// PWM: value tussen 0 en 1024 (volgens WiringPi)
+	//PWM: value tussen 0 en 1024 (volgens WiringPi)
 	private boolean pwmEnabled;
 
 	private GpioController gpiocontroller;
 	private Propellor id;
 
-	// previous mode and direction ==> avoids sending the same transfer twice
+	//previous mode and direction ==> avoids sending the same transfer twice
 	private Propellor.Mode prevmode = Propellor.Mode.OFF;
 	private Propellor.Direction prevdirection;
 
@@ -32,50 +32,48 @@ public class Motor {
 
 	/**
 	 * Create a motor.
-	 * 
 	 * @param fwPin
-	 *            The pin for forward movement.
+	 * 			The pin for forward movement.
 	 * @param rvPin
-	 *            The pin for reverse movement.
+	 * 			The pin for reverse movement.
 	 * @param gpio
-	 *            The gpio controller.
+	 * 			The gpio controller.
 	 * @param id
-	 *            The id of this propellor.
+	 * 			The id of this propellor.
 	 * @param pwmPin
-	 *            The pin if hardware pwm is used.
+	 * 			The pin if hardware pwm is used.
 	 * @param sender
-	 *            The sender.
+	 * 			The sender.
 	 * @param softPwmPin
-	 *            The pin (int) if soft pwm is used.
+	 * 			The pin (int) if soft pwm is used.
 	 */
-	public Motor(Pin fwPin, Pin rvPin, GpioController gpio, Propellor id,
-			GpioPinPwmOutput pwmPin, SenderPi sender) {
+	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SenderPi sender) {
 		gpiocontroller = gpio;
-		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin, "forward");
-		reversePin = gpiocontroller
-				.provisionDigitalOutputPin(rvPin, "backward");
-
+		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin,"forward");
+		reversePin = gpiocontroller.provisionDigitalOutputPin(rvPin,"backward");
+		
 		this.id = id;
 		this.sender = sender;
-
-		if (id != Propellor.UP) {
-			if (id == Propellor.X) {
-				this.fwPin = 13;
-				this.revPin = 11;
-			} else {
-				this.fwPin = 5;
-				this.revPin = 7;
+		
+		if(id != Propellor.UP) {
+			if(id == Propellor.X){
+			this.fwPin=7;
+			this.revPin=9;
+			}
+			else{
+				this.fwPin=4;
+				this.revPin=24;
 			}
 			SoftPwm.softPwmCreate(this.fwPin, 0, 100);
 			SoftPwm.softPwmCreate(this.revPin, 0, 100);
-			// TODO PIN NUMMER !!!!! EERSTE ARGUMENT
+			//TODO PIN NUMMER !!!!! EERSTE ARGUMENT
 		} else {
-			this.pwmPin = pwmPin;
+			this.pwmPin = pwmPin; 
 		}
 
-		// status wanneer de app wordt afgesloten
-		forwardPin.setShutdownOptions(true, PinState.LOW);
-		reversePin.setShutdownOptions(true, PinState.LOW);
+		//status wanneer de app wordt afgesloten
+		forwardPin.setShutdownOptions(true,PinState.LOW);
+		reversePin.setShutdownOptions(true,PinState.LOW);
 	}
 
 	/**
@@ -85,11 +83,9 @@ public class Motor {
 		reversePin.setState(PinState.LOW);
 		forwardPin.setState(PinState.HIGH);
 
-		if (prevdirection != Propellor.Direction.FORWARD
-				|| prevmode != Propellor.Mode.ON) {
+		if(prevdirection != Propellor.Direction.FORWARD || prevmode != Propellor.Mode.ON) {
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.ON,
-					Propellor.Direction.FORWARD, 0);
+			transfer.setPropellor(id, Propellor.Mode.ON, Propellor.Direction.FORWARD, 0);
 			sender.sendTransfer(transfer);
 
 			prevmode = Propellor.Mode.ON;
@@ -98,7 +94,8 @@ public class Motor {
 	}
 
 	/**
-	 * Set this motor to "forward". No update is sent.
+	 * Set this motor to "forward".
+	 * No update is sent.
 	 */
 	private void fw() {
 		reversePin.setState(PinState.LOW);
@@ -111,12 +108,10 @@ public class Motor {
 	public void setReverse() {
 		forwardPin.setState(PinState.LOW);
 		reversePin.setState(PinState.HIGH);
-
-		if (prevdirection != Propellor.Direction.REVERSE
-				|| prevmode != Propellor.Mode.ON) {
+		
+		if(prevdirection != Propellor.Direction.REVERSE || prevmode != Propellor.Mode.ON) {
 			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.ON,
-					Propellor.Direction.REVERSE, 0);
+			transfer.setPropellor(id, Propellor.Mode.ON, Propellor.Direction.REVERSE, 0);
 			sender.sendTransfer(transfer);
 
 			prevmode = Propellor.Mode.ON;
@@ -125,7 +120,8 @@ public class Motor {
 	}
 
 	/**
-	 * Set this motor to "reverse". No update is sent.
+	 * Set this motor to "reverse".
+	 * No update is sent.
 	 */
 	private void rv() {
 		forwardPin.setState(PinState.LOW);
@@ -138,8 +134,8 @@ public class Motor {
 	public void setOff() {
 		reversePin.setState(PinState.LOW);
 		forwardPin.setState(PinState.LOW);
-
-		if (prevmode != Propellor.Mode.OFF) {
+		
+		if(prevmode != Propellor.Mode.OFF) {
 			Transfer transfer = new Transfer();
 			transfer.setPropellor(id, Propellor.Mode.OFF, null, 0);
 			sender.sendTransfer(transfer);
@@ -148,9 +144,10 @@ public class Motor {
 			prevdirection = null;
 		}
 	}
-
+	
 	/**
-	 * Set this motor to "off". No update is sent.
+	 * Set this motor to "off".
+	 * No update is sent.
 	 */
 	public void off() {
 		reversePin.setState(PinState.LOW);
@@ -166,141 +163,141 @@ public class Motor {
 
 	/**
 	 * Deactivate
-	 * 
 	 * @param set0
-	 *            To indicate whether pwm pin should be set to 0. This should
-	 *            not be done if other motors are still using it. This only
-	 *            applies to the hardware pwm pin.
+	 * 		To indicate whether pwm pin should be set to 0.
+	 * 		This should not be done if other motors are still using it.
+	 * 		This only applies to the hardware pwm pin.
 	 */
 	public void PwmOff(boolean set0) {
 		pwmEnabled = false;
-		if (pwmPin != null && set0)
+		if(pwmPin != null && set0)
 			pwmPin.setPwm(0);
 	}
 
 	/**
-	 * Set this motor to a given pwm value. Pwm needs to be enabled. Hardware
-	 * pwm values are assumed.
-	 * 
+	 * Set this motor to a given pwm value.
+	 * Pwm needs to be enabled.
+	 * Hardware pwm values are assumed.
 	 * @param value
-	 *            Range: -1024 (min) --> 1024 (max)
+	 * 			Range: -1024 (min) --> 1024 (max)
 	 */
 	public void setPwmValue(int value) {
-		if (pwmEnabled) {
-			if (value > 0) {
-				if (id == Propellor.UP) {
+		if(pwmEnabled) {
+			System.out.println("SEtting new pwm value");
+			if(value==0){
+				if(id==Propellor.UP)
+					pwmPin.setPwm(0);
+				else
+					SoftPwm.softPwmWrite(this.fwPin, 0);
+					SoftPwm.softPwmWrite(this.revPin, 0);
+			}
+			else if(value > 0){
+				System.out.println("Giving a little tick");
+				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
+					fw();
 				} else {
 					SoftPwm.softPwmWrite(this.fwPin, 100);
+					SoftPwm.softPwmWrite(this.revPin, 0);
 				}
-				fw();
+//				fw();
 				off();
-				if (id == Propellor.UP) {
+				System.out.println("Setting the real pwm");
+				if(id==Propellor.UP) {
 					pwmPin.setPwm(value);
+					fw();
 				} else {
-					SoftPwm.softPwmWrite(this.fwPin, value * 100 / 1024);
+					SoftPwm.softPwmWrite(this.fwPin, value*100/1024);
+					SoftPwm.softPwmWrite(this.revPin, 0);
 				}
-				fw();
-			} else {
-				if (id == Propellor.UP) {
+//				fw();
+			}
+			else{
+				System.out.println("Got negative pwm");
+				System.out.println("Giving a little tick");
+				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
+					rv();
 				} else {
 					SoftPwm.softPwmWrite(this.revPin, 100);
+					SoftPwm.softPwmWrite(this.fwPin, 0);
 				}
-				rv();
+				System.out.println("Setting the given pwm");
 				off();
-				if (id == Propellor.UP) {
+				if(id==Propellor.UP) {
 					pwmPin.setPwm(-value);
+					rv();
 				} else {
-					SoftPwm.softPwmWrite(this.revPin, -value * 100 / 1024);
+					SoftPwm.softPwmWrite(this.revPin, -value*100/1024);
+					SoftPwm.softPwmWrite(this.fwPin, 0);
 				}
-				rv();
+				
 			}
 		}
 
-		// send an update: only if motor running now and was not running before
-		// OR is not running now and was running before
+		//send an update: only if motor running now and was not running before
+		//OR is not running now and was running before
 		Propellor.Mode mode;
-		if (pwmLargeEnoughForMovement(value))
+		if(pwmLargeEnoughForMovement(value))
 			mode = Propellor.Mode.ON;
 		else
 			mode = Propellor.Mode.OFF;
-		if (prevmode != mode) {
+		if(prevmode != mode) {
 			Transfer transfer = new Transfer();
 			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
 			sender.sendTransfer(transfer);
 		}
-
+		
 		prevmode = mode;
 	}
-
+	
 	/**
 	 * Indicates whether a given pwm is large enough to make the engine run.
-	 * 
 	 * @param pwm
-	 *            A hardware pwm value: -1024 -> 1024
+	 * 			A hardware pwm value: -1024 -> 1024
 	 */
 	public boolean pwmLargeEnoughForMovement(int pwm) {
 		return Math.abs(pwm) > 740;
 	}
-
+	
 	/**
-	 * Set this motor to a given pwm value. Pwm needs to be enabled. Soft pwm
-	 * values are assumed.
-	 * 
+	 * Set this motor to a given pwm value.
+	 * Pwm needs to be enabled.
+	 * Soft pwm values are assumed.
 	 * @param value
-	 *            Range: -100 (min) --> 100 (max)
+	 * 			Range: -100 (min) --> 100 (max)
 	 */
 	public void setSoftPwmValue(int value) {
-		if (pwmEnabled) {
-			System.out.println("Setting software pwm value in %:" + value
-					+ " for propellor:" + id);
-			if (value == 0) {
-				if (id == Propellor.UP) {
-					pwmPin.setPwm(0);
-					fw();
-				} else {
-					SoftPwm.softPwmWrite(fwPin, 0);
-					SoftPwm.softPwmWrite(revPin, 0);
-				}
-			} else if (value > 0) {
-				if (id == Propellor.UP) {
+		if(pwmEnabled) {
+			if(value > 0){
+				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
-					fw();
 				} else {
-					SoftPwm.softPwmWrite(fwPin, 100);
-					SoftPwm.softPwmWrite(revPin, 0);
+					SoftPwm.softPwmWrite(softPwmPin, 100);
 				}
-				// fw();
+				fw();
 				off();
-				if (id == Propellor.UP) {
-					pwmPin.setPwm(value * 1024 / 100);
-					fw();
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(value*1024/100);
 				} else {
-					SoftPwm.softPwmWrite(fwPin, value);
-					System.out.println("fwPin set to value:"+value);
-					SoftPwm.softPwmWrite(revPin, 0);
-					System.out.println("revPin set to value:0");
+					SoftPwm.softPwmWrite(softPwmPin, value);
 				}
-
-			} else {
-				if (id == Propellor.UP) {
+				fw();
+			}
+			else{
+				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
-					rv();
 				} else {
-					SoftPwm.softPwmWrite(revPin, 100);
-					SoftPwm.softPwmWrite(fwPin, 0);
+					SoftPwm.softPwmWrite(softPwmPin, 100);
 				}
-
+				rv();
 				off();
-				if (id == Propellor.UP) {
-					pwmPin.setPwm(-value * 1024 / 100);
-					rv();
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(-value*1024/100);
 				} else {
-					SoftPwm.softPwmWrite(revPin, -value);
-					SoftPwm.softPwmWrite(fwPin, 0);
+					SoftPwm.softPwmWrite(softPwmPin, -value);
 				}
-
+				rv();
 			}
 		}
 	}
