@@ -23,7 +23,7 @@ public class ImageProcessorWithVars {
 	public static void main(String[] args) {
 		 System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		 try {
-			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Study/Desktop/OpenCv/9.jpg");
+			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Vince/Desktop/a/2/b (105).jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

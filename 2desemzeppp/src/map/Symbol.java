@@ -52,7 +52,7 @@ public class Symbol {
 			break;
 		}
 		switch(shape) {
-		case 'O':
+		case 'C':
 			this.shape = Shape.CIRCLE;
 			break;
 		case 'S':

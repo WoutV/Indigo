@@ -62,7 +62,7 @@ public class InitialiseClient {
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();
-		ImageProcessor.processImage(new ImageIcon("C:/Users/Vince/Desktop/a/2/b (111).jpg"));
+		ImageProcessor.processImage(new ImageIcon("C:/Users/Vince/Desktop/a/2/b (105).jpg"));
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
 //		List<ColorSymbol> list1 = new LinkedList<>();
