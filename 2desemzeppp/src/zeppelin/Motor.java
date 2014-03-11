@@ -176,14 +176,14 @@ public class Motor {
 			if(value > 0){
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
-					} else {
+					} else if(id==Propellor.X) {
 						SoftPwm.softPwmWrite(7, 100);
 					}
 				fw();
 				off();
 				if(id==Propellor.UP) {
 				pwmPin.setPwm(value);
-				} else {
+				} else if(id==Propellor.X) {
 					SoftPwm.softPwmWrite(7, value*100/1024);
 				}
 				fw();
@@ -191,14 +191,14 @@ public class Motor {
 			else{
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
-					} else {
+					} else if(id==Propellor.X){
 						SoftPwm.softPwmWrite(9, 100);
 					}
 				rv();
 				off();
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(-value);
-					} else {
+					} else if(id==Propellor.X) {
 						SoftPwm.softPwmWrite(9, -value*100/1024);
 					}
 				rv();
