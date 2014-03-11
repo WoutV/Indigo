@@ -44,10 +44,10 @@ class frame extends JPanel{
           if (this.image==null) return;  
           Size frameSize= new Size();
 			if(image.getHeight()>=image.getWidth()){
-				frameSize = new Size(800, 700);
+				frameSize = new Size(600, 600);
 			}
 			else{
-				frameSize = new Size(800,700);
+				frameSize = new Size(600,600);
 			}
 			g.drawImage(this.image.getScaledInstance(800, -1, this.image. SCALE_SMOOTH),10,10,(int)frameSize.width-50,(int)frameSize.height-50, null);
           //g.drawImage(this.image,10,10,(int)frameSize.width,(int)frameSize.height, null);

@@ -33,15 +33,14 @@ public class Colors {
 	}
 
 	public static Scalar getGreenMaxScalar() {
-		return new Scalar(120,255,70);
+		return new Scalar(100,255,70);
 	}
 
 	public static Scalar getBlueMinScalar() {
-		return new Scalar(120,0,0);
+		return new Scalar(108,0,0);
 	}
 
 	public static Scalar getBlueMaxScalar() {
 		return new Scalar(180,255,80);
 	}
-
 }
