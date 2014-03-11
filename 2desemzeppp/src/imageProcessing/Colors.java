@@ -37,7 +37,7 @@ public class Colors {
 	}
 
 	public static Scalar getBlueMinScalar() {
-		return new Scalar(120,0,0);
+		return new Scalar(108,0,0);
 	}
 
 	public static Scalar getBlueMaxScalar() {
