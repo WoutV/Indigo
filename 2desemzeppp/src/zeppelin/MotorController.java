@@ -82,13 +82,13 @@ public class MotorController {
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
-			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.X,pwm,sender, pwmPinX);
+			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.X,pwm,sender);
 			xMotor.setOff();
 			xMotor.PwmOn();
-			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.Y, pwm, sender, pwmPinY);
+			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.Y, pwm, sender);
 			yMotor.setOff();
 			yMotor.PwmOn();
-			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender, 0);
+			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender);
 			up.setOff();
 			up.PwmOn();
 //			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);

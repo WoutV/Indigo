@@ -45,7 +45,7 @@ public class Motor {
 	 * @param softPwmPin
 	 * 			The pin (int) if soft pwm is used.
 	 */
-	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SenderPi sender, int softPwmPin) {
+	public Motor(Pin fwPin, Pin rvPin, GpioController gpio,Propellor id, GpioPinPwmOutput pwmPin, SenderPi sender) {
 		gpiocontroller = gpio;
 		forwardPin = gpiocontroller.provisionDigitalOutputPin(fwPin,"forward");
 		reversePin = gpiocontroller.provisionDigitalOutputPin(rvPin,"backward");
