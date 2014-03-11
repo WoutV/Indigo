@@ -430,6 +430,7 @@ public class GuiMain extends javax.swing.JFrame {
         		   x = Integer.parseInt(x0);
         		   y = Integer.parseInt(y0);
         		   guic.sendTarget(x,y);
+        		   this.setTargetLocation(x, y);
         		   noinput = false;
         	   }
         	   catch (NumberFormatException exc){

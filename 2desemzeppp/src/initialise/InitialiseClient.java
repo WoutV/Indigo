@@ -15,7 +15,7 @@ public class InitialiseClient {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		final String fileName = "/shapesDemo.csv";
 		Map map = new Map(fileName);
-		 final GuiMain gui = new GuiMain();
+		 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -33,7 +33,7 @@ public class InitialiseClient {
             java.util.logging.Logger.getLogger(GuiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        final GuiMain gui = new GuiMain();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
