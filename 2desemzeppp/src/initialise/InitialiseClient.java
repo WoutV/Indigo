@@ -5,7 +5,10 @@ import map.PureColourLocator;
 
 import org.opencv.core.Core;
 
+import zeppelin.PositionController;
+
 import connection.ReceiverClient;
+import connection.SenderClient;
 import gui.GuiMain;;
 public class InitialiseClient {
 	public static void main(String[] args) {
@@ -42,9 +45,13 @@ public class InitialiseClient {
         	        		
             }
         });
-        
-		PureColourLocator locator = new PureColourLocator(map);
-		ImageProcessor
+        SenderClient sender = new SenderClient();
+        gui.getGuic().setSender(sender);
+        PositionController xpos = new PositionController(0, 0, 0, sender,true);
+		PositionController ypos = new PositionController(10, 10, 10, sender, false);
+		PureColourLocator locator = new PureColourLocator(map,xpos,ypos,gui.getGuic());
+		
+		ImageProcessor.setLocator(locator);
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();

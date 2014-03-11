@@ -1,11 +1,15 @@
 package map;
 
+import gui.GuiCommands;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+
+import zeppelin.PositionController;
 
 
 /**
@@ -20,9 +24,15 @@ import javax.swing.JOptionPane;
 public class PureColourLocator {
 
 	private Map map;
+	private PositionController xpos;
+	private GuiCommands guic;
+	private PositionController ypos;
 
-	public PureColourLocator(Map map) {
+	public PureColourLocator(Map map, PositionController xpos, PositionController ypos, GuiCommands guic) {
 		this.map = map;
+		this.xpos = xpos;
+		this.ypos = ypos;
+		this.guic = guic;
 	}
 
 	/**
@@ -378,109 +388,109 @@ public class PureColourLocator {
 		return sorted;
 	}
 
-	public static void main(String[] args) {
-		//test ColourSymbolCompare
-		List<ColorSymbol> list = new LinkedList<>();
-		double[] coords = {50,50};
-		ColorSymbol center = new ColorSymbol(coords,Symbol.Colour.RED);
-		list.add(center);
-		double[] coords1 = {60,50};
-		list.add(new ColorSymbol(coords1,Symbol.Colour.RED));
-		double[] coords2 = {60,60};
-		list.add(new ColorSymbol(coords2,Symbol.Colour.RED));
-		double[] coords3 = {50,70};
-		list.add(new ColorSymbol(coords3,Symbol.Colour.RED));
-		double[] coords4 = {40,40};
-		list.add(new ColorSymbol(coords4,Symbol.Colour.RED));
-		double[] coords5 = {60,40};
-		list.add(new ColorSymbol(coords5,Symbol.Colour.RED));
-		double[] coords6 = {40,50};
-		list.add(new ColorSymbol(coords6,Symbol.Colour.RED));
-		List<ColorSymbol> sort = sortColourSymbolPolar(list,center);
-		//		JOptionPane.showMessageDialog(null,sort.get(0).coordinate[0] + "," + sort.get(0).coordinate[1] + "\n" + 
-		//				sort.get(1).coordinate[0] + "," + sort.get(1).coordinate[1] + "\n" + 
-		//				sort.get(2).coordinate[0] + "," + sort.get(2).coordinate[1] + "\n" + 
-		//				sort.get(3).coordinate[0] + "," + sort.get(3).coordinate[1] + "\n" + 
-		//				sort.get(4).coordinate[0] + "," + sort.get(4).coordinate[1] + "\n" + 
-		//				sort.get(5).coordinate[0] + "," + sort.get(5).coordinate[1] + "\n");
-		//		
-		//test SymbolCompare
-		List<Symbol> list0 = new LinkedList<>();
-		Symbol center0 = new Symbol("RR");
-		center0.setX(50);
-		center0.setY(50);
-		list0.add(center0);
-		Symbol s1 = new Symbol("RR");
-		s1.setX(60);
-		s1.setY(50);
-		list0.add(s1);
-		Symbol s2 = new Symbol("RR");
-		s2.setX(60);
-		s2.setY(60);
-		list0.add(s2);
-		Symbol s3 = new Symbol("RR");
-		s3.setX(50);
-		s3.setY(70);
-		list0.add(s3);
-		Symbol s4 = new Symbol("RR");
-		s4.setX(40);
-		s4.setY(40);
-		list0.add(s4);
-		Symbol s5 = new Symbol("RR");
-		s5.setX(60);
-		s5.setY(40);
-		list0.add(s5);
-		Symbol s6 = new Symbol("RR");
-		s6.setX(40);
-		s6.setY(50);
-		list0.add(s6);
-		List<Symbol> sort0 = sortPolar(list0,center0);
-		//		JOptionPane.showMessageDialog(null,sort0.get(0).getX() + "," + sort0.get(0).getY() + "\n" + 
-		//				sort0.get(1).getX() + "," + sort0.get(1).getY() + "\n" + 
-		//				sort0.get(2).getX() + "," + sort0.get(2).getY() + "\n" + 
-		//				sort0.get(3).getX() + "," + sort0.get(3).getY() + "\n" + 
-		//				sort0.get(4).getX() + "," + sort0.get(4).getY() + "\n" + 
-		//				sort0.get(5).getX() + "," + sort0.get(5).getY() + "\n");
-
-
-		//rood,rood,rood,wit,wit,rood,groen
-		List<ColorSymbol> list1 = new LinkedList<>();
-		double[] coord0 = {50,50};
-		ColorSymbol center1 = new ColorSymbol(coord0,Symbol.Colour.GREEN);
-		list1.add(center1);
-		double[] coord1 = {40,60};
-		list1.add(new ColorSymbol(coord1,Symbol.Colour.GREEN));
-		double[] coord2 = {60,60};
-		list1.add(new ColorSymbol(coord2,Symbol.Colour.WHITE));
-		double[] coord3 = {70,50};
-		list1.add(new ColorSymbol(coord3,Symbol.Colour.BLUE));
-		double[] coord4 = {60,40};
-		list1.add(new ColorSymbol(coord4,Symbol.Colour.WHITE));
-		double[] coord5 = {40,40};
-		list1.add(new ColorSymbol(coord5,Symbol.Colour.RED));
-		double[] coord6 = {30,50};
-		list1.add(new ColorSymbol(coord6,Symbol.Colour.BLUE));
-		PureColourLocator locator = new PureColourLocator(new Map("/shapesDemo.csv"));
-		double[] loc = locator.locate(list1);
-		if(loc == null)
-			JOptionPane.showMessageDialog(null,"null");
-
-		if(loc != null)
-			JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);	
-		
-		List<ColorSymbol> list2 = new LinkedList<>();
-		double[] coor0 = {50,50};
-		ColorSymbol center2 = new ColorSymbol(coor0,Symbol.Colour.BLUE);
-		list2.add(center2);
-		double[] coor1 = {42,60};
-		list2.add(new ColorSymbol(coor1,Symbol.Colour.YELLOW));
-		double[] coor2 = {58,60};
-		list2.add(new ColorSymbol(coor2,Symbol.Colour.WHITE));
-//		double[] coor3 = {66,50};
-//		list2.add(new ColorSymbol(coor3,Symbol.Colour.WHITE));
-		//JOptionPane.showMessageDialog(null,locator.euclideanDistance(coor1, coor2) +
-		//		"," + locator.euclideanDistance(coor1, coor2) + "," + locator.euclideanDistance(coor1, coor2));
-		double[] loc0 = locator.locate(list2);
-	}
+//	public static void main(String[] args) {
+//		//test ColourSymbolCompare
+//		List<ColorSymbol> list = new LinkedList<>();
+//		double[] coords = {50,50};
+//		ColorSymbol center = new ColorSymbol(coords,Symbol.Colour.RED);
+//		list.add(center);
+//		double[] coords1 = {60,50};
+//		list.add(new ColorSymbol(coords1,Symbol.Colour.RED));
+//		double[] coords2 = {60,60};
+//		list.add(new ColorSymbol(coords2,Symbol.Colour.RED));
+//		double[] coords3 = {50,70};
+//		list.add(new ColorSymbol(coords3,Symbol.Colour.RED));
+//		double[] coords4 = {40,40};
+//		list.add(new ColorSymbol(coords4,Symbol.Colour.RED));
+//		double[] coords5 = {60,40};
+//		list.add(new ColorSymbol(coords5,Symbol.Colour.RED));
+//		double[] coords6 = {40,50};
+//		list.add(new ColorSymbol(coords6,Symbol.Colour.RED));
+//		List<ColorSymbol> sort = sortColourSymbolPolar(list,center);
+//		//		JOptionPane.showMessageDialog(null,sort.get(0).coordinate[0] + "," + sort.get(0).coordinate[1] + "\n" + 
+//		//				sort.get(1).coordinate[0] + "," + sort.get(1).coordinate[1] + "\n" + 
+//		//				sort.get(2).coordinate[0] + "," + sort.get(2).coordinate[1] + "\n" + 
+//		//				sort.get(3).coordinate[0] + "," + sort.get(3).coordinate[1] + "\n" + 
+//		//				sort.get(4).coordinate[0] + "," + sort.get(4).coordinate[1] + "\n" + 
+//		//				sort.get(5).coordinate[0] + "," + sort.get(5).coordinate[1] + "\n");
+//		//		
+//		//test SymbolCompare
+//		List<Symbol> list0 = new LinkedList<>();
+//		Symbol center0 = new Symbol("RR");
+//		center0.setX(50);
+//		center0.setY(50);
+//		list0.add(center0);
+//		Symbol s1 = new Symbol("RR");
+//		s1.setX(60);
+//		s1.setY(50);
+//		list0.add(s1);
+//		Symbol s2 = new Symbol("RR");
+//		s2.setX(60);
+//		s2.setY(60);
+//		list0.add(s2);
+//		Symbol s3 = new Symbol("RR");
+//		s3.setX(50);
+//		s3.setY(70);
+//		list0.add(s3);
+//		Symbol s4 = new Symbol("RR");
+//		s4.setX(40);
+//		s4.setY(40);
+//		list0.add(s4);
+//		Symbol s5 = new Symbol("RR");
+//		s5.setX(60);
+//		s5.setY(40);
+//		list0.add(s5);
+//		Symbol s6 = new Symbol("RR");
+//		s6.setX(40);
+//		s6.setY(50);
+//		list0.add(s6);
+//		List<Symbol> sort0 = sortPolar(list0,center0);
+//		//		JOptionPane.showMessageDialog(null,sort0.get(0).getX() + "," + sort0.get(0).getY() + "\n" + 
+//		//				sort0.get(1).getX() + "," + sort0.get(1).getY() + "\n" + 
+//		//				sort0.get(2).getX() + "," + sort0.get(2).getY() + "\n" + 
+//		//				sort0.get(3).getX() + "," + sort0.get(3).getY() + "\n" + 
+//		//				sort0.get(4).getX() + "," + sort0.get(4).getY() + "\n" + 
+//		//				sort0.get(5).getX() + "," + sort0.get(5).getY() + "\n");
+//
+//
+//		//rood,rood,rood,wit,wit,rood,groen
+//		List<ColorSymbol> list1 = new LinkedList<>();
+//		double[] coord0 = {50,50};
+//		ColorSymbol center1 = new ColorSymbol(coord0,Symbol.Colour.GREEN);
+//		list1.add(center1);
+//		double[] coord1 = {40,60};
+//		list1.add(new ColorSymbol(coord1,Symbol.Colour.GREEN));
+//		double[] coord2 = {60,60};
+//		list1.add(new ColorSymbol(coord2,Symbol.Colour.WHITE));
+//		double[] coord3 = {70,50};
+//		list1.add(new ColorSymbol(coord3,Symbol.Colour.BLUE));
+//		double[] coord4 = {60,40};
+//		list1.add(new ColorSymbol(coord4,Symbol.Colour.WHITE));
+//		double[] coord5 = {40,40};
+//		list1.add(new ColorSymbol(coord5,Symbol.Colour.RED));
+//		double[] coord6 = {30,50};
+//		list1.add(new ColorSymbol(coord6,Symbol.Colour.BLUE));
+//		PureColourLocator locator = new PureColourLocator(new Map("/shapesDemo.csv"));
+//		double[] loc = locator.locate(list1);
+//		if(loc == null)
+//			JOptionPane.showMessageDialog(null,"null");
+//
+//		if(loc != null)
+//			JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);	
+//		
+//		List<ColorSymbol> list2 = new LinkedList<>();
+//		double[] coor0 = {50,50};
+//		ColorSymbol center2 = new ColorSymbol(coor0,Symbol.Colour.BLUE);
+//		list2.add(center2);
+//		double[] coor1 = {42,60};
+//		list2.add(new ColorSymbol(coor1,Symbol.Colour.YELLOW));
+//		double[] coor2 = {58,60};
+//		list2.add(new ColorSymbol(coor2,Symbol.Colour.WHITE));
+////		double[] coor3 = {66,50};
+////		list2.add(new ColorSymbol(coor3,Symbol.Colour.WHITE));
+//		//JOptionPane.showMessageDialog(null,locator.euclideanDistance(coor1, coor2) +
+//		//		"," + locator.euclideanDistance(coor1, coor2) + "," + locator.euclideanDistance(coor1, coor2));
+//		double[] loc0 = locator.locate(list2);
+//	}
 
 }

@@ -1,5 +1,7 @@
 package zeppelin;
 
+import transfer.Transfer;
+import connection.SenderClient;
 import zeppelin.utils.Pid;
 
 /**
@@ -15,7 +17,7 @@ public class PositionController {
 	private Boolean stop=false;
 
 	private double[] destination;
-	private Motor motor;
+	private SenderClient sender;
 
 	private double Kp,Ki,Kd;
 	private int dt = 100;
@@ -33,11 +35,11 @@ public class PositionController {
 	 * @param x
 	 * 			true if this positioncontroller is for the x-frame
 	 */
-	public PositionController(double Kp,double Ki, double Kd, Motor motor, boolean x){
+	public PositionController(double Kp,double Ki, double Kd, SenderClient sender, boolean x){
 		this.Kp=Kp;
 		this.Kd=Kd;
 		this.Ki=Ki;
-		this.motor = motor;
+		this.sender = sender;
 		this.x = x;
 		makePid();
 	}
@@ -96,7 +98,13 @@ public class PositionController {
 			pid.setDestination(toGo[1]);
 		double output = pid.getOutput(0);
 
-		motor.setPwmValue((int) output);
+		//motor.setPwmValue((int) output);
+		Transfer transfer = new Transfer();
+		if(x)
+			transfer.setMotor1((int) output); 
+		else
+			transfer.setMotor2((int) output);
+		sender.sendTransfer(transfer);
 	}
 
 	private void makePid() {

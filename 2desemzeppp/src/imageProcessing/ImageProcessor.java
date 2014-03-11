@@ -12,6 +12,7 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 import map.ColorSymbol;
+import map.PureColourLocator;
 import map.Symbol;
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
@@ -32,7 +33,11 @@ public class ImageProcessor {
 	private static int epsilonApprox=10;
 	private static int pointsEqualEpsilon=116;
 	private int pointsEqualEpsilonPoints=52;
+	static PureColourLocator locator;
 
+	public static void setLocator(PureColourLocator loc){
+		locator = loc;
+	}
 	
 	/**
 	 * Converts a given Image into a BufferedImage
