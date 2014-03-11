@@ -30,5 +30,10 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/opencv/build/java/x86"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="JARS/opencv-248.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2desemzeppp/JARS"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

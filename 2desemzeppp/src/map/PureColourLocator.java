@@ -38,8 +38,8 @@ public class PureColourLocator {
 	public void locateAndMove(List<ColorSymbol> colors){
 		double[] moveTo = locate(colors);
 		guic.receiveLocation(moveTo[0]*10, moveTo[1]*10, true);
-		xpos.run(moveTo);
-		ypos.run(moveTo);
+//		xpos.run(moveTo);
+//		ypos.run(moveTo);
 		
 	}
 	/**

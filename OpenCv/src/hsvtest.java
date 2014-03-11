@@ -18,7 +18,7 @@ import org.opencv.highgui.VideoCapture;
 public class hsvtest {
 	
 	
-	static boolean camera = false;
+	static boolean camera = true;
 	static String filePath = "C:/Users/Vince/Desktop/a/2/b (46).jpg";
 	/**
 	 * @param args

@@ -125,9 +125,12 @@ public class ReceiverClient implements Runnable{
 			 imagePanel(bi);
 	    
 		//		gc.receiveImage(information.getImage());
+		 
+			
 		ImageProcessor.processImage(information.getImage());
-		facePanel.matToBufferedImage(ImageProcessor.matAfterRework);
+		facePanel.bufferedImage(bi);
 		facePanel.repaint();
+		
 		//TODO:
 		//Purecolorlocator must be called here to process the information
 		// vraag hier de image om te gebruiken in image recognition.

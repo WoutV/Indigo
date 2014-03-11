@@ -18,9 +18,10 @@ import connection.ReceiverClient;
 import connection.SenderClient;
 import gui.GuiMain;;
 public class InitialiseClient {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		final String fileName = "/grid.csv";
+		boolean demo=false;
 		Map map = new Map(fileName);
 		 
         try {
@@ -62,7 +63,11 @@ public class InitialiseClient {
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();
-		ImageProcessor.processImage(new ImageIcon("C:/Users/Vince/Desktop/a/2/b (105).jpg"));
+		if(demo){
+		ImageProcessor.processImage(new ImageIcon("../fotos/b (109).jpg"));
+		Thread.sleep(10000);
+		ImageProcessor.processImage(new ImageIcon("../fotos/b (111).jpg"));
+		}
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
 //		List<ColorSymbol> list1 = new LinkedList<>();
