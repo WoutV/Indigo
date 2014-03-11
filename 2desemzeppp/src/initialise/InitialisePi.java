@@ -29,7 +29,7 @@ public class InitialisePi {
 		// System.out.println("message set, sending transfer");
 		// sender.sendTransfer(transfer);
 		// System.out.println("Transfer sent!");
-		sender.exit();
+		
 		Main main = Main.getInstance();
 		main.init(sender);
 
@@ -48,5 +48,6 @@ public class InitialisePi {
 			exit = Integer.parseInt(br.readLine());
 		}
 		// Add more swag here :p
+		sender.exit();
 	}
 }
