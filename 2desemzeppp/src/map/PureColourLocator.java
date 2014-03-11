@@ -461,12 +461,12 @@ public class PureColourLocator {
 		double[] coord6 = {30,50};
 		list1.add(new ColorSymbol(coord6,Symbol.Colour.BLUE));
 		PureColourLocator locator = new PureColourLocator(new Map("/shapesDemo.csv"));
-		//double[] loc = locator.locate(list1);
-		//if(loc == null)
-			//JOptionPane.showMessageDialog(null,"null");
+		double[] loc = locator.locate(list1);
+		if(loc == null)
+			JOptionPane.showMessageDialog(null,"null");
 
-		//if(loc != null)
-			//JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);	
+		if(loc != null)
+			JOptionPane.showMessageDialog(null, loc[0] + "," + loc[1] + "|" + loc[2]);	
 		
 		List<ColorSymbol> list2 = new LinkedList<>();
 		double[] coor0 = {50,50};

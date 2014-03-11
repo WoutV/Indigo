@@ -1,4 +1,8 @@
 package initialise;
+import imageProcessing.ImageProcessor;
+import map.Map;
+import map.PureColourLocator;
+
 import org.opencv.core.Core;
 
 import connection.ReceiverClient;
@@ -6,10 +10,41 @@ import gui.GuiMain;;
 public class InitialiseClient {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		final GuiMain gui = new GuiMain();
-		gui.enableAllButtons();
-		gui.setVisible(true);
-		
+		final String fileName = "/shapesDemo.csv";
+		Map map = new Map(fileName);
+		 final GuiMain gui = new GuiMain();
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GuiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GuiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GuiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GuiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+               
+        		gui.setVisible(true);
+        		gui.enableAllButtons();
+        		gui.setMap(fileName);
+        		gui.setOwnLocation(200, 200);
+        	        		
+            }
+        });
+        
+		PureColourLocator locator = new PureColourLocator(map);
+		ImageProcessor
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();

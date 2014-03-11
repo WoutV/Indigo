@@ -11,6 +11,9 @@ public static void main(String[] args) {
 //	ReceiverPi receiverPi = new ReceiverPi();
 //	Thread ReceiverPiThread = new Thread(receiverPi);
 //	ReceiverPiThread.start();
+	
+	
+	
 	System.out.println("Sender Starting");
 	SenderPi sender = new SenderPi();
 	System.out.println("Sender Initalized, making new transfer");
