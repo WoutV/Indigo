@@ -14,6 +14,8 @@ public class Motor {
 	private GpioPinDigitalOutput forwardPin;
 	private GpioPinDigitalOutput reversePin;
 	private GpioPinPwmOutput pwmPin;
+	private int fwPin;
+	private int revPin;
 
 	//PWM: value tussen 0 en 1024 (volgens WiringPi)
 	private boolean pwmEnabled;
@@ -54,8 +56,16 @@ public class Motor {
 		this.sender = sender;
 		
 		if(id != Propellor.UP) {
-			SoftPwm.softPwmCreate(7, 0, 100);
-			SoftPwm.softPwmCreate(9, 0, 100);
+			if(id == Propellor.X){
+			this.fwPin=7;
+			this.revPin=9;
+			}
+			else{
+				this.fwPin=4;
+				this.revPin=24;
+			}
+			SoftPwm.softPwmCreate(this.fwPin, 0, 100);
+			SoftPwm.softPwmCreate(this.revPin, 0, 100);
 			//TODO PIN NUMMER !!!!! EERSTE ARGUMENT
 		} else {
 			this.pwmPin = pwmPin; 
@@ -176,35 +186,35 @@ public class Motor {
 			if(value > 0){
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
-					} else if(id==Propellor.X) {
-						SoftPwm.softPwmWrite(7, 100);
-					}
+				} else {
+					SoftPwm.softPwmWrite(this.fwPin, 100);
+				}
 				fw();
 				off();
 				if(id==Propellor.UP) {
-				pwmPin.setPwm(value);
-				} else if(id==Propellor.X) {
-					SoftPwm.softPwmWrite(7, value*100/1024);
+					pwmPin.setPwm(value);
+				} else {
+					SoftPwm.softPwmWrite(this.fwPin, value*100/1024);
 				}
 				fw();
 			}
 			else{
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
-					} else if(id==Propellor.X){
-						SoftPwm.softPwmWrite(9, 100);
-					}
+				} else {
+					SoftPwm.softPwmWrite(this.revPin, 100);
+				}
 				rv();
 				off();
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(-value);
-					} else if(id==Propellor.X) {
-						SoftPwm.softPwmWrite(9, -value*100/1024);
-					}
+				} else {
+					SoftPwm.softPwmWrite(this.revPin, -value*100/1024);
+				}
 				rv();
 			}
 		}
-		
+
 		//send an update: only if motor running now and was not running before
 		//OR is not running now and was running before
 		Propellor.Mode mode;
