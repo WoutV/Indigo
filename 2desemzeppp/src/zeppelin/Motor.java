@@ -183,35 +183,55 @@ public class Motor {
 	 */
 	public void setPwmValue(int value) {
 		if(pwmEnabled) {
-			if(value > 0){
+			System.out.println("SEtting new pwm value");
+			if(value==0){
+				if(id==Propellor.UP)
+					pwmPin.setPwm(0);
+				else
+					SoftPwm.softPwmWrite(this.fwPin, 0);
+					SoftPwm.softPwmWrite(this.revPin, 0);
+			}
+			else if(value > 0){
+				System.out.println("Giving a little tick");
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
+					fw();
 				} else {
 					SoftPwm.softPwmWrite(this.fwPin, 100);
+					SoftPwm.softPwmWrite(this.revPin, 0);
 				}
-				fw();
+//				fw();
 				off();
+				System.out.println("Setting the real pwm");
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(value);
+					fw();
 				} else {
 					SoftPwm.softPwmWrite(this.fwPin, value*100/1024);
+					SoftPwm.softPwmWrite(this.revPin, 0);
 				}
-				fw();
+//				fw();
 			}
 			else{
+				System.out.println("Got negative pwm");
+				System.out.println("Giving a little tick");
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
+					rv();
 				} else {
 					SoftPwm.softPwmWrite(this.revPin, 100);
+					SoftPwm.softPwmWrite(this.fwPin, 0);
 				}
-				rv();
+				System.out.println("Setting the given pwm");
 				off();
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(-value);
+					rv();
 				} else {
 					SoftPwm.softPwmWrite(this.revPin, -value*100/1024);
+					SoftPwm.softPwmWrite(this.fwPin, 0);
 				}
-				rv();
+				
 			}
 		}
 
