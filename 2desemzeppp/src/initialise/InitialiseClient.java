@@ -2,6 +2,7 @@ package initialise;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import imageProcessing.ImageProcessor;
@@ -13,14 +14,13 @@ import map.Symbol;
 import org.opencv.core.Core;
 
 import zeppelin.PositionController;
-
 import connection.ReceiverClient;
 import connection.SenderClient;
 import gui.GuiMain;;
 public class InitialiseClient {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		final String fileName = "/shapesDemo.csv";
+		final String fileName = "/grid.csv";
 		Map map = new Map(fileName);
 		 
         try {
@@ -62,30 +62,31 @@ public class InitialiseClient {
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();
+		ImageProcessor.processImage(new ImageIcon("C:/Users/Vince/Desktop/a/2/b (111).jpg"));
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
-		List<ColorSymbol> list1 = new LinkedList<>();
-		double[] coord0 = {50,50};
-		ColorSymbol center1 = new ColorSymbol(coord0,Symbol.Colour.RED);
-		list1.add(center1);
-		double[] coord1 = {40,60};
-		list1.add(new ColorSymbol(coord1,Symbol.Colour.RED));
-		double[] coord2 = {60,60};
-		list1.add(new ColorSymbol(coord2,Symbol.Colour.WHITE));
-		double[] coord3 = {70,50};
-		list1.add(new ColorSymbol(coord3,Symbol.Colour.WHITE));
-		double[] coord4 = {60,40};
-		list1.add(new ColorSymbol(coord4,Symbol.Colour.RED));
-		double[] coord5 = {40,40};
-		list1.add(new ColorSymbol(coord5,Symbol.Colour.GREEN));
-		double[] coord6 = {30,50};
-		list1.add(new ColorSymbol(coord6,Symbol.Colour.RED));
-		double[] coord7 = {20,20};
-		list1.add(new ColorSymbol(coord7,Symbol.Colour.BLUE));
-		double[] coord8 = {80,80};
-		list1.add(new ColorSymbol(coord8,Symbol.Colour.RED));
-		locator = new PureColourLocator(new Map("/shapesDemo.csv"),null,null,gui.getGuic());
-		locator.locateAndMove(list1);
+//		List<ColorSymbol> list1 = new LinkedList<>();
+//		double[] coord0 = {50,50};
+//		ColorSymbol center1 = new ColorSymbol(coord0,Symbol.Colour.RED);
+//		list1.add(center1);
+//		double[] coord1 = {40,60};
+//		list1.add(new ColorSymbol(coord1,Symbol.Colour.RED));
+//		double[] coord2 = {60,60};
+//		list1.add(new ColorSymbol(coord2,Symbol.Colour.WHITE));
+//		double[] coord3 = {70,50};
+//		list1.add(new ColorSymbol(coord3,Symbol.Colour.WHITE));
+//		double[] coord4 = {60,40};
+//		list1.add(new ColorSymbol(coord4,Symbol.Colour.RED));
+//		double[] coord5 = {40,40};
+//		list1.add(new ColorSymbol(coord5,Symbol.Colour.GREEN));
+//		double[] coord6 = {30,50};
+//		list1.add(new ColorSymbol(coord6,Symbol.Colour.RED));
+//		double[] coord7 = {20,20};
+//		list1.add(new ColorSymbol(coord7,Symbol.Colour.BLUE));
+//		double[] coord8 = {80,80};
+//		list1.add(new ColorSymbol(coord8,Symbol.Colour.RED));
+//		locator = new PureColourLocator(new Map("/shapesDemo.csv"),null,null,gui.getGuic());
+//		locator.locateAndMove(list1);
 //		if(loc == null)
 //			JOptionPane.showMessageDialog(null,"null");
 //

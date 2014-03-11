@@ -33,7 +33,7 @@ public class ImageProcessor {
 	private static int epsilonApprox=10;
 	private static int pointsEqualEpsilon=116;
 	private int pointsEqualEpsilonPoints=52;
-	static PureColourLocator locator;
+	private static PureColourLocator locator;
 
 	public static void setLocator(PureColourLocator loc){
 		locator = loc;
@@ -67,7 +67,7 @@ public class ImageProcessor {
 	 * Processes the image and returns the found color symbols.
 	 * @return 
 	 */
-	public static ArrayList<ColorSymbol> processImage(ImageIcon imageicon){
+	public static void processImage(ImageIcon imageicon){
 		BufferedImage buffered = toBufferedImage(imageicon.getImage());
 		byte[] pixels = ((DataBufferByte) buffered.getRaster().getDataBuffer())
 		            .getData();
@@ -99,7 +99,7 @@ public class ImageProcessor {
 	   		Imgproc.dilate(dilatedImage, dilatedImage, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(dilatesize,dilatesize)));
 	   	}
 	   	//Trying different methods.
-	   	return findContours(dilatedImage.clone(), image.clone(), emptyImage.clone());
+	   	locator.locateAndMove(( findContours(dilatedImage.clone(), image.clone(), emptyImage.clone())));
 	   	//HoughCircles(dilatedImage.clone(), image.clone(), emptyImage.clone());
 	   	//	   	HoughLines(dilatedImage.clone(), image.clone(), emptyImage.clone());
 	   	
