@@ -17,10 +17,25 @@ import zeppelin.utils.Pid;
  */
 public class PositionController {
 
-	private double[] destination;
+	private static double[] destination;
+	
+	private static PositionController xController = new PositionController(0,0,0,true);
+	private static PositionController yController = new PositionController(0,0,0,false);
+	
+	public static PositionController getXController() {
+		return xController;
+	}
+	
+	public static PositionController getYController() {
+		return yController;
+	}
+	
+	//used because positioncontroller running on client
 	private SenderClient sender;
 
 	private double Kp,Ki,Kd;
+	
+	//TODO
 	private int dt = 100;
 	
 	private boolean x;
@@ -33,15 +48,13 @@ public class PositionController {
 	 * @param Kp
 	 * @param Ki
 	 * @param Kd
-	 * @param motor
 	 * @param x
 	 * 			true if this positioncontroller is for the x-frame
 	 */
-	public PositionController(double Kp,double Ki, double Kd, SenderClient sender, boolean x){
+	private PositionController(double Kp,double Ki, double Kd, boolean x){
 		this.Kp=Kp;
 		this.Kd=Kd;
 		this.Ki=Ki;
-		this.sender = sender;
 		this.x = x;
 		makePid();
 	}
@@ -81,6 +94,17 @@ public class PositionController {
 	}
 	
 	/**
+	 * Set a new destination for the zeppelin.
+	 * 
+	 * @param dest
+	 * 			dest[0]: x-coordinate (cm)
+	 * 			dest[1]: y-coordinate (cm)
+	 */
+	public static void setDestination(double[] dest){
+		destination = dest;
+	}
+	
+	/**
 	 * This method should be called when a new position is available,
 	 * and new speeds for the motors should be calculated.
 	 * 
@@ -117,10 +141,6 @@ public class PositionController {
 		pid = new Pid(Kp,Ki,Kd,0,dt);
 	}
 
-	public void setDestination(double[] destination){
-		this.destination = destination;
-	}
-
 	public double getKp() {
 		return Kp;
 	}
@@ -146,5 +166,9 @@ public class PositionController {
 	public void setKd(double kd) {
 		Kd = kd;
 		makePid();
+	}
+	
+	public void setSender(SenderClient sender) {
+		this.sender = sender;
 	}
 }

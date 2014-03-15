@@ -7,9 +7,7 @@ import javax.swing.ImageIcon;
 import zeppelin.Propellor;
 
 public class Transfer implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	public enum TransferType{

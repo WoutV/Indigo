@@ -50,8 +50,10 @@ public class InitialiseClient {
         
         //here because controllers running on client
         //TODO kp,kd,ki values
-        PositionController xpos = new PositionController(0, 0, 0, sender,true);
-		PositionController ypos = new PositionController(10, 10, 10, sender, false);
+        PositionController xpos = PositionController.getXController();
+		PositionController ypos = PositionController.getYController();
+		xpos.setSender(sender);
+		ypos.setSender(sender);
 		PureColourLocator locator = new PureColourLocator(map,xpos,ypos,gui.getGuic());
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
 		ImageProcessor.setLocator(locator);

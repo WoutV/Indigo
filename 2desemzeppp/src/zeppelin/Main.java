@@ -11,7 +11,6 @@ import connection.SenderPi;
 
 public class Main{
 
-
 	private MotorController motorController = MotorController.getInstance();
 	private GpioController gpio = GpioFactory.getInstance();
 	private DistanceSensor distanceSensor;
@@ -34,15 +33,13 @@ public class Main{
 	 * Sender moet worden meegegeven.
 	 */
 	public void init(SenderPi sender) {
-			this.sender = sender;
-			System.out.println("Sender Set");
+		this.sender = sender;
 			
-			distanceSensor = new DistanceSensor(sender);
-			distanceSensorThread = new Thread(distanceSensor);
-			distanceSensorThread.start();
+		distanceSensor = new DistanceSensor(sender);
+		distanceSensorThread = new Thread(distanceSensor);
+		distanceSensorThread.start();
 			
-			motorController.init(gpio,distanceSensor,sender);
-			
+		motorController.init(gpio,distanceSensor,sender);
 	}
 	
 	public MotorController getMotorController() {
@@ -66,12 +63,12 @@ public class Main{
 	}
 
 	public void activateMotor3(int pwm) {
-		motorController.setMotor(1, pwm);
+		motorController.setMotor(3, pwm);
 	}
 
 	public void goToDestination(Transfer information) {
-		// TODO Auto-generated method stub
-		
+		//navigation done on client => simply send it back
+		sender.sendTransfer(information);
 	}
 
 }
