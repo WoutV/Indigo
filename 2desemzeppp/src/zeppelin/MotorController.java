@@ -1,10 +1,5 @@
 package zeppelin;
 
-import java.util.LinkedList;
-
-
-import transfer.Transfer;
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
@@ -15,9 +10,9 @@ import connection.SenderPi;
 
 /**
  * Controller voor de drie motoren.
- * !!!! right: motor 1 in doc (24,4)
+ * !!!! y: motor 1 in doc (24,4)
  * 		up: motor 2 in doc (17,23)	
- * 		left : motor 3 in doc (9,7)
+ * 		x: motor 3 in doc (9,7)
  * Usage: getInstance(), daarna: init met een GpioController
  * 
  * Motor 1 = x, motor 2 = y, motor 3 = up
@@ -29,10 +24,6 @@ public class MotorController {
 
 	private Pin xfw = RaspiPin.GPIO_11, xrv = RaspiPin.GPIO_13, upfw = RaspiPin.GPIO_00,
 			uprv = RaspiPin.GPIO_04, yfw = RaspiPin.GPIO_07, yrv = RaspiPin.GPIO_05;
-
-	private int pwmPinX;
-	private int pwmPinY;
-	//TODO PINNEN NUMMERS NODIG !!!!!!!
 
 	private GpioController gpiocontroller;
 	
@@ -92,9 +83,9 @@ public class MotorController {
 			up.setOff();
 			up.PwmOn();
 			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);
-			Thread hct = new Thread(hc);
-			hct.start();
-//			
+			Thread heightcontrollerthread = new Thread(hc);
+			heightcontrollerthread.start();
+		
 //			xController = new PositionController(Kpx, Kix, Kdx, xMotor, true);
 //			yController = new PositionController(Kpy, Kiy, Kdy, yMotor, false);		
 		}
@@ -121,6 +112,9 @@ public class MotorController {
 		zDestination=dest;
 	}
 	
+	/**
+	 * Gets the height destination of the zeppelin.
+	 */
 	public double getDestination(){
 		return zDestination;
 	}
@@ -133,7 +127,6 @@ public class MotorController {
 	 * 		dest[1] = y coordinate (in cm)
 	 */
 	public void moveToHorizontalLocation(double[] dest) {
-		
 		horizontalDestination=dest;
 	}
 	
@@ -158,7 +151,7 @@ public class MotorController {
 	}	
 	
 	/**
-	 * Set a given engine to a given pwm value.
+	 * Sets a given engine to a given pwm value.
 	 * @param motor
 	 * 			The number of the motor.
 	 * 			1 -> x , 2 -> y , 3-> up.

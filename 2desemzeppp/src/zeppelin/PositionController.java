@@ -5,16 +5,17 @@ import connection.SenderClient;
 import zeppelin.utils.Pid;
 
 /**
+ * Class to control the position in X- and Y-direction.
+ * The zeppelin is placed in the center (coordinate transformation), and the new
+ * coordinates of the destination are computed.
+ * These coordinates indicate exactly how much the zeppelin should move in X- and Y-direction.
+ * 
  * (x,y) plane: the default plane defined by the board, with (left,up) ==> (0,0)
  * shifted plane: (xs,ys): the plane as seen from the zeppelin
  * angle: angle between zeppelin and default plane. 0 => pointing up
  * 				clockwise: 10,20,...; counterclockwise: -10,-20,...
  */
 public class PositionController {
-	
-	//TODO ONDERSCHEID MAKEN TUSSEN X EN Y CONTROLLER. HOE???
-
-	private Boolean stop=false;
 
 	private double[] destination;
 	private SenderClient sender;
@@ -27,7 +28,8 @@ public class PositionController {
 	private Pid pid;
 
 	/**
-	 * Creates a new positoncontroller for the x- or y-frame and motor.
+	 * Creates a new positioncontroller for the x- or y-frame and motor.
+	 * 
 	 * @param Kp
 	 * @param Ki
 	 * @param Kd
@@ -98,12 +100,16 @@ public class PositionController {
 			pid.setDestination(toGo[1]);
 		double output = pid.getOutput(0);
 
+		//in case the positioncontroller runs on the zeppelin
 		//motor.setPwmValue((int) output);
+		
+		//in case the positiioncontroller runs on the client
+		//output needs to be in range -100 -> 100
 		Transfer transfer = new Transfer();
 		if(x)
-			transfer.setMotor1((int) output); 
+			transfer.setMotor1((int) (1.0*100/1024*output)); 
 		else
-			transfer.setMotor2((int) output);
+			transfer.setMotor2((int) (1.0*100/1024*output));
 		sender.sendTransfer(transfer);
 	}
 
@@ -112,25 +118,7 @@ public class PositionController {
 	}
 
 	public void setDestination(double[] destination){
-		//		System.out.println("Changing height");
 		this.destination = destination;
-		//		System.out.println("Height Changed");
-		stop = false;
-	}
-
-	public void stop(){
-		//		System.out.println("Method stop has been called");
-		stop=true;
-		//		System.out.println("Value of stop changed");
-		synchronized(stop){
-			//			System.out.println("Notifying stop");
-			stop.notify();
-			//			System.out.println("stop notified");
-		}
-	}
-	
-	public void startRunning(){
-		stop = false;
 	}
 
 	public double getKp() {
