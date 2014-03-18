@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import map.Symbol;
+
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
@@ -42,7 +44,7 @@ public class ImageProcessorWithVars {
 	private int erodesize=3;
 	private int dilatesize=3;
 	private Mat originalImage;
-	private String openCvFolder="C:/Users/Study/Desktop/OpenCv/Processed/";
+	private String openCvFolder="C:/Users/Vince/Desktop/";
 	private int cannyThreshold=35;
 	private int minArea=100;
 	private int epsilonApprox=10;
@@ -171,22 +173,46 @@ public class ImageProcessorWithVars {
 		//Adding the contours within given distances.
 		System.out.println("Before removing contour size:"+contours.size());
 		contours = addContours(contours);
+		//contours = deleteContours(contours);
 		System.out.println("After removing and adding:"+contours.size());
 	    for( int i = 0; i< contours.size(); i++ )
 	     {
+
+			Point contourCenters =findCenter(contours.get(i).toList());
+
+//			//Works!!!
+			if(isCircle(contours.get(i).toList(),contourCenters)){
+				Core.circle(image,contourCenters, (int)averageRadius, new Scalar(255,0,0),3);
+				Core.putText(image,"Circle", contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+				
+			}
+	    	
+			
+			
+//			for(int index=0;index < contours.get(i).toList().size() ; index++){
+//    			Core.circle(image,contours.get(i).toList().get(index), 2, new Scalar(0,255,255),3);
+//    			//Core.putText(image, "C:"+i, MatOfPoint2fApprox.toList().get(index), Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
+//    		}
+	    	if(isRectangle(contours.get(i))){
+
+    			Point contourCenter =findCenter(contours.get(i).toList());
+    			Core.putText(image, "R", contourCenter, Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
+	    	}
 	    	if (Imgproc.contourArea(contours.get(i)) >minArea){
 	    		
 	    		contoursToDraw.add(new MatOfPoint(contours.get(i).clone()));
 	    		contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);  
 	    		Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox, epsilonApprox, true); 
 	    		MatOfPoint2fApprox.convertTo(contours.get(i), CvType.CV_32S);
+	    		
 	    		//System.out.println("Points In Contour: " +MatOfPoint2fApprox.toList().size());
-    			Core.circle(image,findCenter(MatOfPoint2fApprox.toList()), 10, new Scalar(255,0,0),3);
+
     			Point contourCenter =findCenter(MatOfPoint2fApprox.toList());
-    			if(isCircle(MatOfPoint2fApprox.toList(),contourCenter)){
-    				Core.circle(image,contourCenter, (int)averageRadius, new Scalar(255,0,0),3);
-    				
-    			}
+    			Core.circle(image,contourCenter, 10, new Scalar(255,0,0),3);
+    			//Core.putText(image, contourCenter.x + " " + contourCenter.y , contourCenter, Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
+    			
+    			
+
     			
     			String Color= getColor(image1,contourCenter);
     			List<Point> returnedPoint = reduceEqualPoints(MatOfPoint2fApprox.toList());
@@ -198,13 +224,13 @@ public class ImageProcessorWithVars {
     			}
     			else
     				Core.putText(image, Color, contourCenter, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
-    		
+    			
 	    		for(int index=0;index < MatOfPoint2fApprox.toList().size() ; index++){
-	    			Core.circle(image,MatOfPoint2fApprox.toList().get(index), 2, new Scalar(0,255,0),3);
+	    			Core.circle(image,MatOfPoint2fApprox.toList().get(index), 2, new Scalar(0,255,255),3);
 	    			//Core.putText(image, "C:"+i, MatOfPoint2fApprox.toList().get(index), Core.FONT_HERSHEY_COMPLEX_SMALL, 3, new Scalar(200,200,250), 3);
 	    		}
 	    		
-//				Core.circle(image, new Point(contours.get(i).get(0, 0)[0],contours.get(i).get(0, 0)[1]), 10, new Scalar(255,0,0),3);
+				Core.circle(image, new Point(contours.get(i).get(0, 0)[0],contours.get(i).get(0, 0)[1]), 10, new Scalar(255,0,0),3);
 	    	}
 	    	else{
 	    		System.out.println("Area too low!");
@@ -227,36 +253,36 @@ public class ImageProcessorWithVars {
 		//Checking for white
 		Core.inRange(image.clone(), Colors.getWhiteMinScalar(), Colors.getWhiteMaxScalar(), bitImage);
 		double[] col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		//System.out.println("col[0]"+col[0]+" length:"+col.length);
 		if(col[0]>=150)
 		return "W";
 		
 		//Checking for Yellow
 		Core.inRange(image.clone(), Colors.getYellowMinScalar(), Colors.getYellowMaxScalar(), bitImage);
 		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		//System.out.println("col[0]"+col[0]+" length:"+col.length);
 		if(col[0]>=150)
 		return "Y";
 		
 		Core.inRange(image.clone(), Colors.getRedMinScalar(), Colors.getRedMaxScalar(), bitImage);
 		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		//System.out.println("col[0]"+col[0]+" length:"+col.length);
 		if(col[0]>=150)
 		return "R";
 		
 		Core.inRange(image.clone(), Colors.getBlueMinScalar(), Colors.getBlueMaxScalar(), bitImage);
 		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		//System.out.println("col[0]"+col[0]+" length:"+col.length);
 		if(col[0]>=150)
 		return "B";
 		
 		Core.inRange(image.clone(), Colors.getGreenMinScalar(), Colors.getGreenMaxScalar(), bitImage);
 		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
+		//System.out.println("col[0]"+col[0]+" length:"+col.length);
 		if(col[0]>=150)
 		return "G";
 			
-		System.out.println("col:"+col +"MatrixSize:"+ image.height() +","+image.width());
+		//System.out.println("col:"+col +"MatrixSize:"+ image.height() +","+image.width());
 		return "NI";
 	}
 	/**
@@ -332,7 +358,7 @@ public class ImageProcessorWithVars {
 			MatOfPoint contour1= contours.get(i);
 			for(int index = i+1; index <contours.size();index++ ){
 				MatOfPoint contour2 = contours.get(index);
-				if(pointsEquals(contour1.get(0, 0),contour2.get(0, 0),pointsEqualEpsilon)){
+				if(pointsEquals(findCenter(contour1.toList()),findCenter(contour2.toList()),pointsEqualEpsilon)){
 					fuzzyContours.put(i, index);
 					toRemove.add(contour2);
 				}
@@ -357,6 +383,26 @@ public class ImageProcessorWithVars {
 		return contours;
 	}
 	
+	private List<MatOfPoint> deleteContours(List<MatOfPoint> contours) {
+		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+		HashMap<Integer,Integer> fuzzyContours = new HashMap<>();
+		for(int i = 0 ; i< contours.size();i++){
+			MatOfPoint contour1= contours.get(i);
+			for(int index = i+1; index <contours.size();index++ ){
+				MatOfPoint contour2 = contours.get(index);
+				if(pointsEquals(findCenter(contour1.toList()),findCenter(contour2.toList()),150)){
+					fuzzyContours.put(i, index);
+					toRemove.add(contour1);
+				}
+			}
+			
+		}
+		for(int p=0; p<toRemove.size(); p++){
+			contours.remove(toRemove.get(p));
+		}
+		return contours;
+	}
+	
 	/**
 	 * 
 	 * @param contours
@@ -371,7 +417,7 @@ public class ImageProcessorWithVars {
 			MatOfPoint contour1= contours.get(i);
 			for(int index = i+1; index <contours.size();index++ ){
 				MatOfPoint contour2 = contours.get(index);
-				if(pointsEquals(contour1.get(0, 0),contour2.get(0, 0),250)){
+				if(pointsEquals(findCenter(contour1.toList()),findCenter(contour2.toList()),250)){
 					fuzzyContours.put(i, index);
 					toRemove.add(contour2);
 				}
@@ -405,8 +451,8 @@ public class ImageProcessorWithVars {
 	 * @return
 	 * 		
 	 */
-	private boolean pointsEquals(double[] point1, double[] point2,int epsilon){
-		double distance = Math.sqrt((point1[0]-point2[0])*(point1[0]-point2[0])+(point1[1]-point2[1])*(point1[1]-point2[1]));
+	private boolean pointsEquals(Point point1, Point point2,int epsilon){
+		double distance = Math.sqrt((point1.x-point2.x)*(point1.x-point2.x)+(point1.y-point2.y)*(point1.y-point2.y));
 		if(distance<epsilon)
 			return true;
 		return false;
@@ -459,57 +505,93 @@ public class ImageProcessorWithVars {
 	}
 	
 	
-	public List<Point> isRectangle(List<Point> approx){
-		ArrayList<Point> newApprox= new ArrayList<Point>(approx);
-		ArrayList<Point> lonelyPoints= new ArrayList<Point>();
-		List<Point> fuzzyPoints = new ArrayList<Point>();
-		double[] point1 = new double[2];
-		double[] point2 = new double[2];
-		boolean lone=true;
-		for(int i=0; i<approx.size();i++){
-			point1[0]=approx.get(i).x;
-			point1[1]=approx.get(i).y;
-			for(int j=i+1;j<approx.size();j++){
-				point2[0]=approx.get(j).x;
-				point2[1]=approx.get(j).y;
-				System.out.println("Test");
-				if(pointsEquals(point1,point2,10)){
-					fuzzyPoints.add(approx.get(j));
-					System.out.println("index fuzzy:=" + j);
-					lone = false;
-				}
-			}
-			if(lone){
-				lonelyPoints.add(approx.get(i));
-				System.out.println("lonely point:="+ i);
-			}
-			lone = true;
-			
+	public boolean isRectangle(MatOfPoint contour){
+		Point center = findCenter(contour.toList());
+		double boundArea = Imgproc.boundingRect(contour).area();
+
+		System.out.println(center.x + " y:" +center.y);
+		System.out.println(boundArea);
+		System.out.println(Imgproc.contourArea(contour));
+		if(fuzzyEquals(Imgproc.contourArea(contour),boundArea))
+			return true;
+		return false;
+	}
+	
+	private boolean fuzzyEquals(double a,double b){
+		if(Math.abs(a-b)>200)
+			return false;
+		return true;
+	}
+	/*
+	 * Sorts the points in the given list counter clockwise.
+	 */
+	private List<Point> sortPolar(List<Point> list) {
+		Point center = findCenter(list);
+		List<Point> sorted = new LinkedList<>();
+		if(list.contains(center)) {
+			list.remove(center);
 		}
-		for(int k=0; k<fuzzyPoints.size();k++){
-			if(newApprox.contains(fuzzyPoints.get(k)))
-				newApprox.remove(fuzzyPoints.get(k));
+		for(Point s : list) {
+			Point copy = new Point(s.x,s.y);
+			//coordinate transformation
+			double x0 = copy.x - center.x;
+			double y0 = copy.y - center.y;
+			copy.x= (x0);
+			copy.y=(y0);
+			sorted.add(copy);
 		}
-		for(int p=0; p<lonelyPoints.size(); p++){
-			if(newApprox.contains(lonelyPoints.get(p)))
-				newApprox.remove(lonelyPoints.get(p));
+		Collections.sort(sorted,new AngleComparator());
+		for(int p=0; p<sorted.size(); p++){
+			sorted.get(p).x+=center.x;
+			sorted.get(p).y+=center.y;
 		}
-		return newApprox;
+		return sorted;
+	}
+	
+	private double angleBetweenVectors(Point p1,Point p2,Point p3){
+		Point vector1 = new Point(p2.x-p1.x,p2.y-p1.y);
+		Point vector2 = new Point(p3.x-p2.x,p3.y-p2.y);
+		System.out.println(vector1.x + " " + vector1.y);
+		System.out.println(vector2.x + " " + vector2.y);
+		double prod = vector1.x*vector2.x+vector1.y*vector2.y;
+		System.out.println(prod);
+		double sum = (Math.sqrt(vector1.x*vector1.x+vector1.y*vector1.y)*Math.sqrt(vector2.x*vector2.x+vector2.y*vector2.y));
+		System.out.println(sum);
+		return Math.acos(prod/sum)*180/Math.PI;
+	}
+	
+	private static class AngleComparator implements Comparator<Point> {
+		@Override
+		public int compare(Point s1, Point s2) {
+			if(s1 == null)
+				return -1;
+			if(s2 == null)
+				return 1;
+			if(s1.y==0 && s1.x>0)
+				return -1;
+			if(s2.y==0 && s2.x>0)
+				return 1;
+			if(s1.y>0 && s2.y<0)
+				//!!because y-frame points in opposite direction
+				return 1;
+			if(s2.y>0 && s1.y<0)
+				//!! because y-frame points in opposite direction
+				return -1;
+			if(1*s1.x*s2.y-s1.y*s2.x>0)
+				return 1;
+			return -1;
+		}
 	}
 	
 	public List<Point> reduceEqualPoints(List<Point> approx){
 		ArrayList<Point> newApprox= new ArrayList<Point>(approx);
 		ArrayList<Point> lonelyPoints= new ArrayList<Point>();
 		List<Point> fuzzyPoints = new ArrayList<Point>();
-		double[] point1 = new double[2];
-		double[] point2 = new double[2];
 		boolean lone=true;
 		for(int i=0; i<approx.size();i++){
-			point1[0]=approx.get(i).x;
-			point1[1]=approx.get(i).y;
+			Point point1 = approx.get(i);
 			for(int j=i+1;j<approx.size();j++){
-				point2[0]=approx.get(j).x;
-				point2[1]=approx.get(j).y;
+				Point point2 = approx.get(j);
 				if(pointsEquals(point1,point2,pointsEqualEpsilonPoints)){
 					fuzzyPoints.add(approx.get(j));
 					lone = false;
