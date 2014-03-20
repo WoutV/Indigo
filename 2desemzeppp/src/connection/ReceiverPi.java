@@ -1,5 +1,7 @@
 package connection;
 
+import java.util.ArrayList;
+
 import transfer.Converter;
 import transfer.Transfer;
 
@@ -20,28 +22,23 @@ public class ReceiverPi implements Runnable{
 	private Main main = Main.getInstance();
 	
 	private final String EXCHANGE_NAME = "server";
+	private ArrayList<String> keys;
 	
 	public ReceiverPi(){
-		
+		keys = new ArrayList<String>();
+		keys.add("indigo.lcommand.motor1");
+		keys.add("indigo.lcommand.motor2");
+		keys.add("indigo.lcommand.motor3");
 	}
 	
 	
-	private void handleReceived(Transfer information){
-		switch(information.getTransferType()){
-		case MOTOR1:
-			main.activateMotor1(information.getPropellorPwm());
-			break;
-		case MOTOR2:
-			main.activateMotor2(information.getPropellorPwm());
-			break;
-		case MOTOR3:
-			main.activateMotor3(information.getPropellorPwm());
-			break;
-		case DESTINATION:
-			main.goToDestination(information);
-		default:
-			break;
-
+	private void handleReceived(String information, String key){
+		if(key.equals("indigo.lcommand.motor1")){
+			main.activateMotor1(Integer.parseInt(information));
+		}else if(key.equals("indigo.lcommand.motor2")){
+			main.activateMotor2(Integer.parseInt(information));
+		}else if(key.equals("indigo.lcommand.motor3")){
+			main.activateMotor3(Integer.parseInt(information));
 		}
 	}
 	
@@ -63,19 +60,19 @@ public class ReceiverPi implements Runnable{
 	      channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 	      String queueName = channel.queueDeclare().getQueue();
 	 
-	      String bindingKey = "indigo.private.fromclient";
-	      channel.queueBind(queueName, EXCHANGE_NAME, bindingKey);
+	      for(String next : keys){
 	      
+	      channel.queueBind(queueName, EXCHANGE_NAME, next);
+	      }
 	    
-	      System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
-
 	      QueueingConsumer consumer = new QueueingConsumer(channel);
 	      channel.basicConsume(queueName, true, consumer);
 
 	      while (true) {
 	        QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-	        Transfer information = Converter.fromBytes(delivery.getBody());
-	        handleReceived(information);   
+	        String information = delivery.getBody().toString();
+	        
+	        handleReceived(information, delivery.getEnvelope().getRoutingKey());   
 	      }
 	    }
 	    catch  (Exception e) {

@@ -1,4 +1,4 @@
-package zeppelin;
+package map;
 
 import transfer.Transfer;
 import connection.SenderClient;
