@@ -5,8 +5,6 @@ import javax.swing.ImageIcon;
 
 import connection.SenderClient;
 
-import transfer.Transfer;
-
 /**
  * Klasse om de client / de GUI te linken met de zeppelin.
  * Communicatie van GUI naar zeppelin: send..
@@ -96,6 +94,8 @@ public class GuiCommands {
 		gui.addToGUIEventList(GUIEvent.EventType.Misc,message);
 	}
 	
+	
+	// is deze methode nog nodig?
 	/**
 	 * Methode om een target location naar de zeppelin te sturen.
 	 * @param x
@@ -103,9 +103,7 @@ public class GuiCommands {
 	 */
 	public void sendTarget(int x,int y) {
 		if(sender != null) {
-			Transfer transfer = new Transfer();
-			transfer.setDestination(x,y);
-			sender.sendTransfer(transfer);
+			
 		}
 	}
 	

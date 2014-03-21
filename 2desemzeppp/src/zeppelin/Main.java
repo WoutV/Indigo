@@ -2,8 +2,6 @@ package zeppelin;
 
 
 
-import transfer.Transfer;
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
@@ -66,9 +64,9 @@ public class Main{
 		motorController.setMotor(3, pwm);
 	}
 
-	public void goToDestination(Transfer information) {
-		//navigation done on client => simply send it back
-		sender.sendTransfer(information);
-	}
+//	public void goToDestination(Transfer information) {
+//		//navigation done on client => simply send it back
+//		sender.sendTransfer(information);
+//	}
 
 }

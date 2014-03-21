@@ -1,5 +1,4 @@
 package zeppelin;
-import transfer.Transfer;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
@@ -84,9 +83,16 @@ public class Motor {
 		forwardPin.setState(PinState.HIGH);
 
 		if(prevdirection != Propellor.Direction.FORWARD || prevmode != Propellor.Mode.ON) {
-			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.ON, Propellor.Direction.FORWARD, 0);
-			sender.sendTransfer(transfer);
+			
+			String message = "true";
+			String key;
+			if(id==Propellor.X)
+				key = "indigo.private.motor1";
+			else if(id==Propellor.Y)
+				key = "indigo.private.motor2";
+			else
+				key="indigo.private.motor3";
+			sender.sendTransfer(message,key);
 
 			prevmode = Propellor.Mode.ON;
 			prevdirection = Propellor.Direction.FORWARD;
@@ -110,9 +116,17 @@ public class Motor {
 		reversePin.setState(PinState.HIGH);
 		
 		if(prevdirection != Propellor.Direction.REVERSE || prevmode != Propellor.Mode.ON) {
-			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.ON, Propellor.Direction.REVERSE, 0);
-			sender.sendTransfer(transfer);
+
+			String message = "true";
+			String key;
+			if(id==Propellor.X)
+				key = "indigo.private.motor1";
+			else if(id==Propellor.Y)
+				key = "indigo.private.motor2";
+			else
+				key="indigo.private.motor3";
+			sender.sendTransfer(message,key);
+
 
 			prevmode = Propellor.Mode.ON;
 			prevdirection = Propellor.Direction.REVERSE;
@@ -136,9 +150,17 @@ public class Motor {
 		forwardPin.setState(PinState.LOW);
 		
 		if(prevmode != Propellor.Mode.OFF) {
-			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.OFF, null, 0);
-			sender.sendTransfer(transfer);
+
+			String message = "false";
+			String key;
+			if(id==Propellor.X)
+				key = "indigo.private.motor1";
+			else if(id==Propellor.Y)
+				key = "indigo.private.motor2";
+			else
+				key="indigo.private.motor3";
+			sender.sendTransfer(message,key);
+
 
 			prevmode = Propellor.Mode.OFF;
 			prevdirection = null;
@@ -232,14 +254,26 @@ public class Motor {
 		//send an update: only if motor running now and was not running before
 		//OR is not running now and was running before
 		Propellor.Mode mode;
-		if(pwmLargeEnoughForMovement(value))
+		boolean bool;
+		if(pwmLargeEnoughForMovement(value)){
 			mode = Propellor.Mode.ON;
-		else
+			bool=true;
+		}
+		else{
 			mode = Propellor.Mode.OFF;
-		if(prevmode != mode) {
-			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
-			sender.sendTransfer(transfer);
+			bool=false;
+		}if(prevmode != mode) {
+
+			String message = String.valueOf(bool);
+			String key;
+			if(id==Propellor.X)
+				key = "indigo.private.motor1";
+			else if(id==Propellor.Y)
+				key = "indigo.private.motor2";
+			else
+				key="indigo.private.motor3";
+			sender.sendTransfer(message,key);
+
 		}
 		
 		prevmode = mode;
@@ -300,15 +334,25 @@ public class Motor {
 		//send an update: only if motor running now and was not running before
 		//OR is not running now and was running before
 		Propellor.Mode mode;
-		if(pwmLargeEnoughForMovement(value*100/1024))
+		boolean bool;
+		if(pwmLargeEnoughForMovement(value*100/1024)){
 			mode = Propellor.Mode.ON;
-		else
-			mode = Propellor.Mode.OFF;
-		if(prevmode != mode) {
-			Transfer transfer = new Transfer();
-			transfer.setPropellor(id, Propellor.Mode.PWM, null, value);
-			sender.sendTransfer(transfer);
+			bool=true;
 		}
+		else{
+			mode = Propellor.Mode.OFF;
+			bool=false;
+		}if(prevmode != mode) {
+
+			String message = String.valueOf(bool);
+			String key;
+			if(id==Propellor.X)
+				key = "indigo.private.motor1";
+			else if(id==Propellor.Y)
+				key = "indigo.private.motor2";
+			else
+				key="indigo.private.motor3";
+			sender.sendTransfer(message,key);}
 
 		prevmode = mode;
 	}

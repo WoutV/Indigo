@@ -1,6 +1,5 @@
 package zeppelin;
 
-import transfer.Transfer;
 import zeppelin.utils.CircularDoubleArray;
 
 import com.pi4j.io.gpio.GpioController;
@@ -155,10 +154,10 @@ public class DistanceSensor implements Runnable{
 
 				if(i % 50 == 0) {
 					//om de 1s: de hoogte doorsturen
-					Transfer height = new Transfer();
-					height.setHeight(getHeight());
+					String message = ""+ (int) getHeight();
+					
 					if(sender!=null){
-						sender.sendTransfer(height);
+						sender.sendTransfer(message,"indigo.info.height");
 					}
 					i = 0;
 				}

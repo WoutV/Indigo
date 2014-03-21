@@ -1,6 +1,5 @@
 package map;
 
-import transfer.Transfer;
 import connection.SenderClient;
 import zeppelin.utils.Pid;
 
@@ -129,12 +128,14 @@ public class PositionController {
 		
 		//in case the positiioncontroller runs on the client
 		//output needs to be in range -100 -> 100
-		Transfer transfer = new Transfer();
+		String message="";
+		String key;
 		if(x)
-			transfer.setMotor1((int) (1.0*100/1024*output)); 
+			key = "indigo.lcommand.motor1";
 		else
-			transfer.setMotor2((int) (1.0*100/1024*output));
-		sender.sendTransfer(transfer);
+			key = "indigo.lcommand.motor2";
+		message = message+ (int) (1.0*100/1024*output);
+		sender.sendTransfer(message,key);
 	}
 
 	private void makePid() {
