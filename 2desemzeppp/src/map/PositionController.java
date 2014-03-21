@@ -122,11 +122,7 @@ public class PositionController {
 		else
 			pid.setDestination(toGo[1]);
 		double output = pid.getOutput(0);
-
-		//in case the positioncontroller runs on the zeppelin
-		//motor.setPwmValue((int) output);
 		
-		//in case the positiioncontroller runs on the client
 		//output needs to be in range -100 -> 100
 		String message="";
 		String key;
