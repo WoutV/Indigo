@@ -1,6 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -9,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
@@ -23,8 +31,10 @@ public class hsvtest {
 	/**
 	 * @param args
 	 * @throws InterruptedException 
+	 * @throws IOException 
+	 * @throws MalformedURLException 
 	 */
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, MalformedURLException, IOException {
 	      // Load the native library.  
 	      System.loadLibrary(Core.NATIVE_LIBRARY_NAME); 
 	      //or ...     System.loadLibrary("opencv_java244");       
@@ -46,11 +56,12 @@ public class hsvtest {
 	      frame2.add(facePanel2,BorderLayout.CENTER);       
 	      frame2.setVisible(true); 
 	      createToolbars();
-	      if(!camera)
-	    	  Image(frame,frame2,facePanel,facePanel2);
-	      else
-	    	  Camera(frame, frame2, facePanel, facePanel2);
-	 
+	      piImage(frame, frame2, facePanel, facePanel2);
+//	      if(!camera)
+//	    	  Image(frame,frame2,facePanel,facePanel2);
+//	      else
+//	    	  Camera(frame, frame2, facePanel, facePanel2);
+//	 
 	      } //end main 
 
 	
@@ -63,6 +74,39 @@ public class hsvtest {
 		
 		private static void Image(JFrame frame,JFrame frame2, frame facePanel, frame facePanel2) throws InterruptedException{
 			Mat webcam_image = Highgui.imread(filePath);
+			facePanel.matToBufferedImage(webcam_image);  
+            facePanel.repaint();  
+			Mat reworked_image= new Mat();
+			while( true )  
+	           {   
+	             if( !webcam_image.empty() )  
+	              {   
+	            	  Thread.sleep(30); /// This delay eases the computational load .. with little performance leakage
+	                 frame.setSize(800,600);
+	                 frame2.setSize(800,600);
+	            	  //  frame.setSize(webcam_image.width()+40,webcam_image.height()+60);  
+	                  // frame2.setSize(webcam_image.width()+40,webcam_image.height()+60);
+	                   //Apply the classifier to the captured image  
+	                   reworked_image=adjustImage(webcam_image);  
+	                  //Display the image   
+	                   facePanel2.matToBufferedImage(reworked_image);
+	                   facePanel2.repaint();
+	              }  
+	              else  
+	              {   
+	                   System.out.println("Image could not be loaded");   
+	                   break;   
+	              }  
+	             }  
+		}
+		private static void piImage(JFrame frame,JFrame frame2, frame facePanel, frame facePanel2) throws InterruptedException, MalformedURLException, IOException{
+			
+			BufferedImage buffered = ImageIO.read(new URL("http://raspberrypi.mshome.net/cam_pic.php?time="+System.currentTimeMillis()));
+			byte[] pixels = ((DataBufferByte) buffered.getRaster().getDataBuffer())
+		            .getData();
+	
+			Mat webcam_image = new Mat(buffered.getHeight(), buffered.getWidth(), CvType.CV_8UC3);
+			webcam_image.put(0, 0, pixels);
 			facePanel.matToBufferedImage(webcam_image);  
             facePanel.repaint();  
 			Mat reworked_image= new Mat();
