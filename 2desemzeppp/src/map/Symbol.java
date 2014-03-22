@@ -106,7 +106,8 @@ public class Symbol {
 	public boolean equals(Object o){
 		if(o instanceof Symbol){
 			Symbol os = (Symbol) o;
-			if(os.getShape()==this.getShape() && os.getColour()==this.getColour())
+			if(os.getShape()==this.getShape() && os.getColour()==this.getColour() && 
+					os.getX() == x && os.getY() == y)
 				return true;
 			return false;
 		}
