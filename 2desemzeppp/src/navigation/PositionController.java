@@ -1,4 +1,4 @@
-package map;
+package navigation;
 
 import connection.SenderClient;
 import zeppelin.utils.Pid;

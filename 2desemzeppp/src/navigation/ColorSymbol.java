@@ -1,6 +1,8 @@
-package map;
+package navigation;
 
 import java.util.Comparator;
+
+import map.*;
 
 /**
  * Class for representing ColorSymbols, used for the PureColourLocator,

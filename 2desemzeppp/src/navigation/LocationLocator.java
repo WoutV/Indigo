@@ -1,4 +1,4 @@
-package map;
+package navigation;
 
 import gui.GuiCommands;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-
+import map.*;
 
 /**
  * A class for navigating using ONLY the colour of symbols, not the shape.
@@ -20,14 +20,14 @@ import javax.swing.JOptionPane;
  * 
  * symbols are considered starting on the right, clockwise
  */
-public class PureColourLocator {
+public class LocationLocator {
 
 	private Map map;
 	private PositionController xpos;
 	private GuiCommands guic;
 	private PositionController ypos;
 
-	public PureColourLocator(Map map, PositionController xpos, PositionController ypos, GuiCommands guic) {
+	public LocationLocator(Map map, PositionController xpos, PositionController ypos, GuiCommands guic) {
 		this.map = map;
 		this.xpos = xpos;
 		this.ypos = ypos;
@@ -496,7 +496,7 @@ public class PureColourLocator {
 		list1.add(new ColorSymbol(coord7,Symbol.Colour.BLUE));
 		double[] coord8 = {80,80};
 		list1.add(new ColorSymbol(coord8,Symbol.Colour.RED));
-		PureColourLocator locator = new PureColourLocator(new Map("/shapesDemo.csv"));
+		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"));
 		double[] loc = locator.locate(list1);
 		if(loc == null)
 			JOptionPane.showMessageDialog(null,"null");
@@ -531,7 +531,7 @@ public class PureColourLocator {
 			}
 		};
 	}
-	public PureColourLocator(Map map){
+	public LocationLocator(Map map){
 		this.map = map;
 	}
 	

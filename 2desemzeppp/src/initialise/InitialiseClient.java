@@ -1,9 +1,9 @@
 package initialise;
 
 import imageProcessing.ImageProcessor;
-import map.Map;
-import map.PositionController;
-import map.PureColourLocator;
+
+import map.*;
+import navigation.*;
 
 import org.opencv.core.Core;
 

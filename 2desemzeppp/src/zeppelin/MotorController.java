@@ -1,7 +1,5 @@
 package zeppelin;
 
-import map.PositionController;
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.Pin;
@@ -32,9 +30,6 @@ public class MotorController {
 	private SenderPi sender;
 	private static MotorController mc = new MotorController();
 	private HeightController hc;
-	
-	private PositionController xController;
-	private PositionController yController;
 	
 	private DistanceSensor ds;
 		
