@@ -24,6 +24,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
@@ -31,24 +32,24 @@ import org.opencv.imgproc.Imgproc;
 
 public class LiveImageProcessor {
 	private int erodeTimes = 0;
-	private int dilateTimes = 2;
+	private int dilateTimes = 0;
 	private int blur = 5;
 	private int erodesize = 3;
 	private int dilatesize = 3;
 	private Mat originalImage;
-	private String openCvFolder = "C:/Users/Study/Desktop/OpenCv/Processed/";
 	private int cannyThresholdMin = 8;
-	private int cannyThresholdMax = 25;
+	private int cannyThresholdMax = 27;
 	private int minArea = 100;
-	private int epsilonApprox = 10;
-	private int pointsEqualEpsilon = 116;
+	private int epsilonApprox = 1;
+	private int pointsEqualEpsilon = 50;
 	private int pointsEqualEpsilonPoints = 52;
 	private Size frameSize = new Size(800, 700);
 	private frame cannyoutput = makeFrame("Canny Output", frameSize);
 	private frame erodedoutput = makeFrame("Eroded Output", frameSize);
 	private frame dilatedoutput = makeFrame("Dilated Output", frameSize);
-	private frame foundContours= makeFrame("Found Contours(Green)/Approx Contours(Blue)", frameSize);;
-	private frame findContourFrame = makeFrame("Result", frameSize);
+	private frame foundContours = makeFrame(
+			"Found Contours(Green)/Approx Contours(Blue)", frameSize);;
+	private frame resultFrame = makeFrame("Result", frameSize);
 
 	/**
 	 * @param args
@@ -56,7 +57,7 @@ public class LiveImageProcessor {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		LiveImageProcessor lip = new LiveImageProcessor();
-		lip.start("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\fotos\\b (110).jpg");
+		lip.start("../fotos/b (114)" + ".jpg");
 	}
 
 	public LiveImageProcessor() {
@@ -86,12 +87,13 @@ public class LiveImageProcessor {
 		}
 
 	}
-	
+
 	public void start(String urlImage) {
 
 		try {
 			while (true) {
-				this.originalImage = Highgui.imread(urlImage, Imgproc.COLOR_BGR2GRAY);
+				this.originalImage = Highgui.imread(urlImage,
+						Imgproc.COLOR_BGR2GRAY);
 				processImage();
 				Thread.sleep(200);
 			}
@@ -141,257 +143,522 @@ public class LiveImageProcessor {
 		}
 		dilatedoutput.matToBufferedImage(dilatedImage);
 		dilatedoutput.repaint();
-		findContours(dilatedImage.clone(), image.clone(), new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(0,0,0)));
+		findContours(dilatedImage.clone(), image.clone(), new Mat(image.size(),
+				Core.DEPTH_MASK_8U, new Scalar(0, 0, 0)));
+		// HoughCircles(dilatedImage.clone(), image.clone(), new
+		// Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(0,0,0)));
 	}
 
-	private void findContours(Mat canny_output, Mat image1, Mat emptyImage){
-		Mat emptyImage1 = emptyImage.clone();
+	private void findContours(Mat dilatedImage, Mat image1, Mat emptyImage) {
+		Mat dilatedImage1 = dilatedImage.clone();
 		Mat image = image1.clone();
-	 	//Making some list to put the points.
-	   	List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-	   	List<MatOfPoint> contoursToDraw = new ArrayList<MatOfPoint>();
-	    //List<MatOfInt4> hierarchy;
-	   	
-	   	//Finding the contours.
-	    Imgproc.findContours(canny_output, contours, new Mat(), Imgproc.RETR_LIST,Imgproc.CHAIN_APPROX_SIMPLE);
-	    
-	    //Matrices to put the converted contours.
-	    MatOfPoint2f MatOfPointTo2f = new MatOfPoint2f();
+		Mat imageClone = image.clone();
+		// Making some list to put the points.
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+		// List<MatOfInt4> hierarchy;
+
+		// Finding the contours.
+		Imgproc.findContours(dilatedImage, contours, new Mat(),
+				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+		// Matrices to put the converted contours.
+		MatOfPoint2f MatOfPointTo2f = new MatOfPoint2f();
 		MatOfPoint2f MatOfPoint2fApprox = new MatOfPoint2f();
-		
-		//Adding the contours within given distances.
-		System.out.println("Before adding contours size:"+contours.size());
-		contours = removeContours(contours);
-		System.out.println("After adding contours:"+contours.size());
+
+		// Adding the contours within given distances.
+		System.out.println("Before adding contours size:" + contours.size());
+		contours = addContours(contours);
+		System.out.println("After adding contours:" + contours.size());
 		Mat contourFoundImage = image1.clone();
-		Imgproc.drawContours(contourFoundImage, contours, -1, new Scalar(0,0,255),2);
-		
+		Imgproc.drawContours(contourFoundImage, contours, -1, new Scalar(0, 0,
+				255), 2);
+
 		List<MatOfPoint> ApproxContours = new ArrayList<MatOfPoint>();
-		//Approximating every contour
-		for( int i = 0; i< contours.size(); i++ ){
-			contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);  
-    		Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox, epsilonApprox, true); 
-    		MatOfPoint mop = new MatOfPoint();
-    		MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
-    		ApproxContours.add(mop);
+		// Approximating every contour
+		for (int i = 0; i < contours.size(); i++) {
+			contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);
+			Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox,
+					epsilonApprox, true);
+			MatOfPoint mop = new MatOfPoint();
+			MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
+			ApproxContours.add(mop);
 		}
-		Imgproc.drawContours(contourFoundImage, ApproxContours, -1, new Scalar(255,0,0),2);
+		ApproxContours = filterOutEdges(ApproxContours, image.size());
+		System.out
+				.println("After filtering out edges:" + ApproxContours.size());
+		Imgproc.drawContours(contourFoundImage, ApproxContours, -1, new Scalar(
+				255, 0, 0), 2);
 		foundContours.matToBufferedImage(contourFoundImage);
 		foundContours.repaint();
-		
+		for (int i = 0; i < ApproxContours.size(); i++) {
+			MatOfPoint contour1 = ApproxContours.get(i);
+			ArrayList<Point> contoursPoint = new ArrayList<Point>(
+					contour1.toList());
+			Point contourCenter = findCenter(contoursPoint);
+			Rect rec = Imgproc.boundingRect(contour1);
+			Point center = new Point();
+			float[] radius = new float[5];
+			contour1.convertTo(MatOfPointTo2f, CvType.CV_32FC2);
+			Imgproc.minEnclosingCircle(MatOfPointTo2f, center, radius);
+			Core.circle(image, center, (int) radius[0], new Scalar(255, 0, 0),
+					3);
+			Core.rectangle(image, rec.tl(), rec.br(), new Scalar(255, 0, 0));
+
+			for (int index = 0; index < contoursPoint.size(); index++) {
+				Point p = contoursPoint.get(index);
+				Core.circle(imageClone, p, 1, new Scalar(255, 0, 0), 3);
+
+			}
+
+			Mat subImage = imageClone.submat(rec);
+			//Checking for rectangles
+			Mat lines = new Mat();
+			Imgproc.HoughLinesP(dilatedImage1.submat(rec), lines, 1,
+					Math.PI / 180, 2, rec.height / 2, 5);
+			System.out.println("Total Lines:" + lines.cols());
+			for (int x = 0; x < lines.cols(); x++) {
+				double[] vec = lines.get(0, x);
+				double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
+				Point start = new Point(x1, y1);
+				Point end = new Point(x2, y2);
+
+				Core.line(subImage, start, end, new Scalar(0, 0, 255), 2);
+
+			}
+			if (lines.cols() > 0) {
+				String Color = getColor(image1.submat(rec), new Point(
+						rec.height / 2, rec.width / 2));
+				Core.putText(image, Color + ":Rec", contourCenter,
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+								200, 250), 3);
+				resultFrame.matToBufferedImage(subImage);
+				resultFrame.repaint();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else { //It is not a rectangle now checking for circles
+				Mat circles = new Mat();
+
+				Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
+						Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
+						2 * cannyThresholdMax, 17, (int) (rec.height / 2.5),
+						500);
+
+				System.out.println("Found circles:" + circles.cols());
+				for (int x = 0; x < circles.cols(); x++) {
+					double[] vec = circles.get(0, x);
+					double x1 = vec[0], y1 = vec[1], r = vec[2];
+
+					Point start = new Point(x1, y1);
+
+					Core.circle(subImage, start, (int) r,
+							new Scalar(0, 255, 0), 1);
+
+				}
+				if (circles.cols() == 1) {
+					String Color = getColor(image1.submat(rec), new Point(
+							rec.height / 2, rec.width / 2));
+					Core.putText(image, Color + ":Cir", contourCenter,
+							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+									200, 250), 3);
+					resultFrame.matToBufferedImage(subImage);
+					resultFrame.repaint();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else { //Not a circle either now checking for heart;
+					Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
+							Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
+							2 * cannyThresholdMax, 10,
+							(int) (rec.height / 2.5), 500);
+
+					System.out.println("Found circles:" + circles.cols());
+					for (int x = 0; x < circles.cols(); x++) {
+						double[] vec = circles.get(0, x);
+						double x1 = vec[0], y1 = vec[1], r = vec[2];
+
+						Point start = new Point(x1, y1);
+
+						Core.circle(subImage, start, (int) r, new Scalar(0,
+								255, 255), 1);
+
+					}
+					if (circles.cols() == 1) {
+						String Color = getColor(image1.submat(rec), new Point(
+								rec.height / 2, rec.width / 2));
+						Core.putText(image, Color + ":Heart", contourCenter,
+								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
+										200, 200, 250), 3);
+						resultFrame.matToBufferedImage(subImage);
+						resultFrame.repaint();
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					else {
+						String Color = getColor(image1.submat(rec), new Point(
+								rec.height / 2, rec.width / 2));
+						Core.putText(image, Color + ":Star", contourCenter,
+								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
+										200, 200, 250), 3);
+						resultFrame.matToBufferedImage(subImage);
+						resultFrame.repaint();
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// double ratio =
+						// (Math.PI*radius[0]*radius[0]/(rec.height*rec.width));
+						// int ration = (int)(ratio*1000);
+						// System.out.println("Area Circle/Area Rec:" +ratio);
+						// if(ration<930){
+						// Core.putText(image, "C"+ration, contourCenter,
+						// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+						// Scalar(200,200,250), 3);
+						// }
+						// else
+						// Core.putText(image, ration+"", contourCenter,
+						// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+						// Scalar(200,200,250), 3);
+						// String Color= getColor(image1,contourCenter);
+						// Core.putText(image, Color, contourCenter,
+						// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+						// Scalar(200,200,250), 3);
+					}
+				}
+			}
+
+		}
+		resultFrame.matToBufferedImage(image);
+		resultFrame.repaint();
+		Highgui.imwrite("114 result.jpg", image);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
+	/**
+	 * Filters out the edges
+	 * 
+	 * @param contours
+	 * @param imageSize
+	 * @return
+	 */
+	private List<MatOfPoint> filterOutEdges(List<MatOfPoint> contours,
+			Size imageSize) {
+		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			ArrayList<Point> contoursPoint = new ArrayList<Point>(
+					contour1.toList());
+			for (int index = 0; index < contoursPoint.size(); index++) {
+				Point p = contoursPoint.get(index);
+				if (p.x <= 0.01 * imageSize.width
+						|| p.x >= 0.99 * imageSize.width
+						|| p.y <= 0.01 * imageSize.height
+						|| p.y >= 0.99 * imageSize.height) {
+					toRemove.add(contour1);
+					break;
+				}
+			}
+
+		}
+
+		for (MatOfPoint p : toRemove) {
+			contours.remove(p);
+		}
+
+		return contours;
+	}
+
 	/**
 	 * 
 	 * @param contours
-	 * 		Lists of matrix points in which to operate.
-	 * @return
-	 * 		Returns a new list of mat of points after adding the contours which are near each other.
+	 *            Lists of matrix points in which to operate.
+	 * @return Returns a new list of mat of points after adding the contours
+	 *         which are near each other.
 	 */
 	private List<MatOfPoint> addContours(List<MatOfPoint> contours) {
 		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
-		HashMap<Integer,Integer> fuzzyContours = new HashMap<>();
-		for(int i = 0 ; i< contours.size();i++){
-			MatOfPoint contour1= contours.get(i);
-			for(int index = i+1; index <contours.size();index++ ){
+		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			for (int index = i + 1; index < contours.size(); index++) {
 				MatOfPoint contour2 = contours.get(index);
-				if(pointsEquals(contour1.get(0, 0),contour2.get(0, 0),pointsEqualEpsilon)){
+				if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
+						pointsEqualEpsilon)) {
 					fuzzyContours.put(i, index);
 					toRemove.add(contour2);
 				}
 			}
-			
+
 		}
-		for(int j=0; j< fuzzyContours.size(); j++){
+		for (int j = 0; j < fuzzyContours.size(); j++) {
 			int a = (int) fuzzyContours.keySet().toArray()[j];
 			int b = fuzzyContours.get(fuzzyContours.keySet().toArray()[j]);
-			ArrayList<Point> firstone = new ArrayList<>(contours.get(a).toList());
-			ArrayList<Point> secondone = new ArrayList<>(contours.get(b).toList());
-			for(int q=0;q<firstone.size();q++){
+			ArrayList<Point> firstone = new ArrayList<>(contours.get(a)
+					.toList());
+			ArrayList<Point> secondone = new ArrayList<>(contours.get(b)
+					.toList());
+			for (int q = 0; q < firstone.size(); q++) {
 				secondone.add(firstone.get(q));
 			}
 			contours.get(a).fromList(secondone);
 		}
-		
-		for(MatOfPoint p: toRemove ){
+
+		for (MatOfPoint p : toRemove) {
 			contours.remove(p);
 		}
-//		System.out.println("removed: " + toRemove.size());
+		// System.out.println("removed: " + toRemove.size());
 		return contours;
 	}
-	
 
 	/**
 	 * 
 	 * @param contours
-	 * 		Lists of matrix points in which to operate.
-	 * @return
-	 * 		Returns a new list of mat of points after adding the contours which are near each other.
+	 *            Lists of matrix points in which to operate.
+	 * @return Returns a new list of mat of points after adding the contours
+	 *         which are near each other.
 	 */
 	private List<MatOfPoint> removeContours(List<MatOfPoint> contours) {
 		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
-		HashMap<Integer,Integer> fuzzyContours = new HashMap<>();
-		for(int i = 0 ; i< contours.size();i++){
-			MatOfPoint contour1= contours.get(i);
-			if(Imgproc.contourArea(contour1) >minArea){
-			for(int index = i+1; index <contours.size();index++ ){
-				MatOfPoint contour2 = contours.get(index);
-				if(pointsEquals(contour1.get(0, 0),contour2.get(0, 0),pointsEqualEpsilon)){
-					fuzzyContours.put(i, index);
-					toRemove.add(contour2);
+		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			if (Imgproc.contourArea(contour1) > minArea) {
+				for (int index = i + 1; index < contours.size(); index++) {
+					MatOfPoint contour2 = contours.get(index);
+					if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
+							pointsEqualEpsilon)) {
+						fuzzyContours.put(i, index);
+						toRemove.add(contour2);
+					}
 				}
 			}
-			}
 		}
-//		for(int j=0; j< fuzzyContours.size(); j++){
-//			int a = (int) fuzzyContours.keySet().toArray()[j];
-//			int b = fuzzyContours.get(fuzzyContours.keySet().toArray()[j]);
-//			ArrayList<Point> firstone = new ArrayList<>(contours.get(a).toList());
-//			ArrayList<Point> secondone = new ArrayList<>(contours.get(b).toList());
-//			for(int q=0;q<firstone.size();q++){
-//				secondone.add(firstone.get(q));
-//			}
-//			contours.get(a).fromList(secondone);
-//		}
-		
-		for(MatOfPoint p: toRemove ){
+		// for(int j=0; j< fuzzyContours.size(); j++){
+		// int a = (int) fuzzyContours.keySet().toArray()[j];
+		// int b = fuzzyContours.get(fuzzyContours.keySet().toArray()[j]);
+		// ArrayList<Point> firstone = new
+		// ArrayList<>(contours.get(a).toList());
+		// ArrayList<Point> secondone = new
+		// ArrayList<>(contours.get(b).toList());
+		// for(int q=0;q<firstone.size();q++){
+		// secondone.add(firstone.get(q));
+		// }
+		// contours.get(a).fromList(secondone);
+		// }
+
+		for (MatOfPoint p : toRemove) {
 			contours.remove(p);
 		}
-//		System.out.println("removed: " + toRemove.size());
+		// System.out.println("removed: " + toRemove.size());
 		return contours;
 	}
-	
+
 	/**
-	 * Returns true if the distance between the given points is less than the given epsilon.
+	 * Returns true if the distance between the given points is less than the
+	 * given epsilon.
+	 * 
 	 * @param point1
 	 * @param point2
 	 * @param epsilon
-	 * 			The margin to look if the given points are almost equal.
+	 *            The margin to look if the given points are almost equal.
 	 * @return
-	 * 		
+	 * 
 	 */
-	private boolean pointsEquals(double[] point1, double[] point2,int epsilon){
-		double distance = Math.sqrt((point1[0]-point2[0])*(point1[0]-point2[0])+(point1[1]-point2[1])*(point1[1]-point2[1]));
-		if(distance<epsilon)
+	private boolean pointsEquals(double[] point1, double[] point2, int epsilon) {
+		double distance = Math.sqrt((point1[0] - point2[0])
+				* (point1[0] - point2[0]) + (point1[1] - point2[1])
+				* (point1[1] - point2[1]));
+		if (distance < epsilon)
 			return true;
 		return false;
 	}
+
 	/**
 	 * Returns the center of the given contour.
+	 * 
 	 * @param points
-	 * @return
-	 * 			The center of the list.
+	 * @return The center of the list.
 	 */
-	private Point findCenter(List<Point> points){
-		double x=0;
-		double y=0;
-		for (int i=0; i<points.size();i++){
+	private Point findCenter(List<Point> points) {
+		double x = 0;
+		double y = 0;
+		for (int i = 0; i < points.size(); i++) {
 			x += points.get(i).x;
 			y += points.get(i).y;
-			
+
 		}
-//		double[] centers = new double[2];
-//		centers[0]=x/points.size();
-//		centers[1]=y/points.size();
-		return new Point(x/points.size(),y/points.size());
+		// double[] centers = new double[2];
+		// centers[0]=x/points.size();
+		// centers[1]=y/points.size();
+		return new Point(x / points.size(), y / points.size());
 	}
-	
-	static double averageRadius=0;
-	public boolean isCircle(List<Point> approx, Point center){
-		double radiussum=0;
+
+	static double averageRadius = 0;
+
+	public boolean isCircle(List<Point> approx, Point center) {
+		double radiussum = 0;
 		double x;
 		double y;
-		for(int i=0; i<approx.size(); i++){
-			x= approx.get(i).x;
-			y= approx.get(i).y;
-			radiussum += Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
+		for (int i = 0; i < approx.size(); i++) {
+			x = approx.get(i).x;
+			y = approx.get(i).y;
+			radiussum += Math.sqrt((x - center.x) * (x - center.x)
+					+ (y - center.y) * (y - center.y));
 		}
 
-		averageRadius=radiussum/approx.size();
-		double difference=0;
-		for(int j=0; j<approx.size();j++){
-			x= approx.get(j).x;
-			y= approx.get(j).y;
-			double radius = Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
-			difference += (averageRadius - radius )*(averageRadius - radius );
+		averageRadius = radiussum / approx.size();
+		double difference = 0;
+		for (int j = 0; j < approx.size(); j++) {
+			x = approx.get(j).x;
+			y = approx.get(j).y;
+			double radius = Math.sqrt((x - center.x) * (x - center.x)
+					+ (y - center.y) * (y - center.y));
+			difference += (averageRadius - radius) * (averageRadius - radius);
 		}
-		
-		System.out.println(difference/approx.size());
-		if(difference<16*approx.size())
+
+		System.out.println(difference / approx.size());
+		if (difference < 16 * approx.size())
 			return true;
 		return false;
 	}
-	
-	public List<Point> reduceEqualPoints(List<Point> approx){
-		ArrayList<Point> newApprox= new ArrayList<Point>(approx);
-		ArrayList<Point> lonelyPoints= new ArrayList<Point>();
+
+	public List<Point> reduceEqualPoints(List<Point> approx) {
+		ArrayList<Point> newApprox = new ArrayList<Point>(approx);
+		ArrayList<Point> lonelyPoints = new ArrayList<Point>();
 		List<Point> fuzzyPoints = new ArrayList<Point>();
 		double[] point1 = new double[2];
 		double[] point2 = new double[2];
-		boolean lone=true;
-		for(int i=0; i<approx.size();i++){
-			point1[0]=approx.get(i).x;
-			point1[1]=approx.get(i).y;
-			for(int j=i+1;j<approx.size();j++){
-				point2[0]=approx.get(j).x;
-				point2[1]=approx.get(j).y;
-				if(pointsEquals(point1,point2,pointsEqualEpsilonPoints)){
+		boolean lone = true;
+		for (int i = 0; i < approx.size(); i++) {
+			point1[0] = approx.get(i).x;
+			point1[1] = approx.get(i).y;
+			for (int j = i + 1; j < approx.size(); j++) {
+				point2[0] = approx.get(j).x;
+				point2[1] = approx.get(j).y;
+				if (pointsEquals(point1, point2, pointsEqualEpsilonPoints)) {
 					fuzzyPoints.add(approx.get(j));
 					lone = false;
 				}
 			}
-			if(lone){
+			if (lone) {
 				lonelyPoints.add(approx.get(i));
 			}
 			lone = true;
-			
+
 		}
-		for(int k=0; k<fuzzyPoints.size();k++){
-			if(newApprox.contains(fuzzyPoints.get(k)))
+		for (int k = 0; k < fuzzyPoints.size(); k++) {
+			if (newApprox.contains(fuzzyPoints.get(k)))
 				newApprox.remove(fuzzyPoints.get(k));
 		}
-		for(int p=0; p<lonelyPoints.size(); p++){
-			if(newApprox.contains(lonelyPoints.get(p)))
+		for (int p = 0; p < lonelyPoints.size(); p++) {
+			if (newApprox.contains(lonelyPoints.get(p)))
 				newApprox.remove(lonelyPoints.get(p));
 		}
 		return newApprox;
 	}
+
 	private String getColor(Mat image, Point contourCenter) {
 		Mat bitImage = image.clone();
-		//Checking for white
-		Core.inRange(image.clone(), Colors.getWhiteMinScalar(), Colors.getWhiteMaxScalar(), bitImage);
-		double[] col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
-		if(col[0]>=150)
-		return "W";
-		
-		//Checking for Yellow
-		Core.inRange(image.clone(), Colors.getYellowMinScalar(), Colors.getYellowMaxScalar(), bitImage);
-		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
-		if(col[0]>=150)
-		return "Y";
-		
-		Core.inRange(image.clone(), Colors.getRedMinScalar(), Colors.getRedMaxScalar(), bitImage);
-		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
-		if(col[0]>=150)
-		return "R";
-		
-		Core.inRange(image.clone(), Colors.getBlueMinScalar(), Colors.getBlueMaxScalar(), bitImage);
-		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
-		if(col[0]>=150)
-		return "B";
-		
-		Core.inRange(image.clone(), Colors.getGreenMinScalar(), Colors.getGreenMaxScalar(), bitImage);
-		col= bitImage.get((int)contourCenter.y,(int)contourCenter.x);
-		System.out.println("col[0]"+col[0]+" length:"+col.length);
-		if(col[0]>=150)
-		return "G";
-			
-		System.out.println("col:"+col +"MatrixSize:"+ image.height() +","+image.width());
+		// Checking for white
+		Core.inRange(image.clone(), Colors.getWhiteMinScalar(),
+				Colors.getWhiteMaxScalar(), bitImage);
+		double[] col = bitImage.get((int) contourCenter.y,
+				(int) contourCenter.x);
+		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		if (col[0] >= 150)
+			return "W";
+
+		// Checking for Yellow
+		Core.inRange(image.clone(), Colors.getYellowMinScalar(),
+				Colors.getYellowMaxScalar(), bitImage);
+		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
+		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		if (col[0] >= 150)
+			return "Y";
+
+		Core.inRange(image.clone(), Colors.getRedMinScalar(),
+				Colors.getRedMaxScalar(), bitImage);
+		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
+		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		if (col[0] >= 150)
+			return "R";
+
+		Core.inRange(image.clone(), Colors.getBlueMinScalar(),
+				Colors.getBlueMaxScalar(), bitImage);
+		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
+		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		if (col[0] >= 150)
+			return "B";
+
+		Core.inRange(image.clone(), Colors.getGreenMinScalar(),
+				Colors.getGreenMaxScalar(), bitImage);
+		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
+		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		if (col[0] >= 150)
+			return "G";
+
+		System.out.println("col:" + col + "MatrixSize:" + image.height() + ","
+				+ image.width());
 		return "NI";
 	}
+
+	private void HoughLines(Mat canny_output, Mat image, Mat Emptyimage) {
+		Mat lines = new Mat();
+		Imgproc.HoughLinesP(canny_output, lines, 1, Math.PI / 180, 50, 10, 10);
+		System.out.println("Total Lines:" + lines.cols());
+		for (int x = 0; x < lines.cols(); x++) {
+			double[] vec = lines.get(0, x);
+			double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
+			Point start = new Point(x1, y1);
+			Point end = new Point(x2, y2);
+
+			Core.line(Emptyimage, start, end, new Scalar(255, 0, 0), 5);
+			Core.line(image, start, end, new Scalar(0, 255, 0), 5);
+
+		}
+
+		// Highgui.imwrite(openCvFolder+"HoughLinecontours.png",Emptyimage);
+		// Highgui.imwrite(openCvFolder+"HoughLineResult.png",image);
+		resultFrame.matToBufferedImage(image);
+		resultFrame.repaint();
+	}
+
+	private void HoughCircles(Mat canny_output, Mat image, Mat Emptyimage) {
+		Mat circles = new Mat();
+		Imgproc.HoughCircles(canny_output, circles, Imgproc.CV_HOUGH_GRADIENT,
+				1, image.rows() / 100, 2 * cannyThresholdMax, 28, 10, 500);
+		for (int x = 0; x < circles.cols(); x++) {
+			double[] vec = circles.get(0, x);
+			double x1 = vec[0], y1 = vec[1], r = vec[2];
+
+			Point start = new Point(x1, y1);
+
+			Core.circle(image, start, (int) r, new Scalar(255, 0, 0), 10);
+			Core.circle(Emptyimage, start, (int) r, new Scalar(255, 0, 0), 3);
+		}
+		resultFrame.matToBufferedImage(image);
+		resultFrame.repaint();
+	}
+
 	/**
 	 * The title of the frame
 	 * 
