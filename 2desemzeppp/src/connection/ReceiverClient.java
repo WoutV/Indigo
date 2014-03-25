@@ -100,7 +100,7 @@ public class ReceiverClient implements Runnable{
 
 			while (true) {
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-				String information = delivery.getBody().toString();
+				String information = new String(delivery.getBody());
 				handleReceived(information, delivery.getEnvelope().getRoutingKey());   
 			}
 		}
