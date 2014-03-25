@@ -3,9 +3,9 @@ package map;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-public class LocationLocator {
+public class OldLocationLocator {
 	private Map map;
-	public LocationLocator(Map map){
+	public OldLocationLocator(Map map){
 		this.map=map;
 	}
 	

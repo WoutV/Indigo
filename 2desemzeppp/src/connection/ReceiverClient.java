@@ -14,6 +14,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
+import simulator.Sim;
+
+import navigation.Dispatch;
+
 import zeppelin.Propellor;
 
 import com.rabbitmq.client.Channel;
@@ -42,6 +46,7 @@ public class ReceiverClient implements Runnable{
 		keys.add("indigo.private.motor2");
 		keys.add("indigo.private.motor3");
 		keys.add("indigo.private.symbollist");
+		
 	}
 
 	private void handleReceived(String information, String key){
@@ -66,6 +71,8 @@ public class ReceiverClient implements Runnable{
 				gc.receivePropellorState(Propellor.UP, true);
 			else
 				gc.receivePropellorState(Propellor.UP, false);
+		}else if(key.equals("indigo.private.symbollist")){
+			Dispatch.processSymbols(Sim.StringToSymbolList(information));
 		}
 	}
 	public void run(){

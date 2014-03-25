@@ -3,6 +3,7 @@ package initialise;
 import imageProcessing.ImageProcessor;
 
 import map.*;
+import map.OldLocationLocator;
 import navigation.*;
 
 import org.opencv.core.Core;
@@ -51,17 +52,24 @@ public class InitialiseClient {
         //here because controllers running on client
         //TODO kp,kd,ki values
         PositionController xpos = PositionController.getXController();
-		PositionController ypos = PositionController.getYController();
+        PositionController ypos = PositionController.getYController();
+        xpos.setKd(0);
+        xpos.setKp(5);
+        xpos.setKi(0);
+        ypos.setKd(0);
+        ypos.setKp(5);
+        ypos.setKi(0);
+        
 		xpos.setSender(sender);
 		ypos.setSender(sender);
-		PureColourLocator locator = new PureColourLocator(map,xpos,ypos,gui.getGuic());
+		LocationLocator locator = new LocationLocator(map,xpos,ypos,gui.getGuic());
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
-		ImageProcessor.setLocator(locator);
+		Dispatch.setLoc(locator);
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
-		
+		sender.sendTransfer("0", "indigo.lcommand.motor1");
 	}
 }
