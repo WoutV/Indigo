@@ -41,6 +41,7 @@ public class ReceiverClient implements Runnable{
 		keys.add("indigo.private.motor1");
 		keys.add("indigo.private.motor2");
 		keys.add("indigo.private.motor3");
+		keys.add("indigo.private.symbollist");
 	}
 
 	private void handleReceived(String information, String key){

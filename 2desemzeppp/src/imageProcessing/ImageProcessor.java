@@ -11,8 +11,8 @@ import java.nio.IntBuffer;
 import java.util.*;
 
 import javax.swing.ImageIcon;
-import map.ColorSymbol;
-import map.PureColourLocator;
+import navigation.ColorSymbol;
+import navigation.PureColourLocator;
 import map.Symbol;
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;

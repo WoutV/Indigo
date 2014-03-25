@@ -15,7 +15,7 @@ public class InitialiseClient {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		final String fileName = "/grid.csv";
+		final String fileName = "/shapesDemo.csv";
 		
 		Map map = new Map(fileName);
 		 
@@ -62,5 +62,6 @@ public class InitialiseClient {
 		receiverclientthread.start();
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
+		
 	}
 }
