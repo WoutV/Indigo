@@ -4,8 +4,14 @@ package ImageProcessing;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -20,7 +26,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessorWithVars {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MalformedURLException, IOException {
 		 System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		 try {
 			ImageProcessorWithVars ip = new ImageProcessorWithVars("C:/Users/Vince/Desktop/a/2/b (105).jpg");
@@ -49,10 +55,21 @@ public class ImageProcessorWithVars {
 	 * @param filePath
 	 * 		   The path where file is located. Can be changed later to receive a image matrix.
 	 * @throws InterruptedException 
+	 * @throws IOException 
+	 * @throws MalformedURLException 
 	 */
-	public ImageProcessorWithVars(String filePath) throws InterruptedException{
+	public ImageProcessorWithVars(String filePath) throws InterruptedException, MalformedURLException, IOException{
 		System.loadLibrary("opencv_java248");
-		this.originalImage = Highgui.imread(filePath, Imgproc.COLOR_BGR2GRAY);
+		BufferedImage buffered = ImageIO.read(new URL(
+				"http://raspberrypi.mshome.net/cam_pic.php?time="
+						+ System.currentTimeMillis()));
+		byte[] pixels = ((DataBufferByte) buffered.getRaster()
+				.getDataBuffer()).getData();
+
+		originalImage = new Mat(buffered.getHeight(),
+				buffered.getWidth(), CvType.CV_8UC3);
+		originalImage.put(0, 0, pixels);
+		//this.originalImage = Highgui.imread(filePath, Imgproc.COLOR_BGR2GRAY);
 		createToolbars();
 		Size frameSize= new Size();
 			if(originalImage.height()>=originalImage.width()){
@@ -74,6 +91,15 @@ public class ImageProcessorWithVars {
 	      while(true){
 	    	  Thread.sleep(200);
 	    	  processImage(facePanel, facePanel2, facePanel3);
+	    	  BufferedImage buffered1 = ImageIO.read(new URL(
+	  				"http://raspberrypi.mshome.net/cam_pic.php?time="
+	  						+ System.currentTimeMillis()));
+	  		byte[] pixels1 = ((DataBufferByte) buffered1.getRaster()
+	  				.getDataBuffer()).getData();
+
+	  		originalImage = new Mat(buffered1.getHeight(),
+	  				buffered1.getWidth(), CvType.CV_8UC3);
+	  		originalImage.put(0, 0, pixels1);
 	    	  
 	      }
 	 

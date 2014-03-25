@@ -30,7 +30,7 @@ import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
-public class LiveImageProcessor {
+public class TestImageProcessor {
 	private int erodeTimes = 0;
 	private int dilateTimes = 0;
 	private int blur = 5;
@@ -56,11 +56,12 @@ public class LiveImageProcessor {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		LiveImageProcessor lip = new LiveImageProcessor();
-		lip.start("../fotos/b (109)" + ".jpg");
+		TestImageProcessor lip = new TestImageProcessor();
+		//lip.start("../fotos/b (110)" + ".jpg");
+		lip.start();
 	}
 
-	public LiveImageProcessor() {
+	public TestImageProcessor() {
 		System.loadLibrary("opencv_java248");
 		createToolbars();
 	}
@@ -79,7 +80,7 @@ public class LiveImageProcessor {
 						buffered.getWidth(), CvType.CV_8UC3);
 				originalImage.put(0, 0, pixels);
 				processImage();
-				Thread.sleep(200);
+				Thread.sleep(50);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -215,30 +216,39 @@ public class LiveImageProcessor {
 			Mat lines = new Mat();
 			Imgproc.HoughLinesP(dilatedImage1.submat(rec), lines, 1,
 					Math.PI / 180, 2, rec.height / 2, 5);
-			System.out.println("Total Lines:" + lines.cols());
-			for (int x = 0; x < lines.cols(); x++) {
-				double[] vec = lines.get(0, x);
-				double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
-				Point start = new Point(x1, y1);
-				Point end = new Point(x2, y2);
-
-				Core.line(subImage, start, end, new Scalar(0, 0, 255), 2);
-
+//			System.out.println("Total Lines:" + lines.cols());
+//			for (int x = 0; x < lines.cols(); x++) {
+//				double[] vec = lines.get(0, x);
+//				double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
+//				Point start = new Point(x1, y1);
+//				Point end = new Point(x2, y2);
+//
+//				Core.line(subImage, start, end, new Scalar(0, 0, 255), 2);
+//
+//			}
+			double height = rec.height;
+			double width = rec.width;
+			if(rec.height<rec.width){
+				double heightdummy =width;
+				width=height;
+				height=heightdummy;
+				
 			}
+			
 			if (lines.cols() > 0) {
 				String Color = getColor(image1.submat(rec), new Point(
-						rec.height / 2, rec.width / 2));
+						height / 2, width / 2));
 				Core.putText(image, Color + ":Rec", contourCenter,
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 								200, 250), 3);
-				resultFrame.matToBufferedImage(subImage);
-				resultFrame.repaint();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				resultFrame.matToBufferedImage(subImage);
+//				resultFrame.repaint();
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			} else { //It is not a rectangle now checking for circles
 				Mat circles = new Mat();
 
@@ -247,78 +257,78 @@ public class LiveImageProcessor {
 						2 * cannyThresholdMax, 17, (int) (rec.height / 2.5),
 						500);
 
-				System.out.println("Found circles:" + circles.cols());
-				for (int x = 0; x < circles.cols(); x++) {
-					double[] vec = circles.get(0, x);
-					double x1 = vec[0], y1 = vec[1], r = vec[2];
-
-					Point start = new Point(x1, y1);
-
-					Core.circle(subImage, start, (int) r,
-							new Scalar(0, 255, 0), 1);
-
-				}
+//				System.out.println("Found circles:" + circles.cols());
+//				for (int x = 0; x < circles.cols(); x++) {
+//					double[] vec = circles.get(0, x);
+//					double x1 = vec[0], y1 = vec[1], r = vec[2];
+//
+//					Point start = new Point(x1, y1);
+//
+//					Core.circle(subImage, start, (int) r,
+//							new Scalar(0, 255, 0), 1);
+//
+//				}
 				if (circles.cols() == 1) {
 					String Color = getColor(image1.submat(rec), new Point(
-							rec.height / 2, rec.width / 2));
+							height / 2, width / 2));
 					Core.putText(image, Color + ":Cir", contourCenter,
 							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 									200, 250), 3);
-					resultFrame.matToBufferedImage(subImage);
-					resultFrame.repaint();
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//					resultFrame.matToBufferedImage(subImage);
+//					resultFrame.repaint();
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 				} else { //Not a circle either now checking for heart;
 					Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
 							Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
 							2 * cannyThresholdMax, 10,
 							(int) (rec.height / 2.5), 500);
 
-					System.out.println("Found circles:" + circles.cols());
-					for (int x = 0; x < circles.cols(); x++) {
-						double[] vec = circles.get(0, x);
-						double x1 = vec[0], y1 = vec[1], r = vec[2];
-
-						Point start = new Point(x1, y1);
-
-						Core.circle(subImage, start, (int) r, new Scalar(0,
-								255, 255), 1);
-
-					}
+//					System.out.println("Found circles:" + circles.cols());
+//					for (int x = 0; x < circles.cols(); x++) {
+//						double[] vec = circles.get(0, x);
+//						double x1 = vec[0], y1 = vec[1], r = vec[2];
+//
+//						Point start = new Point(x1, y1);
+//
+//						Core.circle(subImage, start, (int) r, new Scalar(0,
+//								255, 255), 1);
+//
+//					}
 					if (circles.cols() == 1) {
 						String Color = getColor(image1.submat(rec), new Point(
-								rec.height / 2, rec.width / 2));
+								height / 2,width / 2));
 						Core.putText(image, Color + ":Heart", contourCenter,
 								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
 										200, 200, 250), 3);
-						resultFrame.matToBufferedImage(subImage);
-						resultFrame.repaint();
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+//						resultFrame.matToBufferedImage(subImage);
+//						resultFrame.repaint();
+//						try {
+//							Thread.sleep(1000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
 					}
 
 					else {
 						String Color = getColor(image1.submat(rec), new Point(
-								rec.height / 2, rec.width / 2));
+							height / 2, width / 2));
 						Core.putText(image, Color + ":Star", contourCenter,
 								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
 										200, 200, 250), 3);
-						resultFrame.matToBufferedImage(subImage);
-						resultFrame.repaint();
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+//						resultFrame.matToBufferedImage(subImage);
+//						resultFrame.repaint();
+//						try {
+//							Thread.sleep(1000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
 						// double ratio =
 						// (Math.PI*radius[0]*radius[0]/(rec.height*rec.width));
 						// int ration = (int)(ratio*1000);
@@ -577,15 +587,14 @@ public class LiveImageProcessor {
 	}
 
 	private String getColor(Mat image, Point contourCenter) {
+		try{
 		Mat bitImage = image.clone();
 		// Checking for white
 		Core.inRange(image.clone(), Colors.getWhiteMinScalar(),
 				Colors.getWhiteMaxScalar(), bitImage);
-		System.out.println("Center Points height:"+contourCenter.x+", width:"+contourCenter.y);
 		double[] col = bitImage.get((int) contourCenter.y,
 				(int) contourCenter.x);
-		System.out.println("Matrix Size size:"+image.size());
-		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		//System.out.println("col[0]" + col[0] + " length:" + col.length);
 		if (col[0] >= 150)
 			return "W";
 
@@ -593,34 +602,38 @@ public class LiveImageProcessor {
 		Core.inRange(image.clone(), Colors.getYellowMinScalar(),
 				Colors.getYellowMaxScalar(), bitImage);
 		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		//System.out.println("col[0]" + col[0] + " length:" + col.length);
 		if (col[0] >= 150)
 			return "Y";
 
 		Core.inRange(image.clone(), Colors.getRedMinScalar(),
 				Colors.getRedMaxScalar(), bitImage);
 		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		//System.out.println("col[0]" + col[0] + " length:" + col.length);
 		if (col[0] >= 150)
 			return "R";
 
 		Core.inRange(image.clone(), Colors.getBlueMinScalar(),
 				Colors.getBlueMaxScalar(), bitImage);
 		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		//System.out.println("col[0]" + col[0] + " length:" + col.length);
 		if (col[0] >= 150)
 			return "B";
 
 		Core.inRange(image.clone(), Colors.getGreenMinScalar(),
 				Colors.getGreenMaxScalar(), bitImage);
 		col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-		System.out.println("col[0]" + col[0] + " length:" + col.length);
+		//System.out.println("col[0]" + col[0] + " length:" + col.length);
 		if (col[0] >= 150)
 			return "G";
 
 		System.out.println("col:" + col + "MatrixSize:" + image.height() + ","
 				+ image.width());
 		return "NI";
+		}
+		catch(Exception e){
+		return "NI";
+		}
 	}
 
 	private void HoughLines(Mat canny_output, Mat image, Mat Emptyimage) {
