@@ -93,9 +93,12 @@ public class TestImageProcessor {
 
 		try {
 			while (true) {
+				
 				this.originalImage = Highgui.imread(urlImage,
 						Imgproc.COLOR_BGR2GRAY);
+				double starttime = System.currentTimeMillis();
 				processImage();
+				System.out.println("Processed. time taken:"+ (System.currentTimeMillis()-starttime)/1000);
 				Thread.sleep(200);
 			}
 		} catch (Exception e) {
@@ -353,13 +356,13 @@ public class TestImageProcessor {
 		}
 		resultFrame.matToBufferedImage(image);
 		resultFrame.repaint();
-		Highgui.imwrite("114 result.jpg", image);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//Highgui.imwrite("114 result.jpg", image);
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	/**

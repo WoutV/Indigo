@@ -1,16 +1,23 @@
 package camera;
 
+import java.io.IOException;
+
 import javax.swing.ImageIcon;
 
 import imageProcessing.ImageProcessor;
 import connection.SenderPi;
 
 public class CameraThread implements Runnable{
-	private SenderPi stc;
-	
-	public CameraThread(SenderPi stc){
-		this.stc = stc;
+	public static void  main(String[] args){
+		CameraThread ct = new CameraThread();
+		Thread thread = new Thread(ct);
+		thread.start();
 	}
+	
+	public CameraThread(){
+	}
+	private double  height = 400;
+	private double  width = 600;
 	
 	/**
 	 * Gets a new image every second and sends it to the client.
@@ -18,14 +25,10 @@ public class CameraThread implements Runnable{
 	//TODO set the time between photos
 	public void run(){
 		while(true){
-		//Transfer picture= new Transfer();
-		//picture.setImage(Camera.getImage());
-		//stc.sendTransfer(picture);
-		ImageIcon image = Camera.getImage();
-		ImageProcessor.processImage(image);
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+			Process p = Runtime.getRuntime().exec("sudo raspistill -t 1 -n -rot 270 -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
+			p.waitFor();
+		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
 		}
 		}
