@@ -16,7 +16,7 @@ import zeppelin.Main;
  * TOE TE VOEGEN: RECEIVEDHANDLER!!!
  */
 public class ReceiverPi implements Runnable{
-	private Main main = Main.getInstance();
+	//private Main main = Main.getInstance();
 	
 	private final String EXCHANGE_NAME = "server";
 	private ArrayList<String> keys;
@@ -26,16 +26,19 @@ public class ReceiverPi implements Runnable{
 		keys.add("indigo.lcommand.motor1");
 		keys.add("indigo.lcommand.motor2");
 		keys.add("indigo.lcommand.motor3");
+		keys.add("test.test");
 	}
 	
 	
 	private void handleReceived(String information, String key){
 		if(key.equals("indigo.lcommand.motor1")){
-			main.activateMotor1(Integer.parseInt(information));
+			//main.activateMotor1(Integer.parseInt(information));
 		}else if(key.equals("indigo.lcommand.motor2")){
-			main.activateMotor2(Integer.parseInt(information));
+			//main.activateMotor2(Integer.parseInt(information));
 		}else if(key.equals("indigo.lcommand.motor3")){
-			main.activateMotor3(Integer.parseInt(information));
+			//main.activateMotor3(Integer.parseInt(information));
+		}else if(key.equals("test.test")){
+			System.out.println(information);
 		}
 	}
 	

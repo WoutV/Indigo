@@ -7,7 +7,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 
 public class SenderPi {
-	public static String serverIP="192.168.137.1";
+	public static String serverIP="localhost";
 	private final String EXCHANGE_NAME = "server";
 	
 	private Channel channel;

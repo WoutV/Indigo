@@ -12,6 +12,7 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 import navigation.ColorSymbol;
+import navigation.Dispatch;
 import navigation.PureColourLocator;
 import map.Symbol;
 import org.opencv.core.*;
@@ -33,10 +34,10 @@ public class ImageProcessor {
 	private static int epsilonApprox=10;
 	private static int pointsEqualEpsilon=116;
 	private int pointsEqualEpsilonPoints=52;
-	private static PureColourLocator locator;
+	
 
-	public static void setLocator(PureColourLocator loc){
-		locator = loc;
+	public static void setLocator(){
+		
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public class ImageProcessor {
 	   		Imgproc.dilate(dilatedImage, dilatedImage, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(dilatesize,dilatesize)));
 	   	}
 	   	//Trying different methods.
-	   	locator.locateAndMove(( findContours(dilatedImage.clone(), image.clone(), emptyImage.clone())));
+	   	Dispatch.processSymbols(( findContours(dilatedImage.clone(), image.clone(), emptyImage.clone())));
 	   	//HoughCircles(dilatedImage.clone(), image.clone(), emptyImage.clone());
 	   	//	   	HoughLines(dilatedImage.clone(), image.clone(), emptyImage.clone());
 	   	

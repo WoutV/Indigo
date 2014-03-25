@@ -17,6 +17,9 @@ public class Sim {
 	
 	private SimConn simconn;
 
+	public void setSimConn(SimConn sims){
+		simconn = sims;
+	}
 	/**
 	 * The time between sending symbols (in ms).
 	 */
@@ -30,7 +33,7 @@ public class Sim {
 	//default: 0 = right, 180 = right
 	private int alpha;
 	//all in cm!!
-	private double xPos,yPos;
+	private double xPos=200,yPos=200;
 	//speed in the default xy-plane.
 	private double xSpeed,ySpeed,xAccel,yAccel;
 	
