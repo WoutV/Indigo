@@ -1,61 +1,56 @@
 package camera;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import transfer.Transfer;
-
-import connection.SenderPi;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 public abstract class Camera {
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		System.out.println("Give the image height:");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		 height= Integer.parseInt(br.readLine());
-		System.out.println("Give the  image width:");
-		 width= Integer.parseInt(br.readLine());
-		System.out.println("Give the  wait time:");
-		 time= Integer.parseInt(br.readLine());
-		double time = System.currentTimeMillis();
-		ImageIcon image = getImage();
-		System.out.println("Sender Starting");
-		SenderPi sender = new SenderPi();
-		 System.out.println("Sender Initalized, making new transfer");
-		 Transfer transfer = new Transfer();
-		 System.out.println("Transfer has been made, setting image");
-		 transfer.setImage(image);
-		 System.out.println("message set, sending transfer");
-		 sender.sendTransfer(transfer);
-		 System.out.println("Transfer sent!");
-		sender.exit();
-		System.out.println("Time needed:"+( System.currentTimeMillis()-time));
+	/**
+	 * Takes a high resolution photo and looks for the qr code. Returns the string if found otherwise null 
+	 * @return
+	 * @throws FileNotFoundException
+	 * 			never throws its
+	 * @throws IOException
+	 * 			if there is a problem reading the file
+	 * @throws NotFoundException
+	 * 			if it cant find any qr codes
+	 */
+	public static String readQRCode()
+			throws FileNotFoundException, IOException, NotFoundException {
 		
+		BufferedImage bi= ImageIO.read(new URL(
+				"http://raspberrypi.mshome.net/cam_pic.php?time="
+						+ System.currentTimeMillis()));
+		BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bi)));
+		System.out.println("Loading image completed. Reading QR Code");
+		@SuppressWarnings("unchecked")
+		Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,getMap());
+		System.out.println("QR read:"+qrCodeResult.getText());
+		return qrCodeResult.getText();
 	}
 
-	private static boolean isInUse;
-	private static int height=400,width=600,time=1;
-	/**
-	 * Takes a low resolution picture and gives its imageicon.
+	
+	/***
+	 * For the things that i do not understand.
 	 * @return
 	 */
-	public static ImageIcon getImage(){
-		BufferedImage image = null;
-		try {
-			
-			Process p = Runtime.getRuntime().exec("raspistill -t "+time+" -n -rot 270 -h "+height+" -w "+width+" -o image.jpg");
-			image = ImageIO.read(p.getInputStream());
-			p.waitFor();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("image from inputstream"+image);
-		return new ImageIcon("image.jpg");
+	@SuppressWarnings("rawtypes")
+	private static Map getMap(){
+		Map<EncodeHintType, ErrorCorrectionLevel>hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
+		hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+		return hintMap;
 	}
 
 }
