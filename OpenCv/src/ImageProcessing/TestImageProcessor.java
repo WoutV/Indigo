@@ -219,7 +219,7 @@ public class TestImageProcessor {
 			//Checking for rectangles
 			Mat lines = new Mat();
 			Imgproc.HoughLinesP(dilatedImage1.submat(rec), lines, 1,
-					Math.PI / 180, 2, rec.height / 2, 5);
+					Math.PI / 180, 40, rec.height / 1.5, 5);
 //			System.out.println("Total Lines:" + lines.cols());
 //			for (int x = 0; x < lines.cols(); x++) {
 //				double[] vec = lines.get(0, x);

@@ -28,18 +28,19 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
+import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
 public class LiveImageProcessor {
 	private int erodeTimes = 0;
-	private int dilateTimes = 0;
+	private int dilateTimes = 2;
 	private int blur = 5;
 	private int erodesize = 3;
 	private int dilatesize = 3;
 	private Mat originalImage;
 	private int cannyThresholdMin = 8;
 	private int cannyThresholdMax = 27;
-	private int minArea = 100;
+	private int minArea = 1000;
 	private int epsilonApprox = 1;
 	private int pointsEqualEpsilon = 50;
 	private int pointsEqualEpsilonPoints = 52;
@@ -57,14 +58,32 @@ public class LiveImageProcessor {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		LiveImageProcessor lip = new LiveImageProcessor();
-		lip.start("../fotos/b (109)" + ".jpg");
+//		lip.start("../fotos/b (110)" + ".jpg");
+		lip.startVideoProcessing("C:/Users/Study/Dropbox/grid1.h264");
 	}
 
 	public LiveImageProcessor() {
 		System.loadLibrary("opencv_java248");
 		createToolbars();
 	}
+	public void startVideoProcessing(String videoPath) {
+		this.originalImage=new Mat();
+		VideoCapture vc = new VideoCapture(videoPath);
+		while (true) {
+			try {
+				
+				
+				vc.read(originalImage);
+				processImage();
+			//	Thread.sleep(200);
 
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void start() {
 
 		try {
@@ -192,6 +211,7 @@ public class LiveImageProcessor {
 		foundContours.repaint();
 		for (int i = 0; i < ApproxContours.size(); i++) {
 			MatOfPoint contour1 = ApproxContours.get(i);
+			
 			ArrayList<Point> contoursPoint = new ArrayList<Point>(
 					contour1.toList());
 			Point contourCenter = findCenter(contoursPoint);
@@ -214,7 +234,7 @@ public class LiveImageProcessor {
 			//Checking for rectangles
 			Mat lines = new Mat();
 			Imgproc.HoughLinesP(dilatedImage1.submat(rec), lines, 1,
-					Math.PI / 180, 2, rec.height / 2, 5);
+					Math.PI / 180, 50, rec.height / 1.5, 5);
 			System.out.println("Total Lines:" + lines.cols());
 			for (int x = 0; x < lines.cols(); x++) {
 				double[] vec = lines.get(0, x);
@@ -241,7 +261,7 @@ public class LiveImageProcessor {
 				}
 			} else { //It is not a rectangle now checking for circles
 				Mat circles = new Mat();
-
+				//isCircle(approx, center)
 				Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
 						Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
 						2 * cannyThresholdMax, 17, (int) (rec.height / 2.5),
@@ -339,7 +359,7 @@ public class LiveImageProcessor {
 					}
 				}
 			}
-
+			
 		}
 		resultFrame.matToBufferedImage(image);
 		resultFrame.repaint();
@@ -350,6 +370,7 @@ public class LiveImageProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	/**
@@ -399,13 +420,18 @@ public class LiveImageProcessor {
 		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
 		for (int i = 0; i < contours.size(); i++) {
 			MatOfPoint contour1 = contours.get(i);
-			for (int index = i + 1; index < contours.size(); index++) {
-				MatOfPoint contour2 = contours.get(index);
-				if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
-						pointsEqualEpsilon)) {
-					fuzzyContours.put(i, index);
-					toRemove.add(contour2);
+			if(Imgproc.contourArea(contour1)>=minArea){
+				for (int index = i + 1; index < contours.size(); index++) {
+					MatOfPoint contour2 = contours.get(index);
+					if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
+						pointsEqualEpsilon)&& Imgproc.contourArea(contour2)>=minArea) {
+						fuzzyContours.put(i, index);
+						toRemove.add(contour2);
+					}
 				}
+			}
+			else{
+				toRemove.add(contour1);
 			}
 
 		}
@@ -577,6 +603,7 @@ public class LiveImageProcessor {
 	}
 
 	private String getColor(Mat image, Point contourCenter) {
+		try{
 		Mat bitImage = image.clone();
 		// Checking for white
 		Core.inRange(image.clone(), Colors.getWhiteMinScalar(),
@@ -621,6 +648,10 @@ public class LiveImageProcessor {
 		System.out.println("col:" + col + "MatrixSize:" + image.height() + ","
 				+ image.width());
 		return "NI";
+		}
+		catch(Exception e){
+			return "NI";
+		}
 	}
 
 	private void HoughLines(Mat canny_output, Mat image, Mat Emptyimage) {

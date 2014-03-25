@@ -24,13 +24,13 @@ public class CameraThread implements Runnable{
 	 */
 	//TODO set the time between photos
 	public void run(){
-		while(true){
+		//while(true){
 		try {
-			Process p = Runtime.getRuntime().exec("sudo raspistill -t 1 -n -rot 270 -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
+			Process p = Runtime.getRuntime().exec("sudo raspistill -t 30000 -tl 40 -n -rot 270 -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
 			p.waitFor();
 		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
-		}
+		//}
 		}
 	}
 }
