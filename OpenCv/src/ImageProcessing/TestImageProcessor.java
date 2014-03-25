@@ -180,12 +180,14 @@ public class TestImageProcessor {
 		List<MatOfPoint> ApproxContours = new ArrayList<MatOfPoint>();
 		// Approximating every contour
 		for (int i = 0; i < contours.size(); i++) {
-			contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);
-			Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox,
-					epsilonApprox, true);
-			MatOfPoint mop = new MatOfPoint();
-			MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
-			ApproxContours.add(mop);
+			if(Imgproc.contourArea(contours.get(i))>minArea){
+				contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);
+				Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox,
+						epsilonApprox, true);
+				MatOfPoint mop = new MatOfPoint();
+				MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
+				ApproxContours.add(mop);
+			}
 		}
 		ApproxContours = filterOutEdges(ApproxContours, image.size());
 		System.out
@@ -214,7 +216,6 @@ public class TestImageProcessor {
 
 			}
 
-			Mat subImage = imageClone.submat(rec);
 			//Checking for rectangles
 			Mat lines = new Mat();
 			Imgproc.HoughLinesP(dilatedImage1.submat(rec), lines, 1,
@@ -237,13 +238,16 @@ public class TestImageProcessor {
 				height=heightdummy;
 				
 			}
-			
+			//if it is rectangle then lines.cols is not null -> Check for ipad!
 			if (lines.cols() > 0) {
 				String Color = getColor(image1.submat(rec), new Point(
 						height / 2, width / 2));
 				Core.putText(image, Color + ":Rec", contourCenter,
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 								200, 250), 3);
+				//TODO:check if it is ipad?
+				
+				
 //				resultFrame.matToBufferedImage(subImage);
 //				resultFrame.repaint();
 //				try {
