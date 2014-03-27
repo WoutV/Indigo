@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
-import simulator.Sim;
+import simulator.Simulator;
 
 import navigation.Dispatch;
 
@@ -72,7 +72,7 @@ public class ReceiverClient implements Runnable{
 			else
 				gc.receivePropellorState(Propellor.UP, false);
 		}else if(key.equals("indigo.private.symbollist")){
-			Dispatch.processSymbols(Sim.StringToSymbolList(information));
+			Dispatch.processSymbols(Simulator.StringToSymbolList(information));
 		}
 	}
 	public void run(){

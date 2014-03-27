@@ -12,12 +12,12 @@ import map.Symbol;
  * Acts like a server: takes the speed of motors as input, gives a set of symbols as output.
  * The simulator uses a default XY-plane. (x point right, y points up)
  */
-public class Sim {
+public class Simulator {
 	private double xConstant, yConstant;
 	
-	private SimConn simconn;
+	private SimConnection simconn;
 
-	public void setSimConn(SimConn sims){
+	public void setSimConn(SimConnection sims){
 		simconn = sims;
 	}
 	/**
@@ -39,7 +39,7 @@ public class Sim {
 	
 	private Random random = new Random();
 
-	public Sim(){
+	public Simulator(){
 		init();
 	}
 
