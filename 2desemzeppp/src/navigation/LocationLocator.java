@@ -531,8 +531,5 @@ public class LocationLocator {
 		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
 		double[] loc0 = locator.locate(list2,s10);
 		//JOptionPane.showMessageDialog(null,loc0[0] + "," + loc0[1] + "|" + loc0[2]);
-		double get = Math.atan(-1);
-		JOptionPane.showMessageDialog(null,get);
-		
 	}
 }
