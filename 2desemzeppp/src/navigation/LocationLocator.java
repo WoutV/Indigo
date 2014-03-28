@@ -49,54 +49,9 @@ public class LocationLocator {
 	public double[] locate(List<Symbol> colors){
 		double[] totalCenter = calculateCenter(colors);
 		Symbol middle = nearestSymbol(colors, totalCenter);
+		//JOptionPane.showMessageDialog(null, middle.getColour() + "  " + middle.getShape());
 		colors.remove(middle);
-
-		Symbol closestToMid = nearestSymbol(colors,middle);
-		double closestToMidDist = euclideanDistance(middle.getX(), middle.getY(), closestToMid.getX(),
-				closestToMid.getY());
-
-		//filter all symbols surrounding the middle symbol
-		double[] middleCoordinates = {middle.getX(),middle.getY()};
-		List<Symbol> neighbours = filter(colors,1.2*closestToMidDist,middleCoordinates);
-		neighbours = sortImageSymbolPolar(neighbours,middle);
-
-		//find a set of 3 symbols
-		//in addition to the middle, 2 more are needed
-		List<List<Symbol>> possibleSymbolLists = new LinkedList<>();
-
-		for(int i = 0;i<neighbours.size();i++) {
-			Symbol s1 = neighbours.get(i);
-			Symbol s2 = neighbours.get((i+1)%neighbours.size());
-
-			//if these symbols are next to each other
-			//&& the second is located clockwise of the first
-			if(euclideanDistance(s1.getX(), s1.getY(), s2.getX(), s2.getY())<1.2*closestToMidDist &&
-					s1.getX()*s2.getY()-s1.getY()*s2.getX() < 0) {
-				List<Symbol> list = new LinkedList<>();
-				list.add(s1);
-				list.add(s2);
-			}
-		}
-
-		List<double[]> possibleLocs = new LinkedList<>();
-		for(List<Symbol> possibleSymbolList : possibleSymbolLists) {
-			double[] loc = find3(middle,possibleSymbolList.get(0),possibleSymbolList.get(1));
-			if(loc != null)
-				loc = correctAlpha(loc,possibleSymbolList.get(0));
-			possibleLocs.add(loc);
-		}
-
-		String s = "";
-		for(double[] r:possibleLocs) {
-			s = s + r[0] + "," + r[1] + "||" + r[2] + "\n";
-		}
-		//JOptionPane.showMessageDialog(null, s);
-		try{
-			return possibleLocs.get(0);
-		}catch( Exception e){
-			double[] l = {200,200,0};
-			return l;
-		}
+		return locate(colors,middle);
 	}
 	
 	public double[] locate(List<Symbol> colors, Symbol middle) {
@@ -108,7 +63,7 @@ public class LocationLocator {
 		double[] middleCoordinates = {middle.getX(),middle.getY()};
 		List<Symbol> neighbours = filter(colors,1.2*closestToMidDist,middleCoordinates);
 		neighbours = sortImageSymbolPolar(neighbours,middle);
-		JOptionPane.showMessageDialog(null, neighbours.get(0).getColour() + "," + neighbours.get(1).getColour());
+		//JOptionPane.showMessageDialog(null, neighbours.get(0).getColour() + "," + neighbours.get(1).getColour());
 
 		//find a set of 3 symbols
 		//in addition to the middle, 2 more are needed
@@ -133,7 +88,7 @@ public class LocationLocator {
 		for(List<Symbol> possibleSymbolList : possibleSymbolLists) {
 			double[] loc = find3(possibleSymbolList.get(0),possibleSymbolList.get(1),middle);
 			if(loc != null) {
-				loc = correctAlpha(loc,possibleSymbolList.get(0));
+				//loc = correctAlpha(loc,possibleSymbolList.get(0));
 				possibleLocs.add(loc);
 			}
 		}
@@ -149,6 +104,73 @@ public class LocationLocator {
 			double[] l = {200,200,0};
 			return l;
 		}
+	}
+	
+	/**
+	 * Calculates alpha, by matching symbols and finding the two that should
+	 * be on one line.
+	 * @param center
+	 * @param s1
+	 * @param s2
+	 * @param centermap
+	 * @param sm1
+	 * @param sm2
+	 * @return
+	 */
+	public double alphaOtherWay(Symbol center,Symbol s1,Symbol s2,
+			Symbol centermap, Symbol sm1, Symbol sm2) {
+		if(centermap.getY() == sm1.getY()) {
+			if(centermap.getX() < sm1.getX())
+				return alphaOtherWay(center.getX(),center.getY(),s1.getX(),s1.getY());
+			return alphaOtherWay(s1.getX(),s1.getY(),center.getX(),center.getY());
+		}
+		if(sm1.getY() == sm2.getY()) {
+			if(sm1.getX() < sm2.getX())
+				return alphaOtherWay(s1.getX(),s1.getY(),s2.getX(),s2.getY());
+			return alphaOtherWay(s2.getX(),s2.getY(),s1.getX(),s1.getY());
+		}
+		if(sm2.getX() < centermap.getX())
+			return alphaOtherWay(s2.getX(),s2.getY(),center.getX(),center.getY());
+		return alphaOtherWay(center.getX(),center.getY(),s2.getX(),s2.getY());
+	}
+	
+	/**
+	 * Given the coordinates of the points that should be horizontally on the same line,
+	 * calculates alpha.
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
+	public double alphaOtherWay(double x1, double y1, double x2, double y2) {
+		if(y1==y2) {
+			if(x1<x2)
+				return 0;
+			return 180;
+		}
+		if(x1==x2) {
+			if(y1>y2)
+				return 90;
+			return -90;
+		}
+		//JOptionPane.showMessageDialog(null, x1 + "," + y1 + "," + x2 + "," + y2);
+		double vy = y2-y1;
+		double vx = x2-x1;
+		double alpha0 = Math.atan(vy/vx);
+		double alpha = alpha0/Math.PI*180;
+		//JOptionPane.showMessageDialog(null, alpha0 + "," + alpha);
+		//Q1 & Q4
+		if(x2>x1) {
+			return alpha;
+		}
+		//Q2
+		if(y1>y2){
+			//JOptionPane.showMessageDialog(null, "q2");
+			return -(180-alpha);
+		}
+		//Q4
+		return 180+alpha;
 	}
 
 	private double[] correctAlpha(double[] loc, Symbol s) {
@@ -215,9 +237,15 @@ public class LocationLocator {
 							//coordinates of zeppelin
 							double x = map.getSymbol(j, i).getX();
 							double y = map.getSymbol(j, i).getY();
-							double alpha = 120+k*60; //120=>480
-							if(alpha > 180)
-								alpha = alpha - 360; //-180 => 180
+							
+							double alpha = alphaOtherWay(center,symbol1,symbol2,map.getSymbol(j, i),
+									symbols.get(k),symbols.get((k+1)%6));
+//							
+//							double alpha = 120+k*60; //120=>480
+//							if(alpha > 180)
+//								alpha = alpha - 360; //-180 => 180
+							
+							
 							double[] r = {x,y,alpha};
 							return r;
 						}
@@ -366,6 +394,37 @@ public class LocationLocator {
 			return -1;
 		}
 	}
+	
+	private static class ImageSymbolComparatorNoChangeCoord implements Comparator<Symbol> {
+		private Symbol center;
+		
+		public ImageSymbolComparatorNoChangeCoord(Symbol center) {
+			this.center = center;
+		}
+		
+		@Override
+		public int compare(Symbol s1, Symbol s2) {
+			if(s1 == null)
+				return -1;
+			if(s2 == null)
+				return 1;
+			double x1 = s1.getX() - center.getX();
+			double y1 = s1.getY() - center.getY();
+			double x2 = s2.getX() - center.getX();
+			double y2 = s2.getY() - center.getY();
+			if(y1==0 && x1>0)
+				return -1;
+			if(y2==0 && x2>0)
+				return 1;
+			if(y1>0 && y2<0)
+				return 1;
+			if(y2>0 && y1<0)
+				return -1;
+			if(1*x1*y2-y1*x2>0)
+				return 1;
+			return -1;
+		}
+	}
 
 	/**
 	 * Sort a list of symbols according to their polar coordinates, around the center.
@@ -412,13 +471,13 @@ public class LocationLocator {
 		for(Symbol s : list) {
 			Symbol copy = s.copy();
 			//coordinate transformation
-			double x0 = copy.getX() - center.getX();
-			double y0 = copy.getY() - center.getY();
-			copy.setX(x0);
-			copy.setY(y0);
+//			double x0 = copy.getX() - center.getX();
+//			double y0 = copy.getY() - center.getY();
+//			copy.setX(x0);
+//			copy.setY(y0);
 			sorted.add(copy);
 		}
-		Collections.sort(sorted,new ImageSymbolComparator());
+		Collections.sort(sorted,new ImageSymbolComparatorNoChangeCoord(center));
 		return sorted;
 	}
 
@@ -458,18 +517,22 @@ public class LocationLocator {
 
 		//find location
 		List<Symbol> list2 = new LinkedList<>();
-		Symbol center0 = new Symbol("RR");
+		Symbol center0 = new Symbol("BR");
 		center0.setX(50);center0.setY(50);
-		Symbol s10 = new Symbol("YR");
+		list2.add(center0);
+		Symbol s10 = new Symbol("BR");
 		s10.setX(40);s10.setY(68);
-		list2.add(s10);
-		Symbol s20 = new Symbol("BR");
+		//list2.add(s10);
+		Symbol s20 = new Symbol("RS");
 		s20.setX(60);s20.setY(68);
 		list2.add(s20);
-		JOptionPane.showMessageDialog(null,sort.get(0).getX() + "," + sort.get(0).getY() + "\n" + 
-				sort.get(1).getX() + "," + sort.get(1).getY());
+//		JOptionPane.showMessageDialog(null,sort.get(0).getX() + "," + sort.get(0).getY() + "\n" + 
+//				sort.get(1).getX() + "," + sort.get(1).getY());
 		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
-		double[] loc0 = locator.locate(list2,center0);
+		double[] loc0 = locator.locate(list2,s10);
 		//JOptionPane.showMessageDialog(null,loc0[0] + "," + loc0[1] + "|" + loc0[2]);
+		double get = Math.atan(-1);
+		JOptionPane.showMessageDialog(null,get);
+		
 	}
 }

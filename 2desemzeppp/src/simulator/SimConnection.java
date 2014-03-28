@@ -70,15 +70,15 @@ public class SimConnection implements Runnable{
 
 			while (true) {
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-				String information = delivery.getBody().toString();
+				String information = new String(delivery.getBody());
 
 				handleReceived(information, delivery.getEnvelope().getRoutingKey());   
 			}
 		}
 		catch (Exception exc) {
-			//System.out.println(exc);
+			System.out.println(exc);
 			exc.printStackTrace();
-			//run();
+			run();
 		}
 	}
 	
