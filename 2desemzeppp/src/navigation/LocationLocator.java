@@ -523,8 +523,6 @@ public class LocationLocator {
 		Symbol s20 = new Symbol("RS");
 		s20.setX(60);s20.setY(68);
 		list2.add(s20);
-//		JOptionPane.showMessageDialog(null,sort.get(0).getX() + "," + sort.get(0).getY() + "\n" + 
-//				sort.get(1).getX() + "," + sort.get(1).getY());
 		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
 		double[] loc0 = locator.locate(list2,s10);
 		//JOptionPane.showMessageDialog(null,loc0[0] + "," + loc0[1] + "|" + loc0[2]);
