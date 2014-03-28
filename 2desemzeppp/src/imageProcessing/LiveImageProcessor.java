@@ -21,6 +21,7 @@ import javax.swing.event.ChangeListener;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
@@ -172,12 +173,16 @@ public class LiveImageProcessor {
 		// Approximating every contour
 		for (int i = 0; i < contours.size(); i++) {
 			if (Imgproc.contourArea(contours.get(i)) > minArea) {
+				
 				contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);
 				Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox,
 						epsilonApprox, true);
 				MatOfPoint mop = new MatOfPoint();
 				MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
+				MatOfInt hull = new MatOfInt();
+				Imgproc.convexHull(mop, hull);
 				ApproxContours.add(mop);
+				
 			}
 		}
 		ApproxContours = filterOutEdges(ApproxContours, image.size());

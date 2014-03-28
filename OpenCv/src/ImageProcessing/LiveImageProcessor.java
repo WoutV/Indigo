@@ -21,6 +21,7 @@ import javax.swing.event.ChangeListener;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
@@ -58,8 +59,8 @@ public class LiveImageProcessor {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		LiveImageProcessor lip = new LiveImageProcessor();
-//		lip.start("../fotos/b (110)" + ".jpg");
-		lip.startVideoProcessing("C:/Users/Study/Dropbox/grid1.h264");
+		lip.start("../fotos/b (110)" + ".jpg");
+		//lip.startVideoProcessing("C:/Users/Study/Dropbox/grid1.h264");
 	}
 
 	public LiveImageProcessor() {
@@ -167,7 +168,7 @@ public class LiveImageProcessor {
 		// HoughCircles(dilatedImage.clone(), image.clone(), new
 		// Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(0,0,0)));
 	}
-
+	int picindex= 0;
 	private void findContours(Mat dilatedImage, Mat image1, Mat emptyImage) {
 		Mat dilatedImage1 = dilatedImage.clone();
 		Mat image = image1.clone();
@@ -202,6 +203,53 @@ public class LiveImageProcessor {
 			MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
 			ApproxContours.add(mop);
 		}
+		
+			    
+		MatOfInt hullInt = new MatOfInt();
+	    List<Point> hullPointList = new ArrayList<Point>(contours.size());
+	    MatOfPoint hullPointMat = new MatOfPoint();
+	    List<MatOfPoint> hullPoints = new ArrayList<MatOfPoint>();
+	    for (int k=0; k < contours.size(); k++){
+	        Imgproc.convexHull(contours.get(k), hullInt);
+
+	        for(int j=0; j < hullInt.toList().size(); j++){
+	            hullPointList.add(contours.get(k).toList().get(hullInt.toList().get(j)));
+	            Core.circle(originalImage, hullPointList.get(j), 2, new Scalar(0,255,255));
+	        }
+			hullPointMat.fromList(hullPointList);
+	        hullPoints.add(hullPointMat);
+	        
+	    }
+
+	    Imgproc.drawContours( originalImage, hullPoints, -1,  new Scalar(255,0,0, 255), 1);
+		resultFrame.matToBufferedImage(originalImage);
+		resultFrame.repaint();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		ApproxContours = filterOutEdges(ApproxContours, image.size());
 		System.out
 				.println("After filtering out edges:" + ApproxContours.size());
@@ -230,7 +278,9 @@ public class LiveImageProcessor {
 
 			}
 
-			Mat subImage = imageClone.submat(rec);
+			Mat subImage = dilatedImage.submat(rec);
+			Highgui.imwrite("Test"+picindex+".jpg", subImage);
+			picindex++;
 			//Checking for rectangles
 			Mat lines = new Mat();
 			Imgproc.HoughLinesP(dilatedImage1.submat(rec), lines, 1,
