@@ -117,7 +117,7 @@ public class LocationLocator {
 	 * @param sm2
 	 * @return
 	 */
-	public double alphaOtherWay(Symbol center,Symbol s1,Symbol s2,
+	private double alphaOtherWay(Symbol center,Symbol s1,Symbol s2,
 			Symbol centermap, Symbol sm1, Symbol sm2) {
 		if(centermap.getY() == sm1.getY()) {
 			if(centermap.getX() < sm1.getX())
@@ -143,7 +143,7 @@ public class LocationLocator {
 	 * @param y2
 	 * @return
 	 */
-	public double alphaOtherWay(double x1, double y1, double x2, double y2) {
+	private double alphaOtherWay(double x1, double y1, double x2, double y2) {
 		if(y1==y2) {
 			if(x1<x2)
 				return 0;
