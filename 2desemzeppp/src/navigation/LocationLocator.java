@@ -161,14 +161,11 @@ public class LocationLocator {
 		double alpha = alpha0/Math.PI*180;
 		//JOptionPane.showMessageDialog(null, alpha0 + "," + alpha);
 		//Q1 & Q4
-		if(x2>x1) {
+		if(x2>x1)
 			return alpha;
-		}
 		//Q2
-		if(y1>y2){
-			//JOptionPane.showMessageDialog(null, "q2");
+		if(y1>y2)
 			return -(180-alpha);
-		}
 		//Q4
 		return 180+alpha;
 	}
