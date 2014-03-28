@@ -1,0 +1,8 @@
+50,50;40,68;60,68
+
+1) RS,WR,WS => middleleft, -60
+2) BR,BR,RS => bottomleft, 0
+3) WS,YR,RR => topleft, 60
+4) WS,WS,RR => topright, -120
+5) RR,WS,WS => topright, 120
+6) YR,WS,BS => middle left, 180
