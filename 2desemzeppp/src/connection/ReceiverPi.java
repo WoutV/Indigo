@@ -69,8 +69,10 @@ public class ReceiverPi implements Runnable{
 	      channel.basicConsume(queueName, true, consumer);
 
 	      while (true) {
+	    	  System.out.println("sumething wong");
 	        QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-	        String information = delivery.getBody().toString();
+	        System.out.println("derp");
+	        String information = new String(delivery.getBody());
 	        
 	        handleReceived(information, delivery.getEnvelope().getRoutingKey());   
 	      }

@@ -12,7 +12,7 @@ import com.rabbitmq.client.QueueingConsumer;
  * Class responsible for the connection between client and Sim.
  *
  */
-public class SimConn implements Runnable{
+public class SimConnection implements Runnable{
 	private static String serverIP="localhost";
 	private static String exchangeName = "server";
 
@@ -23,9 +23,9 @@ public class SimConn implements Runnable{
 
 	private LinkedList<String> keys = new LinkedList<>();
 	
-	private Sim sim;
+	private Simulator sim;
 
-	public SimConn(Sim sim) {
+	public SimConnection(Simulator sim) {
 		this.sim = sim;
 		
 		//x and y
@@ -102,6 +102,5 @@ public class SimConn implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 }

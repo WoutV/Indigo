@@ -31,6 +31,7 @@ public class SenderClient {
 	public void sendTransfer(String info, String key) {
 		byte[] message = info.getBytes();
 		try {
+			System.out.println(key);
 			channel.basicPublish(EXCHANGE_NAME, key, null, message);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
