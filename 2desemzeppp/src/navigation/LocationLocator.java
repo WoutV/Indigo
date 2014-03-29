@@ -68,22 +68,25 @@ public class LocationLocator {
 		//find a set of 3 symbols
 		//in addition to the middle, 2 more are needed
 		List<List<Symbol>> possibleSymbolLists = new LinkedList<>();
-
+		
 		for(int i = 0;i<neighbours.size();i++) {
 			Symbol s1 = neighbours.get(i);
 			Symbol s2 = neighbours.get((i+1)%neighbours.size());
-
 			//if these symbols are next to each other
 			//&& the second is located clockwise of the first
+			double x1 = s1.getX() - middle.getX();
+			double y1 = s1.getY() - middle.getY();
+			double x2 = s2.getX() - middle.getX();
+			double y2 = s2.getY() - middle.getY();
 			if(euclideanDistance(s1.getX(), s1.getY(), s2.getX(), s2.getY())<1.2*closestToMidDist &&
-					s1.getX()*s2.getY()-s1.getY()*s2.getX() < 0) {
+					x1*y2-y1*x2 < 0) {
 				List<Symbol> list = new LinkedList<>();
 				list.add(s1);
 				list.add(s2);
 				possibleSymbolLists.add(list);
 			}
 		}
-
+		
 		List<double[]> possibleLocs = new LinkedList<>();
 		for(List<Symbol> possibleSymbolList : possibleSymbolLists) {
 			double[] loc = find3(possibleSymbolList.get(0),possibleSymbolList.get(1),middle);
@@ -97,7 +100,7 @@ public class LocationLocator {
 		for(double[] r:possibleLocs) {
 			s = s + r[0] + "," + r[1] + "||" + r[2] + "\n";
 		}
-		JOptionPane.showMessageDialog(null, s);
+		//JOptionPane.showMessageDialog(null, s);
 		try{
 			return possibleLocs.get(0);
 		}catch( Exception e){
@@ -514,17 +517,30 @@ public class LocationLocator {
 
 		//find location
 		List<Symbol> list2 = new LinkedList<>();
-		Symbol center0 = new Symbol("BR");
+		Symbol center0 = new Symbol("WS");
 		center0.setX(50);center0.setY(50);
-		list2.add(center0);
-		Symbol s10 = new Symbol("BR");
+		//list2.add(center0);
+		Symbol s10 = new Symbol("YR");
 		s10.setX(40);s10.setY(68);
-		//list2.add(s10);
+		list2.add(s10);
 		Symbol s20 = new Symbol("RS");
 		s20.setX(60);s20.setY(68);
 		list2.add(s20);
+		Symbol s21 = new Symbol("WR");
+		s21.setX(70);s21.setY(50);
+		list2.add(s21);
+		Symbol s22 = new Symbol("BS");
+		s22.setX(60);s22.setY(32);
+		list2.add(s22);
+		Symbol s23 = new Symbol("YR");
+		s23.setX(40);s23.setY(32);
+		list2.add(s23);
+		Symbol s24 = new Symbol("BR");
+		s24.setX(30);s24.setY(50);
+		list2.add(s24);
+		
 		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
-		double[] loc0 = locator.locate(list2,s10);
+		double[] loc0 = locator.locate(list2,center0);
 		//JOptionPane.showMessageDialog(null,loc0[0] + "," + loc0[1] + "|" + loc0[2]);
 	}
 }

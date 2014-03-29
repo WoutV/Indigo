@@ -6,3 +6,9 @@
 4) WS,WS,RR => topright, -120
 5) RR,WS,WS => topright, 120
 6) YR,WS,BS => middle left, 180
+
+
+7) WS,YR,RR, RS => topleft (see (3)) => 84,73,60
+8) RS,WR,WS,YR (70,50) => middleleft (see (1)) => 63,182,-60
+9) (1) but with different coordinates => -56
+10) 7 symbols middle left => 42,145,120
