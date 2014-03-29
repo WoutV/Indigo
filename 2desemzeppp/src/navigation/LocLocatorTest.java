@@ -218,6 +218,24 @@ public class LocLocatorTest {
 	}
 	
 	@Test
+	public void alpha90() {
+		List<Symbol> list2 = new LinkedList<>();
+		Symbol center0 = new Symbol("BR");
+		center0.setX(50);center0.setY(50);
+		list2.add(center0);
+		Symbol s10 = new Symbol("BR");
+		s10.setX(68);s10.setY(60);
+		list2.add(s10);
+		Symbol s20 = new Symbol("RS");
+		s20.setX(68);s20.setY(40);
+		list2.add(s20);
+		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
+		double[] loc0 = locator.locate(list2);
+		double alpha = loc0[2];
+		assertEquals(90,alpha,1);
+	}
+	
+	@Test
 	public void with7Symbols() {
 		List<Symbol> list2 = new LinkedList<>();
 		Symbol center0 = new Symbol("WS");

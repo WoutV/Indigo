@@ -16,7 +16,10 @@ import map.*;
  * At this moment, the class assumes an image taken using the camera with
  * the UPPER part of the image AIMED AT THE FRONT (this would correspond to decreasing y-value
  * in the grid).
- * POSSIBLY THIS NEEDS TO BE CHANGED (90° clockwise or counterclockwise)
+ * 
+ * Coordinates and alpha are the same as in PositionController:
+ * (0,0) is top left
+ * alpha = 0: points up, alpha > 0: clockwise, alpha < 0: counterclockwise
  * 
  * symbols are considered starting on the right, clockwise
  */
@@ -27,6 +30,14 @@ public class LocationLocator {
 	private GuiCommands guic;
 	private PositionController ypos;
 
+	/**
+	 * Initialises a LocationLocator with given map, positioncontrollers for x and y, and gui commands.
+	 * 
+	 * @param map
+	 * @param xpos
+	 * @param ypos
+	 * @param guic
+	 */
 	public LocationLocator(Map map, PositionController xpos, PositionController ypos, GuiCommands guic) {
 		this.map = map;
 		this.xpos = xpos;
@@ -34,8 +45,13 @@ public class LocationLocator {
 		this.guic = guic;
 	}
 
-	public void locateAndMove(List<Symbol> colors){
-		double[] moveTo = locate(colors);
+	/**
+	 * Find the location, send it to the gui, and notify the positioncontrollers.
+	 * 
+	 * @param symbols
+	 */
+	public void locateAndMove(List<Symbol> symbols){
+		double[] moveTo = locate(symbols);
 		guic.receiveLocation(moveTo[0]*10, moveTo[1]*10, true);
 		xpos.run(moveTo);
 		ypos.run(moveTo);	
@@ -46,22 +62,28 @@ public class LocationLocator {
 	 * x-coordinate, y-coordinate and alpha relative to the default plane (= pointing upward)
 	 * @param colors
 	 */
-	public double[] locate(List<Symbol> colors){
-		double[] totalCenter = calculateCenter(colors);
-		Symbol middle = nearestSymbol(colors, totalCenter);
+	public double[] locate(List<Symbol> symbols){
+		double[] totalCenter = calculateCenter(symbols);
+		Symbol middle = nearestSymbol(symbols, totalCenter);
 		//JOptionPane.showMessageDialog(null, middle.getColour() + "  " + middle.getShape());
-		colors.remove(middle);
-		return locate(colors,middle);
+		symbols.remove(middle);
+		return locate(symbols,middle);
 	}
 	
-	public double[] locate(List<Symbol> colors, Symbol middle) {
-		Symbol closestToMid = nearestSymbol(colors,middle);
+	/**
+	 * For a given list of symbols and the middle symbol,
+	 * gives the x-coordinate, y-coordinate and alpha.
+	 * @param symbols
+	 * @param middle
+	 */
+	public double[] locate(List<Symbol> symbols, Symbol middle) {
+		Symbol closestToMid = nearestSymbol(symbols,middle);
 		double closestToMidDist = euclideanDistance(middle.getX(), middle.getY(), closestToMid.getX(),
 				closestToMid.getY());
 
 		//filter all symbols surrounding the middle symbol
 		double[] middleCoordinates = {middle.getX(),middle.getY()};
-		List<Symbol> neighbours = filter(colors,1.2*closestToMidDist,middleCoordinates);
+		List<Symbol> neighbours = filter(symbols,1.2*closestToMidDist,middleCoordinates);
 		neighbours = sortImageSymbolPolar(neighbours,middle);
 		//JOptionPane.showMessageDialog(null, neighbours.get(0).getColour() + "," + neighbours.get(1).getColour());
 
@@ -118,7 +140,6 @@ public class LocationLocator {
 	 * @param centermap
 	 * @param sm1
 	 * @param sm2
-	 * @return
 	 */
 	private double alphaOtherWay(Symbol center,Symbol s1,Symbol s2,
 			Symbol centermap, Symbol sm1, Symbol sm2) {
@@ -288,35 +309,35 @@ public class LocationLocator {
 	}
 
 	/**
-	 * Retrieves the ColorSymbol closest to the center coordinates.
-	 * @param colors
+	 * Retrieves the Symbol closest to the center coordinates.
+	 * @param symbols
 	 * 			The center needs to be removed from this list already!
 	 * @param center
 	 * 			x- and y-coordinate
 	 */
-	private Symbol nearestSymbol(List<Symbol> colors, double[] center){
+	private Symbol nearestSymbol(List<Symbol> symbols, double[] center){
 		double max = Double.MAX_VALUE;
 		int smallestOne=0;
-		for(int i=0; i<colors.size(); i++){
-			double distance =euclideanDistance(colors.get(i).getX(),colors.get(i).getY(),center[0],center[1]);
+		for(int i=0; i<symbols.size(); i++){
+			double distance =euclideanDistance(symbols.get(i).getX(),symbols.get(i).getY(),center[0],center[1]);
 			if(distance<max){
 				smallestOne=i;
 				max=distance;
 			}
 		}
-		return colors.get(smallestOne);
+		return symbols.get(smallestOne);
 	}
 
 	/**
 	 * Retrieves the Symbol closest to the center Symbol.
-	 * @param colors
+	 * @param symbols
 	 * @param center
 	 */
-	private Symbol nearestSymbol(List<Symbol> colors, Symbol center) {
-		if(colors.contains(center))
-			colors.remove(center);
+	private Symbol nearestSymbol(List<Symbol> symbols, Symbol center) {
+		if(symbols.contains(center))
+			symbols.remove(center);
 		double[] coordinates = {center.getX(),center.getY()};
-		return nearestSymbol(colors,coordinates);
+		return nearestSymbol(symbols,coordinates);
 	}
 
 	private double euclideanDistance(double x1, double y1, double x2, double y2){
@@ -325,20 +346,20 @@ public class LocationLocator {
 
 	/**
 	 * Calculates the center of the populated image (center of symbol concentration)
-	 * @param colors
+	 * @param symbols
 	 * @return
 	 * 			r[0]: x, r[1]: y
 	 */
-	private double[] calculateCenter(List<Symbol> colors){
+	private double[] calculateCenter(List<Symbol> symbols){
 		double x=0;
 		double y=0;
-		for(int i =0; i<colors.size(); i++){
-			x+= colors.get(i).getX();
-			y+= colors.get(i).getY();
+		for(int i =0; i<symbols.size(); i++){
+			x+= symbols.get(i).getX();
+			y+= symbols.get(i).getY();
 		}
 		double[] center = new double[2];
-		center[0]=1.0*x/colors.size();
-		center[1]=1.0*y/colors.size();
+		center[0]=1.0*x/symbols.size();
+		center[1]=1.0*y/symbols.size();
 		return center;
 	}
 
@@ -395,6 +416,12 @@ public class LocationLocator {
 		}
 	}
 	
+	/**
+	 * Comparator for comparing symbols with polar coordinates.
+	 * Assumes x points right and y points up.
+	 * Should be used for symbols from images.
+	 * Lowest value is on the far right, alpha increases in clockwise order.
+	 */
 	private static class ImageSymbolComparatorNoChangeCoord implements Comparator<Symbol> {
 		private Symbol center;
 		
