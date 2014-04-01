@@ -20,7 +20,9 @@
   Episode III: Revenge of the Bloons}%
   \def\thepagelimit{10}}
 \DeclareOption{eind}{%
-  \def\thetitle{Eindverslag}%
+  \def\thetitle{Eindverslag\\
+  ~\\
+  Episode IV: A New Hope}%
   \def\thepagelimit{20}}
 \ProcessOptions
 \LoadClass[10pt,a4paper]{article}
