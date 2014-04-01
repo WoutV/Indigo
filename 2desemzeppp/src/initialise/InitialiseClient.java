@@ -67,6 +67,7 @@ public class InitialiseClient {
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();
+		PositionController.setDestination(new double[]{50.0,50.0});
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
