@@ -15,6 +15,7 @@
 
 %%% PACKAGES %%%
 \usepackage{graphicx}
+\usepackage{algorithmic}
 \usepackage{amsmath}
 \usepackage{wasysym}
 \usepackage{float}
@@ -181,9 +182,49 @@ Hierbij dient wel vermeld te worden dat de pattern recognition nog niet volledig
 \end{figure}
 
 \subsection{Locatiebepaling}
-De locatiebepaling kan gebeuren nadat een aantal figuren zijn herkend door de pattern recognition, en nadat de kaart (een csv-bestand) ingelezen is. \\
-Het uitlezen van de kaart gebeurt door een CSV-bestand (comma separated value), dat volgens een afgesproken formaat de figuren voorstelt. Hierin wordt elk roosterpunt voorgesteld door twee letters: een voor de kleur en een voor de vorm van de figuur op dat punt. \\
-Wanneer we dan een afbeelding hebben met herkende figuren gaan we op zoek waar deze plaats zich op de kaart bevindt. Eerst filteren we zodanig dat enkel de 3 middenste figuren op de foto in beschouwing worden genomen. We kiezen dan een referentiefiguur, en gaan alle plaatsen op de kaart af op zoek naar deze figuur. Bij al deze overeenkomsten gaan we vervolgens kijken naar de 6 omliggende figuren. Dit betekent dat de complexiteit O(n+6m) is, met n het aantal elementen in het veld (inclusief 'lege' plaatsen om het geheel vierkant te maken) en m het aantal matches de referentiefiguur.
+Om de locatie te bepalen wordt er gebruik gemaakt van een set van symbolen. Elk van deze symbolen heeft een kleur en vorm, en de x- en y-coördinaat binnen de afbeelding. Eerst gaat het algoritme bepalen welk van de gegeven symbolen het meest centraal ligt ten opzichte van de andere symbolen. Dit symbool wordt het middelpunt.\\
+
+Vervolgens zoekt het algoritme driehoeken. Twee punten rond het middelpunt, die vlak naast elkaar liggen en die samen met het middelpunt een gelijkzijdige driehoek binnen het raster vormen. Dit is omdat gegeven is dat elke set van 3 symbolen uniek is binnen het speelveld. Om dit te bereiken kijken we welke punt er het dichtst bij het middelpunt ligt, en filteren we de andere punten zodat we enkel punten overhouden waarvoor de afstand tot het middelpunt binnen een bepaalde marge ligt (1.2x kortste afstand). Deze punten worden gesorteerd op poolcoördinaten. Vervolgens proberen we te matchen voor de driehoek gevormd door dit middelpunt en twee punten die naast elkaar staan in de gesorteerde lijst. Deze twee punten mogen wel maximum 1,2x de kortste afstand uit elkaar liggen (voor het geval er symbolen ontbreken) en het tweede punt moet in wijzerzin van het eerste punt liggen.\\
+
+Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld worden afgegaan. Indien het middelpunt overeen komt met een punt uit het raster, worden alle buren van dit punt opgevraagd. Indien de andere twee punten overeen komen met twee punten van deze buren, die ook naast elkaar liggen en in dezelfde volgorde staan, hebben we een match en hebben we de locatie gevonden. De locatie die wordt gegeven is de locatie van het middelpunt.\\
+
+\textbf{Locate: }
+\begin{algorithmic}
+
+	\STATE in: Symbols; out: location
+	\STATE Symbol center = calculateCenter(symbols)
+	\STATE Symbol closestToMid = closestSymbol(symbols,center)     //get symbol closest to center symbol
+	\STATE closestToMidDist = dist(center,closestToMid)
+	\STATE List $\textless$Symbol$\textgreater$ neighbours = filter(symbols,1.2*closestToMidDist)
+	\STATE neighbours = sortPolar(neighbours,center)     //sort around center
+	\FOR {Symbol s1 in neighbours}
+		\STATE s2 = next(s1) %symbol following s1
+		\IF{dist(s1,s2) $\le$ 1.2*closestToMidDist \&\& clockwise(s1,s2)}
+			\STATE location = match(center,s1,s2)
+		\ENDIF
+	\ENDFOR
+	
+\end{algorithmic}
+
+\textbf{Match:}
+\begin{algorithmic}
+\STATE In: center, s1, s2; out: location, rotation
+	\FOR{Symbol s on map}
+		\IF{s matches center}
+			\FOR{Symbol sm1 in map.neighbours(center)} 
+				\STATE sm2 \= next(sm1)
+				\IF{s1 matches sm1 \&\& s2 matches sm2}
+					\STATE location found
+					\STATE calculate $\alpha$
+					\STATE return location, $\alpha$
+				\ENDIF
+			\ENDFOR
+		\ENDIF
+	\ENDFOR
+\end{algorithmic}
+
+
+
 
 % == SOFTWARE == %
 \section{Software}
