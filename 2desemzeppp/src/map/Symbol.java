@@ -51,10 +51,10 @@ public class Symbol {
 			this.colour = Colour.BLANK;
 			break;
 		}
-		System.out.println(string);
+		
 		switch(shape) {
 		case 'C':
-			System.out.println("LE C LE RECEIVED");
+			
 			this.shape = Shape.CIRCLE;
 			break;
 		case 'S':
@@ -70,6 +70,8 @@ public class Symbol {
 			this.shape = Shape.EMPTY;
 			break;
 		}
+		if(this.shape == null)
+			System.out.println(string);
 	}
 	
 	private Symbol(Colour colour,Shape shape) {
