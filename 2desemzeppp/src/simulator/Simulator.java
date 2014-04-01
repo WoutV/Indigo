@@ -42,6 +42,10 @@ public class Simulator {
 	public Simulator(){
 		init();
 	}
+	
+	public void setMap(Map map){
+		this.map = map;
+	}
 
 	private void init() {
 		//2 cm/s: max velocity
@@ -342,6 +346,7 @@ public class Simulator {
 		List<Symbol> symbols = new LinkedList<>();
 		
 		String[] s1 = s.split("@");
+		System.out.println(s);
 		for(String symb : s1) {
 			String[] s2 = symb.split(";");
 			String colourshape = s2[0] + s2[1];
@@ -350,6 +355,7 @@ public class Simulator {
 			symbol.setY(Double.parseDouble(s2[3]));
 			symbols.add(symbol);
 		}
+		
 		return symbols;
 	}
 }
