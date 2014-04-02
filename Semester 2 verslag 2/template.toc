@@ -15,8 +15,8 @@
 \contentsline {section}{\numberline {5}Software}{8}{section.5}
 \contentsline {subsection}{\numberline {5.1}GUI}{8}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}Pattern recognition, locatiebepaling en horizontale beweging}{9}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Connectie}{9}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Simulator}{10}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.3}Connectie}{10}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Simulator}{11}{subsection.5.4}
 \contentsline {section}{\numberline {6}Besluit}{11}{section.6}
 \setcounter {tocdepth}{1}
 \contentsline {section}{\numberline {A}Beschrijving van het proces}{12}{appendix.A}
