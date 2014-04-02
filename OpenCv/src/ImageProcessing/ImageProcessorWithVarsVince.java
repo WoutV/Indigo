@@ -31,7 +31,7 @@ public class ImageProcessorWithVarsVince {
 	public static void main(String[] args) {
 		 System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		 try {
-			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/a/2/b (106).jpg");
+			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/a/2/b (93).jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -222,14 +222,15 @@ public class ImageProcessorWithVarsVince {
     		}
 
 	    	if (Imgproc.contourArea(contours.get(i)) >minArea){
+	    		Core.putText(image,""+isRectangle(contours.get(i)), contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+	    		System.out.println("Center:x:" +contourCenters.x + "y:" + contourCenters.y + "Coefficient: " +isRectangle(contours.get(i)));
 	    		/*
 				 * Works if used on deletedcontours. And not on an approximation.
 				 */
 
-	    		System.out.println("contourArea:" +Imgproc.contourArea(contours.get(i)));
 				if(isCircle(contours.get(i),contourCenters)){
-					Core.putText(image,"C" +Math.round(contourCenters.x) +" " + Math.round(contourCenters.y), contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
-					System.out.println("Circle");
+					//Core.putText(image,"C" +Math.round(contourCenters.x) +" " + Math.round(contourCenters.y), contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+
 				}
 				
 				/*
@@ -237,15 +238,15 @@ public class ImageProcessorWithVarsVince {
 				 * contour to one figure.
 				 */
 				else if(isRectangle(contours.get(i))>0.7){
-					Core.putText(image,"R", contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+					//Core.putText(image,"R", contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
 				}
 				
 				else if(isStar(contours.get(i))>2.1 && isStar(contours.get(i))<2.2){
-					Core.putText(image,"R", contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+					//Core.putText(image,"R", contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
 				}
 				
 				else{
-					Core.putText(image,""+Imgproc.contourArea(contours.get(i)), contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+					//Core.putText(image,""+Imgproc.contourArea(contours.get(i)), contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
 				}
 //	    		for(int z=0; z < contours.get(i).toList().size();z++){
 //    				Core.circle(image, contours.get(i).toList().get(z), 1, new Scalar(0,0,255),1);
@@ -609,7 +610,7 @@ public class ImageProcessorWithVarsVince {
 		double treshold=7;
 		if(Imgproc.contourArea(contour)< 1150)
 			treshold=3;
-		System.out.println("Center:x:" +center.x + "y:" + center.y + "diff/approx:"+ difference/approx.size());
+		//System.out.println("Center:x:" +center.x + "y:" + center.y + "diff/approx:"+ difference/approx.size());
 		if(difference/approx.size()<treshold)
 			return true;
 		return false;
