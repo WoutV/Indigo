@@ -31,7 +31,7 @@ public class ImageProcessorWithVarsVince {
 	public static void main(String[] args) {
 		 System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		 try {
-			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/a/2/b (107).jpg");
+			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/a/2/b (106).jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -225,9 +225,11 @@ public class ImageProcessorWithVarsVince {
 	    		/*
 				 * Works if used on deletedcontours. And not on an approximation.
 				 */
-				if(isCircle(contours.get(i).toList(),contourCenters)){
-					Core.putText(image,"C", contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
-					System.out.println("CircleArea:" + Imgproc.contourArea(contours.get(i)));
+
+	    		System.out.println("contourArea:" +Imgproc.contourArea(contours.get(i)));
+				if(isCircle(contours.get(i),contourCenters)){
+					Core.putText(image,"C" +Math.round(contourCenters.x) +" " + Math.round(contourCenters.y), contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,200,250), 3);
+					System.out.println("Circle");
 				}
 				
 				/*
@@ -585,7 +587,8 @@ public class ImageProcessorWithVarsVince {
 	 * If all points of the contour are on an equal distance to the center point. This is a circle.
 	 * Works if you don't add the inner and outer contours and don't work on approximations.
 	 */
-	public boolean isCircle(List<Point> approx, Point center){
+	public boolean isCircle(MatOfPoint contour, Point center){
+		List<Point> approx = contour.toList();
 		double radiussum=0;
 		double x;
 		double y;
@@ -603,9 +606,11 @@ public class ImageProcessorWithVarsVince {
 			double radius = Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
 			difference += (averageRadius - radius )*(averageRadius - radius );
 		}
-		
-		//System.out.println(difference/approx.size());
-		if(difference<5*approx.size())
+		double treshold=7;
+		if(Imgproc.contourArea(contour)< 1150)
+			treshold=3;
+		System.out.println("Center:x:" +center.x + "y:" + center.y + "diff/approx:"+ difference/approx.size());
+		if(difference/approx.size()<treshold)
 			return true;
 		return false;
 	}
