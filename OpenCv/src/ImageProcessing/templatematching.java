@@ -25,6 +25,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
@@ -32,15 +33,15 @@ import org.opencv.imgproc.Imgproc;
 
 public class templatematching {
 	private int erodeTimes = 0;
-	private int dilateTimes = 2;
-	private int blur = 5;
+	private int dilateTimes = 1;
+	private int blur = 6;
 	private int erodesize = 3;
-	private int dilatesize = 3;
+	private int dilatesize = 2;
 	private Mat originalImage;
 	private String openCvFolder = "C:/Users/Study/Desktop/OpenCv/Processed/";
 	private int cannyThresholdMin = 8;
-	private int cannyThresholdMax = 25;
-	private int matchMethod = 0;
+	private int cannyThresholdMax = 18;
+	private int matchMethod = 2;
 	private int epsilonApprox = 2;
 	private int pointsEqualEpsilon = 116;
 	private int pointsEqualEpsilonPoints = 52;
@@ -48,10 +49,10 @@ public class templatematching {
 	private frame cannyoutput = makeFrame("Canny Output", frameSize);
 	private frame erodedoutput = makeFrame("Eroded Output", frameSize);
 	private frame dilatedoutput = makeFrame("Dilated Output", frameSize);
-	private frame foundContours = makeFrame(
-			"Template", frameSize);;
-	private frame findContourFrame = makeFrame("Result", frameSize);
-	private Mat circleTemplate, starTemplate, rectangleTemplate, heartTemplate;
+	private frame foundContours = makeFrame("Template", frameSize);;
+	private frame resultFrame = makeFrame("Result", frameSize);
+	private Mat circleTemplate, starTemplate, rectangleTemplate;
+	MatOfPoint heartTemplate;
 
 	/**
 	 * @param args
@@ -59,7 +60,7 @@ public class templatematching {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		templatematching lip = new templatematching();
-		lip.start("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\fotos\\star.jpg");
+		lip.start("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\fotos\\b (111).jpg");
 	}
 
 	public templatematching() {
@@ -69,15 +70,111 @@ public class templatematching {
 	}
 
 	private void createTemplates() {
-		
-		heartTemplate = Highgui.imread("../fotos/heart.jpg");
-		Imgproc.cvtColor(heartTemplate, heartTemplate, Imgproc.COLOR_BGR2GRAY);
+
+		Mat heartImage1 = Highgui.imread("../fotos/heart.jpg");
+		Mat heartImage = heartImage1.clone();
+		Imgproc.cvtColor(heartImage, heartImage, Imgproc.COLOR_BGR2GRAY);
 		// Blurring the image within three by three matrix and writing it as
 		// grayimage.png
-		Imgproc.blur(heartTemplate, heartTemplate, new Size(4, 4));
+		Imgproc.blur(heartImage, heartImage, new Size(4, 4));
 		// Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
 		// Making some more matrixes to see the ongoing operations.
-		Imgproc.Canny(heartTemplate, heartTemplate, 8, 50);
+		Imgproc.Canny(heartImage, heartImage, 8, 50);
+		List<MatOfPoint> heartTemplate = new ArrayList<MatOfPoint>();
+		Imgproc.findContours(heartImage, heartTemplate, new Mat(),
+				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+		System.out.println("Heart Template Contours Size"
+				+ heartTemplate.size());
+		this.heartTemplate = heartTemplate.get(1);
+		Imgproc.drawContours(heartImage1, heartTemplate, -1, new Scalar(0, 255,
+				255));
+		foundContours.matToBufferedImage(heartImage1);
+		foundContours.repaint();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Mat circleImage1 = Highgui.imread("../fotos/circle.jpg");
+		Mat circleImage = circleImage1.clone();
+		Imgproc.cvtColor(circleImage, circleImage, Imgproc.COLOR_BGR2GRAY);
+		// Blurring the image within three by three matrix and writing it as
+		// grayimage.png
+		Imgproc.blur(circleImage, circleImage, new Size(4, 4));
+		// Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
+		// Making some more matrixes to see the ongoing operations.
+		Imgproc.Canny(circleImage, circleImage, 8, 50);
+		List<MatOfPoint> circleTemplate = new ArrayList<MatOfPoint>();
+		Imgproc.findContours(circleImage, circleTemplate, new Mat(),
+				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+		System.out.println("circle Template Contours Size"
+				+ circleTemplate.size());
+		this.circleTemplate = circleTemplate.get(0);
+		Imgproc.drawContours(circleImage1, circleTemplate, -1, new Scalar(0, 255,
+				255));
+		foundContours.matToBufferedImage(circleImage1);
+		foundContours.repaint();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		Mat starImage1 = Highgui.imread("../fotos/star.jpg");
+		Mat starImage = starImage1.clone();
+		Imgproc.cvtColor(starImage, starImage, Imgproc.COLOR_BGR2GRAY);
+		// Blurring the image within three by three matrix and writing it as
+		// grayimage.png
+		Imgproc.blur(starImage, starImage, new Size(4, 4));
+		// Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
+		// Making some more matrixes to see the ongoing operations.
+		Imgproc.Canny(starImage, starImage, 8, 50);
+		List<MatOfPoint> starTemplate = new ArrayList<MatOfPoint>();
+		Imgproc.findContours(starImage, starTemplate, new Mat(),
+				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+		System.out.println("star Template Contours Size"
+				+ starTemplate.size());
+		this.starTemplate = starTemplate.get(0);
+		Imgproc.drawContours(starImage1, starTemplate, -1, new Scalar(0, 255,
+				255));
+		foundContours.matToBufferedImage(starImage1);
+		foundContours.repaint();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		Mat rectangleImage1 = Highgui.imread("../fotos/rectangle.jpg");
+		Mat rectangleImage = rectangleImage1.clone();
+		Imgproc.cvtColor(rectangleImage, rectangleImage, Imgproc.COLOR_BGR2GRAY);
+		// Blurring the image within three by three matrix and writing it as
+		// grayimage.png
+		Imgproc.blur(rectangleImage, rectangleImage, new Size(3, 3));
+		// Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
+		// Making some more matrixes to see the ongoing operations.
+		Imgproc.Canny(rectangleImage, rectangleImage, 8, 80);
+		List<MatOfPoint> rectangleTemplate = new ArrayList<MatOfPoint>();
+		Imgproc.findContours(rectangleImage, rectangleTemplate, new Mat(),
+				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+		System.out.println("rectangle Template Contours Size"
+				+ rectangleTemplate.size());
+		this.rectangleTemplate = rectangleTemplate.get(0);
+		Imgproc.drawContours(rectangleImage1, rectangleTemplate, -1, new Scalar(0, 255,
+				255));
+		foundContours.matToBufferedImage(rectangleImage1);
+		foundContours.repaint();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -111,7 +208,7 @@ public class templatematching {
 				this.originalImage = Highgui.imread(urlImage,
 						Imgproc.COLOR_BGR2GRAY);
 				processImage();
-				Thread.sleep(200);
+				//Thread.sleep(200);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -159,60 +256,79 @@ public class templatematching {
 		}
 		dilatedoutput.matToBufferedImage(dilatedImage);
 		dilatedoutput.repaint();
-		foundContours.matToBufferedImage(heartTemplate);
-		foundContours.repaint();
-		
-		
-		int match_method = getMatchMethod();
+
 		System.out.println("\nRunning Template Matching");
 
-		Mat img = dilatedImage;
-		Mat templ = this.heartTemplate;
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+		
+		// List<MatOfInt4> hierarchy;
 
-		// / Create the result matrix
-		int result_cols = img.cols() - templ.cols() + 1;
-		int result_rows = img.rows() - templ.rows() + 1;
-		Mat result = new Mat(result_rows, result_cols, CvType.CV_32FC1);
-
-		// / Do the Matching and Normalize
-		Imgproc.matchTemplate(img, templ, result, match_method);
-		Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
-
-		// / Localizing the best match with minMaxLoc
-		MinMaxLocResult mmr = Core.minMaxLoc(result);
-
-		Point matchLoc;
-		if (match_method == Imgproc.TM_SQDIFF
-				|| match_method == Imgproc.TM_SQDIFF_NORMED) {
-			matchLoc = mmr.minLoc;
-		} else {
-			matchLoc = mmr.maxLoc;
+		// Finding the contours.
+		Imgproc.findContours(dilatedImage, contours, new Mat(),
+				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+		contours = removeContours(contours);
+		contours = filterOutEdges(contours, originalImage.size());
+		for (int i = 0; i < contours.size(); i++) {
+			Rect rec = Imgproc.boundingRect(contours.get(i));
+			resultFrame.matToBufferedImage(originalImage.submat(rec));
+			resultFrame.repaint();
+			Double shapematch = Imgproc.matchShapes(contours.get(i),
+					heartTemplate, getMatchMethod(), 0);
+			System.out.println("Heart:" + shapematch);
+			shapematch = Imgproc.matchShapes(contours.get(i),
+					starTemplate, getMatchMethod(), 0);
+			System.out.println("Star:" + shapematch);
+			shapematch = Imgproc.matchShapes(contours.get(i),
+					circleTemplate, getMatchMethod(), 0);
+			System.out.println("Circle:" + shapematch);
+			shapematch = Imgproc.matchShapes(contours.get(i),
+					rectangleTemplate, getMatchMethod(), 0);
+			System.out.println("Rectangle:" + shapematch +"\n\n");
+			try {
+				Thread.sleep(7000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		System.out.println(matchLoc);
-		// / Show me what you got
-		Core.circle(image, matchLoc, 10, new Scalar(0,0,255));
-
-		// Save the visualized detection.
-		findContourFrame.matToBufferedImage(image);
-		findContourFrame.repaint();
-
 
 	}
 
 	private int getMatchMethod() {
-		if(matchMethod==0)
-			return Imgproc.TM_CCOEFF;
-		if(matchMethod==1)
-			return Imgproc.TM_CCOEFF_NORMED;
-		if(matchMethod==2)
-			return Imgproc.TM_CCORR;
-		if(matchMethod==3)
-			return Imgproc.TM_CCORR_NORMED;
-		if(matchMethod==4)
-			return Imgproc.TM_SQDIFF;
-		return Imgproc.TM_SQDIFF_NORMED;
+		if (matchMethod == 0)
+			return Imgproc.CV_CONTOURS_MATCH_I1;
+		if (matchMethod == 1)
+			return Imgproc.CV_CONTOURS_MATCH_I2;
+		return Imgproc.CV_CONTOURS_MATCH_I3;
 	}
 
+	private List<MatOfPoint> filterOutEdges(List<MatOfPoint> contours,
+			Size imageSize) {
+		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			ArrayList<Point> contoursPoint = new ArrayList<Point>(
+					contour1.toList());
+			for (int index = 0; index < contoursPoint.size(); index++) {
+				Point p = contoursPoint.get(index);
+				if (p.x <= 0.01 * imageSize.width
+						|| p.x >= 0.99 * imageSize.width
+						|| p.y <= 0.01 * imageSize.height
+						|| p.y >= 0.99 * imageSize.height) {
+					toRemove.add(contour1);
+					break;
+				}
+			}
+
+		}
+
+		for (MatOfPoint p : toRemove) {
+			contours.remove(p);
+		}
+
+		return contours;
+	}
 	private String getColor(Mat image, Point contourCenter) {
 		Mat bitImage = image.clone();
 		// Checking for white
@@ -259,6 +375,56 @@ public class templatematching {
 	}
 
 	/**
+	 * 
+	 * @param contours
+	 *            Lists of matrix points in which to operate.
+	 * @return Returns a new list of mat of points after adding the contours
+	 *         which are near each other.
+	 */
+	private List<MatOfPoint> removeContours(List<MatOfPoint> contours) {
+		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			if (Imgproc.contourArea(contour1) > 1000) {
+				for (int index = i + 1; index < contours.size(); index++) {
+					MatOfPoint contour2 = contours.get(index);
+					if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
+							pointsEqualEpsilon)) {
+						fuzzyContours.put(i, index);
+						toRemove.add(contour2);
+					}
+				}
+			}
+		}
+		for (MatOfPoint p : toRemove) {
+			contours.remove(p);
+		}
+		// System.out.println("removed: " + toRemove.size());
+		return contours;
+	}
+
+	/**
+	 * Returns true if the distance between the given points is less than the
+	 * given epsilon.
+	 * 
+	 * @param point1
+	 * @param point2
+	 * @param epsilon
+	 *            The margin to look if the given points are almost equal.
+	 * @return
+	 * 
+	 */
+	private boolean pointsEquals(double[] point1, double[] point2, int epsilon) {
+		double distance = Math.sqrt((point1[0] - point2[0])
+				* (point1[0] - point2[0]) + (point1[1] - point2[1])
+				* (point1[1] - point2[1]));
+		if (distance < epsilon)
+			return true;
+		return false;
+	}
+
+	/**
 	 * The title of the frame
 	 * 
 	 * @param Title
@@ -294,7 +460,8 @@ public class templatematching {
 				+ dilatesize);
 		final JTextField dilatetimesTF = new JTextField("Dilate Times:"
 				+ dilateTimes);
-		final JTextField matchMethodField = new JTextField("Match Method:" + matchMethod);
+		final JTextField matchMethodField = new JTextField("Match Method:"
+				+ matchMethod);
 		final JTextField epsilonApproxTF = new JTextField("Epsilon Approx:"
 				+ epsilonApprox);
 		final JTextField pointsEqualEpsilonTF = new JTextField(
