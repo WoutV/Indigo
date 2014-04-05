@@ -3,7 +3,6 @@ package initialise;
 import imageProcessing.ImageProcessor;
 
 import map.*;
-import map.OldLocationLocator;
 import navigation.*;
 
 import org.opencv.core.Core;
@@ -68,6 +67,13 @@ public class InitialiseClient {
 		ReceiverClient receiver = new ReceiverClient(gui);
 		Thread receiverclientthread = new Thread(receiver);
 		receiverclientthread.start();
+		PositionController.setDestination(new double[]{50.0,50.0});
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
 		sender.sendTransfer("0", "indigo.lcommand.motor1");
