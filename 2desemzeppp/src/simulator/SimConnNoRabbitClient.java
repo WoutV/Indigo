@@ -11,7 +11,7 @@ import navigation.Dispatch;
  * Class for connecting a client to a Sim, without needing a cetral server.
  *
  */
-public class SimConnNoRabbitClient {
+public class SimConnNoRabbitClient implements Runnable {
 
 	private Socket sock;
 	private ObjectOutputStream output;
@@ -58,6 +58,7 @@ public class SimConnNoRabbitClient {
 	
 	public void handleReceived(String s) {
 		String[] p = s.split("#");
+		System.out.println(s);
 		if(p[0].equals("indigo.private.symbollist"))
 			Dispatch.processSymbols(Simulator.StringToSymbolList(p[1]));
 

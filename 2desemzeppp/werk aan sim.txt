@@ -1,0 +1,8 @@
+sim: y testen
+(documenteren)
+met andere Kp's werken: werkt het tegoei (vertraagt het ook? evt output afdrukken)
+
+gui:
+tablets
+orientatie
+format getallen in display

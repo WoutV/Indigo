@@ -16,9 +16,22 @@ public class Simulator {
 	private double xConstant, yConstant;
 	
 	private SimConnection simconn;
+	private SimConnNoRabbit simconn2;
 
+	/**
+	 * Set this Sim to use a SimConnection using a Rabbit server.
+	 * @param sims
+	 */
 	public void setSimConn(SimConnection sims){
 		simconn = sims;
+	}
+	
+	/**
+	 * Set this Sim to use a connection not using a Rabbit server.
+	 * @param conn
+	 */
+	public void setSimConnNoRabbit(SimConnNoRabbit conn) {
+		simconn2 = conn;
 	}
 	/**
 	 * The time between sending symbols (in ms).
@@ -38,6 +51,8 @@ public class Simulator {
 	private double xSpeed,ySpeed,xAccel,yAccel;
 	
 	private Random random = new Random();
+	
+	private boolean skipSend;
 
 	public Simulator(){
 		init();
@@ -55,7 +70,7 @@ public class Simulator {
 		//motor power 100 ==> 1 cm/s² = 0,01 m/s²
 		//a = power/10000
 		xConstant = 10000;
-		yConstant = 4;
+		yConstant = 10000;
 	}
 
 	/**
@@ -96,14 +111,16 @@ public class Simulator {
 		double v = xSpeed*(Math.cos(alpha*1.0/180*Math.PI)) + ySpeed*(Math.cos(rangeFit(alpha-90)*1.0/180*Math.PI));
 		//acceleration
 		double axzepp = pwm/xConstant;
-		double axnew = 1/4*xAccel + (3/4*Math.cos(alpha*1.0/180*Math.PI)*axzepp);
+		double axnew = 1.0/4*xAccel + (3.0/4*Math.cos(alpha*1.0/180*Math.PI)*axzepp);
 		xAccel = axnew;
 		xPos = xPos + xSpeed*wait/1000.0 + axnew*(wait/1000.0)*(wait/1000.0)/2;
 		xSpeed = xSpeed + axnew*wait/1000.0;
-		double aynew = 1/4*yAccel + (3/4*Math.cos(rangeFit(alpha-90)*1.0/180*Math.PI)*axzepp);
+		double aynew = 1.0/4*yAccel + (3.0/4*Math.cos(rangeFit(alpha-90)*1.0/180*Math.PI)*axzepp);
 		yAccel = aynew;
 		yPos = yPos + ySpeed*wait/1000.0 + aynew*(wait/1000.0)*(wait/1000.0)/2;
 		ySpeed = ySpeed + aynew*wait/1000.0;
+		System.out.println("X: anew:" + axzepp + ",axnew: " + axnew + "aynew: " + aynew);
+		System.out.println("Loc: ( " + xPos + "," + yPos + " )");
 		if(wind)
 			wind();
 		sendSymbols();
@@ -119,11 +136,11 @@ public class Simulator {
 		//Y(zepp) -> motion in X and Y!!
 		//acceleration
 		double ayzepp = pwm/yConstant;
-		double axnew = 1/4*xAccel + (3/4*Math.sin(rangeFit(alpha-180)*1.0/180*Math.PI)*ayzepp);
+		double axnew = 1.0/4*xAccel + (3.0/4*Math.sin(rangeFit(alpha-180)*1.0/180*Math.PI)*ayzepp);
 		xAccel = axnew;
 		xPos = xPos + xSpeed*wait/1000.0 + axnew*(wait/1000.0)*(wait/1000.0)/2;
 		xSpeed = xSpeed + axnew*wait/1000.0;
-		double aynew = 1/4*yAccel + (3/4*Math.cos(rangeFit(alpha)*1.0/180*Math.PI)*ayzepp);
+		double aynew = 1.0/4*yAccel + (3.0/4*Math.cos(rangeFit(alpha)*1.0/180*Math.PI)*ayzepp);
 		yAccel = aynew;
 		yPos = yPos + ySpeed*wait/1000.0 + aynew*(wait/1000.0)*(wait/1000.0)/2;
 		ySpeed = ySpeed + aynew*wait/1000.0;
@@ -297,9 +314,19 @@ public class Simulator {
 		list.add(symb1);
 		list.add(symb2);
 		
+		skipSend = !skipSend;
+		//if(skipSend)
+		//	return;
+			
+		System.out.println(nearestSymbol.getColour() + " " + nearestSymbol.getShape() + 
+				"," + symb1.getColour() + " " + symb1.getShape() + "," + symb2.getColour() + " " + symb2.getShape());
+		
 		String key = "indigo.private.symbollist";
 		String info = SymbolListToString(list);
-		simconn.sendTransfer(info, key);
+		if(simconn != null)
+			simconn.sendTransfer(info, key);
+		if(simconn2 != null)
+			simconn2.sendTransfer(info, key);
 	}
 	
 	public static String SymbolListToString(List<Symbol> list) {

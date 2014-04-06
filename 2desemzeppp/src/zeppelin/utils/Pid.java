@@ -33,7 +33,7 @@ public class Pid {
 		this.Kd = Kd;
 		this.dest = dest;
 		this.dt = dt;
-		integ.addToIntegral(848/Ki);
+		//integ.addToIntegral(848/Ki);
 	}
 	
 	/**

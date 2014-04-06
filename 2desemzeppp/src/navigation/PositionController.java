@@ -1,5 +1,6 @@
 package navigation;
 
+import simulator.SimConnNoRabbitClient;
 import connection.SenderClient;
 import zeppelin.utils.Pid;
 
@@ -31,6 +32,7 @@ public class PositionController {
 	
 	//used because positioncontroller running on client
 	private SenderClient sender;
+	private SimConnNoRabbitClient sender2;
 
 	private double Kp,Ki,Kd;
 	
@@ -131,7 +133,10 @@ public class PositionController {
 		else
 			key = "indigo.lcommand.motor2";
 		message = message+ (int) (1.0*100/1024*output);
-		sender.sendTransfer(message,key);
+		if(sender != null)
+			sender.sendTransfer(message,key);
+		if(sender2 != null)
+			sender2.sendTransfer(message, key);
 	}
 
 	private void makePid() {
@@ -167,5 +172,9 @@ public class PositionController {
 	
 	public void setSender(SenderClient sender) {
 		this.sender = sender;
+	}
+	
+	public void setSenderNoRabbit(SimConnNoRabbitClient sender) {
+		sender2 = sender;
 	}
 }

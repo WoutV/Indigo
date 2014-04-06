@@ -7,6 +7,8 @@ import navigation.*;
 
 import org.opencv.core.Core;
 
+import simulator.SimConnNoRabbitClient;
+
 import connection.ReceiverClient;
 import connection.SenderClient;
 import gui.GuiMain;
@@ -45,8 +47,8 @@ public class InitialiseClient {
         		gui.setOwnLocation(200, 200);	        		
             }
         });
-        SenderClient sender = new SenderClient();
-        gui.getGuic().setSender(sender);
+        //SenderClient sender = new SenderClient();
+        //gui.getGuic().setSender(sender);
         
         //here because controllers running on client
         //TODO kp,kd,ki values
@@ -59,14 +61,23 @@ public class InitialiseClient {
         ypos.setKp(5);
         ypos.setKi(0);
         
-		xpos.setSender(sender);
-		ypos.setSender(sender);
+        //rabbit
+//		xpos.setSender(sender);
+//		ypos.setSender(sender);
+        
+        //norabbit
+        SimConnNoRabbitClient simConnClient = new SimConnNoRabbitClient();
+        Thread t = new Thread(simConnClient);
+        t.start();
+        xpos.setSenderNoRabbit(simConnClient);
+        ypos.setSenderNoRabbit(simConnClient);
+        
 		LocationLocator locator = new LocationLocator(map,xpos,ypos,gui.getGuic());
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
 		Dispatch.setLoc(locator);
-		ReceiverClient receiver = new ReceiverClient(gui);
-		Thread receiverclientthread = new Thread(receiver);
-		receiverclientthread.start();
+		//ReceiverClient receiver = new ReceiverClient(gui);
+		//Thread receiverclientthread = new Thread(receiver);
+		//receiverclientthread.start();
 		PositionController.setDestination(new double[]{50.0,50.0});
 		try {
 			Thread.sleep(5000);
@@ -76,6 +87,8 @@ public class InitialiseClient {
 		}
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
-		sender.sendTransfer("0", "indigo.lcommand.motor1");
+		//sender.sendTransfer("0", "indigo.lcommand.motor1");
+		simConnClient.sendTransfer("0", "indigo.lcommand.motor2");
+		simConnClient.sendTransfer("0", "indigo.lcommand.motor1");
 	}
 }
