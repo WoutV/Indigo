@@ -228,7 +228,7 @@ public class Simulator {
 		int rightupX = x + 1; //even row
 		if(y%2 == 0)
 			rightupX = x; //odd row
-		int rightupY = y + 1;
+		int rightupY = y - 1;
 		Symbol rightup = map.getSymbol(rightupX, rightupY);
 		//could be null: use blank symbol instead
 		if(rightup == null)
