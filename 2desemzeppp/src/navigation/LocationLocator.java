@@ -51,12 +51,20 @@ public class LocationLocator {
 	 * @param symbols
 	 */
 	public void locateAndMove(List<Symbol> symbols){
-		double[] moveTo = locate(symbols);
-		guic.receiveLocation(moveTo[0]*10, moveTo[1]*10, true);
-		xpos.run(moveTo);
+		double[] loc = locate(symbols);
+		//check if near tablet
+		for(int tablet=0;tablet<map.getNoOfTablets();tablet++) {
+			double[] tabletCoord = map.getTablet(tablet+1);
+			if(euclideanDistance(loc[0],loc[1],tabletCoord[0],tabletCoord[1]) < 20) {
+				
+			}
+		}
+		
+		guic.receiveLocation(loc[0]*10, loc[1]*10, true);
+		xpos.run(loc);
 		//doing y now
 		//System.out.println("going to y");
-		ypos.run(moveTo);	
+		ypos.run(loc);	
 	}
 
 	/**
