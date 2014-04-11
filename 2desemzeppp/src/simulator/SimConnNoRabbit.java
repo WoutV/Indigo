@@ -39,7 +39,7 @@ public class SimConnNoRabbit implements Runnable {
 	public synchronized void sendTransfer(String message,String key){
 		try {
 			String transfer = key + "#" + message;
-			System.out.println(transfer);
+			//ystem.out.println("sending:" + transfer);
 			output.writeObject(transfer);
 			output.flush();
 		} catch (IOException e) {
@@ -63,10 +63,11 @@ public class SimConnNoRabbit implements Runnable {
 	}
 	
 	public void handleReceived(String s) {
+		System.out.println("received: " + s);
 		String[] p = s.split("#");
 		if(p[0].equals("indigo.lcommand.motor1"))
 			sim.handleInput(1, Integer.parseInt(p[1]));
-		if(p[0].equals("indigo.lcommand.motor2"));
-			//sim.handleInput(2, Integer.parseInt(p[1]));
+		if(p[0].equals("indigo.lcommand.motor2"))
+			sim.handleInput(2, Integer.parseInt(p[1]));
 	}
 }

@@ -54,6 +54,8 @@ public class LocationLocator {
 		double[] moveTo = locate(symbols);
 		guic.receiveLocation(moveTo[0]*10, moveTo[1]*10, true);
 		xpos.run(moveTo);
+		//doing y now
+		//System.out.println("going to y");
 		ypos.run(moveTo);	
 	}
 

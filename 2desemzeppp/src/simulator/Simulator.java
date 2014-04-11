@@ -10,7 +10,10 @@ import map.Symbol;
 /**
  * The simulator.
  * Acts like a server: takes the speed of motors as input, gives a set of symbols as output.
- * The simulator uses a default XY-plane. (x point right, y points up)
+ * The simulator uses a default XY-plane. (x points right, y points up)
+ * The input is the speed of the x or y motor (motor 1 and 2), assuming the default XY-plane.
+ * Symbols are sent to the map as if seen by the zeppelin, and sent using the "indigo.private.symbollist"
+ * key.
  */
 public class Simulator {
 	private double xConstant, yConstant;
@@ -37,28 +40,29 @@ public class Simulator {
 	 * The time between sending symbols (in ms).
 	 */
 	private long wait = 500;
+	
 	private boolean wind;
+	
 	private Map map;
 
 	//boardsize in cm
 	private int boardSize = 400;
 
-	//default: 0 = right, 180 = right
+	//default: 0 = right, 180 = left
 	private int alpha;
+	
 	//all in cm!!
 	private double xPos=200,yPos=200;
 	//speed in the default xy-plane.
 	private double xSpeed,ySpeed,xAccel,yAccel;
 	
 	private Random random = new Random();
-	
-	private boolean skipSend;
 
-	public Simulator(){
+	/**
+	 * Creates a new Simulator using the given map.
+	 */
+	public Simulator(Map map){
 		init();
-	}
-	
-	public void setMap(Map map){
 		this.map = map;
 	}
 
@@ -69,8 +73,8 @@ public class Simulator {
 		//a = max 1 cm/s²?
 		//motor power 100 ==> 1 cm/s² = 0,01 m/s²
 		//a = power/10000
-		xConstant = 10000;
-		yConstant = 10000;
+		xConstant = 1000;
+		yConstant = 1000;
 	}
 
 	/**
@@ -95,6 +99,7 @@ public class Simulator {
 	 * @param pwm
 	 */
 	public void handleInput(int motor, int pwm) {
+		System.out.println(motor);
 		if(motor == 1)
 			handleXInput(pwm);
 		if(motor == 2) 
@@ -119,7 +124,7 @@ public class Simulator {
 		yAccel = aynew;
 		yPos = yPos + ySpeed*wait/1000.0 + aynew*(wait/1000.0)*(wait/1000.0)/2;
 		ySpeed = ySpeed + aynew*wait/1000.0;
-		System.out.println("X: anew:" + axzepp + ",axnew: " + axnew + "aynew: " + aynew);
+		System.out.println("X: pwm: " + pwm + ", anew:" + axzepp + " ,axnew: " + axnew + ",aynew: " + aynew);
 		System.out.println("Loc: ( " + xPos + "," + yPos + " )");
 		if(wind)
 			wind();
@@ -144,11 +149,16 @@ public class Simulator {
 		yAccel = aynew;
 		yPos = yPos + ySpeed*wait/1000.0 + aynew*(wait/1000.0)*(wait/1000.0)/2;
 		ySpeed = ySpeed + aynew*wait/1000.0;
+		System.out.println("Y: pwm: " + pwm + ", anew:" + ayzepp + " ,axnew: " + axnew + ",aynew: " + aynew);
+		System.out.println("Loc: ( " + xPos + "," + yPos + " )");
 		if(wind)
 			wind();
 		sendSymbols();
 	}
 	
+	/**
+	 * Creates a random wind effect: between -2 cm and 2 cm, alpha between -10 and 10.
+	 */
 	private void wind() {
 		//-2cm -> 2cm
 		int xExtra = random.nextInt(400);
@@ -256,6 +266,11 @@ public class Simulator {
 		return neighbours;
 	}
 
+	/**
+	 * Using the current location of the zeppelin in the Sim, sends the 3 symbols
+	 * which would correspond to the symbols seen in an image taken from the zeppelin
+	 * at the current location.
+	 */
 	private void sendSymbols() {
 		try {
 			Thread.sleep(wait);
@@ -313,10 +328,6 @@ public class Simulator {
 		list.add(nearestSymbol);
 		list.add(symb1);
 		list.add(symb2);
-		
-		skipSend = !skipSend;
-		//if(skipSend)
-		//	return;
 			
 		System.out.println(nearestSymbol.getColour() + " " + nearestSymbol.getShape() + 
 				"," + symb1.getColour() + " " + symb1.getShape() + "," + symb2.getColour() + " " + symb2.getShape());
@@ -329,6 +340,12 @@ public class Simulator {
 			simconn2.sendTransfer(info, key);
 	}
 	
+	/**
+	 * Transforms a list of Symbols into a String to be sent using the
+	 * "indigo.private.symbollist" key.
+	 * @param list
+	 * 			List of symbols
+	 */
 	public static String SymbolListToString(List<Symbol> list) {
 		String s = "";
 		for(Symbol symbol : list) {
@@ -369,11 +386,17 @@ public class Simulator {
 		return s;
 	}
 	
+	/**
+	 * Transforms a String into a list of Symbols. This String is usually received
+	 * from a "indigo.private.symbollist" message from the Sim.
+	 * @param s
+	 * @return
+	 */
 	public static List<Symbol> StringToSymbolList(String s) {
 		List<Symbol> symbols = new LinkedList<>();
 		
 		String[] s1 = s.split("@");
-		System.out.println(s);
+		//System.out.println(s);
 		for(String symb : s1) {
 			String[] s2 = symb.split(";");
 			String colourshape = s2[0] + s2[1];

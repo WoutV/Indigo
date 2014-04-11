@@ -37,7 +37,7 @@ public class PositionController {
 	private double Kp,Ki,Kd;
 	
 	//TODO
-	private int dt = 100;
+	private int dt = 500;
 	
 	private boolean x;
 
@@ -95,7 +95,8 @@ public class PositionController {
 	}
 	
 	/**
-	 * Set a new destination for the zeppelin.
+	 * Sets a new destination for the zeppelin. Coordinates should be given in map notation:
+	 * (left,up) = (0,0).
 	 * 
 	 * @param dest
 	 * 			dest[0]: x-coordinate (cm)
@@ -111,6 +112,7 @@ public class PositionController {
 	 * 
 	 * @param zepp
 	 * 			The new location of the zeppelin.
+	 * 			Should use map notation: (left,up) = (0,0).
 	 * 			zepp[0]: x
 	 * 			zepp[1]: y
 	 * 			zepp[3]: alpha
@@ -118,12 +120,14 @@ public class PositionController {
 	public void run(double[] zepp) {
 		
 		double[] toGo = newCoordinates(destination[0],destination[1], zepp[0], zepp[1], zepp[2]);
-		
+		//System.out.println(toGo[0] + "," + toGo[1]);
 		if(x)
 			pid.setDestination(toGo[0]);
 		else
 			pid.setDestination(toGo[1]);
 		double output = pid.getOutput(0);
+		
+		//System.out.println(output);
 		
 		//output needs to be in range -100 -> 100
 		String message="";
@@ -170,10 +174,18 @@ public class PositionController {
 		makePid();
 	}
 	
+	/**
+	 * Sets this PositionController to use a central server to send to the zeppelin/Sim.
+	 * @param sender
+	 */
 	public void setSender(SenderClient sender) {
 		this.sender = sender;
 	}
 	
+	/**
+	 * Sets this PositionController to use a non-central server to send to the Sim.
+	 * @param sender
+	 */
 	public void setSenderNoRabbit(SimConnNoRabbitClient sender) {
 		sender2 = sender;
 	}

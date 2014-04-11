@@ -1,6 +1,4 @@
-sim: y testen
-(documenteren)
-met andere Kp's werken: werkt het tegoei (vertraagt het ook? evt output afdrukken)
+met andere Kp's en richtingen werken: werkt het tegoei (vertraagt het ook? evt output afdrukken)
 
 gui:
 tablets

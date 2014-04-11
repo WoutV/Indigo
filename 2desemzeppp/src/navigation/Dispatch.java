@@ -5,6 +5,7 @@ import java.util.List;
 import map.Symbol;
 
 public class Dispatch {
+	
 	private static LocationLocator loc;
 	
 	public static void setLoc(LocationLocator locc){
