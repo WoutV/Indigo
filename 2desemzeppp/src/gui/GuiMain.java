@@ -471,8 +471,7 @@ public class GuiMain extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+       
                 GuiMain gui = new GuiMain();
         		gui.setVisible(true);
         		gui.enableAllButtons();
@@ -481,8 +480,7 @@ public class GuiMain extends javax.swing.JFrame {
         		gui.setEnemyLocation(300, 300);
         		gui.setTargetLocation(210, 210);
         		
-            }
-        });
+        	
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;
@@ -544,7 +542,27 @@ public class GuiMain extends javax.swing.JFrame {
     /**
      * Geeft de locatie van de eigen zeppelin weer op de kaart.
      * Locatie wordt gegeven door x- en y-coordinaat in cm.
-     * Coordinaten volgens de richting van de kaart.
+     * Coordinaten volgens de richting van de kaart. Hoek zoals PositionController.
+     * 
+     * @param x
+     * 			x in cm. X loopt van links naar rechts.
+     * @param y
+     * 			y in cm. Y loopt van boven naar beneden.
+     * @param alpha
+     * 			Hoek. 0 -> wijst naar boven, > 0 -> wijzerzin, < 0 -> tegenwijzerzin
+     */
+    public void setOwnLocation(double x, double y, double alpha) {
+    	double[] loc = {x,y,alpha};
+    	own = loc;
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location own zeppelin received.");
+    	updateMapDisplay();
+    }
+    
+    /**
+     * Geeft de locatie van de eigen zeppelin weer op de kaart.
+     * Locatie wordt gegeven door x- en y-coordinaat in cm.
+     * Hoek wordt op 0 gezet.
      * 
      * @param x
      * 			x in cm. X loopt van links naar rechts.
@@ -552,11 +570,7 @@ public class GuiMain extends javax.swing.JFrame {
      * 			y in cm. Y loopt van boven naar beneden.
      */
     public void setOwnLocation(double x, double y) {
-    	double[] loc = {x,y};
-    	own = loc;
-    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
-    	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location own zeppelin received.");
-    	updateMapDisplay();
+    	setOwnLocation(x,y,0);
     }
     
     /**
@@ -621,20 +635,21 @@ public class GuiMain extends javax.swing.JFrame {
     }
     
     private void updateMapDisplay() {
+    	DecimalFormat df = new DecimalFormat("#.##");
     	String s = "";
     	s = s + "Indigo: ";
     	if(own != null)
-    		s = s + "(" + own[0] + "," + own[1] + ")";
+    		s = s + "(" + df.format(own[0]) + "," + df.format(own[1]) + ")";
     	else
     		s = s + "(_,_)";
     	s = s + "  |  Enemy: " ;
     	if(enemy != null)
-    		s = s + "(" + enemy[0] + "," + enemy[1] + ")";
+    		s = s + "(" + df.format(enemy[0]) + "," + df.format(enemy[1]) + ")";
     	else
     		s = s + "(_,_)";
     	s = s + "  |  Target: ";
     	if(target != null)
-    		s = s + "(" + target[0] + "," + target[1] + ")";
+    		s = s + "(" + df.format(target[0]) + "," + df.format(target[1]) + ")";
     	else
     		s = s + "(_,_)";
     	mapDisplay.setText(s);

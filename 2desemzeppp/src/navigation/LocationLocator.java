@@ -60,7 +60,7 @@ public class LocationLocator {
 			}
 		}
 		
-		guic.receiveLocation(loc[0]*10, loc[1]*10, true);
+		guic.receiveOwnLocation(loc[0], loc[1], loc[2]);
 		xpos.run(loc);
 		//doing y now
 		//System.out.println("going to y");

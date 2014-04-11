@@ -36,10 +36,10 @@ public class MapMaker {
 	 * Get the map with the locations of supplied zeppelins and target.
 	 * @param own
 	 * 			coordinates of own zeppelin, in cm on the map
-	 * 			own[0]: x, own[1]: y
+	 * 			own[0]: x, own[1]: y, own[2]: alpha
 	 * @param enemy
 	 * 			coordinates of enemy zeppelin, in cm on the map
-	 * 			enemy[0]: x, own[1]: y
+	 * 			enemy[0]: x, enemy[1]: y
 	 * @param dest
 	 * 			coordinates of the target, in cm on the map
 	 */
@@ -59,6 +59,13 @@ public class MapMaker {
 			int[] ownZeppdata = Shapes.getShiftedZeppelinData(ownZepp[0], ownZepp[1]);
 			map0.setColor(Color.MAGENTA);
 			map0.fillOval(ownZeppdata[0],ownZeppdata[1],ownZeppdata[2],ownZeppdata[3]);
+			
+			int[] point = Shapes.getShiftedZeppelinOrientationData(ownZepp[0], ownZepp[1], (int) own[2]);
+			map0.setColor(Color.BLACK);
+			map0.drawLine(ownZepp[0],ownZepp[1],point[0],point[1]);
+			map0.drawLine(point[0],point[1],point[2],point[3]);
+			map0.drawLine(point[0],point[1],point[4],point[5]);
+			
 		}
 
 		//enemy zeppelin
@@ -172,6 +179,24 @@ public class MapMaker {
 					map0.fillPolygon(rclandscape);
 				}
 			}
+		}
+		
+		//tablets
+		int tablets = map.getNoOfTablets();
+		for(int i=0;i<tablets;i++) {
+			double[] tablet = map.getTablet(i+1);
+			
+			Polygon outer = Shapes.getTabletOuterEdge((int) tablet[0], (int) tablet[1]);
+			map0.setColor(Color.GRAY);
+			map0.fillPolygon(outer);
+			
+			Polygon inner = Shapes.getTabletInnerEdge((int) tablet[0], (int) tablet[1]);
+			map0.setColor(Color.WHITE);
+			map0.fillPolygon(inner);
+			
+			int[] circledata = Shapes.getShiftedTabletCircleData((int) tablet[0], (int) tablet[1]);
+			map0.setColor(Color.BLACK);
+			map0.fillOval(circledata[0],circledata[1],circledata[2],circledata[3]);
 		}
 
 		ImageIcon ii = new ImageIcon(image);

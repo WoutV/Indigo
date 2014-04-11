@@ -76,6 +76,22 @@ public class GuiCommands {
 	public void receiveImage(ImageIcon image) {
 		gui.setImageDisplay(image);
 	}
+	
+	/**
+	 * Via deze methode wordt de eigen locatie en hoek ontvangen.
+	 * De locatie wordt gegeven door x- en y-coordinaten volgens het x- en y-frame
+	 * van de kaart.
+	 * 
+	 * @param x
+     * 			x in cm. X loopt van links naar rechts.
+     * @param y
+     * 			y in cm. Y loopt van boven naar beneden.
+     * @param alpha
+     * 			Hoek. 0 -> wijst naar boven, > 0 -> wijzerzin, < 0 -> tegenwijzerzin
+	 */
+	public void receiveOwnLocation(double x, double y, double alpha) {
+		gui.setOwnLocation(x, y, alpha);
+	}
 
 //	/**
 //	 * Methode om een boodschap weer te geven in het commandodisplay op tab 1 in de GUI

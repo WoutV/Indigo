@@ -8,25 +8,30 @@ import java.awt.Polygon;
  * The methods in this class allow to get Polygons for some shapes around a given center point.
  */
 public class Shapes {
-	public static int[] heartx = {-5,0,5,8,8,6,6,4,4,2,2,0,-2,-2,-4,-4,-6,-6,-8,-8};
-	public static int[] hearty = {-8,-3,-8,-5,-3,-1,0,2,3,5,6,8,6,5,3,2,0,-1,-3,-5};
-	public static Polygon heart = new Polygon(heartx,hearty,heartx.length);
+	private static int[] heartx = {-5,0,5,8,8,6,6,4,4,2,2,0,-2,-2,-4,-4,-6,-6,-8,-8};
+	private static int[] hearty = {-8,-3,-8,-5,-3,-1,0,2,3,5,6,8,6,5,3,2,0,-1,-3,-5};
 	
-	public static int[] rclandscapex = {-8,8,8,-8};
-	public static int[] rclandscapey = {-5,-5,5,5};
+	private static int[] rclandscapex = {-8,8,8,-8};
+	private static int[] rclandscapey = {-5,-5,5,5};
 	
-	public static int[] rcportraitx = {-5,5,5,-5};
-	public static int[] rcportraity = {-8,-8,8,8};
+	private static int[] rcportraitx = {-5,5,5,-5};
+	private static int[] rcportraity = {-8,-8,8,8};
 	
-	public static int[] squarex = {-8,8,8,-8};
-	public static int[] squarey = {-8,-8,8,8};
+	private static int[] tabletouterx = {-10,10,10,-10};
+	private static int[] tabletoutery = {-16,-16,16,16};
 	
-	public static int[] trianglex = {0,8,-8};
-	public static int[] triangley = {-8,8,8};
+	private static int[] tabletinnerx = {-9,9,9,-9};
+	private static int[] tabletinnery = {-15,-15,13,13};
 	
-	public static int[] starx = {0,1,1,2,2,3,3,5,6,7,8,8,6,6,5,5,6,6,7,7,6,4,3,0,-3,-4,-6,-7,-7,-6,-6,-5,
+	private static int[] squarex = {-8,8,8,-8};
+	private static int[] squarey = {-8,-8,8,8};
+	
+	private static int[] trianglex = {0,8,-8};
+	private static int[] triangley = {-8,8,8};
+	
+	private static int[] starx = {0,1,1,2,2,3,3,5,6,7,8,8,6,6,5,5,6,6,7,7,6,4,3,0,-3,-4,-6,-7,-7,-6,-6,-5,
 		-5,-6,-6,-8,-8,-7,-6,-5,-3,-3,-2,-2,-1,-1};
-	public static int[] stary = {-8,-7,-6,-5,-4,-3,-2,-2,-3,-3,-4,-2,0,1,2,4,5,6,7,8,8,6,6,3,6,6,8,8,7,6,5,4,
+	private static int[] stary = {-8,-7,-6,-5,-4,-3,-2,-2,-3,-3,-4,-2,0,1,2,4,5,6,7,8,8,6,6,3,6,6,8,8,7,6,5,4,
 		2,1,0,-2,-4,-3,-3,-2,-2,-3,-4,-5,-6,-7};
 	
 	/**
@@ -86,6 +91,60 @@ public class Shapes {
 			ys[i] = rcportraity[i] + y;
 		}
 		return new Polygon(xs,ys,rcportraitx.length);
+	}
+	
+	/**
+	 * Given the coordinates of the center, gives a polygon defining a the outer edge of a tablet.
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static Polygon getTabletOuterEdge(int x, int y) {
+		int[] xs = new int[tabletouterx.length];
+		int[] ys = new int[tabletoutery.length];
+		for(int i=0;i<tabletouterx.length;i++) {
+			xs[i] = tabletouterx[i] + x;
+		}
+		for(int i=0;i<tabletoutery.length;i++) {
+			ys[i] = tabletoutery[i] + y;
+		}
+		return new Polygon(xs,ys,tabletouterx.length);
+	}
+	
+	/**
+	 * Given the coordinates of the center, gives a polygon defining a the outer edge of a tablet.
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static Polygon getTabletInnerEdge(int x, int y) {
+		int[] xs = new int[tabletinnerx.length];
+		int[] ys = new int[tabletinnery.length];
+		for(int i=0;i<tabletinnerx.length;i++) {
+			xs[i] = tabletinnerx[i] + x;
+		}
+		for(int i=0;i<tabletinnery.length;i++) {
+			ys[i] = tabletinnery[i] + y;
+		}
+		return new Polygon(xs,ys,tabletinnerx.length);
+	}
+	
+	/**
+	 * Given the coordinates of the center, gives the data used for drawing the tablet circle with this center.
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static int[] getShiftedTabletCircleData(int x, int y) {
+		int[] a = new int[4];
+		a[0] = x - 4;
+		a[1] = y - 4;
+		a[2] = 8;
+		a[3] = 8;
+		return a;
 	}
 	
 	/**
@@ -207,5 +266,44 @@ public class Shapes {
 		if(a[1] + a[3] > 495)
 			a[3] = 495 - a[1];
 		return a;
+	}
+	
+	/**
+	 * Given the coordinates of the center, gives the data used for drawing the zeppelin with this center.
+	 * Point 1: r[0],r[1]: tip of arrow, Point 2: r[2],r[3], Point 3: r[4],r[5]
+	 * Draw an arrow by connecting Center-Point1, Point1-Point2, Point1-Point3.
+	 * 
+	 * @param x
+	 * 			The X coordinate of the center
+	 * @param y
+	 * 			The Y coordinate of the center
+	 */
+	public static int[] getShiftedZeppelinOrientationData(int x, int y, int alpha) {
+		alpha = alpha + 90;
+		if(alpha > 180)
+			alpha = alpha - 360;
+		int xr = (int) (20*Math.cos(alpha/180.0*Math.PI));
+		int yr = (int) (20*Math.sin(alpha/180.0*Math.PI));
+		
+		alpha = alpha + 10;
+		if(alpha > 180)
+			alpha = alpha - 360;
+		int x2 = (int) (16*Math.cos(alpha/180.0*Math.PI));
+		int y2 = (int) (16*Math.sin(alpha/180.0*Math.PI));
+		
+		alpha = alpha - 20;
+		if(alpha < 180)
+			alpha = alpha + 360;
+		int x3 = (int) (16*Math.cos(alpha/180.0*Math.PI));
+		int y3 = (int) (16*Math.sin(alpha/180.0*Math.PI));
+		
+		int[] b = {x-xr,y-yr,x-x2,y-y2,x-x3,y-y3};
+		for(int i=0;i>6;i++) {
+			if(b[i]<0)
+				b[i] = 0;
+			if(b[i] > 495)
+				b[i] = 495;
+		}
+		return b;
 	}
 }

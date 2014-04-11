@@ -86,7 +86,7 @@ public class Map {
 		int row = 0;
 		int tablet = 0;
 		String currentLine = read.readLine();
-		while(currentLine!=null && !currentLine.startsWith("(")) {
+		while(currentLine!=null && !currentLine.startsWith("1")) {
 			row++;
 			rows.add(currentLine);
 			currentLine = read.readLine();
@@ -108,15 +108,13 @@ public class Map {
 			}
 		}
 		
-		//tablets: currently assuming '(x,y),no'
+		//tablets: currently assuming 'no,x,y'
 		this.tablets = new double[tablet][];
 		for(int i=0;i<tablet;i++) {
 			String current = tablets.removeFirst();
-			current = current.substring(1,current.length());
-			String[] splitted0 = current.split(",");
-			int x = Integer.parseInt(splitted0[0]);
-			String[] splitted1 = splitted0[1].split("),");
-			int y  = Integer.parseInt(splitted1[0]);
+			String[] splitted = current.split(",");
+			int x = Integer.parseInt(splitted[1]);
+			int y = Integer.parseInt(splitted[2]);
 			double[] t = {x,y};
 			this.tablets[i] = t;
 		}
