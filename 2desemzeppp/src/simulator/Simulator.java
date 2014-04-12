@@ -99,7 +99,7 @@ public class Simulator {
 	 * @param pwm
 	 */
 	public void handleInput(int motor, int pwm) {
-		System.out.println(motor);
+		//System.out.println(motor);
 		if(motor == 1)
 			handleXInput(pwm);
 		if(motor == 2) 
@@ -150,10 +150,10 @@ public class Simulator {
 		yPos = yPos + ySpeed*wait/1000.0 + aynew*(wait/1000.0)*(wait/1000.0)/2;
 		ySpeed = ySpeed + aynew*wait/1000.0;
 		System.out.println("Y: pwm: " + pwm + ", anew:" + ayzepp + " ,axnew: " + axnew + ",aynew: " + aynew);
-		System.out.println("Loc: ( " + xPos + "," + yPos + " )");
+		//System.out.println("Loc: ( " + xPos + "," + yPos + " )");
 		if(wind)
 			wind();
-		sendSymbols();
+		//sendSymbols();
 	}
 	
 	/**
@@ -329,8 +329,8 @@ public class Simulator {
 		list.add(symb1);
 		list.add(symb2);
 			
-		System.out.println(nearestSymbol.getColour() + " " + nearestSymbol.getShape() + 
-				"," + symb1.getColour() + " " + symb1.getShape() + "," + symb2.getColour() + " " + symb2.getShape());
+		//System.out.println(nearestSymbol.getColour() + " " + nearestSymbol.getShape() + 
+		//		"," + symb1.getColour() + " " + symb1.getShape() + "," + symb2.getColour() + " " + symb2.getShape());
 		
 		String key = "indigo.private.symbollist";
 		String info = SymbolListToString(list);

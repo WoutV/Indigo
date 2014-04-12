@@ -81,8 +81,8 @@ public class GuiMain extends javax.swing.JFrame {
 		} catch (IOException e) {}
 
 		creditsLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		creditsLbl.setText("<html><p align=\"center\">IndigoZeppelin v3.00: " +
-				"Episode III: Revenge of the Bloons <br> " +
+		creditsLbl.setText("<html><p align=\"center\">IndigoZeppelin v4.00: " +
+				"Episode IV <br> " +
 				"&copy Team Indigo. All rights reserved. </p></html>");
 
 		//add map of playing field
@@ -90,6 +90,8 @@ public class GuiMain extends javax.swing.JFrame {
 		mapPanel.add(mapofplayingfield);
 		
 		disableAllComponents(this);
+		
+		jTabbedPane1.setToolTipText(null);
 	}
 
     /**

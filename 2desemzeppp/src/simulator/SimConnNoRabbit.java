@@ -78,7 +78,7 @@ public class SimConnNoRabbit implements Runnable {
 	}
 	
 	private void handleReceived(String s) {
-		System.out.println("received: " + s);
+		//System.out.println("received: " + s);
 		String[] p = s.split("#");
 		if(p[0].equals("indigo.lcommand.motor1"))
 			sim.handleInput(1, Integer.parseInt(p[1]));

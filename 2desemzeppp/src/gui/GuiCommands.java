@@ -110,17 +110,14 @@ public class GuiCommands {
 		gui.addToGUIEventList(GUIEvent.EventType.Misc,message);
 	}
 	
-	
-	// is deze methode nog nodig?
 	/**
-	 * Methode om een target location naar de zeppelin te sturen.
+	 * Methode om een target location (in cm) te sturen.
+	 * 
 	 * @param x
 	 * @param y
 	 */
 	public void sendTarget(int x,int y) {
-		if(sender != null) {
-			
-		}
+		
 	}
 	
 	public void setSender(SenderClient sender) {

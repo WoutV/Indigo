@@ -52,11 +52,10 @@ public class Pid {
 //		System.out.println("error: "+error);
 //		System.out.println("derivative: "+derivative);
 		double output = Kp*error + Ki*integ.getValue() + Kd*derivative;
-//		System.out.println("Ki*integral:"+Ki*integral);
-//		System.out.println("Output: (" +output+")");
 		previous_error = error;
 //		if(error > minErrorForMaxPwm)
 //			return 900;
+		//System.out.println("error" + error + "output" + output);
 		if(output > 1024)
 			return 1024;
 		if(output < -1024)

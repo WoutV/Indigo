@@ -136,7 +136,7 @@ public class PositionController {
 			key = "indigo.lcommand.motor1";
 		else
 			key = "indigo.lcommand.motor2";
-		message = message+ (int) (1.0*100/1024*output);
+		message = message+ (int) (100.0/1024*output);
 		if(sender != null)
 			sender.sendTransfer(message,key);
 		if(sender2 != null)

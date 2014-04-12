@@ -17,7 +17,7 @@ public class InitialiseClient {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		final String fileName = "/shapesDemo.csv";
+		String fileName = "/shapesDemo.csv";
 		
 		Map map = new Map(fileName);
 		 
@@ -37,20 +37,12 @@ public class InitialiseClient {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GuiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        final GuiMain gui = new GuiMain();
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-        		gui.setVisible(true);
-        		gui.enableAllButtons();
-        		gui.setMap(fileName);
-        		gui.setOwnLocation(200, 200);	        		
-            }
-        });
-        //SenderClient sender = new SenderClient();
-        //gui.getGuic().setSender(sender);
+        GuiMain gui = new GuiMain();
+        gui.setVisible(true);
+        gui.enableAllButtons();
+        gui.setMap(fileName);
+        gui.setOwnLocation(200, 200);
         
-        //here because controllers running on client
         //TODO kp,kd,ki values
         PositionController xpos = PositionController.getXController();
         PositionController ypos = PositionController.getYController();
@@ -62,8 +54,15 @@ public class InitialiseClient {
         ypos.setKi(0);
         
         //rabbit
+        //SenderClient sender = new SenderClient();
+        //gui.getGuic().setSender(sender);
 //		xpos.setSender(sender);
 //		ypos.setSender(sender);
+        //Dispatch.setSender(sender);
+        
+      //ReceiverClient receiver = new ReceiverClient(gui);
+      //Thread receiverclientthread = new Thread(receiver);
+      //receiverclientthread.start();
         
         //norabbit
         SimConnNoRabbitClient simConnClient = new SimConnNoRabbitClient();
@@ -75,16 +74,17 @@ public class InitialiseClient {
 		LocationLocator locator = new LocationLocator(map,xpos,ypos,gui.getGuic());
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
 		Dispatch.setLoc(locator);
-		//ReceiverClient receiver = new ReceiverClient(gui);
-		//Thread receiverclientthread = new Thread(receiver);
-		//receiverclientthread.start();
-		PositionController.setDestination(new double[]{50.0,50.0});
+		Dispatch.setGUIMain(gui);
+		
+		Dispatch.receiveTarget(50,50);
+		
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			
 			e.printStackTrace();
 		}
+		
 		// Hier de andere threads starten die op de client moeten runnen(image recognition)
 		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
 		//sender.sendTransfer("0", "indigo.lcommand.motor1");

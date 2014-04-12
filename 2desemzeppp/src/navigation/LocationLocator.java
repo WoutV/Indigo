@@ -56,7 +56,7 @@ public class LocationLocator {
 		for(int tablet=0;tablet<map.getNoOfTablets();tablet++) {
 			double[] tabletCoord = map.getTablet(tablet+1);
 			if(euclideanDistance(loc[0],loc[1],tabletCoord[0],tabletCoord[1]) < 20) {
-				
+				Dispatch.foundTablet(tablet+1);
 			}
 		}
 		
