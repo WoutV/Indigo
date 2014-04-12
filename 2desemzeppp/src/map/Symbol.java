@@ -18,7 +18,7 @@ public class Symbol {
 	}
 	
 	public enum Shape {
-		CIRCLE,STAR,HEART,RECTANGLE,EMPTY
+		CIRCLE,STAR,HEART,RECTANGLE,EMPTY,UNRECOGNISED
 	}
 	
 	private Colour colour;
@@ -74,7 +74,7 @@ public class Symbol {
 			System.out.println(string);
 	}
 	
-	private Symbol(Colour colour,Shape shape) {
+	public Symbol(Colour colour,Shape shape) {
 		this.colour = colour;
 		this.shape = shape;
 	}
@@ -127,5 +127,13 @@ public class Symbol {
 		s.x = x;
 		s.y = y;
 		return s;
+	}
+	
+	public boolean colourMatch(Symbol other) {
+		return this.colour == other.colour;
+	}
+	
+	public boolean shapeMatch(Symbol other) {
+		return this.shape == other.shape || this.shape == Shape.UNRECOGNISED || other.shape == Shape.UNRECOGNISED;
 	}
 }

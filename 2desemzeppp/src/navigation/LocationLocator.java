@@ -29,6 +29,8 @@ public class LocationLocator {
 	private PositionController xpos;
 	private GuiCommands guic;
 	private PositionController ypos;
+	
+	private double recentX,recentY;
 
 	/**
 	 * Initialises a LocationLocator with given map, positioncontrollers for x and y, and gui commands.
@@ -121,10 +123,10 @@ public class LocationLocator {
 		
 		List<double[]> possibleLocs = new LinkedList<>();
 		for(List<Symbol> possibleSymbolList : possibleSymbolLists) {
-			double[] loc = find3(possibleSymbolList.get(0),possibleSymbolList.get(1),middle);
+			List<double[]> loc = find3(possibleSymbolList.get(0),possibleSymbolList.get(1),middle);
 			if(loc != null) {
 				//loc = correctAlpha(loc,possibleSymbolList.get(0));
-				possibleLocs.add(loc);
+				possibleLocs.addAll(loc);
 			}
 		}
 
@@ -133,9 +135,22 @@ public class LocationLocator {
 			s = s + r[0] + "," + r[1] + "||" + r[2] + "\n";
 		}
 		//JOptionPane.showMessageDialog(null, s);
+		
 		try{
-			return possibleLocs.get(0);
-		}catch( Exception e){
+			double[] nearest = possibleLocs.get(0);
+			double nearestDist = euclideanDistance(recentX,recentY,nearest[0],nearest[1]);
+			for(double[] loc:possibleLocs) {
+				double dist = euclideanDistance(recentX,recentY,loc[0],loc[1]);
+				if(dist < nearestDist) {
+					nearest = loc;
+					nearestDist = dist;
+				}
+			}
+			
+			recentX = nearest[0];
+			recentY = nearest[1];
+			return nearest;
+		}catch(Exception e){
 			double[] l = {200,200,0};
 			return l;
 		}
@@ -227,7 +242,9 @@ public class LocationLocator {
 		return loc;
 	}
 
-	private double[] find3(Symbol symbol1,Symbol symbol2,Symbol center) {
+	private List<double[]> find3(Symbol symbol1,Symbol symbol2,Symbol center) {
+		List<double[]> locs = new LinkedList<>();
+		
 		//for now, linear search
 		//might use priority queue instead
 		int symbolsPerRow = map.getSymbolsOnRow();
@@ -236,8 +253,7 @@ public class LocationLocator {
 		//even lines (index odd) => right aligned => i,i+1
 		for(int i=0;i<lines;i++) {
 			for(int j=0;j<symbolsPerRow;j++) {
-				if(center.getColour()==map.getSymbol(j, i).getColour()
-						&& center.getShape()==map.getSymbol(j, i).getShape()) {
+				if(center.colourMatch(map.getSymbol(j, i)) && center.shapeMatch(map.getSymbol(j, i))) {
 					//potential mid
 					Symbol leftup,rightup,leftdown,rightdown;
 					if(i%2==0) {
@@ -278,13 +294,13 @@ public class LocationLocator {
 							
 							
 							double[] r = {x,y,alpha};
-							return r;
+							locs.add(r);
 						}
 					}
 				}
 			}
 		}
-		return null;
+		return locs;
 	}
 
 	/**
@@ -300,8 +316,8 @@ public class LocationLocator {
 		Symbol s2 = symbolsOnMap.get((i+1)%6);
 		if(s1 == null || s2 == null)
 			return false;
-		return (symbolImage1.getColour() == s1.getColour() && symbolImage1.getShape() == s1.getShape() &&
-				symbolImage2.getColour() == s2.getColour() && symbolImage2.getShape() == s2.getShape());
+		return (symbolImage1.colourMatch(s1) && symbolImage1.shapeMatch(s1) &&
+				symbolImage2.colourMatch(s2) && symbolImage2.shapeMatch(s2));
 	}
 
 	/**

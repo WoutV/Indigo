@@ -641,12 +641,12 @@ public class GuiMain extends javax.swing.JFrame {
     	String s = "";
     	s = s + "Indigo: ";
     	if(own != null)
-    		s = s + "(" + df.format(own[0]) + "," + df.format(own[1]) + ")";
+    		s = s + "(" + df.format(own[0]) + " ; " + df.format(own[1]) + ")";
     	else
     		s = s + "(_,_)";
     	s = s + "  |  Enemy: " ;
     	if(enemy != null)
-    		s = s + "(" + df.format(enemy[0]) + "," + df.format(enemy[1]) + ")";
+    		s = s + "(" + df.format(enemy[0]) + " ; " + df.format(enemy[1]) + ")";
     	else
     		s = s + "(_,_)";
     	s = s + "  |  Target: ";
