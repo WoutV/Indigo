@@ -1,7 +1,5 @@
 package initialise;
 
-import imageProcessing.ImageProcessor;
-
 import map.*;
 import navigation.*;
 
@@ -9,8 +7,6 @@ import org.opencv.core.Core;
 
 import simulator.SimConnNoRabbitClient;
 
-import connection.ReceiverClient;
-import connection.SenderClient;
 import gui.GuiMain;
 
 public class InitialiseClient {

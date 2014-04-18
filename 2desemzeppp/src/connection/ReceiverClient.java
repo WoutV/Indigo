@@ -3,17 +3,10 @@ package connection;
 import gui.GuiCommands;
 import gui.GuiMain;
 
-import imageProcessing.ImageProcessor;
-import imageProcessing.frame;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-
 import simulator.Simulator;
 
 import navigation.Dispatch;

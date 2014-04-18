@@ -2,11 +2,6 @@ package camera;
 
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
-
-import imageProcessing.ImageProcessor;
-import connection.SenderPi;
-
 public class CameraThread implements Runnable{
 	public static void  main(String[] args){
 		CameraThread ct = new CameraThread();
