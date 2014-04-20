@@ -54,7 +54,7 @@ public class LiveImageProcessor {
 		// TODO Auto-generated method stub
 		LiveImageProcessor lip = new LiveImageProcessor();
 		// lip.start("../fotos/b (110)" + ".jpg");
-		lip.start();
+		//lip.start();
 		lip.startVideoProcessing("C:/Users/Study/Dropbox/grid.h264");
 	}
 

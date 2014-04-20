@@ -131,19 +131,16 @@ public class ImageProcessorWithVars {
 		//Changing to black & white
 		Mat grayImage = new Mat();
 		Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
-		//Blurring the image within three by three matrix and writing it as grayimage.png
+		//Blurring the image if necessary
 		Imgproc.blur(grayImage, grayImage,new Size(blur,blur));
-//		Highgui.imwrite(openCvFolder+"gray_image.png",grayImage);
 		//Making some more matrixes to see the ongoing operations.
 	   	Mat emptyImage = new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(0,0,0));
-	   	//Mat Emptyimage1 = new Mat(image.size(),Core.DEPTH_MASK_8U,new Scalar(255,255,255));
-	   	
+	  
 	   	Mat canny_output = new Mat(image.size(),Core.DEPTH_MASK_8U);
 	   	Imgproc.Canny(grayImage, canny_output, cannyThreshold, 2*cannyThreshold);
 	   	
 	   	cannyoutput.matToBufferedImage(canny_output);  
 	   	cannyoutput.repaint();  
-//	   	Highgui.imwrite(openCvFolder+"cannny_output.png",canny_output);
 	   	
 	   	//eroding the image to reduce the noise;
 	   	Mat erodedImage = canny_output.clone();
@@ -160,11 +157,10 @@ public class ImageProcessorWithVars {
 	   	}
 	   	dilatedoutput.matToBufferedImage(dilatedImage);  
 	   	dilatedoutput.repaint();
-	   	//Trying different methods.
-	   	findContours(dilatedImage.clone(), image.clone(), emptyImage.clone());
-	   	//HoughCircles(dilatedImage.clone(), image.clone(), emptyImage.clone());
-//	   	HoughLines(dilatedImage.clone(), image.clone(), emptyImage.clone());
-	   	
+
+	   	//Finding the colors and the figures
+	   	findContours(dilatedImage.clone(), image.clone(), emptyImage);
+ 	
 		
 	}
 	
@@ -175,8 +171,7 @@ public class ImageProcessorWithVars {
 	 	//Making some list to put the points.
 	   	List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	   	List<MatOfPoint> contoursToDraw = new ArrayList<MatOfPoint>();
-	    //List<MatOfInt4> hierarchy;
-	   	
+	 	   	
 	   	//Finding the contours.
 	    Imgproc.findContours(canny_output, contours, new Mat(), Imgproc.RETR_LIST,Imgproc.CHAIN_APPROX_SIMPLE);
 	    
