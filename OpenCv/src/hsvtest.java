@@ -56,12 +56,12 @@ public class hsvtest {
 	      frame2.add(facePanel2,BorderLayout.CENTER);       
 	      frame2.setVisible(true); 
 	      createToolbars();
-	      piImage(frame, frame2, facePanel, facePanel2);
-//	      if(!camera)
-//	    	  Image(frame,frame2,facePanel,facePanel2);
-//	      else
-//	    	  Camera(frame, frame2, facePanel, facePanel2);
-//	 
+	      //piImage(frame, frame2, facePanel, facePanel2);
+	      if(!camera)
+	    	  Image(frame,frame2,facePanel,facePanel2);
+	      else
+	    	  Camera(frame, frame2, facePanel, facePanel2);
+	 
 	      } //end main 
 
 	
