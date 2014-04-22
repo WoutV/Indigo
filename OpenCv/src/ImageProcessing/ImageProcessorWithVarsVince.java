@@ -28,7 +28,7 @@ public class ImageProcessorWithVarsVince {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		try {
-			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Study/Dropbox/grid.h264");
+			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/a/2/b (106).jpg");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
