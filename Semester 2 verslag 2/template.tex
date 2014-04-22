@@ -21,6 +21,7 @@
 \usepackage{float}		%zwevende objecten
 \usepackage{wrapfig}		%figuren beter weergeven
 
+
 \setlength\parindent{0pt}	%geen indentatie
 
 %"Figuur" in vet
@@ -136,18 +137,23 @@ Voor gedetailleerde gegevens verwijzen we naar het verslag over onze zeppelin va
 \subsection{Camera en pattern recognition}
 De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, hebben vooral betrekking tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.
 \\
-
 \textbf{Lichtintensiteit}\\
 De intensiteit van het licht be\"{i}nvloedt de detectie van de contouren en de kleuren. De belangrijkste fout bevindt zich bij de kleuren. We hebben geprobeerd om vormen en kleuren te herkennen in een kamer met kunstlicht en een kamer met natuurlijk licht. In beide situaties konden de kleuren herkend worden, mits het correct afstellen van de grenzen voor bepaalde kleuren. Als dat calibratieproces op een nauwkeurige manier kan gebeuren voor de demo zullen alle kleuren herkend worden.\\
 
 \textbf{Hoogte}\\
 De hoogte van de zeppelin tijdens de fotoregistratie heeft gevolgen voor het aantal vormen die geregistreerd worden en de afstand tussen de vormen op de foto. Er is een minimaal aantal vormen nodig om de positie te bepalen (3 figuren). Een succesvolle verwerking vereist een minimale hoogte, die we zullen bepalen door verschillende hoogtes te testen. Te weinig vormen op de foto zorgen ervoor dat de positie niet bepaald kan worden. Het aantal pixels tussen de verschillende contouren kan ook een negatief effect hebben op de differentiatie van de verschillende vormen. De camera neemt foto’s van een patroon van vormen gepositioneerd onder de zeppelin waarbij de hoogte steeds varieert.\\ 
-
+%TODO MSS EFFECTIEF TESTEN? OF IETS VERZINNEN. BIJ BEWEGING OOK. !!
 \textbf{Beweging}\\
 Als de zeppelin beweegt, kan dit effect hebben op de geregistreerde vormen. Een dilatie van de vormen kan plaatsvinden, waardoor bijvoorbeeld een rechthoek verandert in een ruit. Een ander mogelijk probleem constateert zich in het wazig worden van de foto’s waardoor image recognition niet met goede nauwkeurigheid plaatsvindt. Dit is belangrijk omdat het bewegen van de zeppelin tijdens het nemen van de foto dit effect kan teweegbrengen. Deze proef test het effect van de beweging, alsook de snelheid van de zeppelin op de dilatie van de figuren en de wazigheid van de foto’s.  \\
 
 \textbf{Kleurherkenning}\\
 Voor het bepalen van de kleur van een herkende figuur is er eerst getest met RGB-waarden. Dit gaf oorzaak aan een aantal onverklaarbare foutmeldingen, waardoor er is overgeschakeld op HSV. Dit werkt nu zeer goed: voor elke kleur kan een specifiek gebied worden afgebakend. \\
+
+\textbf{Vormherkenning}
+Voor het herkennen van vormen zijn er verschillende methodes geprobeerd. Een eerste plan was om met convexe omhullende figuren te werken en dan de oppervlakteverhouding te bepalen tussen contour en omhullende. Dit had weinig tot geen zinvol resultaat. Ook is er geprobeerd om met de pixeloppervlakte van de benaderde contour te bepalen welke vorm het was, maar dit werkte ook niet zoals verwacht. Uiteindelijk is er voor elk van de vier vormen een methode gevonden die vrij nauwkeurig bepaalt of een bepaalde contour al dan niet een hart, ster,\ldots is. Voor de uiteindelijk gebruikte methodes verwijzen we u door naar de sectie over algoritmes.\\
+Voor de rechthoek is er ook nog geprobeerd om te controleren of er twee evenwijdige lijnen waren. Dit bleek door onnauwkeurigheden bij het omzetten naar contouren onbetrouwbaar te zijn. \\
+Om een cirkel te detecteren is er ook gewerkt met de oppervlakte van de berekende binnen- en buitencontour. Door de fout op de gemiddelde oppervlakte van die twee contouren te vergelijken met de effectieve oppervlakte zou een cirkel kunnen worden herkend, maar dat iverliep ook niet zoals gedacht. \\
+Voor het herkennen van een ster zijn er ook al een aantal verschillende dingen geprobeerd. E\'en van de geprobeerde methodes gaat uit van het punt dat het verst van het middelpunt gelegen is. Als alle punten gelegen op $2\pi/5$ even ver van het middelpunt van de figuur liggen is het een ster. Dit is vrij onbetrouwbaar, omdat het middelpunt van de figuur lang niet altijd exact kan bepaald worden. Een andere mogelijkheid is het berekenen van de verhouding tussen het punt het verste van het middelpunt en het punt het dichtste bij, maar ook dit is onbetrouwbaar omdat het middelpunt lang niet altijd correct is.\\
 
 \subsection{Motoren}
 In het eerste semester hebben we uitgebreide testen gedaan over de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
@@ -162,14 +168,15 @@ De output wordt berekend op basis van deze formule:
 
 \begin{equation}
  output = Kp*error + Ki*integral + Kd*derivative
+ \label{PID}
 \end{equation}
 
 Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij. Bij de start van het tweede semester hebben we de waardes van deze constanten opnieuw getuned, aangezien er nieuwe volle ballonnen gegeven waren. \\
 
-Er is een HeightController die dit PID-algoritme implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de pwm-waarde bijsturen. \\
+Er is een HeightController die vergelijking \ref{PID} implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de pwm-waarde bijsturen. \\
 
 \subsection{Horizontale bewegingen}
-Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebaseerde algoritmes. We gebruiken twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en draaiing ten opzichte van het veld afleiden. Dan kunnen we de af te leggen afstand ontbinden in twee loodrechte bewegingen (x- en y-richting ten opzichte van het veld). De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming in het geroteerde en verschoven assenstelsel bepalen dus exact hoeveel we in x- en y-richting moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:
+Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebaseerde algoritmes. We gebruiken twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie en draaiing ten opzichte van het veld afleiden. Dan kunnen we de af te leggen afstand ontbinden in twee loodrechte bewegingen (x- en y-richting ten opzichte van het veld). De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming in het geroteerde en verschoven assenstelsel bepalen dus exact hoeveel we in x- en y-richting (tov zeppelin) moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:
 \begin{equation}
  \begin{cases}
   x_{shifted} = x_{destination} – x_{zeppelin}\\
@@ -179,7 +186,7 @@ Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebase
 
 
 
-Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het frame:
+Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het rooster:
 \begin{equation}
  \begin{cases}
  x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)\\
@@ -188,8 +195,6 @@ y_{new} = -x_{shifted}*sin(\alpha) + y_{shifted}*cos(\alpha)
 \end{equation}
 
 Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat de PID-regelaar de juiste motor bijstuurt. Zie verder voor het UML-schema met de klassen die gebruikt worden voor horizontale navigatie (figuur \ref{navigation}).
-
-
 
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
@@ -220,7 +225,7 @@ Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld 
 	\STATE Symbol center = calculateCenter(symbols)
 	\STATE Symbol closestToMid = closestSymbol(symbols,center)     //get symbol closest to center symbol
 	\STATE closestToMidDist = dist(center,closestToMid)
-	\STATE List $\textless$Symbol$\textgreater$ neighbours = filter(symbols,1.2*closestToMidDist)
+	\STATE List \textless Symbol\textgreater neighbours = filter(symbols,1.2*closestToMidDist)
 	\STATE neighbours = sortPolar(neighbours,center)     //sort around center
 	\FOR {Symbol s1 in neighbours}
 		\STATE s2 = next(s1) %symbol following s1
@@ -230,7 +235,7 @@ Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld 
 	\ENDFOR
 	
 \end{algorithmic}
-
+~\\
 \textbf{Match:}
 \begin{algorithmic}
 \STATE In: center, s1, s2; out: location, rotation
@@ -254,14 +259,15 @@ Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld 
 % == SOFTWARE == %
 \section{Software}
 
-Alle software voor dit project is in Java geschreven. Deze keuze is tijdens het eerste semester al gemaakt omdat dit voor het hele team de gebruikte programmeertaal was, en omdat er voldoende voorbeeldcode te vinden was om te programmeren op de Pi. We hebben in het eerste semester ook geen problemen gehad met het implementeren van functionaliteit in Java (aansturen motoren, QR-codes). Dit semester zijn we wel op veel moeilijkheden gestoten bij het implementeren van image recognition. \\
+Alle software voor dit project is in Java geschreven. Deze keuze is i nhet eerste semester al gemaakt omdat dit voor het hele team de gebruikte programmeertaal was, en omdat er voldoende voorbeeldcode te vinden was om te programmeren op de Pi. We hebben in het eerste semester ook geen problemen gehad met het implementeren van functionaliteit in Java (aansturen motoren, QR-codes). Dit semester zijn we wel op veel moeilijkheden gestoten bij het implementeren van image recognition. \\
 Een andere oplossing, door veel concurrenten gekozen, is Python. Een nadeel hiervan is dat iedereen dan een nieuwe taal zou moeten leren, wat het ontwerpproces enorm vertraagt. Het voordeel is wel dat Python makkelijker is om te werken met de Raspberry Pi. \\ 
 
-Een gedeelte van de code is overgenomen van ons project van vorig semester. Deze is echter volledig opgefrist, waardoor de code veel overzichtelijker is geworden. Stukken software die toen door tijdsgebrek ergens werden bijgezet, zijn verplaatst naar waar ze echt thuishoren. Enkele basiselementen zoals het aansturen van de motoren zijn echter hetzelfde gebleven.\\
+Een gedeelte van de code is overgenomen van ons project van vorig semester. Deze is echter volledig opgefrist, waardoor de code veel overzichtelijker is geworden. Stukken software die toen door tijdsgebrek zomaar ergens werden bijgezet, zijn verplaatst naar waar ze echt thuishoren. Enkele basiselementen zoals het aansturen van de motoren zijn echter hetzelfde gebleven.\\
 
 \subsection{GUI}
 De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming. \\
 
+%TODO AFBEELDING VAN DE GUI 
 %GUI afbeelding %
 %\begin{figure}[H]
 %\begin{center}

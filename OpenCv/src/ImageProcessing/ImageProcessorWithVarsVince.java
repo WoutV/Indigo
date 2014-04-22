@@ -226,9 +226,9 @@ public class ImageProcessorWithVarsVince {
 		System.out.println("After removing and adding:" + contours.size());
 		for (int i = 0; i < contours.size(); i++) {
 			Point contourCenters = findCenter(contours.get(i).toList());
-//			Core.putText(image,""+ isCircleTest(contours.get(i),contourCenters), contourCenters,
-//					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-//					 Scalar(200,200,250), 3);
+			Core.putText(image,""+ isStar(contours.get(i)), contourCenters,
+					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+					 Scalar(200,200,250), 3);
 			/*
 			 * Display all the points of the contours after deletion.
 			 */
@@ -247,9 +247,9 @@ public class ImageProcessorWithVarsVince {
 				 */
 
 				if (isCircle(contours.get(i), contourCenters)) {
-					 Core.putText(image,"C", contourCenters,
-					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-					 Scalar(200,200,250), 3);
+//					 Core.putText(image,"C", contourCenters,
+//					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+//					 Scalar(200,200,250), 3);
 
 				}
 				
@@ -259,29 +259,29 @@ public class ImageProcessorWithVarsVince {
 				 * Works on the deleted contours. Other possibility is to work
 				 * on both contours. The inner and outer contour to one figure.
 				 */
-				else if (isRectangleSunil(canny_output.submat(Imgproc.boundingRect(contours.get(i))),Imgproc.boundingRect(contours.get(i)),contourCenters)){
-					Core.putText(image,"R", contourCenters,
-							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-							 Scalar(200,200,250), 3);
-					 				}
-				
-				else if(isStar(contours.get(i))>1 && isStar(contours.get(i))<2 && isRectangle(contours.get(i))>0.4 && isRectangle(contours.get(i))< 0.7 ){
-					Core.putText(image,"H", contourCenters,
-							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-							 Scalar(200,200,250), 3);
-				}
+//				else if (isRectangleSunil(canny_output.submat(Imgproc.boundingRect(contours.get(i))),Imgproc.boundingRect(contours.get(i)),contourCenters)){
+//					Core.putText(image,"R", contourCenters,
+//							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+//							 Scalar(200,200,250), 3);
+//					 				}
+//				
+//				else if(isStar(contours.get(i))>1 && isStar(contours.get(i))<2 && isRectangle(contours.get(i))>0.4 && isRectangle(contours.get(i))< 0.7 ){
+//					Core.putText(image,"H", contourCenters,
+//							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+//							 Scalar(200,200,250), 3);
+//				}
 
 
 				
 
 
 
-				else if (isStar(contours.get(i)) > 2
-						&& isStar(contours.get(i)) < 3) {
-					 Core.putText(image,"S", contourCenters,
-					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-					 Scalar(200,200,250), 3);
-				}
+//				else if (isStar(contours.get(i)) > 2
+//						&& isStar(contours.get(i)) < 3) {
+//					 Core.putText(image,"S", contourCenters,
+//					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+//					 Scalar(200,200,250), 3);
+//				}
 
 				else {
 					// Core.putText(image,""+Imgproc.contourArea(contours.get(i)),

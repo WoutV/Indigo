@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.4.14)  22 APR 2014 15:57
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.4.14)  22 APR 2014 18:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -523,22 +523,22 @@ LaTeX Warning: Label `frame' multiply defined.
 )
 \openout1 = `template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
 \AtBeginShipoutBox=\box31
-Package hyperref Info: Link coloring ON on input line 31.
+Package hyperref Info: Link coloring ON on input line 32.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -547,9 +547,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count120
 )
-LaTeX Info: Redefining \ref on input line 31.
-LaTeX Info: Redefining \pageref on input line 31.
-LaTeX Info: Redefining \nameref on input line 31.
+LaTeX Info: Redefining \ref on input line 32.
+LaTeX Info: Redefining \pageref on input line 32.
+LaTeX Info: Redefining \nameref on input line 32.
 
 (./template.out) (./template.out)
 \@outlinefile=\write3
@@ -622,25 +622,25 @@ e
 <sedes.pdf, id=40, 310.15875pt x 521.95pt>
 File: sedes.pdf Graphic file (type pdf)
  <use sedes.pdf>
-Package pdftex.def Info: sedes.pdf used on input line 41.
+Package pdftex.def Info: sedes.pdf used on input line 42.
 (pdftex.def)             Requested size: 57.48257pt x 96.73918pt.
-LaTeX Font Info:    Try loading font information for U+wasy on input line 41.
+LaTeX Font Info:    Try loading font information for U+wasy on input line 42.
 
 (/usr/share/texlive/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
 )
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 41.
+(babel)             in language append on input line 42.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 41.
+(babel)             in language append on input line 42.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 41.
+(babel)             in language append on input line 42.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 41.
+(babel)             in language append on input line 42.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./sedes.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 46--47
+Underfull \hbox (badness 10000) in paragraph at lines 47--48
 
  []
 
@@ -649,130 +649,125 @@ Underfull \hbox (badness 10000) in paragraph at lines 46--47
 \openout4 = `template.toc'.
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 51.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 51.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 51.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 51.
+(babel)             in language append on input line 52.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.51 \tableofcontents\newpage
+l.52 \tableofcontents\newpage
                               [1]
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 56.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 55.
+(babel)             in language append on input line 56.
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--68
+Underfull \hbox (badness 10000) in paragraph at lines 66--69
 
  []
 
 <Schema.jpg, id=94, 545.03625pt x 283.0575pt>
 File: Schema.jpg Graphic file (type jpg)
  <use Schema.jpg>
-Package pdftex.def Info: Schema.jpg used on input line 72.
+Package pdftex.def Info: Schema.jpg used on input line 73.
 (pdftex.def)             Requested size: 301.33438pt x 156.49014pt.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 78.
+(babel)             in language append on input line 79.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 78.
+(babel)             in language append on input line 79.
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--81
+Underfull \hbox (badness 10000) in paragraph at lines 80--82
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 81.
+(babel)             in language append on input line 82.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 81.
+(babel)             in language append on input line 82.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 81.
+(babel)             in language append on input line 82.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 81.
+(babel)             in language append on input line 82.
 [2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.81 
+l.82 
       <./Schema.jpg>] <upperFrame.png, id=107, 965.10562pt x 148.30406pt>
 File: upperFrame.png Graphic file (type png)
 
 <use upperFrame.png>
-Package pdftex.def Info: upperFrame.png used on input line 85.
+Package pdftex.def Info: upperFrame.png used on input line 86.
 (pdftex.def)             Requested size: 289.53392pt x 44.49155pt.
  <lowerFrame.png, id=108, 385.44pt x 328.97906pt>
 File: lowerFrame.png Graphic file (type png)
 
 <use lowerFrame.png>
-Package pdftex.def Info: lowerFrame.png used on input line 91.
+Package pdftex.def Info: lowerFrame.png used on input line 92.
 (pdftex.def)             Requested size: 154.17326pt x 131.5893pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--97
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 100.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 101.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 100.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 101.
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--108
+Underfull \hbox (badness 10000) in paragraph at lines 108--109
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--114
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
 
  []
 
 <FullFrame.jpg, id=110, 3276.24pt x 2457.18pt>
 File: FullFrame.jpg Graphic file (type jpg)
  <use FullFrame.jpg>
-Package pdftex.def Info: FullFrame.jpg used on input line 119.
+Package pdftex.def Info: FullFrame.jpg used on input line 120.
 (pdftex.def)             Requested size: 227.61053pt x 170.71652pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 125.
+(babel)             in language append on input line 126.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 125.
+(babel)             in language append on input line 126.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 125.
+(babel)             in language append on input line 126.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 125.
+(babel)             in language append on input line 126.
 [3pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.125 
+l.126 
        <./upperFrame.png> <./lowerFrame.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
+Underfull \hbox (badness 10000) in paragraph at lines 127--128
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 129.
+(babel)             in language append on input line 130.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 129.
+(babel)             in language append on input line 130.
 
-Underfull \hbox (badness 10000) in paragraph at lines 137--139
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 140--142
+Underfull \hbox (badness 10000) in paragraph at lines 138--142
 
  []
 
@@ -791,12 +786,7 @@ has been already used, duplicate ignored
                                                   \fi \fi 
 l.142 
        <./FullFrame.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 143--145
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 146--148
+Underfull \hbox (badness 10000) in paragraph at lines 143--148
 
  []
 
@@ -806,268 +796,259 @@ Underfull \hbox (badness 10000) in paragraph at lines 149--151
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 153--154
+Underfull \hbox (badness 10000) in paragraph at lines 152--157
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 158.
+(babel)             in language append on input line 160.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 158.
+(babel)             in language append on input line 160.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 165.
+(babel)             in language append on input line 160.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 165.
-Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 165.
-Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 165.
+(babel)             in language append on input line 160.
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 167--168
+Package babel Info: Redefining dutch shorthand "|
+(babel)             in language append on input line 164.
+Package babel Info: Redefining dutch shorthand "~
+(babel)             in language append on input line 164.
+
+Underfull \hbox (badness 10000) in paragraph at lines 174--175
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--170
+Underfull \hbox (badness 10000) in paragraph at lines 176--177
 
  []
 
 
-LaTeX Warning: Command \textendash invalid in math mode on input line 175.
+LaTeX Warning: Command \textendash invalid in math mode on input line 182.
 
 
-LaTeX Warning: Command \textendash invalid in math mode on input line 176.
+LaTeX Warning: Command \textendash invalid in math mode on input line 183.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--198
+Underfull \hbox (badness 10000) in paragraph at lines 200--203
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 198.
+(babel)             in language append on input line 203.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 198.
+(babel)             in language append on input line 203.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 198.
+(babel)             in language append on input line 203.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 198.
-[6] <patternrecognition.png, id=148, 4369.32375pt x 1951.29pt>
+(babel)             in language append on input line 203.
+[6] <patternrecognition.png, id=149, 4369.32375pt x 1951.29pt>
 File: patternrecognition.png Graphic file (type png)
 
 <use patternrecognition.png>
-Package pdftex.def Info: patternrecognition.png used on input line 203.
+Package pdftex.def Info: patternrecognition.png used on input line 208.
 (pdftex.def)             Requested size: 341.43437pt x 152.47392pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--211
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 212--213
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 214--215
+Underfull \hbox (badness 10000) in paragraph at lines 217--218
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 223.
+(babel)             in language append on input line 218.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 223.
+(babel)             in language append on input line 218.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 223.
+(babel)             in language append on input line 218.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 223.
+(babel)             in language append on input line 218.
 [7pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.223 	\STATE
-              List $\textless$Symbol$\textgreater$ neighbours = filter(symbo...
- <./patternrecognition.png>]
+l.218 
+       <./patternrecognition.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 219--220
 
-LaTeX Warning: Command \textless invalid in math mode on input line 223.
+ []
 
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 223.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 228.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 223.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 223.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 223.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 223.
-
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 228.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 255.
+(babel)             in language append on input line 260.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 255.
+(babel)             in language append on input line 260.
 
-Underfull \hbox (badness 10000) in paragraph at lines 257--259
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
+Underfull \hbox (badness 10000) in paragraph at lines 262--264
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 263--264
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 274--275
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 277.
+(babel)             in language append on input line 266.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 277.
+(babel)             in language append on input line 266.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 277.
+(babel)             in language append on input line 266.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 277.
+(babel)             in language append on input line 266.
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 279--281
+Underfull \hbox (badness 10000) in paragraph at lines 268--269
 
  []
 
-<XYNavigation.png, id=185, 610.53094pt x 359.84438pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 282--283
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 285--287
+
+ []
+
+<XYNavigation.png, id=186, 610.53094pt x 359.84438pt>
 File: XYNavigation.png Graphic file (type png)
  <use XYNavigation.png>
-Package pdftex.def Info: XYNavigation.png used on input line 285.
+Package pdftex.def Info: XYNavigation.png used on input line 291.
 (pdftex.def)             Requested size: 426.79135pt x 251.55989pt.
+Package babel Info: Redefining dutch shorthand "|
+(babel)             in language append on input line 296.
+Package babel Info: Redefining dutch shorthand "~
+(babel)             in language append on input line 296.
+Package babel Info: Redefining dutch shorthand "|
+(babel)             in language append on input line 296.
+Package babel Info: Redefining dutch shorthand "~
+(babel)             in language append on input line 296.
 
-Underfull \hbox (badness 10000) in paragraph at lines 292--294
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 298--300
 
  []
 
-Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 294.
-Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 294.
-Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 294.
-Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 294.
-[9pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
-has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.294 
-       <./XYNavigation.png (PNG copy)>]
 <PiToClientCommunication.png, id=195, 1224.07312pt x 471.26062pt>
 File: PiToClientCommunication.png Graphic file (type png)
 
 <use PiToClientCommunication.png>
-Package pdftex.def Info: PiToClientCommunication.png used on input line 298.
+Package pdftex.def Info: PiToClientCommunication.png used on input line 304.
 (pdftex.def)             Requested size: 426.79135pt x 164.3109pt.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 311.
+(babel)             in language append on input line 309.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 311.
+(babel)             in language append on input line 309.
+Package babel Info: Redefining dutch shorthand "|
+(babel)             in language append on input line 309.
+Package babel Info: Redefining dutch shorthand "~
+(babel)             in language append on input line 309.
+ [10pdfTeX warning (ext4): destination with the same identifier (name{figure.5}
+) has been already used, duplicate ignored
 
-Underfull \hbox (badness 10000) in paragraph at lines 312--317
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.309 
+       <./XYNavigation.png (PNG copy)>]
+Package babel Info: Redefining dutch shorthand "|
+(babel)             in language append on input line 317.
+Package babel Info: Redefining dutch shorthand "~
+(babel)             in language append on input line 317.
+
+Underfull \hbox (badness 10000) in paragraph at lines 318--323
 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 317.
+(babel)             in language append on input line 325.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 317.
+(babel)             in language append on input line 325.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 317.
+(babel)             in language append on input line 325.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 317.
-[10pdfTeX warning (ext4): destination with the same identifier (name{figure.6})
+(babel)             in language append on input line 325.
+[11pdfTeX warning (ext4): destination with the same identifier (name{figure.6})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.317 
-       <./PiToClientCommunication.png (PNG copy)>]
+l.325 \newpage
+              \makeappendix <./PiToClientCommunication.png (PNG copy)>]
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 319.
+(babel)             in language append on input line 327.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 319.
+(babel)             in language append on input line 327.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 319.
+(babel)             in language append on input line 331.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 319.
- [11]
-Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 321.
-Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 321.
-Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 325.
-Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 325.
+(babel)             in language append on input line 331.
 
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 332--333
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--336
+Underfull \hbox (badness 10000) in paragraph at lines 341--342
 
  []
 
 
-Overfull \hbox (39.72339pt too wide) in paragraph at lines 337--347
+Overfull \hbox (39.72339pt too wide) in paragraph at lines 343--353
 [][] 
  []
 
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 349.
+(babel)             in language append on input line 355.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 349.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 353.
+(babel)             in language append on input line 355.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 359.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 353.
+(babel)             in language append on input line 359.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 353.
+(babel)             in language append on input line 359.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language append on input line 353.
+(babel)             in language append on input line 359.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language append on input line 353.
+(babel)             in language append on input line 359.
 [12]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 353.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 359.
  (./template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 353.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 353.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 359.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 359.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 86EAA9566BDA1C9CB7B0D5E42DEDFB23;474.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 353.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 359.
  ) 
 Here is how much of TeX's memory you used:
- 7407 strings out of 493307
- 103943 string characters out of 6139905
- 207621 words of memory out of 5000000
- 10669 multiletter control sequences out of 15000+600000
+ 7408 strings out of 493307
+ 103948 string characters out of 6139905
+ 208668 words of memory out of 5000000
+ 10670 multiletter control sequences out of 15000+600000
  12979 words of font info for 47 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  36i,8n,32p,1856b,659s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1088,10 +1069,10 @@ xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/f
 onts/type1/public/wasy/wasy10.pfb>
-Output written on template.pdf (13 pages, 8975161 bytes).
+Output written on template.pdf (13 pages, 8976795 bytes).
 PDF statistics:
- 288 PDF objects out of 1000 (max. 8388607)
- 242 compressed objects within 3 object streams
+ 289 PDF objects out of 1000 (max. 8388607)
+ 243 compressed objects within 3 object streams
  76 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
