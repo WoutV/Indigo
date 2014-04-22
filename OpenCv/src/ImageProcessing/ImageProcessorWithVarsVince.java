@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.*;
@@ -251,17 +252,20 @@ public class ImageProcessorWithVarsVince {
 					 Scalar(200,200,250), 3);
 
 				}
+				
+				
+				
 				/*
 				 * Works on the deleted contours. Other possibility is to work
 				 * on both contours. The inner and outer contour to one figure.
 				 */
-				else if (isRectangle(notDeletedContours.get(i)) > 0.7 || (isRectangle(notDeletedContours.get(i)) > 0.65 && isCircleTest(contours.get(i),contourCenters)>20)) {
-					 Core.putText(image,"R", contourCenters,
-					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-					 Scalar(200,200,250), 3);
+				else if (isRectangleSunil(canny_output.submat(Imgproc.boundingRect(contours.get(i))),Imgproc.boundingRect(contours.get(i)),contourCenters)){
+					Core.putText(image,"R", contourCenters,
+							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+							 Scalar(200,200,250), 3);
 					 				}
 				
-				else if(isStar(contours.get(i))>1 && isStar(contours.get(i))<2 && isRectangle(contours.get(i))>0.4 && (isRectangle(contours.get(i))< 0.7 || isCircleTest(contours.get(i),contourCenters)<20)){
+				else if(isStar(contours.get(i))>1 && isStar(contours.get(i))<2 && isRectangle(contours.get(i))>0.4 && isRectangle(contours.get(i))< 0.7 ){
 					Core.putText(image,"H", contourCenters,
 							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
 							 Scalar(200,200,250), 3);
@@ -1003,5 +1007,41 @@ public class ImageProcessorWithVarsVince {
 		return difference / approx.size(); 
 		
 	}
-
+	
+	private boolean isRectangleSunil(Mat subImage, Rect rec, Point contourCenter){
+		Mat lines = new Mat();
+		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 12,
+				Math.max(rec.height, rec.width) / 1.25, 25);
+		// System.out.println("Total Lines:" + lines.cols());
+		ArrayList<Line2D> lineList = new ArrayList<>();
+		boolean containsParallel = false;
+		Line2D pline1 = null, pline2 = null;
+		if (lines.cols() > 1) {
+			for (int i = 0; (i < lineList.size() - 1) && !containsParallel; i++) {
+				Line2D line1 = lineList.get(0);
+				double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
+						line1.getX1() - line1.getX2());
+				for (int x = i+1; x < lineList.size(); x++) {
+					Line2D line2 = lineList.get(x);
+					double angle2 = Math.atan2(line2.getY1() - line2.getY2(),
+							line2.getX1() - line2.getX2());
+					//System.out.println("angle between lines : "+(angle1-angle2));
+					if (Math.abs(angle1 - angle2) <= 0.174532925) {
+						double distanceToPoint1 = line1.ptLineDist(line2.getP1());
+						double distanceToPoint2 = line1.ptLineDist(line2.getP2());
+						double constraint =   Math.min(	rec.width, rec.height) / 3;
+						if (distanceToPoint1 > constraint && distanceToPoint2 > constraint){
+							containsParallel = true;
+							pline1 = line1;
+							pline2 = line2;
+							break;
+						}
+					}
+				}
+				
+			}
+			
+		}
+		return containsParallel;	
+	}
 }
