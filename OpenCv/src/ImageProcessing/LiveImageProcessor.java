@@ -435,21 +435,6 @@ public class LiveImageProcessor {
 				Math.max(rec.height, rec.width) / 1.25, 25);
 		// System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
-		for (int x = 0; x < lines.cols(); x++) {
-			double[] vec = lines.get(0, x);
-			lineList.add(new Line2D.Double(vec[0], vec[1], vec[2], vec[3]));
-
-			 double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
-			 Point start = new Point(x1, y1);
-			 Point end = new Point(x2, y2);
-			
-			 Core.line(originalImage.submat(rec), start, end, new Scalar(255, 0, 255), 2);
-			// zoomedContourFrame.matToBufferedImage(originalImage);
-			// zoomedContourFrame.repaint();
-
-			// Thread.sleep(1000);
-
-		}
 		boolean containsParallel = false;
 		Line2D pline1 = null, pline2 = null;
 		if (lines.cols() > 1) {
