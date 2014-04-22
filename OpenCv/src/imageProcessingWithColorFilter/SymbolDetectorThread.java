@@ -96,13 +96,9 @@ class SymbolDetectorThread implements Runnable {
 						canResume.wait();
 					}
 					processImage();
-					System.out.println("Processed");
-			
-			
 					synchronized(toNotify){
 						toNotify.notify();
 					}
-					System.out.println("Notified");
 
 				}
 
@@ -348,8 +344,12 @@ class SymbolDetectorThread implements Runnable {
 	private boolean isRectangle(Mat subImage, Rect rec, Point contourCenter)
 			throws InterruptedException {
 		Mat lines = new Mat();
-		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 12,
-				Math.max(rec.height, rec.width) / 1.25, 10);
+		Mat canny_output = new Mat(subImage.size(), Core.DEPTH_MASK_8U);
+		Imgproc.Canny(subImage, canny_output, 8,
+				2 * 27);
+		//Imgproc.HoughLines(subImage, lines, rho, theta, threshold, srn, stn)
+		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 1,
+				Math.max(rec.height, rec.width) / 1.25, Math.max(rec.height, rec.width));
 		// System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
 //		for (int x = 0; x < lines.cols(); x++) {

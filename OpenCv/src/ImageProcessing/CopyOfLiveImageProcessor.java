@@ -1,16 +1,17 @@
-package imageProcessingWithColorFilter;
+package ImageProcessing;
 
-import ImageProcessing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -36,25 +37,25 @@ import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
-public class ImageProcessorWithColorFiltering {
-	private Integer erodeTimes = 0;
-	private Integer dilateTimes = 0;
-	private Integer blur = 4;
-	private Integer erodesize = 3;
-	private Integer dilatesize = 3;
+public class CopyOfLiveImageProcessor {
+	private int erodeTimes = 0;
+	private int dilateTimes = 2;
+	private int blur = 4;
+	private int erodesize = 3;
+	private int dilatesize = 3;
 	private Mat originalImage;
-	private Integer cannyThresholdMin = 8;
-	private Integer cannyThresholdMax = 13;
-	private Integer minArea = 2000;
-	private Integer epsilonApprox = 1;
-	private Integer pointsEqualEpsilon = 50;
-	private Integer pointsEqualEpsilonPoints = 52;
+	private int cannyThresholdMin = 8;
+	private int cannyThresholdMax = 27;
+	private int minArea = 1000;
+	private int epsilonApprox = 1;
+	private int pointsEqualEpsilon = 50;
+	private int pointsEqualEpsilonPoints = 52;
 	private Size frameSize = new Size(800, 700);
-	// private frame cannyoutput = makeFrame("Canny Output", frameSize);
-	private frame erodedoutput = makeFrame("Eroded Output", frameSize);
-	private frame dilatedoutput = makeFrame("Dilated Output", frameSize);
-	private frame foundContours = makeFrame(
-			"Found Contours(Green)/Approx Contours(Blue)", frameSize);;
+	private frame cannyoutput = makeFrame("Canny Output", frameSize);
+	// private frame erodedoutput = makeFrame("Eroded Output", frameSize);
+	// private frame dilatedoutput = makeFrame("Dilated Output", frameSize);
+	// private frame foundContours = makeFrame(
+	// "Found Contours(Green)/Approx Contours(Blue)", frameSize);;
 	private frame resultFrame = makeFrame("Result", frameSize);
 
 	// private frame zoomedContourFrame = makeFrame("Zoomed", frameSize);
@@ -63,52 +64,74 @@ public class ImageProcessorWithColorFiltering {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// type 0 -> pi Image ; 1 -> video ; 2-> image
-		//ImageProcessorWithColorFiltering lip = new ImageProcessorWithColorFiltering(
-		//		1, "C:/Users/Study/Desktop/test.wmv");
-		 ImageProcessorWithColorFiltering lip = new
-		 ImageProcessorWithColorFiltering(1,"C:/Users/Study/Dropbox/grid.h264");
-		// ImageProcessorWithColorFiltering lip = new
-		// ImageProcessorWithColorFiltering(2,"../fotos/b (114)" + ".jpg");
-		// lip.start();
-		while (true) {
-			lip.startThreadProcessing();
-			// try {
-			// Thread.sleep(200);
-			// } catch (InterruptedException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-		}
-
+		CopyOfLiveImageProcessor lip = new CopyOfLiveImageProcessor();
+		// lip.start("../fotos/b (114)" + ".jpg");
+		lip.startVideoProcessing("C:/Users/Study/Dropbox/grid1.h264");
+		// lip.startVideoProcessing("C:/Users/Study/Desktop/test.wmv");
 	}
 
-	boolean colorCalibration = false;
-
-	/**
-	 * @param inputType
-	 *            type 0 -> pi Image ; 1 -> video ; 2-> image
-	 * @param filepath
-	 */
-	public ImageProcessorWithColorFiltering(int inputType, String filepath) {
+	public CopyOfLiveImageProcessor() {
 		System.loadLibrary("opencv_java248");
 		createToolbars();
 		symbolS = new SymbolsStabalization(6, 50);
-		cc = new ColorWithCalibration("colors.txt");
-		this.typeInput = inputType;
-		this.filepath = filepath;
+
 	}
 
-	ColorWithCalibration cc;
-	Integer timestamp = 0;
+	int timestamp = 0;
 	private SymbolsStabalization symbolS;
+
+	public void startVideoProcessing(String videoPath) {
+		this.originalImage = new Mat();
+		VideoCapture vc = new VideoCapture(videoPath);
+		while (true) {
+			try {
+
+				vc.read(originalImage);
+				processImage();
+				Thread.sleep(200);
+				timestamp++;
+				symbolS.increaseTimestamp();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public void start() {
 
 		try {
 			while (true) {
-				updateOriginalImage();
+				BufferedImage buffered = ImageIO.read(new URL(
+						"http://raspberrypi.mshome.net/cam_pic.php?time="
+								+ System.currentTimeMillis()));
+				byte[] pixels = ((DataBufferByte) buffered.getRaster()
+						.getDataBuffer()).getData();
+
+				originalImage = new Mat(buffered.getHeight(),
+						buffered.getWidth(), CvType.CV_8UC3);
+				originalImage.put(0, 0, pixels);
 				processImage();
+				// Thread.sleep(200);
+				timestamp++;
+				symbolS.increaseTimestamp();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void start(String urlImage) {
+
+		try {
+			while (true) {
+				this.originalImage = Highgui.imread(urlImage,
+						Imgproc.COLOR_BGR2GRAY);
+				processImage();
+				// Thread.sleep(200);
+				timestamp++;
+				symbolS.increaseTimestamp();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,25 +146,29 @@ public class ImageProcessorWithColorFiltering {
 	 */
 	private void processImage() throws InterruptedException {
 		// clone the originalImage incase we need original image later.
-		Mat image = originalImage;
+		Mat image = originalImage.clone();
 		// Changing to black & white
 		Mat grayImage = new Mat();
+		Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
 		// Blurring the image
-		Imgproc.blur(image, grayImage, new Size(blur, blur));
-		Mat greenFilter = new Mat(grayImage.size(), Core.DEPTH_MASK_8U);
-		Core.inRange(grayImage, cc.getYellowMinScalar(),
-				cc.getYellowMaxScalar(), greenFilter);
+		Imgproc.blur(grayImage, grayImage, new Size(blur, blur));
+
 		// Making some more matrixes to see the ongoing operations.
+		Mat canny_output = new Mat(image.size(), Core.DEPTH_MASK_8U);
+		Imgproc.Canny(grayImage, canny_output, cannyThresholdMin,
+				2 * cannyThresholdMax);
+		cannyoutput.matToBufferedImage(canny_output);
+		cannyoutput.repaint();
 
 		// eroding the image to reduce the noise;
-		Mat erodedImage = greenFilter;
+		Mat erodedImage = canny_output.clone();
 		for (int i = 0; i < erodeTimes; i++) {
 			Imgproc.erode(erodedImage, erodedImage, Imgproc
 					.getStructuringElement(Imgproc.MORPH_RECT, new Size(
 							erodesize, erodesize)));
 		}
-		erodedoutput.matToBufferedImage(erodedImage);
-		erodedoutput.repaint();
+		// erodedoutput.matToBufferedImage(erodedImage);
+		// erodedoutput.repaint();
 		// dilating to make the image clear
 		Mat dilatedImage = erodedImage.clone();
 		for (int i = 0; i < dilateTimes; i++) {
@@ -149,8 +176,8 @@ public class ImageProcessorWithColorFiltering {
 					.getStructuringElement(Imgproc.MORPH_RECT, new Size(
 							dilatesize, dilatesize)));
 		}
-		dilatedoutput.matToBufferedImage(dilatedImage);
-		dilatedoutput.repaint();
+		// dilatedoutput.matToBufferedImage(dilatedImage);
+		// dilatedoutput.repaint();
 		findContours(dilatedImage, image, new Mat(image.size(),
 				Core.DEPTH_MASK_8U, new Scalar(0, 0, 0)));
 
@@ -171,25 +198,25 @@ public class ImageProcessorWithColorFiltering {
 		// Matrices to put the converted contours.
 		MatOfPoint2f MatOfPointTo2f = new MatOfPoint2f();
 		MatOfPoint2f MatOfPoint2fApprox = new MatOfPoint2f();
-
+		contours = deleteContours(contours);
 		// Adding the contours within given distances.
 		// System.out.println("Before adding contours size:" + contours.size());
-		contours = addContours(contours);
+		// contours = addContours(contours);
 		// System.out.println("After adding contours:" + contours.size());
 		Mat contourFoundImage = image1.clone();
 		Imgproc.drawContours(contourFoundImage, contours, -1, new Scalar(0, 0,
 				255), 2);
 
-		List<MatOfPoint> ApproxContours = new ArrayList<MatOfPoint>();
+		List<MatOfPoint> ApproxContours = contours;
 		// Approximating every contour
-		for (int i = 0; i < contours.size(); i++) {
-			contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);
-			Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox,
-					epsilonApprox, true);
-			MatOfPoint mop = new MatOfPoint();
-			MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
-			ApproxContours.add(mop);
-		}
+		// for (int i = 0; i < contours.size(); i++) {
+		// contours.get(i).convertTo(MatOfPointTo2f, CvType.CV_32FC2);
+		// Imgproc.approxPolyDP(MatOfPointTo2f, MatOfPoint2fApprox,
+		// epsilonApprox, true);
+		// MatOfPoint mop = new MatOfPoint();
+		// MatOfPoint2fApprox.convertTo(mop, CvType.CV_32S);
+		// ApproxContours.add(mop);
+		// }
 
 		/*
 		 * interesting if you would like to know the convex hull MatOfInt
@@ -219,75 +246,76 @@ public class ImageProcessorWithColorFiltering {
 		// ApproxContours.size());
 		Imgproc.drawContours(contourFoundImage, ApproxContours, -1, new Scalar(
 				255, 0, 0), 2);
-		Mat contourMat = new Mat(contourFoundImage.size(), CvType.CV_8UC1);
-
-		Imgproc.drawContours(contourMat, ApproxContours, -1, new Scalar(255, 0,
-				0), 2);
-		foundContours.matToBufferedImage(contourMat);
-		foundContours.repaint();
+		// foundContours.matToBufferedImage(contourFoundImage);
+		// foundContours.repaint();
 		for (int i = 0; i < ApproxContours.size(); i++) {
 			MatOfPoint contour1 = ApproxContours.get(i);
+			if (Imgproc.contourArea(contours.get(i)) > minArea) {
+				ArrayList<Point> contoursPoint = new ArrayList<Point>(
+						contour1.toList());
 
-			ArrayList<Point> contoursPoint = new ArrayList<Point>(
-					contour1.toList());
+				Point contourCenter = getCenter(contour1);
+				Core.circle(image, contourCenter, 4,
+						new Scalar(255, 49, 0, 255));
 
-			Point contourCenter = getCenter(contour1);
-			Core.circle(image, contourCenter, 4, new Scalar(255, 49, 0, 255));
+				Rect rec = Imgproc.boundingRect(contour1);
+				String Color = getColor(image1.submat(rec), new Point(
+						rec.height / 2, rec.width / 2));
 
-			Rect rec = Imgproc.boundingRect(contour1);
-			String Color = getColor(image1.submat(rec), new Point(
-					rec.height / 2, rec.width / 2));
+				Point center = new Point();
+				float[] radius = new float[5];
+				contour1.convertTo(MatOfPointTo2f, CvType.CV_32FC2);
+				Imgproc.minEnclosingCircle(MatOfPointTo2f, center, radius);
+				Core.rectangle(image, rec.tl(), rec.br(), new Scalar(255, 0, 0));
 
-			Point center = new Point();
-			float[] radius = new float[5];
-			contour1.convertTo(MatOfPointTo2f, CvType.CV_32FC2);
-			Imgproc.minEnclosingCircle(MatOfPointTo2f, center, radius);
-			Core.rectangle(image, rec.tl(), rec.br(), new Scalar(255, 0, 0));
+				for (int index = 0; index < contoursPoint.size(); index++) {
+					Point p = contoursPoint.get(index);
+					Core.circle(image, p, 1, new Scalar(255, 0, 0), 3);
 
-			for (int index = 0; index < contoursPoint.size(); index++) {
-				Point p = contoursPoint.get(index);
-				Core.circle(image, p, 1, new Scalar(255, 0, 0), 3);
+				}
 
-			}
+				Mat subImage = dilatedImage.submat(rec);
 
-			Mat subImage = contourMat.submat(rec);
+				// MatOfPoint corners = new MatOfPoint();
+				//
+				// Imgproc.goodFeaturesToTrack(subImage, corners, 10, 0.01,
+				// Math.min(rec.height, rec.width) / 3, new Mat(), 3,
+				// true, 0.04);
+				//
+				// System.out.println("Detected Corners:" + corners.cols());
+				//
+				// if (corners.cols() == 1) {
+				// Mat colored = image.submat(rec);
+				// Core.circle(colored, new Point(corners.get(0, 0)[0],
+				// corners.get(0, 0)[1]), 2, new Scalar(0, 255,
+				// 255), 1);
+				// //zoomedContourFrame.matToBufferedImage(colored);
+				// //zoomedContourFrame.repaint();
+				//
+				// // Thread.sleep(1000);
+				//
+				// }
 
-			// MatOfPoint corners = new MatOfPoint();
-			//
-			// Imgproc.goodFeaturesToTrack(subImage, corners, 10, 0.01,
-			// Math.min(rec.height, rec.width) / 3, new Mat(), 3,
-			// true, 0.04);
-			//
-			// System.out.println("Detected Corners:" + corners.cols());
-			//
-			// if (corners.cols() == 1) {
-			// Mat colored = image.submat(rec);
-			// Core.circle(colored, new Point(corners.get(0, 0)[0],
-			// corners.get(0, 0)[1]), 2, new Scalar(0, 255,
-			// 255), 1);
-			// //zoomedContourFrame.matToBufferedImage(colored);
-			// //zoomedContourFrame.repaint();
-			//
-			// //Thread.sleep(1000);
-			//
-			// }
+				
+				
+				/*
+				 * Works if used on deletedcontours. And not on an
+				 * approximation.
+				 */
 
-			// Checking for rectangles
-			if (isRectangle(subImage, rec, contourCenter)) {
-				Symbol S = new Symbol(Color + "R", timestamp, contourCenter.x,
-						contourCenter.y);
-				S = symbolS.getPossibleSymbol(S);
-				Core.putText(image, S.toString(), contourCenter,
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
-								200, 250), 3);
-
-			}
-
-			else { // It is not a rectangle now checking for circles
-
-				Mat circles = new Mat();
 				if (isCircle(contours.get(i), contourCenter)) {
-					Symbol S = new Symbol(Color + "C", timestamp,
+					Symbol S = new Symbol(Color+"C", timestamp, contourCenter.x, contourCenter.y);
+					S = symbolS.getPossibleSymbol(S);
+					Core.putText(image, S.toString(), contourCenter,
+							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
+									200, 200, 250), 3);
+
+				}
+				
+				
+				// Checking for rectangles
+				else if (isRectangle(subImage, rec, contourCenter)) {
+					Symbol S = new Symbol(Color + "R", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
 					Core.putText(image, S.toString(), contourCenter,
@@ -295,74 +323,24 @@ public class ImageProcessorWithColorFiltering {
 									200, 250), 3);
 
 				}
-				//
-				//
-				//
-				// // // isCircle(approx, center)
-				// Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
-				// Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
-				// 2 * cannyThresholdMax, 17, (int) (rec.height / 2.5),
-				// 500);
-				//
-				// // System.out.println("Found circles:" + circles.cols());
-				// for (int x = 0; x < circles.cols(); x++) {
-				// double[] vec = circles.get(0, x);
-				// double x1 = vec[0], y1 = vec[1], r = vec[2];
-				//
-				// Point start = new Point(x1, y1);
-				//
-				// Core.circle(subImage, start, (int) r,
-				// new Scalar(0, 255, 0), 1);
-				//
-				// }
-				// if (circles.cols() == 1) {
-				// Symbol S = new Symbol(Color+"C", timestamp, contourCenter.x,
-				// contourCenter.y);
-				// S = symbolS.getPossibleSymbol(S);
-				// Core.putText(image, S.toString(), contourCenter,
-				// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-				// 200, 200, 250), 3);
-				// //zoomedContourFrame.matToBufferedImage(subImage);
-				// //zoomedContourFrame.repaint();
-				//
-				// // Thread.sleep(1000);
-				// }
+				
 
-				else { // Not a circle either now checking for heart;
-					Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
-							Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
-							2 * cannyThresholdMax, 10,
-							(int) (rec.height / 2.5), 500);
-					// System.out.println("Found circles:" + circles.cols());
-
-					if (circles.cols() == 1) {
-						Symbol S = new Symbol(Color + "H", timestamp,
-								contourCenter.x, contourCenter.y);
-						S = symbolS.getPossibleSymbol(S);
-						Core.putText(image, S.toString(), contourCenter,
-								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-										200, 200, 250), 3);
-						// zoomedContourFrame.matToBufferedImage(subImage);
-						// zoomedContourFrame.repaint();
-
-						// Thread.sleep(1000);
-
-					}
-
-					else {
-						Symbol S = new Symbol(Color + "S", timestamp,
-								contourCenter.x, contourCenter.y);
-						S = symbolS.getPossibleSymbol(S);
-						Core.putText(image, S.toString(), contourCenter,
-								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-										200, 200, 250), 3);
-						// zoomedContourFrame.matToBufferedImage(subImage);
-						// zoomedContourFrame.repaint();
-
-						// Thread.sleep(1000);
-
-					}
+				// Heart Detection
+				else if (isRectangle(contours.get(i)) > 0.4
+						&& isRectangle(contours.get(i)) < 0.7) {
+					Symbol S = new Symbol(Color+"H", timestamp, contourCenter.x, contourCenter.y);
+					S = symbolS.getPossibleSymbol(S);
+					Core.putText(image, S.toString(), contourCenter,
+							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
+									200, 200, 250), 3);
+				} else {
+					Symbol S = new Symbol(Color+"S", timestamp, contourCenter.x, contourCenter.y);
+					S = symbolS.getPossibleSymbol(S);
+					Core.putText(image, S.toString(), contourCenter,
+							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
+									200, 200, 250), 3);
 				}
+
 			}
 
 		}
@@ -383,13 +361,11 @@ public class ImageProcessorWithColorFiltering {
 	private boolean isRectangle(Mat subImage, Rect rec, Point contourCenter)
 			throws InterruptedException {
 		Mat lines = new Mat();
-		// zoomedContourFrame.matToBufferedImage(subImage);
-		// zoomedContourFrame.repaint();
-		// Thread.sleep(5000);
-		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 12,
-				Math.max(rec.height, rec.width) / 1.25, 10);
+		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 2,
+				Math.max(rec.height, rec.width) / 1.25, 25);
 		// System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
+
 		for (int x = 0; x < lines.cols(); x++) {
 			double[] vec = lines.get(0, x);
 			lineList.add(new Line2D.Double(vec[0], vec[1], vec[2], vec[3]));
@@ -402,9 +378,11 @@ public class ImageProcessorWithColorFiltering {
 					255), 2);
 			// zoomedContourFrame.matToBufferedImage(originalImage);
 			// zoomedContourFrame.repaint();
+
 			// Thread.sleep(1000);
 
 		}
+
 		boolean containsParallel = false;
 		Line2D pline1 = null, pline2 = null;
 		if (lines.cols() > 1) {
@@ -535,6 +513,49 @@ public class ImageProcessorWithColorFiltering {
 	}
 
 	/**
+	 * 
+	 * @param contours
+	 *            Lists of matrix points in which to operate.
+	 * @return Returns a new list of mat of points after adding the contours
+	 *         which are near each other.
+	 */
+	private List<MatOfPoint> removeContours(List<MatOfPoint> contours) {
+		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			if (Imgproc.contourArea(contour1) > minArea) {
+				for (int index = i + 1; index < contours.size(); index++) {
+					MatOfPoint contour2 = contours.get(index);
+					if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
+							pointsEqualEpsilon)) {
+						fuzzyContours.put(i, index);
+						toRemove.add(contour2);
+					}
+				}
+			}
+		}
+		// for(int j=0; j< fuzzyContours.size(); j++){
+		// int a = (int) fuzzyContours.keySet().toArray()[j];
+		// int b = fuzzyContours.get(fuzzyContours.keySet().toArray()[j]);
+		// ArrayList<Point> firstone = new
+		// ArrayList<>(contours.get(a).toList());
+		// ArrayList<Point> secondone = new
+		// ArrayList<>(contours.get(b).toList());
+		// for(int q=0;q<firstone.size();q++){
+		// secondone.add(firstone.get(q));
+		// }
+		// contours.get(a).fromList(secondone);
+		// }
+
+		for (MatOfPoint p : toRemove) {
+			contours.remove(p);
+		}
+		// System.out.println("removed: " + toRemove.size());
+		return contours;
+	}
+
+	/**
 	 * Returns true if the distance between the given points is less than the
 	 * given epsilon.
 	 * 
@@ -556,43 +577,7 @@ public class ImageProcessorWithColorFiltering {
 
 	double averageRadius = 0;
 
-	/*
-	 * If all points of the contour are on an equal distance to the center
-	 * point. This is a circle. Works if you don't add the inner and outer
-	 * contours and don't work on approximations.
-	 */
-	public boolean isCircle(MatOfPoint contour, Point center) {
-		List<Point> approx = contour.toList();
-		double radiussum = 0;
-		double x;
-		double y;
-		for (int i = 0; i < approx.size(); i++) {
-			x = approx.get(i).x;
-			y = approx.get(i).y;
-			radiussum += Math.sqrt((x - center.x) * (x - center.x)
-					+ (y - center.y) * (y - center.y));
-		}
-
-		averageRadius = radiussum / approx.size();
-		double difference = 0;
-		for (int j = 0; j < approx.size(); j++) {
-			x = approx.get(j).x;
-			y = approx.get(j).y;
-			double radius = Math.sqrt((x - center.x) * (x - center.x)
-					+ (y - center.y) * (y - center.y));
-			difference += (averageRadius - radius) * (averageRadius - radius);
-		}
-		double treshold = 7;
-		if (Imgproc.contourArea(contour) < 1150)
-			treshold = 3;
-		// System.out.println("Center:x:" +center.x + "y:" + center.y +
-		// "diff/approx:"+ difference/approx.size());
-		if (difference / approx.size() < treshold)
-			return true;
-		return false;
-	}
-
-	private List<Point> reduceEqualPoints(List<Point> approx) {
+	public List<Point> reduceEqualPoints(List<Point> approx) {
 		ArrayList<Point> newApprox = new ArrayList<Point>(approx);
 		ArrayList<Point> lonelyPoints = new ArrayList<Point>();
 		List<Point> fuzzyPoints = new ArrayList<Point>();
@@ -631,8 +616,8 @@ public class ImageProcessorWithColorFiltering {
 		try {
 			Mat bitImage = image.clone();
 			// Checking for white
-			Core.inRange(image.clone(), cc.getWhiteMinScalar(),
-					cc.getWhiteMaxScalar(), bitImage);
+			Core.inRange(image.clone(), Colors.getWhiteMinScalar(),
+					Colors.getWhiteMaxScalar(), bitImage);
 			// System.out.println("Center Points height:" + contourCenter.x
 			// + ", width:" + contourCenter.y);
 			double[] col = bitImage.get((int) contourCenter.y,
@@ -643,29 +628,29 @@ public class ImageProcessorWithColorFiltering {
 				return "W";
 
 			// Checking for Yellow
-			Core.inRange(image.clone(), cc.getYellowMinScalar(),
-					cc.getYellowMaxScalar(), bitImage);
+			Core.inRange(image.clone(), Colors.getYellowMinScalar(),
+					Colors.getYellowMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
 			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "Y";
 
-			Core.inRange(image.clone(), cc.getRedMinScalar(),
-					cc.getRedMaxScalar(), bitImage);
+			Core.inRange(image.clone(), Colors.getRedMinScalar(),
+					Colors.getRedMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
 			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "R";
 
-			Core.inRange(image.clone(), cc.getBlueMinScalar(),
-					cc.getBlueMaxScalar(), bitImage);
+			Core.inRange(image.clone(), Colors.getBlueMinScalar(),
+					Colors.getBlueMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
 			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "B";
 
-			Core.inRange(image.clone(), cc.getGreenMinScalar(),
-					cc.getGreenMaxScalar(), bitImage);
+			Core.inRange(image.clone(), Colors.getGreenMinScalar(),
+					Colors.getGreenMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
 			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
@@ -691,6 +676,11 @@ public class ImageProcessorWithColorFiltering {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame facePanel = new frame();
 		frame.setSize((int) frameSize.width, (int) frameSize.height); // give
+																		// the
+																		// frame
+																		// some
+																		// arbitrary
+																		// size
 		frame.setBackground(Color.BLUE);
 		frame.add(facePanel, BorderLayout.CENTER);
 		frame.setVisible(true);
@@ -870,193 +860,240 @@ public class ImageProcessorWithColorFiltering {
 		frame1.setVisible(true);
 	}
 
-	Boolean blueDone = false;
-	Boolean greenDone = false;
-	Boolean redDone = false;
-	Boolean whiteDone = false;
-	Boolean yellowDone = false;
-	Boolean canBlueResume;
-	Boolean canGreenResume;
-	Boolean canRedResume;
-	Boolean canWhiteResume;
-	Boolean canYellowResume;
-	ArrayList<Symbol> blueSymbols;
-	ArrayList<Symbol> greenSymbols;
-	ArrayList<Symbol> redSymbols;
-	ArrayList<Symbol> whiteSymbols;
-	ArrayList<Symbol> yellowSymbols;
-	SymbolDetectorThread blueSymbolDetectorThread;
-	SymbolDetectorThread greenSymbolDetectorThread;
-	SymbolDetectorThread redSymbolDetectorThread;
-	SymbolDetectorThread whiteSymbolDetectorThread;
-	SymbolDetectorThread yellowSymbolDetectorThread;
-	boolean threadInitialized = false;
-
-	public void startSymbolDetectorThreads() {
-		blueSymbols = new ArrayList<>();
-		greenSymbols = new ArrayList<>();
-		redSymbols = new ArrayList<>();
-		whiteSymbols = new ArrayList<>();
-		yellowSymbols = new ArrayList<>();
-		blueSymbolDetectorThread = new SymbolDetectorThread(blueDone,
-				blueSymbols, cc.getBlueMinScalar(), cc.getBlueMaxScalar(),
-				symbolS, timestamp, "B");
-		canBlueResume = blueSymbolDetectorThread.getCanResume();
-		greenSymbolDetectorThread = new SymbolDetectorThread(greenDone,
-				greenSymbols, cc.getGreenMinScalar(), cc.getGreenMaxScalar(),
-				symbolS, timestamp, "G");
-		canGreenResume = greenSymbolDetectorThread.getCanResume();
-		redSymbolDetectorThread = new SymbolDetectorThread(redDone, redSymbols,
-				cc.getRedMinScalar(), cc.getRedMaxScalar(), symbolS, timestamp,
-				"R");
-		canRedResume = redSymbolDetectorThread.getCanResume();
-		whiteSymbolDetectorThread = new SymbolDetectorThread(whiteDone,
-				whiteSymbols, cc.getWhiteMinScalar(), cc.getWhiteMaxScalar(),
-				symbolS, timestamp, "W");
-		canWhiteResume = whiteSymbolDetectorThread.getCanResume();
-		yellowSymbolDetectorThread = new SymbolDetectorThread(yellowDone,
-				yellowSymbols, cc.getYellowMinScalar(),
-				cc.getYellowMaxScalar(), symbolS, timestamp, "Y");
-		canYellowResume = yellowSymbolDetectorThread.getCanResume();
-		blueSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		greenSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		redSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		whiteSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		yellowSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		Thread blueThread = new Thread(blueSymbolDetectorThread);
-		Thread greenThread = new Thread(greenSymbolDetectorThread);
-		Thread redThread = new Thread(redSymbolDetectorThread);
-		Thread whiteThread = new Thread(whiteSymbolDetectorThread);
-		Thread yellowThread = new Thread(yellowSymbolDetectorThread);
-		blueThread.start();
-		greenThread.start();
-		redThread.start();
-		whiteThread.start();
-		yellowThread.start();
-		System.out.println("Threads Up and Running");
+	/*
+	 * Determines if the contour is a rectangle. Returns the ratio of angles
+	 * that are 180 degrees(epsilon 10 degrees) on the amount of angles that are
+	 * examined.
+	 */
+	public double isRectangle(MatOfPoint contour) {
+		List<Point> sortedList = sortPolar(contour.toList());
+		double a = 0;
+		double b = 0;
+		if (sortedList.size() < 60) {
+			for (int p = 0; p < (sortedList.size() - 3); p = p + 4) {
+				double angle = angleBetweenVectors(sortedList.get(p),
+						sortedList.get(p + 1), sortedList.get(p + 3));
+				b++;
+				if (fuzzyEquals(angle, 0, 10))
+					a++;
+			}
+		} else {
+			for (int p = 0; p < (sortedList.size() - 4); p = p + 5) {
+				double angle = angleBetweenVectors(sortedList.get(p),
+						sortedList.get(p + 2), sortedList.get(p + 4));
+				b++;
+				if (fuzzyEquals(angle, 0, 10))
+					a++;
+			}
+		}
+		return a / (b);
 	}
 
-	public void startThreadProcessing() {
-
-		if (!threadInitialized) {
-			startSymbolDetectorThreads();
-			threadInitialized = true;
-		}
-		updateOriginalImage();
-		try {
-			synchronized (canBlueResume) {
-				canBlueResume.notify();
-			}
-			
-			synchronized (blueDone) {
-				blueDone.wait();
-			}
-
-
-			synchronized (canGreenResume) {
-				canGreenResume.notify();
-			}
-			synchronized (greenDone) {
-				greenDone.wait();
-			}
-
-			synchronized (canRedResume) {
-				canRedResume.notify();
-			}
-			synchronized (redDone) {
-				redDone.wait();
-			}
-			synchronized (canWhiteResume) {
-				canWhiteResume.notify();
-			}	
-			
-			synchronized (whiteDone) {
-				whiteDone.wait();
-			}
-
-			synchronized (canYellowResume) {
-				canYellowResume.notify();
-			}
-			synchronized (yellowDone) {
-				yellowDone.wait();
-			}
-			Mat contourMat = new Mat(originalImage.size(), CvType.CV_8UC1);
-			Mat blueBinImage = blueSymbolDetectorThread.getBinaryMat();
-			Mat greenBinImage = greenSymbolDetectorThread.getBinaryMat();
-			Core.bitwise_or(blueBinImage, greenBinImage, contourMat);
-			Mat redBinImage = redSymbolDetectorThread.getBinaryMat();
-			Core.bitwise_or(contourMat, redBinImage, contourMat);
-			Mat whiteBinImage = whiteSymbolDetectorThread.getBinaryMat();
-			Core.bitwise_or(contourMat, whiteBinImage, contourMat);
-			Mat yellowBinImage = yellowSymbolDetectorThread.getBinaryMat();
-			Core.bitwise_or(contourMat, yellowBinImage, contourMat);
-			foundContours.matToBufferedImage(contourMat);
-			foundContours.repaint();
-			resultFrame.matToBufferedImage(originalImage);
-			resultFrame.repaint();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
+	private boolean fuzzyEquals(double a, double b, double epsilon) {
+		if (Math.abs(a - b) > epsilon)
+			return false;
+		return true;
 	}
 
-	int typeInput;
-	String filepath; // type 0 -> pi Image ; 1 -> video ; 2-> image
-	boolean vcInitialized = false;
-	VideoCapture vc;
+	/*
+	 * Sorts the points in the given list counter clockwise.
+	 */
+	private List<Point> sortPolar(List<Point> list) {
+		Point center = findCenter(list);
+		List<Point> sorted = new LinkedList<>();
+		if (list.contains(center)) {
+			list.remove(center);
+		}
+		for (Point s : list) {
+			Point copy = new Point(s.x, s.y);
+			// coordinate transformation
+			double x0 = copy.x - center.x;
+			double y0 = copy.y - center.y;
+			copy.x = (x0);
+			copy.y = (y0);
+			sorted.add(copy);
+		}
+		Collections.sort(sorted, new AngleComparator());
+		for (int p = 0; p < sorted.size(); p++) {
+			sorted.get(p).x += center.x;
+			sorted.get(p).y += center.y;
+		}
+		return sorted;
+	}
 
-	private void updateOriginalImage() {
-		try {
-			if (typeInput == 0) {
-				BufferedImage buffered = ImageIO.read(new URL(
-						"http://raspberrypi.mshome.net/cam_pic.php?time="
-								+ System.currentTimeMillis()));
-				byte[] pixels = ((DataBufferByte) buffered.getRaster()
-						.getDataBuffer()).getData();
+	/*
+	 * Return the angle between three points. Point 2 is the center point.
+	 */
+	private double angleBetweenVectors(Point p1, Point p2, Point p3) {
+		Point vector1 = new Point(p2.x - p1.x, p2.y - p1.y);
+		Point vector2 = new Point(p3.x - p2.x, p3.y - p2.y);
+		double prod = vector1.x * vector2.x + vector1.y * vector2.y;
+		double sum = (Math.sqrt(vector1.x * vector1.x + vector1.y * vector1.y) * Math
+				.sqrt(vector2.x * vector2.x + vector2.y * vector2.y));
+		return Math.acos(prod / sum) * 180 / Math.PI;
+	}
 
-				originalImage = new Mat(buffered.getHeight(),
-						buffered.getWidth(), CvType.CV_8UC3);
-				originalImage.put(0, 0, pixels);
-				timestamp++;
-				symbolS.increaseTimestamp();
-			} else if (typeInput == 1) {
-				this.originalImage = new Mat();
-				if (!vcInitialized) {
-					vc = new VideoCapture(filepath);
-					vcInitialized = true;
+	private static class AngleComparator implements Comparator<Point> {
+		@Override
+		public int compare(Point s1, Point s2) {
+			if (s1 == null)
+				return -1;
+			if (s2 == null)
+				return 1;
+			if (s1.y == 0 && s1.x > 0)
+				return -1;
+			if (s2.y == 0 && s2.x > 0)
+				return 1;
+			if (s1.y > 0 && s2.y < 0)
+				// !!because y-frame points in opposite direction
+				return 1;
+			if (s2.y > 0 && s1.y < 0)
+				// !! because y-frame points in opposite direction
+				return -1;
+			if (1 * s1.x * s2.y - s1.y * s2.x > 0)
+				return 1;
+			return -1;
+		}
+	}
+
+	/**
+	 * Returns the center of the given contour.
+	 * 
+	 * @param points
+	 * @return The center of the list.
+	 */
+	private Point findCenter(List<Point> points) {
+		double x = 0;
+		double y = 0;
+		for (int i = 0; i < points.size(); i++) {
+			x += points.get(i).x;
+			y += points.get(i).y;
+
+		}
+		return new Point(x / points.size(), y / points.size());
+	}
+
+	/*
+	 * If all points of the contour are on an equal distance to the center
+	 * point. This is a circle. Works if you don't add the inner and outer
+	 * contours and don't work on approximations.
+	 */
+	public boolean isCircle(MatOfPoint contour, Point center) {
+		List<Point> approx = contour.toList();
+		double radiussum = 0;
+		double x;
+		double y;
+		for (int i = 0; i < approx.size(); i++) {
+			x = approx.get(i).x;
+			y = approx.get(i).y;
+			radiussum += Math.sqrt((x - center.x) * (x - center.x)
+					+ (y - center.y) * (y - center.y));
+		}
+
+		averageRadius = radiussum / approx.size();
+		double difference = 0;
+		for (int j = 0; j < approx.size(); j++) {
+			x = approx.get(j).x;
+			y = approx.get(j).y;
+			double radius = Math.sqrt((x - center.x) * (x - center.x)
+					+ (y - center.y) * (y - center.y));
+			difference += (averageRadius - radius) * (averageRadius - radius);
+		}
+		double treshold = 7;
+		if (Imgproc.contourArea(contour) < 1150)
+			treshold = 3;
+		// System.out.println("Center:x:" +center.x + "y:" + center.y +
+		// "diff/approx:"+ difference/approx.size());
+		if (difference / approx.size() < treshold)
+			return true;
+		return false;
+	}
+
+	HashMap<Double, Point> starPoints = new HashMap<Double, Point>();
+
+	/*
+	 * Calculates the arearatio between the bounding circle and the star.
+	 */
+	private double isStar(MatOfPoint contour1) {
+		List<Point> contour = contour1.toList();
+		Point center = findCenter(contour);
+		List<Point> sortedList = sortPolar(contour);
+		double maxdist = 0;
+		Point farest = null;
+		for (int i = 0; i < sortedList.size(); i++) {
+
+			double distance = calculateDistance(sortedList.get(i), center);
+			if (distance > maxdist) {
+				maxdist = distance;
+				farest = sortedList.get(i);
+			}
+		}
+		double radius = calculateDistance(farest, center);
+		double circleArea = radius * radius * Math.PI;
+		double Area = Imgproc.contourArea(contour1);
+		double divide = circleArea / Area;
+		starPoints.put(divide, center);
+		return divide;
+	}
+
+	/*
+	 * Calculate distance between two points.
+	 */
+	private double calculateDistance(Point point1, Point point2) {
+		return Math.sqrt((point1.x - point2.x) * (point1.x - point2.x)
+				+ (point1.y - point2.y) * (point1.y - point2.y));
+	}
+
+	private List<MatOfPoint> deleteContours(List<MatOfPoint> contours) {
+		this.areaSingle = new HashMap<Double, Point>();
+		this.areaDouble = new HashMap<Double, Point>();
+		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
+		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
+		for (int i = 0; i < contours.size(); i++) {
+			MatOfPoint contour1 = contours.get(i);
+			isStar(contour1);
+			for (int index = i + 1; index < contours.size(); index++) {
+				MatOfPoint contour2 = contours.get(index);
+				if (pointsEquals(findCenter(contour1.toList()),
+						findCenter(contour2.toList()), 150)) {
+					fuzzyContours.put(i, index);
+					toRemove.add(contour2);
+					areaDouble
+							.put((isRectangle(contour1) + isRectangle(contour2) / 2),
+									findCenter(contour1.toList()));
 				}
-				vc.read(originalImage);
-				timestamp++;
-				symbolS.increaseTimestamp();
-			} else {
-				this.originalImage = Highgui.imread(filepath,
-						Imgproc.COLOR_BGR2GRAY);
-				// Thread.sleep(200);
-				timestamp++;
-				symbolS.increaseTimestamp();
-
 			}
 
-			blueSymbolDetectorThread.updateImage(originalImage);
-			greenSymbolDetectorThread.updateImage(originalImage);
-			redSymbolDetectorThread.updateImage(originalImage);
-			whiteSymbolDetectorThread.updateImage(originalImage);
-			yellowSymbolDetectorThread.updateImage(originalImage);
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		for (int p = 0; p < toRemove.size(); p++) {
+			contours.remove(toRemove.get(p));
+		}
+		for (int z = 0; z < contours.size(); z++) {
+			double a = isRectangle(contours.get(z));
+			areaSingle.put(a, findCenter(contours.get(z).toList()));
+		}
+		return contours;
+	}
 
+	private HashMap<Double, Point> areaSingle;
+	private HashMap<Double, Point> areaDouble;
+
+	/**
+	 * Returns true if the distance between the given points is less than the
+	 * given epsilon.
+	 * 
+	 * @param point1
+	 * @param point2
+	 * @param epsilon
+	 *            The margin to look if the given points are almost equal.
+	 * @return
+	 * 
+	 */
+	private boolean pointsEquals(Point point1, Point point2, int epsilon) {
+		double distance = calculateDistance(point1, point2);
+		if (distance < epsilon)
+			return true;
+		return false;
 	}
 
 }
