@@ -73,12 +73,12 @@ public class ImageProcessorWithVarsVince {
 		// HoughLineFrame = makeFrame("Line",frameSize);
 
 		this.originalImage = new Mat();
-		VideoCapture vc = new VideoCapture(videoPath);
+		VideoCapture vc = new VideoCapture(0);
 		while (true) {
 			try {
 				vc.read(originalImage);
 				processImage(facePanel, facePanel2, facePanel3);
-				// Thread.sleep(200);
+				 Thread.sleep(20);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

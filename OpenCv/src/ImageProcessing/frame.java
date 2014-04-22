@@ -16,7 +16,7 @@ import org.opencv.core.MatOfByte;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;  
 
-class frame extends JPanel{  
+public class frame extends JPanel{  
      private static final long serialVersionUID = 1L;  
      private BufferedImage image;  
      // Create a constructor method  
