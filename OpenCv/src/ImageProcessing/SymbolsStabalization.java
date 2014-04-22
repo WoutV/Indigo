@@ -12,7 +12,7 @@ public class SymbolsStabalization {
 		this.maxTimeStamp = maxTimeStamp;
 		this.maxDistance = maxDistance;
 	}
-	public void addSymbol(Symbol S){
+	public synchronized void addSymbol(Symbol S){
 		latestDetectedSymbols.add(S);
 //		System.out.println("Added Symbol " + S.toString());
 //		System.out.println("TotalSize: "+ latestDetectedSymbols.size());
@@ -38,7 +38,7 @@ public class SymbolsStabalization {
 	}
 	
 	
-	public Symbol getPossibleSymbol(Symbol S){
+	public synchronized Symbol getPossibleSymbol(Symbol S){
 //		System.out.println("Detected: "+S.toString() );
 		addSymbol(S);
 		int heart = 0,circle=0,rectangle=0,star=0;
@@ -58,11 +58,7 @@ public class SymbolsStabalization {
 		}
 //		System.out.println("C: "+ circle +" H: "+ heart+" R:" +rectangle +" S :"+ star);
 		int max = Math.max(heart, Math.max(circle, Math.max(rectangle, star)));
-		Symbol returningSymbol= S;
-//		System.out.println("max:" + max);
-		if(max==0)
-			return returningSymbol;
-		
+		Symbol returningSymbol= S;		
 		if(max == heart)
 			returningSymbol =  new Symbol(S.getColour(), Symbol.Shape.HEART , getCurrentTimestamp(), S.getX(),S.getY() );
 		else if(max == circle)

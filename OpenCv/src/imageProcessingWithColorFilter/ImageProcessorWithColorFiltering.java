@@ -1,7 +1,9 @@
-package ImageProcessing;
+package imageProcessingWithColorFilter;
 
+import ImageProcessing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
@@ -34,105 +36,81 @@ import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
-public class LiveImageProcessor {
-	private int erodeTimes = 0;
-	private int dilateTimes = 2;
-	private int blur = 4;
-	private int erodesize = 3;
-	private int dilatesize = 3;
+public class ImageProcessorWithColorFiltering {
+	private Integer erodeTimes = 0;
+	private Integer dilateTimes = 2;
+	private Integer blur = 4;
+	private Integer erodesize = 3;
+	private Integer dilatesize = 3;
 	private Mat originalImage;
-	private int cannyThresholdMin = 8;
-	private int cannyThresholdMax = 27;
-	private int minArea = 1000;
-	private int epsilonApprox = 1;
-	private int pointsEqualEpsilon = 50;
-	private int pointsEqualEpsilonPoints = 52;
+	private Integer cannyThresholdMin = 8;
+	private Integer cannyThresholdMax = 13;
+	private Integer minArea = 2000;
+	private Integer epsilonApprox = 1;
+	private Integer pointsEqualEpsilon = 50;
+	private Integer pointsEqualEpsilonPoints = 52;
 	private Size frameSize = new Size(800, 700);
-	private frame cannyoutput = makeFrame("Canny Output", frameSize);
-//	private frame erodedoutput = makeFrame("Eroded Output", frameSize);
-	//private frame dilatedoutput = makeFrame("Dilated Output", frameSize);
-	//private frame foundContours = makeFrame(
-//			"Found Contours(Green)/Approx Contours(Blue)", frameSize);;
+	// private frame cannyoutput = makeFrame("Canny Output", frameSize);
+	private frame erodedoutput = makeFrame("Eroded Output", frameSize);
+	private frame dilatedoutput = makeFrame("Dilated Output", frameSize);
+	private frame foundContours = makeFrame(
+			"Found Contours(Green)/Approx Contours(Blue)", frameSize);;
 	private frame resultFrame = makeFrame("Result", frameSize);
-//	private frame zoomedContourFrame = makeFrame("Zoomed", frameSize);
+
+	// private frame zoomedContourFrame = makeFrame("Zoomed", frameSize);
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		LiveImageProcessor lip = new LiveImageProcessor();
-		// lip.start("../fotos/b (114)" + ".jpg");
-		lip.startVideoProcessing("C:/Users/Study/Dropbox/grid.h264");
-		//lip.startVideoProcessing("C:/Users/Study/Desktop/test.wmv");
+		// type 0 -> pi Image ; 1 -> video ; 2-> image
+		ImageProcessorWithColorFiltering lip = new ImageProcessorWithColorFiltering(1,"C:/Users/Study/Desktop/test.wmv");
+	//	ImageProcessorWithColorFiltering lip = new ImageProcessorWithColorFiltering(1,"C:/Users/Study/Dropbox/grid.h264");
+		//ImageProcessorWithColorFiltering lip = new ImageProcessorWithColorFiltering(2,"../fotos/b (114)" + ".jpg");
+		//lip.start();
+		while(true){
+		lip.startThreadProcessing();
+//			try {
+//				Thread.sleep(200);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		}
+
 	}
 
-	public LiveImageProcessor() {
+	boolean colorCalibration = false;
+	/**
+	 * @param inputType
+	 * 				 type 0 -> pi Image ; 1 -> video ; 2-> image
+	 * @param filepath
+	 */
+	public ImageProcessorWithColorFiltering(int inputType , String filepath) {
 		System.loadLibrary("opencv_java248");
 		createToolbars();
-		symbolS=  new SymbolsStabalization(6, 50);
-		
+		symbolS = new SymbolsStabalization(6, 50);
+		cc = new ColorWithCalibration("colors.txt");
+		this.typeInput =inputType;
+		this.filepath = filepath;
 	}
-	int timestamp = 0;
+
+	ColorWithCalibration cc;
+	Integer timestamp = 0;
 	private SymbolsStabalization symbolS;
-	public void startVideoProcessing(String videoPath) {
-		this.originalImage = new Mat();
-		VideoCapture vc = new VideoCapture(videoPath);
-		while (true) {
-			try {
-
-				vc.read(originalImage);
-				processImage();
-				Thread.sleep(200);
-				timestamp++;
-				symbolS.increaseTimestamp();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	public void start() {
 
 		try {
 			while (true) {
-				BufferedImage buffered = ImageIO.read(new URL(
-						"http://raspberrypi.mshome.net/cam_pic.php?time="
-								+ System.currentTimeMillis()));
-				byte[] pixels = ((DataBufferByte) buffered.getRaster()
-						.getDataBuffer()).getData();
-
-				originalImage = new Mat(buffered.getHeight(),
-						buffered.getWidth(), CvType.CV_8UC3);
-				originalImage.put(0, 0, pixels);
+				updateOriginalImage();
 				processImage();
-				//Thread.sleep(200);
-				timestamp++;
-				symbolS.increaseTimestamp();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-
-	public void start(String urlImage) {
-
-		try {
-			while (true) {
-				this.originalImage = Highgui.imread(urlImage,
-						Imgproc.COLOR_BGR2GRAY);
-				processImage();
-				//Thread.sleep(200);
-				timestamp++;
-				symbolS.increaseTimestamp();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	/**
 	 * Process the image and writes the output images on the folder specified.
 	 * 
@@ -140,29 +118,25 @@ public class LiveImageProcessor {
 	 */
 	private void processImage() throws InterruptedException {
 		// clone the originalImage incase we need original image later.
-		Mat image = originalImage.clone();
+		Mat image = originalImage;
 		// Changing to black & white
 		Mat grayImage = new Mat();
-		Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
 		// Blurring the image
-		Imgproc.blur(grayImage, grayImage, new Size(blur, blur));
-
+		Imgproc.blur(image, grayImage, new Size(blur, blur));
+		Mat greenFilter = new Mat(grayImage.size(), Core.DEPTH_MASK_8U);
+		Core.inRange(grayImage, cc.getYellowMinScalar(),
+				cc.getYellowMaxScalar(), greenFilter);
 		// Making some more matrixes to see the ongoing operations.
-		Mat canny_output = new Mat(image.size(), Core.DEPTH_MASK_8U);
-		Imgproc.Canny(grayImage, canny_output, cannyThresholdMin,
-				2 * cannyThresholdMax);
-		cannyoutput.matToBufferedImage(canny_output);
-		cannyoutput.repaint();
 
 		// eroding the image to reduce the noise;
-		Mat erodedImage = canny_output.clone();
+		Mat erodedImage = greenFilter;
 		for (int i = 0; i < erodeTimes; i++) {
 			Imgproc.erode(erodedImage, erodedImage, Imgproc
 					.getStructuringElement(Imgproc.MORPH_RECT, new Size(
 							erodesize, erodesize)));
 		}
-		//erodedoutput.matToBufferedImage(erodedImage);
-		//erodedoutput.repaint();
+		erodedoutput.matToBufferedImage(erodedImage);
+		erodedoutput.repaint();
 		// dilating to make the image clear
 		Mat dilatedImage = erodedImage.clone();
 		for (int i = 0; i < dilateTimes; i++) {
@@ -170,8 +144,8 @@ public class LiveImageProcessor {
 					.getStructuringElement(Imgproc.MORPH_RECT, new Size(
 							dilatesize, dilatesize)));
 		}
-		//dilatedoutput.matToBufferedImage(dilatedImage);
-		//dilatedoutput.repaint();
+		dilatedoutput.matToBufferedImage(dilatedImage);
+		dilatedoutput.repaint();
 		findContours(dilatedImage, image, new Mat(image.size(),
 				Core.DEPTH_MASK_8U, new Scalar(0, 0, 0)));
 
@@ -194,9 +168,9 @@ public class LiveImageProcessor {
 		MatOfPoint2f MatOfPoint2fApprox = new MatOfPoint2f();
 
 		// Adding the contours within given distances.
-	//	System.out.println("Before adding contours size:" + contours.size());
+		// System.out.println("Before adding contours size:" + contours.size());
 		contours = addContours(contours);
-	//	System.out.println("After adding contours:" + contours.size());
+		// System.out.println("After adding contours:" + contours.size());
 		Mat contourFoundImage = image1.clone();
 		Imgproc.drawContours(contourFoundImage, contours, -1, new Scalar(0, 0,
 				255), 2);
@@ -236,11 +210,16 @@ public class LiveImageProcessor {
 		 */
 
 		ApproxContours = filterOutEdges(ApproxContours, image.size());
-		//System.out.println("After filtering out edges:" + ApproxContours.size());
+		// System.out.println("After filtering out edges:" +
+		// ApproxContours.size());
 		Imgproc.drawContours(contourFoundImage, ApproxContours, -1, new Scalar(
 				255, 0, 0), 2);
-		//foundContours.matToBufferedImage(contourFoundImage);
-		//foundContours.repaint();
+		Mat contourMat = new Mat(contourFoundImage.size(), CvType.CV_8UC1);
+
+		Imgproc.drawContours(contourMat, ApproxContours, -1, new Scalar(255, 0,
+				0), 2);
+		foundContours.matToBufferedImage(contourMat);
+		foundContours.repaint();
 		for (int i = 0; i < ApproxContours.size(); i++) {
 			MatOfPoint contour1 = ApproxContours.get(i);
 
@@ -249,11 +228,11 @@ public class LiveImageProcessor {
 
 			Point contourCenter = getCenter(contour1);
 			Core.circle(image, contourCenter, 4, new Scalar(255, 49, 0, 255));
-			
+
 			Rect rec = Imgproc.boundingRect(contour1);
 			String Color = getColor(image1.submat(rec), new Point(
 					rec.height / 2, rec.width / 2));
-	
+
 			Point center = new Point();
 			float[] radius = new float[5];
 			contour1.convertTo(MatOfPointTo2f, CvType.CV_32FC2);
@@ -266,147 +245,114 @@ public class LiveImageProcessor {
 
 			}
 
-			Mat subImage = dilatedImage.submat(rec);
-			
-			
-//			MatOfPoint corners = new MatOfPoint();
-//			
-//			Imgproc.goodFeaturesToTrack(subImage, corners, 10, 0.01,
-//					Math.min(rec.height, rec.width) / 3, new Mat(), 3,
-//					true, 0.04);
-//
-//			System.out.println("Detected Corners:" + corners.cols());
-//
-//			if (corners.cols() == 1) {
-//				Mat colored = image.submat(rec);
-//				Core.circle(colored, new Point(corners.get(0, 0)[0],
-//						corners.get(0, 0)[1]), 2, new Scalar(0, 255,
-//						255), 1);
-//				//zoomedContourFrame.matToBufferedImage(colored);
-//				//zoomedContourFrame.repaint();
-//
-//				// Thread.sleep(1000);
-//
-//			}
-			
-			
+			Mat subImage = contourMat.submat(rec);
+
+			// MatOfPoint corners = new MatOfPoint();
+			//
+			// Imgproc.goodFeaturesToTrack(subImage, corners, 10, 0.01,
+			// Math.min(rec.height, rec.width) / 3, new Mat(), 3,
+			// true, 0.04);
+			//
+			// System.out.println("Detected Corners:" + corners.cols());
+			//
+			// if (corners.cols() == 1) {
+			// Mat colored = image.submat(rec);
+			// Core.circle(colored, new Point(corners.get(0, 0)[0],
+			// corners.get(0, 0)[1]), 2, new Scalar(0, 255,
+			// 255), 1);
+			// //zoomedContourFrame.matToBufferedImage(colored);
+			// //zoomedContourFrame.repaint();
+			//
+			// //Thread.sleep(1000);
+			//
+			// }
+
 			// Checking for rectangles
 			if (isRectangle(subImage, rec, contourCenter)) {
-				Symbol S = new Symbol(Color+"R", timestamp, contourCenter.x, contourCenter.y);
+				Symbol S = new Symbol(Color + "R", timestamp, contourCenter.x,
+						contourCenter.y);
 				S = symbolS.getPossibleSymbol(S);
 				Core.putText(image, S.toString(), contourCenter,
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-								200, 200, 250), 3);
-				
-			} 
-			
-			
-			
-			
-			
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+								200, 250), 3);
+
+			}
+
 			else { // It is not a rectangle now checking for circles
-			
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
 				Mat circles = new Mat();
-//				if (isCircle(contours.get(i), contourCenter)) {
-//					 Core.putText(image,"C" +Math.round(contourCenter.x) +" "
-//					 + Math.round(contourCenter.y), contourCenter,
-//					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-//					 Scalar(200,200,250), 3);
-//
-//				}				
-				
-				
-				
-//				// isCircle(approx, center)
-				Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
-						Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
-						2 * cannyThresholdMax, 17, (int) (rec.height / 2.5),
-						500);
-
-//				System.out.println("Found circles:" + circles.cols());
-				for (int x = 0; x < circles.cols(); x++) {
-					double[] vec = circles.get(0, x);
-					double x1 = vec[0], y1 = vec[1], r = vec[2];
-
-					Point start = new Point(x1, y1);
-
-					Core.circle(subImage, start, (int) r,
-							new Scalar(0, 255, 0), 1);
-
-				}
-				if (circles.cols() == 1) {
-					Symbol S = new Symbol(Color+"C", timestamp, contourCenter.x, contourCenter.y);
+				if (isCircle(contours.get(i), contourCenter)) {
+					Symbol S = new Symbol(Color + "C", timestamp,
+							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
 					Core.putText(image, S.toString(), contourCenter,
-							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-									200, 200, 250), 3);
-					//zoomedContourFrame.matToBufferedImage(subImage);
-					//zoomedContourFrame.repaint();
+							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+									200, 250), 3);
 
-					// Thread.sleep(1000);
 				}
+				//
+				//
+				//
+				// // // isCircle(approx, center)
+				// Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
+				// Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
+				// 2 * cannyThresholdMax, 17, (int) (rec.height / 2.5),
+				// 500);
+				//
+				// // System.out.println("Found circles:" + circles.cols());
+				// for (int x = 0; x < circles.cols(); x++) {
+				// double[] vec = circles.get(0, x);
+				// double x1 = vec[0], y1 = vec[1], r = vec[2];
+				//
+				// Point start = new Point(x1, y1);
+				//
+				// Core.circle(subImage, start, (int) r,
+				// new Scalar(0, 255, 0), 1);
+				//
+				// }
+				// if (circles.cols() == 1) {
+				// Symbol S = new Symbol(Color+"C", timestamp, contourCenter.x,
+				// contourCenter.y);
+				// S = symbolS.getPossibleSymbol(S);
+				// Core.putText(image, S.toString(), contourCenter,
+				// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
+				// 200, 200, 250), 3);
+				// //zoomedContourFrame.matToBufferedImage(subImage);
+				// //zoomedContourFrame.repaint();
+				//
+				// // Thread.sleep(1000);
+				// }
 
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-				 else { // Not a circle either now checking for heart;
+				else { // Not a circle either now checking for heart;
 					Imgproc.HoughCircles(dilatedImage1.submat(rec), circles,
 							Imgproc.CV_HOUGH_GRADIENT, 1, rec.height,
 							2 * cannyThresholdMax, 10,
 							(int) (rec.height / 2.5), 500);
-					//System.out.println("Found circles:" + circles.cols());
-				
+					// System.out.println("Found circles:" + circles.cols());
 
-				
 					if (circles.cols() == 1) {
-						Symbol S = new Symbol(Color+"H", timestamp, contourCenter.x, contourCenter.y);
+						Symbol S = new Symbol(Color + "H", timestamp,
+								contourCenter.x, contourCenter.y);
 						S = symbolS.getPossibleSymbol(S);
 						Core.putText(image, S.toString(), contourCenter,
 								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
 										200, 200, 250), 3);
-						//zoomedContourFrame.matToBufferedImage(subImage);
-						//zoomedContourFrame.repaint();
+						// zoomedContourFrame.matToBufferedImage(subImage);
+						// zoomedContourFrame.repaint();
 
 						// Thread.sleep(1000);
 
 					}
 
 					else {
-						Symbol S = new Symbol(Color+"S", timestamp, contourCenter.x, contourCenter.y);
+						Symbol S = new Symbol(Color + "S", timestamp,
+								contourCenter.x, contourCenter.y);
 						S = symbolS.getPossibleSymbol(S);
 						Core.putText(image, S.toString(), contourCenter,
 								Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
 										200, 200, 250), 3);
-						//zoomedContourFrame.matToBufferedImage(subImage);
-						//zoomedContourFrame.repaint();
+						// zoomedContourFrame.matToBufferedImage(subImage);
+						// zoomedContourFrame.repaint();
 
 						// Thread.sleep(1000);
 
@@ -429,12 +375,31 @@ public class LiveImageProcessor {
 		return center;
 	}
 
-	private boolean isRectangle(Mat subImage, Rect rec, Point contourCenter) throws InterruptedException {
+	private boolean isRectangle(Mat subImage, Rect rec, Point contourCenter)
+			throws InterruptedException {
 		Mat lines = new Mat();
-		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 2,
-				Math.max(rec.height, rec.width) / 1.25, 25);
+		// zoomedContourFrame.matToBufferedImage(subImage);
+		// zoomedContourFrame.repaint();
+		// Thread.sleep(5000);
+		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 12,
+				Math.max(rec.height, rec.width) / 1.25, 10);
 		// System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
+		for (int x = 0; x < lines.cols(); x++) {
+			double[] vec = lines.get(0, x);
+			lineList.add(new Line2D.Double(vec[0], vec[1], vec[2], vec[3]));
+
+			double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
+			Point start = new Point(x1, y1);
+			Point end = new Point(x2, y2);
+
+			Core.line(originalImage.submat(rec), start, end, new Scalar(255, 0,
+					255), 2);
+			// zoomedContourFrame.matToBufferedImage(originalImage);
+			// zoomedContourFrame.repaint();
+			// Thread.sleep(1000);
+
+		}
 		boolean containsParallel = false;
 		Line2D pline1 = null, pline2 = null;
 		if (lines.cols() > 1) {
@@ -442,16 +407,19 @@ public class LiveImageProcessor {
 				Line2D line1 = lineList.get(0);
 				double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
 						line1.getX1() - line1.getX2());
-				for (int x = i+1; x < lineList.size(); x++) {
+				for (int x = i + 1; x < lineList.size(); x++) {
 					Line2D line2 = lineList.get(x);
 					double angle2 = Math.atan2(line2.getY1() - line2.getY2(),
 							line2.getX1() - line2.getX2());
-					//System.out.println("angle between lines : "+(angle1-angle2));
+					// System.out.println("angle between lines : "+(angle1-angle2));
 					if (Math.abs(angle1 - angle2) <= 0.174532925) {
-						double distanceToPoint1 = line1.ptLineDist(line2.getP1());
-						double distanceToPoint2 = line1.ptLineDist(line2.getP2());
-						double constraint =   Math.min(	rec.width, rec.height) / 3;
-						if (distanceToPoint1 > constraint && distanceToPoint2 > constraint){
+						double distanceToPoint1 = line1.ptLineDist(line2
+								.getP1());
+						double distanceToPoint2 = line1.ptLineDist(line2
+								.getP2());
+						double constraint = Math.min(rec.width, rec.height) / 3;
+						if (distanceToPoint1 > constraint
+								&& distanceToPoint2 > constraint) {
 							containsParallel = true;
 							pline1 = line1;
 							pline2 = line2;
@@ -459,22 +427,23 @@ public class LiveImageProcessor {
 						}
 					}
 				}
-				
+
 			}
 
 		}
-		//showing the parallel lines;
-//		if(containsParallel){
-//			System.out.println("Parallel Detected");
-//			 Mat colored = originalImage.submat(rec);
-//			 Core.line(colored, new Point(pline1.getX1(), pline1.getY1()), new Point(pline1.getX2(), pline1.getY2()), new Scalar(0, 0, 255), 2);
-//			 Core.line(colored, new Point(pline2.getX1(), pline2.getY1()), new Point(pline2.getX2(), pline2.getY2()), new Scalar(0, 0, 255), 2);
-//			 zoomedContourFrame.matToBufferedImage(colored);
-//			 zoomedContourFrame.repaint();
-//			 Thread.sleep(5000);
-//		}
-		
-		
+		// showing the parallel lines;
+		// if(containsParallel){
+		// System.out.println("Parallel Detected");
+		// Mat colored = originalImage.submat(rec);
+		// Core.line(colored, new Point(pline1.getX1(), pline1.getY1()), new
+		// Point(pline1.getX2(), pline1.getY2()), new Scalar(0, 0, 255), 2);
+		// Core.line(colored, new Point(pline2.getX1(), pline2.getY1()), new
+		// Point(pline2.getX2(), pline2.getY2()), new Scalar(0, 0, 255), 2);
+		// zoomedContourFrame.matToBufferedImage(colored);
+		// zoomedContourFrame.repaint();
+		// Thread.sleep(5000);
+		// }
+
 		return containsParallel;
 	}
 
@@ -561,49 +530,6 @@ public class LiveImageProcessor {
 	}
 
 	/**
-	 * 
-	 * @param contours
-	 *            Lists of matrix points in which to operate.
-	 * @return Returns a new list of mat of points after adding the contours
-	 *         which are near each other.
-	 */
-	private List<MatOfPoint> removeContours(List<MatOfPoint> contours) {
-		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
-		HashMap<Integer, Integer> fuzzyContours = new HashMap<>();
-		for (int i = 0; i < contours.size(); i++) {
-			MatOfPoint contour1 = contours.get(i);
-			if (Imgproc.contourArea(contour1) > minArea) {
-				for (int index = i + 1; index < contours.size(); index++) {
-					MatOfPoint contour2 = contours.get(index);
-					if (pointsEquals(contour1.get(0, 0), contour2.get(0, 0),
-							pointsEqualEpsilon)) {
-						fuzzyContours.put(i, index);
-						toRemove.add(contour2);
-					}
-				}
-			}
-		}
-		// for(int j=0; j< fuzzyContours.size(); j++){
-		// int a = (int) fuzzyContours.keySet().toArray()[j];
-		// int b = fuzzyContours.get(fuzzyContours.keySet().toArray()[j]);
-		// ArrayList<Point> firstone = new
-		// ArrayList<>(contours.get(a).toList());
-		// ArrayList<Point> secondone = new
-		// ArrayList<>(contours.get(b).toList());
-		// for(int q=0;q<firstone.size();q++){
-		// secondone.add(firstone.get(q));
-		// }
-		// contours.get(a).fromList(secondone);
-		// }
-
-		for (MatOfPoint p : toRemove) {
-			contours.remove(p);
-		}
-		// System.out.println("removed: " + toRemove.size());
-		return contours;
-	}
-
-	/**
 	 * Returns true if the distance between the given points is less than the
 	 * given epsilon.
 	 * 
@@ -622,7 +548,6 @@ public class LiveImageProcessor {
 			return true;
 		return false;
 	}
-
 
 	double averageRadius = 0;
 
@@ -662,8 +587,7 @@ public class LiveImageProcessor {
 		return false;
 	}
 
-
-	public List<Point> reduceEqualPoints(List<Point> approx) {
+	private List<Point> reduceEqualPoints(List<Point> approx) {
 		ArrayList<Point> newApprox = new ArrayList<Point>(approx);
 		ArrayList<Point> lonelyPoints = new ArrayList<Point>();
 		List<Point> fuzzyPoints = new ArrayList<Point>();
@@ -702,48 +626,48 @@ public class LiveImageProcessor {
 		try {
 			Mat bitImage = image.clone();
 			// Checking for white
-			Core.inRange(image.clone(), Colors.getWhiteMinScalar(),
-					Colors.getWhiteMaxScalar(), bitImage);
-			//System.out.println("Center Points height:" + contourCenter.x
-			//		+ ", width:" + contourCenter.y);
+			Core.inRange(image.clone(), cc.getWhiteMinScalar(),
+					cc.getWhiteMaxScalar(), bitImage);
+			// System.out.println("Center Points height:" + contourCenter.x
+			// + ", width:" + contourCenter.y);
 			double[] col = bitImage.get((int) contourCenter.y,
 					(int) contourCenter.x);
-			//System.out.println("Matrix Size size:" + image.size());
-			//System.out.println("col[0]" + col[0] + " length:" + col.length);
+			// System.out.println("Matrix Size size:" + image.size());
+			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "W";
 
 			// Checking for Yellow
-			Core.inRange(image.clone(), Colors.getYellowMinScalar(),
-					Colors.getYellowMaxScalar(), bitImage);
+			Core.inRange(image.clone(), cc.getYellowMinScalar(),
+					cc.getYellowMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-			//System.out.println("col[0]" + col[0] + " length:" + col.length);
+			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "Y";
 
-			Core.inRange(image.clone(), Colors.getRedMinScalar(),
-					Colors.getRedMaxScalar(), bitImage);
+			Core.inRange(image.clone(), cc.getRedMinScalar(),
+					cc.getRedMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-			//System.out.println("col[0]" + col[0] + " length:" + col.length);
+			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "R";
 
-			Core.inRange(image.clone(), Colors.getBlueMinScalar(),
-					Colors.getBlueMaxScalar(), bitImage);
+			Core.inRange(image.clone(), cc.getBlueMinScalar(),
+					cc.getBlueMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-			//System.out.println("col[0]" + col[0] + " length:" + col.length);
+			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "B";
 
-			Core.inRange(image.clone(), Colors.getGreenMinScalar(),
-					Colors.getGreenMaxScalar(), bitImage);
+			Core.inRange(image.clone(), cc.getGreenMinScalar(),
+					cc.getGreenMaxScalar(), bitImage);
 			col = bitImage.get((int) contourCenter.y, (int) contourCenter.x);
-			//System.out.println("col[0]" + col[0] + " length:" + col.length);
+			// System.out.println("col[0]" + col[0] + " length:" + col.length);
 			if (col[0] >= 150)
 				return "G";
 
-			//System.out.println("col:" + col + "MatrixSize:" + image.height()
-			//		+ "," + image.width());
+			// System.out.println("col:" + col + "MatrixSize:" + image.height()
+			// + "," + image.width());
 			return "X";
 		} catch (Exception e) {
 			return "X";
@@ -762,11 +686,6 @@ public class LiveImageProcessor {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame facePanel = new frame();
 		frame.setSize((int) frameSize.width, (int) frameSize.height); // give
-																		// the
-																		// frame
-																		// some
-																		// arbitrary
-																		// size
 		frame.setBackground(Color.BLUE);
 		frame.add(facePanel, BorderLayout.CENTER);
 		frame.setVisible(true);
@@ -944,6 +863,202 @@ public class LiveImageProcessor {
 		frame1.getContentPane().add(frame);
 		frame1.pack();
 		frame1.setVisible(true);
+	}
+
+	Boolean blueDone = false;
+	Boolean greenDone = false;
+	Boolean redDone = false;
+	Boolean whiteDone = false;
+	Boolean yellowDone = false;
+	Boolean canBlueResume ;
+	Boolean canGreenResume ;
+	Boolean canRedResume ;
+	Boolean canWhiteResume ;
+	Boolean canYellowResume ;
+	ArrayList<Symbol> blueSymbols;
+	ArrayList<Symbol> greenSymbols;
+	ArrayList<Symbol> redSymbols;
+	ArrayList<Symbol> whiteSymbols;
+	ArrayList<Symbol> yellowSymbols;
+	SymbolDetectorThread blueSymbolDetectorThread;
+	SymbolDetectorThread greenSymbolDetectorThread;
+	SymbolDetectorThread redSymbolDetectorThread;
+	SymbolDetectorThread whiteSymbolDetectorThread;
+	SymbolDetectorThread yellowSymbolDetectorThread;
+	boolean threadInitialized = false;
+
+	public void startSymbolDetectorThreads() {
+		blueSymbols = new ArrayList<>();
+		greenSymbols = new ArrayList<>();
+		redSymbols = new ArrayList<>();
+		whiteSymbols = new ArrayList<>();
+		yellowSymbols = new ArrayList<>();
+		blueSymbolDetectorThread = new SymbolDetectorThread(blueDone,
+				 blueSymbols,
+				cc.getBlueMinScalar(), cc.getBlueMaxScalar(), symbolS,
+				timestamp, "B");
+		canBlueResume = blueSymbolDetectorThread.getCanResume();
+		greenSymbolDetectorThread = new SymbolDetectorThread(greenDone,
+				  greenSymbols,
+				cc.getGreenMinScalar(), cc.getGreenMaxScalar(), symbolS,
+				timestamp, "G");
+		canGreenResume = greenSymbolDetectorThread.getCanResume();
+		redSymbolDetectorThread = new SymbolDetectorThread(redDone,
+				  redSymbols, cc.getRedMinScalar(),
+				cc.getRedMaxScalar(), symbolS, timestamp, "R");
+		canRedResume = redSymbolDetectorThread.getCanResume();
+		whiteSymbolDetectorThread = new SymbolDetectorThread(whiteDone,
+				  whiteSymbols,
+				cc.getWhiteMinScalar(), cc.getWhiteMaxScalar(), symbolS,
+				timestamp, "W");
+		canWhiteResume = whiteSymbolDetectorThread.getCanResume();
+		yellowSymbolDetectorThread = new SymbolDetectorThread(yellowDone,
+				  yellowSymbols,
+				cc.getYellowMinScalar(), cc.getYellowMaxScalar(), symbolS,
+				timestamp, "Y");
+		canYellowResume = yellowSymbolDetectorThread.getCanResume();
+		blueSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
+				dilateTimes, blur, erodesize, dilatesize, minArea,
+				epsilonApprox, cannyThresholdMax);
+		greenSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
+				dilateTimes, blur, erodesize, dilatesize, minArea,
+				epsilonApprox, cannyThresholdMax);
+		redSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
+				dilateTimes, blur, erodesize, dilatesize, minArea,
+				epsilonApprox, cannyThresholdMax);
+		whiteSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
+				dilateTimes, blur, erodesize, dilatesize, minArea,
+				epsilonApprox, cannyThresholdMax);
+		yellowSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
+				dilateTimes, blur, erodesize, dilatesize, minArea,
+				epsilonApprox, cannyThresholdMax);
+		Thread blueThread = new Thread(blueSymbolDetectorThread);
+		Thread greenThread = new Thread(greenSymbolDetectorThread);
+		Thread redThread = new Thread(redSymbolDetectorThread);
+		Thread whiteThread = new Thread(whiteSymbolDetectorThread);
+		Thread yellowThread = new Thread(yellowSymbolDetectorThread);
+		blueThread.start();
+		greenThread.start();
+		redThread.start();
+		whiteThread.start();
+		yellowThread.start();
+		System.out.println("Threads Up and Running");
+	}
+
+	public void startThreadProcessing() {
+		
+		if (!threadInitialized){
+			startSymbolDetectorThreads();
+			threadInitialized= true;
+		}
+		updateOriginalImage();
+		
+		synchronized(canBlueResume){
+			canBlueResume.notify();
+		}
+		synchronized(canGreenResume){
+			canGreenResume.notify();
+		}
+		synchronized(canRedResume){
+			canRedResume.notify();
+		}
+		synchronized(canWhiteResume){
+			canWhiteResume.notify();
+		}
+		synchronized(canYellowResume){
+			canYellowResume.notify();
+		}
+		try {
+			System.out.println("Waiting for processing");
+			Thread.sleep(200);
+//			synchronized(blueDone){
+//				blueDone.wait();
+//			}
+//			
+//			
+//			synchronized(greenDone){
+//				greenDone.wait();
+//			}
+//			
+//			synchronized(redDone){
+//				redDone.wait();
+//			}
+//			
+//			synchronized(whiteDone){
+//				whiteDone.wait();
+//			}
+//			
+//			synchronized(yellowDone){
+//				yellowDone.wait();
+//			}
+			System.out.println("Waiting finished");
+			Mat contourMat = new Mat(originalImage.size(), CvType.CV_8UC1);
+			Mat blueBinImage = blueSymbolDetectorThread.getBinaryMat();
+			Mat greenBinImage = greenSymbolDetectorThread.getBinaryMat();
+			Core.bitwise_or(blueBinImage, greenBinImage, contourMat);
+			Mat redBinImage= redSymbolDetectorThread.getBinaryMat();
+			Core.bitwise_or(contourMat, redBinImage, contourMat);
+			Mat whiteBinImage= whiteSymbolDetectorThread.getBinaryMat();
+			Core.bitwise_or(contourMat, whiteBinImage, contourMat);
+			Mat yellowBinImage = yellowSymbolDetectorThread.getBinaryMat();
+			Core.bitwise_or(contourMat, yellowBinImage, contourMat);
+			foundContours.matToBufferedImage(contourMat);
+			foundContours.repaint();
+			resultFrame.matToBufferedImage(originalImage);
+			resultFrame.repaint();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	int typeInput;
+	String filepath; // type 0 -> pi Image ; 1 -> video ; 2-> image
+	boolean vcInitialized = false;
+	VideoCapture vc;
+
+	private void updateOriginalImage() {
+		try {
+			if (typeInput == 0) {
+				BufferedImage buffered = ImageIO.read(new URL(
+						"http://raspberrypi.mshome.net/cam_pic.php?time="
+								+ System.currentTimeMillis()));
+				byte[] pixels = ((DataBufferByte) buffered.getRaster()
+						.getDataBuffer()).getData();
+
+				originalImage = new Mat(buffered.getHeight(),
+						buffered.getWidth(), CvType.CV_8UC3);
+				originalImage.put(0, 0, pixels);
+				timestamp++;
+				symbolS.increaseTimestamp();
+			} else if (typeInput == 1) {
+				this.originalImage = new Mat();
+				if (!vcInitialized){
+					vc = new VideoCapture(filepath);
+					vcInitialized=true;
+				}
+				vc.read(originalImage);
+				timestamp++;
+				symbolS.increaseTimestamp();
+			} else {
+				this.originalImage = Highgui.imread(filepath,
+						Imgproc.COLOR_BGR2GRAY);
+				// Thread.sleep(200);
+				timestamp++;
+				symbolS.increaseTimestamp();
+
+			}
+
+			blueSymbolDetectorThread.updateImage(originalImage);
+			greenSymbolDetectorThread.updateImage(originalImage);
+			redSymbolDetectorThread.updateImage(originalImage);
+			whiteSymbolDetectorThread.updateImage(originalImage);
+			yellowSymbolDetectorThread.updateImage(originalImage);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

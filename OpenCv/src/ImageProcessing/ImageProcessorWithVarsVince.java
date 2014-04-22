@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.*;
@@ -28,7 +29,7 @@ public class ImageProcessorWithVarsVince {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		try {
-			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/a/2/b (106).jpg");
+			ImageProcessorWithVarsVince ip = new ImageProcessorWithVarsVince("C:/Users/Vince/Desktop/grid.divx",true);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,7 +59,7 @@ public class ImageProcessorWithVarsVince {
 	 *            receive a image matrix.
 	 * @throws InterruptedException
 	 */
-	public ImageProcessorWithVarsVince(String videoPath)
+	public ImageProcessorWithVarsVince(String videoPath,boolean video)
 			throws InterruptedException {
 		System.loadLibrary("opencv_java248");
 		createToolbars();
@@ -71,14 +72,18 @@ public class ImageProcessorWithVarsVince {
 		frame facePanel3 = makeFrame("Dilated Output", frameSize);
 		findContourFrame = makeFrame("Result", frameSize);
 		// HoughLineFrame = makeFrame("Line",frameSize);
-
+		if(video){
 		this.originalImage = new Mat();
-		VideoCapture vc = new VideoCapture(videoPath);
+		vc = new VideoCapture(videoPath);}
+		else{
+			this.originalImage = Highgui.imread(videoPath);
+		}
 		while (true) {
 			try {
+				if(video)
 				vc.read(originalImage);
 				processImage(facePanel, facePanel2, facePanel3);
-				// Thread.sleep(200);
+				Thread.sleep(200);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -86,7 +91,7 @@ public class ImageProcessorWithVarsVince {
 			}
 		}
 
-	}
+	}VideoCapture vc;
 
 	public static BufferedImage toBufferedImage(Image img) {
 		if (img instanceof BufferedImage) {
@@ -142,6 +147,7 @@ public class ImageProcessorWithVarsVince {
 		// Changing to black & white
 		Mat grayImage = new Mat();
 		Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
+		
 		// Blurring the image within three by three matrix and writing it as
 		// grayimage.png
 		Imgproc.blur(grayImage, grayImage, new Size(blur, blur));
@@ -220,7 +226,9 @@ public class ImageProcessorWithVarsVince {
 		System.out.println("After removing and adding:" + contours.size());
 		for (int i = 0; i < contours.size(); i++) {
 			Point contourCenters = findCenter(contours.get(i).toList());
-
+//			Core.putText(image,""+ isCircleTest(contours.get(i),contourCenters), contourCenters,
+//					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+//					 Scalar(200,200,250), 3);
 			/*
 			 * Display all the points of the contours after deletion.
 			 */
@@ -231,40 +239,48 @@ public class ImageProcessorWithVarsVince {
 			}
 
 			if (Imgproc.contourArea(contours.get(i)) > minArea) {
-//				Core.putText(image, "" + isRectangle(contours.get(i)),
-//						contourCenters, Core.FONT_HERSHEY_COMPLEX_SMALL, 2,
-//						new Scalar(200, 200, 250), 3);
-				System.out.println("Center:x:" + contourCenters.x + "y:"
-						+ contourCenters.y + "Coefficient: "
-						+ isRectangle(contours.get(i)));
+
+
 				/*
 				 * Works if used on deletedcontours. And not on an
 				 * approximation.
 				 */
 
 				if (isCircle(contours.get(i), contourCenters)) {
-					 Core.putText(image,"C" +Math.round(contourCenters.x) +" "
-					 + Math.round(contourCenters.y), contourCenters,
+					 Core.putText(image,"C", contourCenters,
 					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
 					 Scalar(200,200,250), 3);
 
 				}
-
+				
+				
+				
 				/*
 				 * Works on the deleted contours. Other possibility is to work
 				 * on both contours. The inner and outer contour to one figure.
 				 */
-				else if (isRectangle(contours.get(i)) > 0.7) {
-					 Core.putText(image,"R", contourCenters,
-					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-					 Scalar(200,200,250), 3);
+				else if (isRectangleSunil(canny_output.submat(Imgproc.boundingRect(contours.get(i))),Imgproc.boundingRect(contours.get(i)),contourCenters)){
+					Core.putText(image,"R", contourCenters,
+							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+							 Scalar(200,200,250), 3);
+					 				}
+				
+				else if(isStar(contours.get(i))>1 && isStar(contours.get(i))<2 && isRectangle(contours.get(i))>0.4 && isRectangle(contours.get(i))< 0.7 ){
+					Core.putText(image,"H", contourCenters,
+							 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+							 Scalar(200,200,250), 3);
 				}
 
-				else if (isStar(contours.get(i)) > 2.1
-						&& isStar(contours.get(i)) < 2.2) {
-					// Core.putText(image,"R", contourCenters,
-					// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
-					// Scalar(200,200,250), 3);
+
+				
+
+
+
+				else if (isStar(contours.get(i)) > 2
+						&& isStar(contours.get(i)) < 3) {
+					 Core.putText(image,"S", contourCenters,
+					 Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new
+					 Scalar(200,200,250), 3);
 				}
 
 				else {
@@ -693,14 +709,25 @@ public class ImageProcessorWithVarsVince {
 		List<Point> sortedList = sortPolar(contour.toList());
 		double a = 0;
 		double b = 0;
-		for (int p = 0; p < (sortedList.size() - 4); p = p + 5) {
+		if(sortedList.size()<60){
+		for (int p = 0; p < (sortedList.size() - 3); p = p + 4) {
 			double angle = angleBetweenVectors(sortedList.get(p),
-					sortedList.get(p + 2), sortedList.get(p + 4));
+					sortedList.get(p + 1), sortedList.get(p + 3));
 			b++;
 			if (fuzzyEquals(angle, 0, 10))
 				a++;
 		}
-		return a / b;
+		}
+		else{
+			for (int p = 0; p < (sortedList.size() - 4); p = p + 5) {
+				double angle = angleBetweenVectors(sortedList.get(p),
+						sortedList.get(p + 2), sortedList.get(p + 4));
+				b++;
+				if (fuzzyEquals(angle, 0, 10))
+					a++;
+			}	
+		}
+		return a / (b);
 	}
 
 	private boolean fuzzyEquals(double a, double b, double epsilon) {
@@ -952,5 +979,69 @@ public class ImageProcessorWithVarsVince {
 		frame1.pack();
 		frame1.setVisible(true);
 	}
+	
+	public double isCircleTest(MatOfPoint contour, Point center) {
+		List<Point> approx = contour.toList();
+		double radiussum = 0;
+		double x;
+		double y;
+		for (int i = 0; i < approx.size(); i++) {
+			x = approx.get(i).x;
+			y = approx.get(i).y;
+			radiussum += Math.sqrt((x - center.x) * (x - center.x)
+					+ (y - center.y) * (y - center.y));
+		}
 
+		averageRadius = radiussum / approx.size();
+		double difference = 0;
+		for (int j = 0; j < approx.size(); j++) {
+			x = approx.get(j).x;
+			y = approx.get(j).y;
+			double radius = Math.sqrt((x - center.x) * (x - center.x)
+					+ (y - center.y) * (y - center.y));
+			difference += (averageRadius - radius) * (averageRadius - radius);
+		}
+
+		// System.out.println("Center:x:" +center.x + "y:" + center.y +
+		// "diff/approx:"+ difference/approx.size());
+		return difference / approx.size(); 
+		
+	}
+	
+	private boolean isRectangleSunil(Mat subImage, Rect rec, Point contourCenter){
+		Mat lines = new Mat();
+		Imgproc.HoughLinesP(subImage, lines, 1, Math.PI / 180, 12,
+				Math.max(rec.height, rec.width) / 1.25, 25);
+		// System.out.println("Total Lines:" + lines.cols());
+		ArrayList<Line2D> lineList = new ArrayList<>();
+		boolean containsParallel = false;
+		Line2D pline1 = null, pline2 = null;
+		if (lines.cols() > 1) {
+			for (int i = 0; (i < lineList.size() - 1) && !containsParallel; i++) {
+				Line2D line1 = lineList.get(0);
+				double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
+						line1.getX1() - line1.getX2());
+				for (int x = i+1; x < lineList.size(); x++) {
+					Line2D line2 = lineList.get(x);
+					double angle2 = Math.atan2(line2.getY1() - line2.getY2(),
+							line2.getX1() - line2.getX2());
+					//System.out.println("angle between lines : "+(angle1-angle2));
+					if (Math.abs(angle1 - angle2) <= 0.174532925) {
+						double distanceToPoint1 = line1.ptLineDist(line2.getP1());
+						double distanceToPoint2 = line1.ptLineDist(line2.getP2());
+						double constraint =   Math.min(	rec.width, rec.height) / 3;
+						if (distanceToPoint1 > constraint && distanceToPoint2 > constraint){
+							containsParallel = true;
+							pline1 = line1;
+							pline2 = line2;
+							break;
+						}
+					}
+				}
+				
+			}
+			
+		}
+		return containsParallel;	
+	}
 }
