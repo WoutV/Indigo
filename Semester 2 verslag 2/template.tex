@@ -257,7 +257,7 @@ Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld 
 \end{algorithmic}
 
 Vervolgens moet de hoek nog bepaald worden. We weten al met welke drie punten op het veld de gevonden punten overeenkomen. Nu gaan we kijken welke van de drie figuren horizontaal liggen op het raster. Zo zijn er telkens twee te vinden voor elke driehoek. Dan kijken we met welke twee punten van de gevonden punten deze twee overeenkomen. Nu kunnen we door gebruik te maken van het verschil in x- en y-co\"{o}rdinaat in de afbeelding en van de tangens, berekenen wat de hoek is ten opzichte van de werkelijke hoek die 0 zou moeten zijn.
-Hiervoor wordt een onderscheid gemaakt op basis van de groottes van de coördinaten (x1 < x2?, y1 < y2?), om aan de hand daarvan een bepaalde transformatie te doen op de hoek gevonden van de tangens (omdat de positiecontroller de hoek in een bepaald formaat verwacht en om alle hoeken tussen –\pi en \pi te vinden). Voor dit algoritme geven we geen pseudocode, aangezien het grotendeels uit een aantal if-tests bestaat. Door de manier van werken is deze hoek volledig nauwkeurig.
+Hiervoor wordt een onderscheid gemaakt op basis van de groottes van de coördinaten (x1 < x2?, y1 < y2?), om aan de hand daarvan een bepaalde transformatie te doen op de hoek gevonden van de tangens (omdat de positiecontroller de hoek in een bepaald formaat verwacht en om alle hoeken tussen $–\pi$ en $\pi$ te vinden). Voor dit algoritme geven we geen pseudocode, aangezien het grotendeels uit een aantal if-tests bestaat. Door de manier van werken is deze hoek volledig nauwkeurig.
 
 % == SOFTWARE == %
 \section{Software}
@@ -319,9 +319,9 @@ Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-level
 \end{center}
 \caption{Sequentiediagram van de communicatie}
 \label{Sequence}
-\end{figure}
+\end{figure} 
 
-\subsecion{Zeppelin}
+\subsection{Zeppelin}
 Op de zeppelin zijn nog maar een aantal stukken software. Het belangrijkste is de motorcontroller, die de motoren aanstuurt op basis van low-level commando's van de client-pc en op basis van de HeightController. De HeightController zelf staat ook op de Pi. Verder is er een thread die constant de hoogte meet, en een thread die afbeeldingen neemt met de camera en deze opslaat. \\
 
 De afbeeldingen die worden gemaakt worden opgeslagen in het geheugen, en kunnen via een webserver worden opgevraagd. De reden dat dit via een webserver gebeurt is om snelheidsredenen. Op deze manier kan een afbeelding worden doorgestuurd in minder dan 0.1 s. We hebben geprobeerd dit te doen via de RabbitMQ server, maar dit zorgde voor een te grote vertraging (ongeveer 7 s, zelfs op een lage resolutie). \\
