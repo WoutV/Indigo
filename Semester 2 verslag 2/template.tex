@@ -44,7 +44,7 @@
 
 % == SAMENVATTING == %
 \begin{abstract}
-Dit rapport documenteert onze analyse en oplossing van het volgende probleem: de constructie en operatie van een zeppelin in wedstrijdverband. Navigatie gebeurt op basis van een op voorhand gekend grondplan dat wordt ingeladen in de software. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op pattern recognition. Via het rooster dient de zeppelin sneller dan een andere zeppelin naar een bepaalde positie te vliegen, daar een QR-code in te lezen en vervolgens de ingelezen opdracht uit te voeren. Beide zeppelins wisselen informatie uit met elkaar en met hun sturende pc via een server gebaseerd op RabbitMQ. Een GUI dient de toestand van het speelveld en beide zeppelins te visualiseren. Een simulator biedt de mogelijkheid om een wedstrijd na te bootsen zonder dat er echt zeppelins aanwezig moeten zijn. Al deze functionaliteiten worden ge\"{i}mplementeerd in Java.\\
+Dit rapport documenteert onze analyse en oplossing van het volgende probleem: de constructie en operatie van een zeppelin in wedstrijdverband. Net zoals vorige semester wordt de zeppelin bestuurd door een Pi, en heeft hij propellors om de beweging te controleren. Navigatie gebeurt op basis van een op voorhand gekend grondplan met unieke patronen van figuren dat wordt ingeladen in de software. De positie van de zeppelin wordt bepaald door een algoritme gebaseerd op pattern recognition. Het veld bevat tablets die QR-codes kunnen weergeven die een opdracht encoderen. De wedstrijd bestaat uit het volgen van opdrachten om naar een bepaalde positie te vliegen, en uiteindelijk te landen. Beide zeppelins wisselen informatie uit met elkaar en met hun sturende pc via een server gebaseerd op RabbitMQ. Een GUI dient de toestand van het speelveld en beide zeppelins te visualiseren. Een simulator biedt de mogelijkheid om een wedstrijd na te bootsen zonder dat er echt zeppelins aanwezig moeten zijn. Al deze functionaliteiten worden ge\"{i}mplementeerd in Java.\\
 \end{abstract}
 
 
@@ -54,8 +54,8 @@ Dit rapport documenteert onze analyse en oplossing van het volgende probleem: de
 
 % == INLEIDING == %
 \section{Inleiding}
-Dit tweede deel van de bachelorproef draait nog steeds rond het aansturen van een zeppelin op basis van een Raspberry Pi. De zeppelin moet nog steeds kunnen bewegen in de 3D-ruimte. Dit semester zal de zeppelin zich constant boven een speelveld bevinden waarop figuren liggen. Er kan dus image processing worden gebruikt om de positie exact te bepalen. De eigen zeppelin speelt een wedstrijd tegen een vijandige zeppelin van een ander team. Beiden proberen om als eerste een opgegeven bestemming te bereiken.\\
-Eerst volgt er een korte beschrijving van het gebruikte materiaal en de fysische structuur van de zeppelin. Daarna worden de uitgevoerde testen en gebruikte algoritmes beschreven. Tot slot volgt er nog een sectie die specifiek over de gebruikte en geschreven software handelt. 
+Dit tweede deel van de bachelorproef draait nog steeds rond het aansturen van een zeppelin op basis van een Raspberry Pi. De zeppelin moet nog steeds kunnen bewegen in de 3D-ruimte. Dit semester zal de zeppelin zich constant boven een speelveld bevinden waarop figuren liggen. Er kan dus image processing worden gebruikt om de positie exact te bepalen. De eigen zeppelin speelt een wedstrijd tegen een vijandige zeppelin van een ander team. Beiden proberen om als eerste de opgegeven bestemmingen te bereiken en te landen op de aankomst.\\
+In dit document volgt eerst een korte beschrijving van het gebruikte materiaal en de fysische structuur van de zeppelin. Daarna worden de uitgevoerde testen en gebruikte algoritmes beschreven. Tot slot volgt er nog een sectie die specifiek over de gebruikte en geschreven software handelt. 
 
 \paragraph{Fysisch ontwerp}
 ~\\
@@ -64,7 +64,7 @@ De zeppelin bestaat uit een houten frame waaraan 2 heliumballonnen ($\diameter$ 
 
 \paragraph{Software ontwerp}
 ~\\
-De software is verdeeld in twee delen. Enerzijds is er het hardware-gerelateerde deel (foto's nemen en motoren aansturen) dat op de Pi draait. Anderzijds is er het 'zwaardere' werk (image processing, PID-regelaars,\ldots) dat op de sturende PC wordt uitgevoerd. De GUI draait uiteraard op de laptop. \\
+De software is verdeeld in twee delen. Enerzijds is er het hardware-gerelateerde deel (foto's nemen en motoren aansturen) dat op de Pi draait. Anderzijds is er het 'zwaardere' werk (image processing, PID-regelaars,\ldots) dat op de sturende pc wordt uitgevoerd. De GUI draait uiteraard op de laptop. \\
 Alle software is geschreven in Java. De communicatie tussen de zeppelins en de laptop gebeurt via een RabbitMQ server, waarlangs commando's moeten passeren die aan een vooraf afgesproken formaat voldoen. (Zie figuur \ref{schema}). \\
 
 %% figuur van software-architectuur %%
@@ -78,7 +78,7 @@ Alle software is geschreven in Java. De communicatie tussen de zeppelins en de l
 % == Beschrijving materiaal en bouw zeppelin == %
 \section{Beschrijving materiaal en bouw zeppelin}
 De basis van de zeppelin is een houten frame. Hierop zijn alle andere onderdelen bevestigd.\\
-Ten eerste zijn er drie motoren vastgemaakt aan het frame. Twee van deze motoren dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame (zie figuur \ref{frame}) gemonteerd. Dit staat toe om een horizontale beweging te reduceren tot een beweging in x- en y-richting, zodat het niet nodig is om te draaien (tijdens het vorige semester werd al duidelijk dat dit voor sterke afwijkingen van de zeppelin zorgt). De derde propeller dient om de zeppelin te laten stijgen, en is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de hardware-pwm op het motorbordje, terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
+Ten eerste zijn er drie motoren vastgemaakt aan het frame. Twee van deze motoren dienen om in het horizontale vlak te bewegen. Ze zijn met haakse draairichting op het frame (zie figuur \ref{frame}) gemonteerd. Dit staat toe om een horizontale beweging te reduceren tot een beweging in x- en y-richting, zodat het niet nodig is om te draaien (tijdens het vorige semester werd al duidelijk dat dit voor sterke afwijkingen van de zeppelin zorgt). De derde propeller dient om de hoogte te regelen, en is naar beneden gericht. De propellers kunnen op volle kracht of door middel van pwm\footnote{en.wikipedia.org/wiki/Pulse-width\_modulation} worden aangestuurd (in 2 richtingen). Met deze techniek is het mogelijk om naast de richting ook de kracht van de motor in te stellen. De onderste propeller wordt aangestuurd door de hardware-pwm op het motorbordje (waarvoor er maar 1 pin is), terwijl voor de horizontaal gerichte propellers gebruik wordt gemaakt van SoftPWM\footnote{https://github.com/Pi4J/pi4j/blob/master/pi4j-core/src/main/java/com/pi4j/wiringpi/SoftPwm.java}. ~\\
 
 %% figuur frame %%
 \begin{figure}[h!]
@@ -134,6 +134,8 @@ Om er zeker van te kunnen zijn dat het aansturen van de zeppelin correct gebeurt
 \subsection{Afstandssensor}
 Voor gedetailleerde gegevens verwijzen we naar het verslag over onze zeppelin van het eerste semester (versie 2). Hier hadden we gemerkt dat een enkele waarde van de sensor niet noodzakelijk de correcte afstand weergeeft. Daarom houdt de afstandssensor de laatste 10 gemeten waardes bij. De huidige hoogte wordt gegeven als het gemiddelde van deze waardes (rolling median techniek). Het interval tussen twee metingen hebben we kunnen terugbrengen tot 20 ms.
 
+Een rollende meiaan wordt gebruikt om de invloed van uitschieters en incorrecte metingen op te vangen. \\
+
 \subsection{Camera en pattern recognition}
 De implementatie van de pattern recognition vereist nieuwe testen van de camera om deze functionaliteit op punt te brengen. De tests proberen de verschillende moeilijkheden van de real time uitvoering te simuleren. De factoren die de positiebepaling aan de hand van de pattern recognition beinvloeden, hebben vooral betrekking tot de lichtintensiteit, de hoogte en het nemen van foto’s terwijl de zeppelin beweegt. De verschillende factoren en hun bijbehorende tests worden hieronder besproken.
 \\
@@ -150,20 +152,20 @@ Als de zeppelin beweegt, kan dit effect hebben op de geregistreerde vormen. Een 
 Voor het bepalen van de kleur van een herkende figuur is er eerst getest met RGB-waarden. Dit gaf oorzaak aan een aantal onverklaarbare foutmeldingen, waardoor er is overgeschakeld op HSV. Dit werkt nu zeer goed: voor elke kleur kan een specifiek gebied worden afgebakend. \\
 
 \textbf{Vormherkenning}
-Voor het herkennen van vormen zijn er verschillende methodes geprobeerd. Een eerste plan was om met convexe omhullende figuren te werken en dan de oppervlakteverhouding te bepalen tussen contour en omhullende. Dit had weinig tot geen zinvol resultaat. Ook is er geprobeerd om met de pixeloppervlakte van de benaderde contour te bepalen welke vorm het was, maar dit werkte ook niet zoals verwacht. Uiteindelijk is er voor elk van de vier vormen een methode gevonden die vrij nauwkeurig bepaalt of een bepaalde contour al dan niet een hart, ster,\ldots is. Voor de uiteindelijk gebruikte methodes verwijzen we u door naar de sectie over algoritmes.\\
-Voor de rechthoek is er ook nog geprobeerd om te controleren of er twee evenwijdige lijnen waren. Dit bleek door onnauwkeurigheden bij het omzetten naar contouren onbetrouwbaar te zijn. \\
-Om een cirkel te detecteren is er ook gewerkt met de oppervlakte van de berekende binnen- en buitencontour. Door de fout op de gemiddelde oppervlakte van die twee contouren te vergelijken met de effectieve oppervlakte zou een cirkel kunnen worden herkend, maar dat iverliep ook niet zoals gedacht. \\
-Voor het herkennen van een ster zijn er ook al een aantal verschillende dingen geprobeerd. E\'en van de geprobeerde methodes gaat uit van het punt dat het verst van het middelpunt gelegen is. Als alle punten gelegen op $2\pi/5$ even ver van het middelpunt van de figuur liggen is het een ster. Dit is vrij onbetrouwbaar, omdat het middelpunt van de figuur lang niet altijd exact kan bepaald worden. Een andere mogelijkheid is het berekenen van de verhouding tussen het punt het verste van het middelpunt en het punt het dichtste bij, maar ook dit is onbetrouwbaar omdat het middelpunt lang niet altijd correct is.\\
+Voor het herkennen van vormen zijn er verschillende methodes geprobeerd. Een eerste plan was om met convex omhullende figuren te werken en dan de oppervlakteverhouding te bepalen tussen contour en omhullende. Dit had weinig zinvol resultaat. Een andere aanpak was controleren of een figuur al dan niet convex is (onderscheid tussen hart/ster en cirkel/rechthoek), maar dit reageerde niet zoals verwacht). Ook is er geprobeerd om met de pixeloppervlakte van de benaderde contour te bepalen welke vorm het was, maar dit werkte ook niet zoals verwacht. Uiteindelijk is er voor elk van de vier vormen een methode gevonden die vrij nauwkeurig bepaalt of een bepaalde contour al dan niet een hart, ster,\ldots is. Voor de uiteindelijk gebruikte methodes verwijzen we u door naar de sectie over algoritmes.\\
+Voor de rechthoek is er nog geprobeerd om te controleren of er twee evenwijdige lijnen waren. Dit bleek door onnauwkeurigheden bij het omzetten naar contouren onbetrouwbaar te zijn. \\
+Om een cirkel te detecteren is er gewerkt met de oppervlakte van de berekende binnen- en buitencontour. Door de fout op de gemiddelde oppervlakte van die twee contouren te vergelijken met de effectieve oppervlakte zou een cirkel kunnen worden herkend, maar dat verliep ook niet zoals gedacht. \\
+Voor het herkennen van een ster zijn er al een aantal verschillende dingen geprobeerd. E\'en van de geprobeerde methodes gaat uit van het punt dat het verst van het middelpunt gelegen is. Als alle punten gelegen op $2\pi/5$ even ver van het middelpunt van de figuur liggen is het een ster. Dit is vaak niet correct, omdat het middelpunt van de figuur lang niet altijd exact kan bepaald worden. Een andere mogelijkheid is het berekenen van de verhouding tussen het punt het verste van het middelpunt en het punt het dichtste bij, maar ook dit is om dezelfde reden geen goede methode.\\
 
 \subsection{Motoren}
 In het eerste semester hebben we uitgebreide testen gedaan over de mogelijkheden van pwm. Het werd duidelijk dat het nodig ging zijn om constant de hoogte te controleren en bij te sturen. Daarnaast bleek ook dat horizontale bewegingen moeilijk exact kunnen worden uitgevoerd, omdat de zeppelin zeer gevoelig is voor allerlei veranderingen van de windomstandigheden in de omgeving: een andere zeppelin die beweegt, de airco, \ldots \\
 
-In het tweede semester zullen we enkele testen opnieuw moeten uitvoeren, voornamelijk gerelateerd aan het gebruik van SoftPWM. Er moet bepaald worden tussen welke grenzen het vermogen groot genoeg is om de motor effectief te laten draaien. Op het moment van indienen van dit verslag zijn deze testen nog niet uitgevoerd.
+In het tweede semester hebben we enkele testen opnieuw moeten uitvoeren, voornamelijk gelinkt aan het gebruik van SoftPWM. We hebben gekeken hoe het zit met de minimum waarde waarbij het vermogen groot genoeg is om voor beweging te zorgen (deze blijkt bij software-pwm niet aanwezig te zijn: zelfs 1/100 zorgt voor beweging, bij hardware-pwm is er wel een minimumwaarde). Bij dit testen hoort ook het tunen van PID-waardes voor alle motoren, omdat niet elke motor exact even sterk is. \\
 
 % == ALGORITMES == %
 \section{Algoritmes}
 \subsection{Verticale bewegingen}
-Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{http://www.csimn.com/CSI\_pages/PIDforDummies.html}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Tenslotte is er de integraal, die fouten uit het verleden voorstelt. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Het algoritme wordt aangepast aan het gewicht van onze zeppelin en de kracht van de gegeven motoren. Dit gebeurt door middel van trial-and-error om de constanten van de regelaar te bepalen.\\
+Om naar een bepaalde hoogte te stijgen, maken we gebruik van een PID-algoritme\footnote{http://www.csimn.com/CSI\_pages/PIDforDummies.html}. Hierbij gaan we op basis van de huidige fout in hoogte, bepalen of de zeppelin moet stijgen of dalen en met welke kracht. Daarnaast wordt rekening gehouden met de afgeleide, om toekomstige veranderingen te voorspellen. Tenslotte is er de integraal, die fouten uit het verleden voorstelt. Op basis hiervan wordt een pwm-waarde voor de motor gegeven. Het algoritme wordt aangepast aan het gewicht van onze zeppelin en de kracht van de gegeven motoren. \\
 De output wordt berekend op basis van deze formule:
 
 \begin{equation}
@@ -171,7 +173,7 @@ De output wordt berekend op basis van deze formule:
  \label{PID}
 \end{equation}
 
-Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij. Bij de start van het tweede semester hebben we de waardes van deze constanten opnieuw getuned, aangezien er nieuwe volle ballonnen gegeven waren. \\
+Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij. In het tweede semester hebben we de waardes van deze constanten opnieuw getuned, aangezien er nieuwe volle ballonnen gegeven waren en we een ander frame gebruiken. \\
 
 Er is een HeightController die vergelijking \ref{PID} implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de pwm-waarde bijsturen. \\
 
@@ -186,7 +188,7 @@ Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebase
 
 
 
-Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het rooster:
+Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het rooster (rekening houdend met de richting van het frame):
 \begin{equation}
  \begin{cases}
  x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)\\
@@ -198,10 +200,12 @@ Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende 
 
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
-Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart).Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten,\ldots \\
-Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. Voor een visualisatie van de verschillende stappen, zie figuur \ref{Patterns}. \\
+Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart). Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. \\
 
-Hierbij dient wel vermeld te worden dat de pattern recognition nog niet volledig werkt. Het werken met OpenCV in Java bracht heel wat problemen met zich mee. Op het moment van het schrijven van dit verslag lukt het in de meeste afbeeldingen om figuren te herkennen (maar nog niet het hart en de ster). Dit werkt echter enkel nog maar op de pc, aangezien het installeren van OpenCV die werkt met Java op de Pi nog problemen oplevert. Verder hebben we ook nog niet veel getest met het herkennen van images die genomen zijn terwijl de zeppelin beweegt.
+%correct? evt aanvullen..
+Vervolgens benadert de software de overgebleven contouren door polygonen (veelhoeken). Op basis van de punten van deze benaderingen en kenmerken van de mogelijke vormen haalt het algoritme de corresponderende vorm(en) uit de foto. Bijvoorbeeld: De punten op een cirkel bevinden zich op een vaste afstand van het middelpunt, de lengte van een rechthoek is gelijk aan de gesommeerde afstand tussen de de vier hoekpunten,\ldots \\
+
+Eenmaal de vorm gespecificieerd is, dient de kleur nog bepaald te worden.  Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. Voor een visualisatie van de verschillende stappen, zie figuur \ref{Patterns}. \\
 
 \begin{figure}[H]
 \begin{center}
