@@ -28,13 +28,13 @@ public class ColorWithCalibration implements ActionListener {
 	public static void main(String[] args) throws InterruptedException {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
 		Mat webcam_image = new Mat();
-		VideoCapture webCam = new VideoCapture(0);
-
+		VideoCapture webCam = new VideoCapture("C:/Users/Study/Dropbox/grid.h264");
+		
 		if (webCam.isOpened()) {
 			Thread.sleep(500); // / This one-time delay allows the Webcam to
 								// initialize itself
 			while (true) {
-				Thread.sleep(50);
+				Thread.sleep(500);
 				webCam.read(webcam_image);
 				if (!webcam_image.empty()) {
 					c.calibrateColors(webcam_image);

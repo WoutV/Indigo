@@ -14,7 +14,7 @@ public class SymbolsStabalization {
 	}
 	public synchronized void addSymbol(Symbol S){
 		latestDetectedSymbols.add(S);
-//		System.out.println("Added Symbol " + S.toString());
+		System.out.println("Added Symbol " + S.toString());
 //		System.out.println("TotalSize: "+ latestDetectedSymbols.size());
 	}
 	int timestamp;
@@ -40,6 +40,8 @@ public class SymbolsStabalization {
 	
 	public synchronized Symbol getPossibleSymbol(Symbol S){
 //		System.out.println("Detected: "+S.toString() );
+//		System.out.println("time stamp symbol" + S.getTimestamp());
+//		System.out.println("time stamp now" + getCurrentTimestamp());
 		addSymbol(S);
 		int heart = 0,circle=0,rectangle=0,star=0;
 		Point2D symbolCoordinate = new Point2D.Double(S.getX(), S.getY());

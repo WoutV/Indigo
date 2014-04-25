@@ -45,7 +45,7 @@ public class ImageProcessorWithColorFiltering {
 	private Mat originalImage;
 	private Integer cannyThresholdMin = 8;
 	private Integer cannyThresholdMax = 13;
-	private Integer minArea = 2000;
+	private Integer minArea = 1000;
 	private Integer epsilonApprox = 1;
 	private Integer pointsEqualEpsilon = 50;
 	private Integer pointsEqualEpsilonPoints = 52;
@@ -64,21 +64,24 @@ public class ImageProcessorWithColorFiltering {
 	 */
 	public static void main(String[] args) {
 		// type 0 -> pi Image ; 1 -> video ; 2-> image
-		//ImageProcessorWithColorFiltering lip = new ImageProcessorWithColorFiltering(
-		//		1, "C:/Users/Study/Desktop/test.wmv");
-		 ImageProcessorWithColorFiltering lip = new
-		 ImageProcessorWithColorFiltering(1,"C:/Users/Study/Dropbox/grid.h264");
+		// ImageProcessorWithColorFiltering lip = new
+		// ImageProcessorWithColorFiltering(
+		// 1, "C:/Users/Study/Desktop/test.wmv");
+		ImageProcessorWithColorFiltering lip = new ImageProcessorWithColorFiltering(
+				1, "C:/Users/Study/Dropbox/grid.h264");
 		// ImageProcessorWithColorFiltering lip = new
 		// ImageProcessorWithColorFiltering(2,"../fotos/b (114)" + ".jpg");
 		// lip.start();
 		while (true) {
 			lip.startThreadProcessing();
-			// try {
-			// Thread.sleep(200);
-			// } catch (InterruptedException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
+			try {
+				Thread.sleep(100);
+				System.out
+						.println("-----------------------------------------------------------");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -91,7 +94,7 @@ public class ImageProcessorWithColorFiltering {
 	 * @param filepath
 	 */
 	public ImageProcessorWithColorFiltering(int inputType, String filepath) {
-		System.loadLibrary("opencv_java248");
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		createToolbars();
 		symbolS = new SymbolsStabalization(6, 50);
 		cc = new ColorWithCalibration("colors.txt");
@@ -870,26 +873,16 @@ public class ImageProcessorWithColorFiltering {
 		frame1.setVisible(true);
 	}
 
-	Boolean blueDone = false;
-	Boolean greenDone = false;
-	Boolean redDone = false;
-	Boolean whiteDone = false;
-	Boolean yellowDone = false;
-	Boolean canBlueResume;
-	Boolean canGreenResume;
-	Boolean canRedResume;
-	Boolean canWhiteResume;
-	Boolean canYellowResume;
 	ArrayList<Symbol> blueSymbols;
 	ArrayList<Symbol> greenSymbols;
 	ArrayList<Symbol> redSymbols;
 	ArrayList<Symbol> whiteSymbols;
 	ArrayList<Symbol> yellowSymbols;
-	SymbolDetectorThread blueSymbolDetectorThread;
-	SymbolDetectorThread greenSymbolDetectorThread;
-	SymbolDetectorThread redSymbolDetectorThread;
-	SymbolDetectorThread whiteSymbolDetectorThread;
-	SymbolDetectorThread yellowSymbolDetectorThread;
+	SymbolDetector blueSymbolDetector;
+	SymbolDetector greenSymbolDetector;
+	SymbolDetector redSymbolDetector;
+	SymbolDetector whiteSymbolDetector;
+	SymbolDetector yellowSymbolDetector;
 	boolean threadInitialized = false;
 
 	public void startSymbolDetectorThreads() {
@@ -898,51 +891,42 @@ public class ImageProcessorWithColorFiltering {
 		redSymbols = new ArrayList<>();
 		whiteSymbols = new ArrayList<>();
 		yellowSymbols = new ArrayList<>();
-		blueSymbolDetectorThread = new SymbolDetectorThread(blueDone,
-				blueSymbols, cc.getBlueMinScalar(), cc.getBlueMaxScalar(),
-				symbolS, timestamp, "B");
-		canBlueResume = blueSymbolDetectorThread.getCanResume();
-		greenSymbolDetectorThread = new SymbolDetectorThread(greenDone,
-				greenSymbols, cc.getGreenMinScalar(), cc.getGreenMaxScalar(),
-				symbolS, timestamp, "G");
-		canGreenResume = greenSymbolDetectorThread.getCanResume();
-		redSymbolDetectorThread = new SymbolDetectorThread(redDone, redSymbols,
+		blueSymbolDetector = new SymbolDetector(blueSymbols,
+				cc.getBlueMinScalar(), cc.getBlueMaxScalar(), symbolS,
+				timestamp, "B");
+
+		greenSymbolDetector = new SymbolDetector(greenSymbols,
+				cc.getGreenMinScalar(), cc.getGreenMaxScalar(), symbolS,
+				timestamp, "G");
+		greenSymbolDetector.setFrame(erodedoutput);
+
+		redSymbolDetector = new SymbolDetector(redSymbols,
 				cc.getRedMinScalar(), cc.getRedMaxScalar(), symbolS, timestamp,
 				"R");
-		canRedResume = redSymbolDetectorThread.getCanResume();
-		whiteSymbolDetectorThread = new SymbolDetectorThread(whiteDone,
-				whiteSymbols, cc.getWhiteMinScalar(), cc.getWhiteMaxScalar(),
-				symbolS, timestamp, "W");
-		canWhiteResume = whiteSymbolDetectorThread.getCanResume();
-		yellowSymbolDetectorThread = new SymbolDetectorThread(yellowDone,
-				yellowSymbols, cc.getYellowMinScalar(),
-				cc.getYellowMaxScalar(), symbolS, timestamp, "Y");
-		canYellowResume = yellowSymbolDetectorThread.getCanResume();
-		blueSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
+
+		whiteSymbolDetector = new SymbolDetector(whiteSymbols,
+				cc.getWhiteMinScalar(), cc.getWhiteMaxScalar(), symbolS,
+				timestamp, "W");
+
+		yellowSymbolDetector = new SymbolDetector(yellowSymbols,
+				cc.getYellowMinScalar(), cc.getYellowMaxScalar(), symbolS,
+				timestamp, "Y");
+
+		blueSymbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
+				blur, erodesize, dilatesize, minArea, epsilonApprox,
+				cannyThresholdMax);
+		greenSymbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
+				blur, erodesize, dilatesize, minArea, epsilonApprox,
+				cannyThresholdMax);
+		redSymbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
+				blur, erodesize, dilatesize, minArea, epsilonApprox,
+				cannyThresholdMax);
+		whiteSymbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
+				blur, erodesize, dilatesize, minArea, epsilonApprox,
+				cannyThresholdMax);
+		yellowSymbolDetector.initializeToolbarVariables(erodeTimes,
 				dilateTimes, blur, erodesize, dilatesize, minArea,
 				epsilonApprox, cannyThresholdMax);
-		greenSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		redSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		whiteSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		yellowSymbolDetectorThread.initializeToolbarVariables(erodeTimes,
-				dilateTimes, blur, erodesize, dilatesize, minArea,
-				epsilonApprox, cannyThresholdMax);
-		Thread blueThread = new Thread(blueSymbolDetectorThread);
-		Thread greenThread = new Thread(greenSymbolDetectorThread);
-		Thread redThread = new Thread(redSymbolDetectorThread);
-		Thread whiteThread = new Thread(whiteSymbolDetectorThread);
-		Thread yellowThread = new Thread(yellowSymbolDetectorThread);
-		blueThread.start();
-		greenThread.start();
-		redThread.start();
-		whiteThread.start();
-		yellowThread.start();
 		System.out.println("Threads Up and Running");
 	}
 
@@ -951,54 +935,31 @@ public class ImageProcessorWithColorFiltering {
 		if (!threadInitialized) {
 			startSymbolDetectorThreads();
 			threadInitialized = true;
+			for (int i = 0; i < 10; i++) {
+				updateOriginalImage();
+			}
 		}
+
 		updateOriginalImage();
 		try {
-			synchronized (canBlueResume) {
-				canBlueResume.notify();
-			}
-			
-			synchronized (blueDone) {
-				blueDone.wait();
-			}
-
-
-			synchronized (canGreenResume) {
-				canGreenResume.notify();
-			}
-			synchronized (greenDone) {
-				greenDone.wait();
-			}
-
-			synchronized (canRedResume) {
-				canRedResume.notify();
-			}
-			synchronized (redDone) {
-				redDone.wait();
-			}
-			synchronized (canWhiteResume) {
-				canWhiteResume.notify();
-			}	
-			
-			synchronized (whiteDone) {
-				whiteDone.wait();
-			}
-
-			synchronized (canYellowResume) {
-				canYellowResume.notify();
-			}
-			synchronized (yellowDone) {
-				yellowDone.wait();
-			}
+			blueSymbolDetector.processImage();
+			Thread.sleep(10);
+			greenSymbolDetector.processImage();
+			Thread.sleep(10);
+			redSymbolDetector.processImage();
+			Thread.sleep(10);
+			whiteSymbolDetector.processImage();
+			Thread.sleep(10);
+			yellowSymbolDetector.processImage();
 			Mat contourMat = new Mat(originalImage.size(), CvType.CV_8UC1);
-			Mat blueBinImage = blueSymbolDetectorThread.getBinaryMat();
-			Mat greenBinImage = greenSymbolDetectorThread.getBinaryMat();
+			Mat blueBinImage = blueSymbolDetector.getBinaryMat();
+			Mat greenBinImage = greenSymbolDetector.getBinaryMat();
 			Core.bitwise_or(blueBinImage, greenBinImage, contourMat);
-			Mat redBinImage = redSymbolDetectorThread.getBinaryMat();
+			Mat redBinImage = redSymbolDetector.getBinaryMat();
 			Core.bitwise_or(contourMat, redBinImage, contourMat);
-			Mat whiteBinImage = whiteSymbolDetectorThread.getBinaryMat();
+			Mat whiteBinImage = whiteSymbolDetector.getBinaryMat();
 			Core.bitwise_or(contourMat, whiteBinImage, contourMat);
-			Mat yellowBinImage = yellowSymbolDetectorThread.getBinaryMat();
+			Mat yellowBinImage = yellowSymbolDetector.getBinaryMat();
 			Core.bitwise_or(contourMat, yellowBinImage, contourMat);
 			foundContours.matToBufferedImage(contourMat);
 			foundContours.repaint();
@@ -1047,11 +1008,11 @@ public class ImageProcessorWithColorFiltering {
 
 			}
 
-			blueSymbolDetectorThread.updateImage(originalImage);
-			greenSymbolDetectorThread.updateImage(originalImage);
-			redSymbolDetectorThread.updateImage(originalImage);
-			whiteSymbolDetectorThread.updateImage(originalImage);
-			yellowSymbolDetectorThread.updateImage(originalImage);
+			blueSymbolDetector.updateImage(originalImage);
+			greenSymbolDetector.updateImage(originalImage);
+			redSymbolDetector.updateImage(originalImage);
+			whiteSymbolDetector.updateImage(originalImage);
+			yellowSymbolDetector.updateImage(originalImage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
