@@ -1,4 +1,4 @@
-package imageProcessing;
+package fromOldFiles;
 
 
 import java.awt.BorderLayout;
@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import map.Symbol;
+
 
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;

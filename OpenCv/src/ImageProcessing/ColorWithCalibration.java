@@ -21,31 +21,24 @@ import javax.swing.event.ChangeListener;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 
 public class ColorWithCalibration implements ActionListener {
 
 	public static void main(String[] args) throws InterruptedException {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
-		Mat webcam_image = new Mat();
-		VideoCapture webCam = new VideoCapture("C:/Users/Study/Dropbox/grid.h264");
+		Mat webcam_image =Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\colorcali.jpg");
+		//VideoCapture webCam = new VideoCapture("C:/Users/Study/Dropbox/grid.h264");
 		
-		if (webCam.isOpened()) {
-			Thread.sleep(500); // / This one-time delay allows the Webcam to
-								// initialize itself
 			while (true) {
 				Thread.sleep(500);
-				webCam.read(webcam_image);
-				if (!webcam_image.empty()) {
+				
 					c.calibrateColors(webcam_image);
-				} else {
-					System.out
-							.println(" --(!) No captured frame from webcam !");
-					break;
-				}
+		
 			}
-		}
-		webCam.release(); // release the webcam
+	
+		
 
 	}
 

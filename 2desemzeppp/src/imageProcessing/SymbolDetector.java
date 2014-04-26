@@ -1,5 +1,6 @@
-package imageProcessingWithColorFilter;
+package imageProcessing;
 
+import map.Symbol;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,34 +11,36 @@ import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.features2d.FeatureDetector;
-import org.opencv.features2d.Features2d;
-import org.opencv.features2d.KeyPoint;
-import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
-import ImageProcessing.ColorWithCalibration;
-import ImageProcessing.Symbol;
-import ImageProcessing.SymbolsStabalization;
 
 
-class SymbolDetector1 {
-	Mat image = new Mat();
-	ArrayList<Symbol> symbolList;
-	SymbolsStabalization symbolS;
+class SymbolDetector {
+	private Mat image = new Mat();
+	private ArrayList<Symbol> symbolList;
+	private SymbolsStabalization symbolS;
 	int timestamp;
 	String Color;
 	Mat binImageMat;
-
-	public SymbolDetector1(ArrayList<Symbol> symbols2, ColorWithCalibration cc,
+	/**
+	 * This is the main class where the algorithme to detect the shapes are located.
+	 * @param symbols2
+	 * 			The arraylist where the symbols should be placed
+	 * @param cc
+	 * 			The color class which says the filter bounderis 
+	 * @param symbolS3
+	 * 			The symbolstatbalization class so that it can check the found symbols in past images.
+	 * @param timestamp2
+	 * 			The starting timestamp normally 0.
+	 */
+	public SymbolDetector(ArrayList<map.Symbol> symbols2, Color cc,
 			SymbolsStabalization symbolS3, Integer timestamp2) {
 		this.symbolList = symbols2;
 		this.cc = cc;
@@ -53,10 +56,6 @@ class SymbolDetector1 {
 	private Integer dilateTimes;
 	private Integer erodesize;
 	private Integer dilatesize;
-	private Integer heartThreshold;
-	private Integer minArea;
-	private Integer epsilonApprox;
-
 	public void initializeToolbarVariables(Integer erodeTimes,
 			Integer dilateTimes, Integer erodesize,
 			Integer dilatesize, Integer minArea, Integer epsilonApprox,
@@ -65,9 +64,6 @@ class SymbolDetector1 {
 		this.dilateTimes = dilateTimes;
 		this.erodesize = erodesize;
 		this.dilatesize = dilatesize;
-		this.minArea = minArea;
-		this.heartThreshold = heartThreshold;
-		this.epsilonApprox = epsilonApprox;
 	}
 
 	public void setTimeStamp(int timestamp) {
@@ -77,49 +73,50 @@ class SymbolDetector1 {
 	public void updateImage(Mat image) {
 		timestamp++;
 		this.image = image.clone();
-		result = image;
 		NotProcessedImage = image.clone();
+		result = image;
+		
 	}
 
-	Mat NotProcessedImage;
-	Mat result;
+	private Mat NotProcessedImage;
+	private Mat result;
 
 	public Mat getResult() {
 		return result;
 	}
 
 	/**
-	 * Process the image and writes the output images on the folder specified.
+	 * Process the image and fills the arraylist.
 	 * 
 	 * @throws InterruptedException
 	 */
 	public void processImage() throws InterruptedException {
-		
-		Mat blurImage = image;
-		// Blurring the image
-		//Imgproc.blur(image, blurImage, new Size(blur, blur));
-		Mat contourMat = new Mat(image.size(), CvType.CV_8UC1);
-		Mat blueBinImage = new Mat(image.size(), CvType.CV_8UC1);
-		Core.inRange(blurImage, cc.getBlueMinScalar(), cc.getBlueMaxScalar(),
-				blueBinImage);
 
+		Mat contourMat = new Mat(image.size(), CvType.CV_8UC1);
+		
+		//Doing blue color filtration
+		Mat blueBinImage = new Mat(image.size(), CvType.CV_8UC1);
+		Core.inRange(image, cc.getBlueMinScalar(), cc.getBlueMaxScalar(),
+				blueBinImage);
+		//Doing Green color filtration
 		Mat greenBinImage = new Mat(image.size(), CvType.CV_8UC1);
-		Core.inRange(blurImage, cc.getGreenMinScalar(), cc.getGreenMaxScalar(),
+		Core.inRange(image, cc.getGreenMinScalar(), cc.getGreenMaxScalar(),
 				greenBinImage);
+		//Combining the binary image
 		Core.bitwise_or(blueBinImage, greenBinImage, contourMat);
 
 		Mat redBinImage = new Mat(image.size(), CvType.CV_8UC1);
-		Core.inRange(blurImage, cc.getRedMinScalar(), cc.getRedMaxScalar(),
+		Core.inRange(image, cc.getRedMinScalar(), cc.getRedMaxScalar(),
 				redBinImage);
-
+		
 		Core.bitwise_or(contourMat, redBinImage, contourMat);
 
 		Mat whiteBinImage = new Mat(image.size(), CvType.CV_8UC1);
-		Core.inRange(blurImage, cc.getWhiteMinScalar(), cc.getWhiteMaxScalar(),
+		Core.inRange(image, cc.getWhiteMinScalar(), cc.getWhiteMaxScalar(),
 				whiteBinImage);
 		Core.bitwise_or(contourMat, whiteBinImage, contourMat);
 		Mat yellowBinImage = new Mat(image.size(), CvType.CV_8UC1);
-		Core.inRange(blurImage, cc.getYellowMinScalar(),
+		Core.inRange(image, cc.getYellowMinScalar(),
 				cc.getYellowMaxScalar(), yellowBinImage);
 		Core.bitwise_or(contourMat, yellowBinImage, contourMat);
 		// Making some more matrixes to see the ongoing operations.
@@ -138,14 +135,14 @@ class SymbolDetector1 {
 		 dilatesize, dilatesize)));
 		 }
 		this.binImageMat = dilatedImage.clone();
-		findContours(dilatedImage, image, new Mat(image.size(),
+		findContours(dilatedImage, new Mat(image.size(),
 				Core.DEPTH_MASK_8U, new Scalar(0, 0, 0)));
 
 	}	
-	int namer = 0;
-	private void findContours(Mat dilatedImage, Mat image1, Mat emptyImage)
+	
+	private void findContours(Mat dilatedImage, Mat emptyImage)
 			throws InterruptedException {
-		Mat image = image1.clone();
+		Mat image = this.image.clone();
 		// Making some list to put the points.
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		
@@ -157,7 +154,7 @@ class SymbolDetector1 {
 		MatOfPoint2f MatOfPointTo2f = new MatOfPoint2f();
 		MatOfPoint2f MatOfPoint2fApprox = new MatOfPoint2f();
 
-		Mat contourFoundImage = image1.clone();
+		Mat contourFoundImage = image.clone();
 		Imgproc.drawContours(contourFoundImage, contours, -1, new Scalar(0, 0,
 				255), 2);
 
@@ -347,10 +344,10 @@ class SymbolDetector1 {
 					contour1.toList());
 			for (int index = 0; index < contoursPoint.size(); index++) {
 				Point p = contoursPoint.get(index);
-				if (p.x <= 0.01 * imageSize.width
-						|| p.x >= 0.99 * imageSize.width
-						|| p.y <= 0.01 * imageSize.height
-						|| p.y >= 0.99 * imageSize.height) {
+				if (p.x <= 0.001 * imageSize.width
+						|| p.x >= 0.999 * imageSize.width
+						|| p.y <= 0.001 * imageSize.height
+						|| p.y >= 0.999 * imageSize.height) {
 					toRemove.add(contour1);
 					break;
 				}
@@ -365,9 +362,9 @@ class SymbolDetector1 {
 		return contours;
 	}
 
-	frame frame;
+	Frame frame;
 
-	public void setFrame(frame frame) {
+	public void setFrame(Frame frame) {
 		this.frame = frame;
 	}
 
@@ -417,7 +414,6 @@ class SymbolDetector1 {
 		}
 		
 		boolean containsParallel = false;
-		Line2D pline1 = null, pline2 = null;
 		if (lines.cols() > 1 && Imgproc.isContourConvex(contour1)) {
 			for (int i = 0; (i < lineList.size() - 1) && !containsParallel; i++) {
 				Line2D line1 = lineList.get(0);
@@ -437,8 +433,6 @@ class SymbolDetector1 {
 						if (distanceToPoint1 > constraint
 								&& distanceToPoint2 > constraint) {
 							containsParallel = true;
-							pline1 = line1;
-							pline2 = line2;
 							break;
 						}
 					}
@@ -576,7 +570,7 @@ class SymbolDetector1 {
 		}
 	}
 
-	ColorWithCalibration cc;
+	Color cc;
 	
 	
 	

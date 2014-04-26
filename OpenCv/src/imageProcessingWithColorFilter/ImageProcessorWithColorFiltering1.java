@@ -38,7 +38,7 @@ import org.opencv.imgproc.Moments;
 
 public class ImageProcessorWithColorFiltering1 {
 	private Integer erodeTimes = 0;
-	private Integer dilateTimes = 0;
+	private Integer dilateTimes = 1;
 	private Integer blur = 0;
 	private Integer erodesize = 3;
 	private Integer dilatesize = 3;
@@ -64,12 +64,12 @@ public class ImageProcessorWithColorFiltering1 {
 	 */
 	public static void main(String[] args) {
 		// type 0 -> pi Image ; 1 -> video ; 2-> image
-		// ImageProcessorWithColorFiltering lip = new
-		// ImageProcessorWithColorFiltering(
-		// 1, "C:/Users/Study/Desktop/test.wmv");
+//		 ImageProcessorWithColorFiltering1 lip = new
+//		 ImageProcessorWithColorFiltering1(
+//		 1, "C:/Users/Study/Dropbox/grid.h264");
 		ImageProcessorWithColorFiltering1 lip = new ImageProcessorWithColorFiltering1(
 				2, "C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto");
-		
+//		
 		// ImageProcessorWithColorFiltering lip = new
 		// ImageProcessorWithColorFiltering(2,"../fotos/b (114)" + ".jpg");
 		while (true) {
@@ -96,7 +96,7 @@ public class ImageProcessorWithColorFiltering1 {
 	public ImageProcessorWithColorFiltering1(int inputType, String filepath) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		createToolbars();
-		symbolS = new SymbolsStabalization(6, 50);
+		symbolS = new SymbolsStabalization(3, 50);
 		cc = new ColorWithCalibration("colors.txt");
 		this.typeInput = inputType;
 		this.filepath = filepath;
@@ -126,7 +126,7 @@ public class ImageProcessorWithColorFiltering1 {
 	}
 
 	private void createToolbars() {
-		final JTextField blurTF = new JTextField("Blur Size:" + blur);
+	
 		final JTextField cannyThresholdMinTF = new JTextField(
 				"CannyMinThreshold:" + cannyThresholdMin);
 		final JTextField cannyThresholdMaxTF = new JTextField(
@@ -148,17 +148,7 @@ public class ImageProcessorWithColorFiltering1 {
 		JFrame frame1 = new JFrame("Toolbars");
 		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel frame = new JPanel(new GridLayout(0, 2));
-		JSlider blurSlider = new JSlider(JSlider.HORIZONTAL, 0, 20, blur);
-		blurSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent ce) {
-
-				blur = ((JSlider) ce.getSource()).getValue();
-				blurTF.setText("Blur Size: " + blur);
-
-			}
-		});
-		JSlider cannyMinSlider = new JSlider(JSlider.HORIZONTAL, 0, 500,
+				JSlider cannyMinSlider = new JSlider(JSlider.HORIZONTAL, 0, 500,
 				cannyThresholdMin);
 		cannyMinSlider.addChangeListener(new ChangeListener() {
 			@Override
@@ -271,8 +261,7 @@ public class ImageProcessorWithColorFiltering1 {
 
 			}
 		});
-		frame.add(blurSlider);
-		frame.add(blurTF);
+		
 		frame.add(cannyMinSlider);
 		frame.add(cannyThresholdMinTF);
 		frame.add(cannyMaxSlider);
@@ -307,7 +296,7 @@ public class ImageProcessorWithColorFiltering1 {
 		symbolDetector = new SymbolDetector1(Symbols,cc, symbolS,timestamp);
 		symbolDetector.setFrame(erodedoutput);
 		symbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
-				blur, erodesize, dilatesize, minArea, epsilonApprox,
+				 erodesize, dilatesize, minArea, epsilonApprox,
 				cannyThresholdMax);
 		System.out.println("Threads Up and Running");
 	}
@@ -317,6 +306,9 @@ public class ImageProcessorWithColorFiltering1 {
 		if (!threadInitialized) {
 			startSymbolDetectorThreads();
 			threadInitialized = true;
+//			for(int i =0;i<10;i++){
+//				updateOriginalImage();
+//			}
 		}
 
 		updateOriginalImage();
@@ -372,6 +364,7 @@ public class ImageProcessorWithColorFiltering1 {
 			}
 
 			symbolDetector.updateImage(originalImage);
+			System.out.println("Timestamp:"+timestamp);
 			
 
 		} catch (Exception e) {

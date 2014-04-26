@@ -1,6 +1,8 @@
-package ImageProcessing;
+package imageProcessing;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import map.Symbol;
 
 
 public class SymbolsStabalization {

@@ -1,4 +1,4 @@
-package ImageProcessing;
+package fromOldFiles;
 
 /**
  * Class representing a Symbol on the map.
@@ -69,9 +69,6 @@ public class Symbol {
 		case 'X':
 			this.shape = Shape.EMPTY;
 			break;
-		case 'U':
-			this.shape = Shape.UNRECOGNISED;
-			break;
 		}
 		if(this.shape == null)
 			System.out.println(string);
@@ -82,73 +79,9 @@ public class Symbol {
 		this.shape = shape;
 	}
 	
-	public Symbol(Colour colour,Shape shape, int timestamp, double x , double y) {
-		this.colour = colour;
-		this.shape = shape;
-		setX(x);setY(y);setTimestamp(timestamp);
-	}
-	
-	public Symbol(String string, int timestamp, double x , double y) {
-		setX(x);setY(y);setTimestamp(timestamp);
-		
-		char colour = string.charAt(0);
-		char shape = string.charAt(1);
-		
-		switch(colour) {
-		case 'W':
-			this.colour = Colour.WHITE;
-			break;
-		case 'Y':
-			this.colour = Colour.YELLOW;
-			break;
-		case 'R':
-			this.colour = Colour.RED;
-			break;
-		case 'G':
-			this.colour = Colour.GREEN;
-			break;
-		case 'B':
-			this.colour = Colour.BLUE;
-			break;
-		case 'X':
-			this.colour = Colour.BLANK;
-			break;
-		}
-		
-		switch(shape) {
-		case 'C':
-			
-			this.shape = Shape.CIRCLE;
-			break;
-		case 'S':
-			this.shape = Shape.STAR;
-			break;
-		case 'H':
-			this.shape = Shape.HEART;
-			break;
-		case 'R':
-			this.shape = Shape.RECTANGLE;
-			break;
-		case 'X':
-			this.shape = Shape.EMPTY;
-			break;
-		case 'U':
-			this.shape = Shape.UNRECOGNISED;
-			break;
-		}
-		if(this.shape == null)
-			System.out.println(string);
-	}
-	
 	private double x,y;
 	
-	private int timestamp;
-	public int getTimestamp(){
-		return timestamp;
-	}
-	public void setTimestamp(int timestamp){
-		this.timestamp=timestamp;
-	}
+	
 	public double getX() {
 		return x;
 	}
@@ -202,13 +135,5 @@ public class Symbol {
 	
 	public boolean shapeMatch(Symbol other) {
 		return this.shape == other.shape || this.shape == Shape.UNRECOGNISED || other.shape == Shape.UNRECOGNISED;
-	}
-	
-	public String toString(){
-		String color = getColour().toString().substring(0, 1);
-		String shape = getShape().toString().substring(0, 1);
-		return color+shape;
-	
-	
 	}
 }

@@ -5,10 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.swing.ImageIcon;
-
-import camera.Camera;
-
 import zeppelin.Main;
 import zeppelin.MotorController;
 import connection.*;

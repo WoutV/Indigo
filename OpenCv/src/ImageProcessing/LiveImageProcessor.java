@@ -62,6 +62,7 @@ public class LiveImageProcessor {
 	public static void main(String[] args) {
 		LiveImageProcessor lip = new LiveImageProcessor();
 		// lip.start("../fotos/b (114)" + ".jpg");
+		//lip.startVideoProcessing("../fotos/b (114)" + ".jpg");
 		lip.startVideoProcessing("C:/Users/Study/Dropbox/grid.h264");
 		//lip.startVideoProcessing("C:/Users/Study/Desktop/test.wmv");
 	}

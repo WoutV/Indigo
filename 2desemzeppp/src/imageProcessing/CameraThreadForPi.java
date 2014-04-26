@@ -1,15 +1,15 @@
-package camera;
+package imageProcessing;
 
 import java.io.IOException;
 
-public class CameraThread implements Runnable{
+public class CameraThreadForPi implements Runnable{
 	public static void  main(String[] args){
-		CameraThread ct = new CameraThread();
+		CameraThreadForPi ct = new CameraThreadForPi();
 		Thread thread = new Thread(ct);
 		thread.start();
 	}
 	
-	public CameraThread(){
+	public CameraThreadForPi(){
 	}
 	private double  height = 400;
 	private double  width = 600;
