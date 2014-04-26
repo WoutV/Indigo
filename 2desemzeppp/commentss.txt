@@ -1,0 +1,22 @@
+- is er geen camera meer? hoe werkt het opvragen? (wat is de vertraging? dit moet evt aangepast in verslag)
+- InitialiseClient en Dispatch zijn de link tussen alles op de client
+- de LocLoc gaat kijken of dicht bij tablet en dan via Dispatch de QR-code vragen
+==> hoe QR-code lezen? image processing? op pi?
+==> nieuw target hieruit halen en doorsturen naar Dispatch
+- nog voorzien om te kunnen landen: mss moet de Dispatch en de LocLoc dan een boolean hebben ofzo?
+dat is dan true wanneer moet landen na het huidige target en dan doorsturen naar zeppelin (HeightController)
+
+
+
+dingen voor diagrammen:
+
+class diagram (?):
+
+1) client pc
+LocationLocator, PositionController, Dispatch (gaan we mss hernoemen voor het diagram want is static)
+
+2) zeppelin
+HeightController, Main, MotorController, Motor
+
+mss ook een sequence diagram??
+van: SenderPi,ReceiverPi,SimConn ofzo om de verbinding met Sim te tonen?

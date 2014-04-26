@@ -1,2 +1,0 @@
-met andere Kp's en richtingen werken: werkt het tegoei (vertraagt het ook? evt output afdrukken)
-

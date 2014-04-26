@@ -9,6 +9,7 @@ import connection.ReceiverClient;
 import connection.SenderClient;
 
 import simulator.SimConnNoRabbitClient;
+import simulator.SimEnemy;
 import simulator.SimMain;
 import simulator.Simulator;
 
@@ -55,7 +56,7 @@ public class InitialiseClient {
         
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit
-        int mode = 1;
+        int mode = 2;
         boolean rabbit = false;
         
         SenderClient sender = null;
@@ -80,6 +81,7 @@ public class InitialiseClient {
              ypos.setSenderNoRabbit(simConnClient);
         }
         
+        SimEnemy simEnemy = null;
         //sim enemy
         if(mode == 2 || mode == 3) {
         	//!!!!
@@ -97,7 +99,7 @@ public class InitialiseClient {
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
 		Dispatch.setLoc(locator);
 		Dispatch.setGUIMain(gui);
-		
+		Dispatch.setSimEnemy(simEnemy);
 		Dispatch.receiveTarget(50,50);
 		
 		try {
