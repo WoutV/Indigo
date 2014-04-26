@@ -5,7 +5,12 @@ import navigation.*;
 
 import org.opencv.core.Core;
 
+import connection.ReceiverClient;
+import connection.SenderClient;
+
 import simulator.SimConnNoRabbitClient;
+import simulator.SimMain;
+import simulator.Simulator;
 
 import gui.GuiMain;
 
@@ -39,7 +44,6 @@ public class InitialiseClient {
         gui.setMap(fileName);
         gui.setOwnLocation(200, 200);
         
-        //TODO kp,kd,ki values
         PositionController xpos = PositionController.getXController();
         PositionController ypos = PositionController.getYController();
         xpos.setKd(0);
@@ -49,23 +53,45 @@ public class InitialiseClient {
         ypos.setKp(5);
         ypos.setKi(0);
         
-        //rabbit
-        //SenderClient sender = new SenderClient();
-        //gui.getGuic().setSender(sender);
-//		xpos.setSender(sender);
-//		ypos.setSender(sender);
-        //Dispatch.setSender(sender);
+        //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
+        //boolean rabbit
+        int mode = 1;
+        boolean rabbit = false;
         
-      //ReceiverClient receiver = new ReceiverClient(gui);
-      //Thread receiverclientthread = new Thread(receiver);
-      //receiverclientthread.start();
+        SenderClient sender = null;
+        SimConnNoRabbitClient simConnClient = null;
         
-        //norabbit
-        SimConnNoRabbitClient simConnClient = new SimConnNoRabbitClient();
-        Thread t = new Thread(simConnClient);
-        t.start();
-        xpos.setSenderNoRabbit(simConnClient);
-        ypos.setSenderNoRabbit(simConnClient);
+        //set up conn
+        if(rabbit) {
+        	sender = new SenderClient();
+        	ReceiverClient receiver = new ReceiverClient(gui);
+            Thread receiverclientthread = new Thread(receiver);
+            receiverclientthread.start();
+            gui.getGuic().setSender(sender);
+            xpos.setSender(sender);
+    		ypos.setSender(sender);
+    		Dispatch.setSender(sender);
+        }
+        if(!rabbit) {
+        	 simConnClient = new SimConnNoRabbitClient();
+        	 Thread t = new Thread(simConnClient);
+             t.start();
+             xpos.setSenderNoRabbit(simConnClient);
+             ypos.setSenderNoRabbit(simConnClient);
+        }
+        
+        //sim enemy
+        if(mode == 2 || mode == 3) {
+        	//!!!!
+        }
+        
+        //sim own
+        if(mode == 2) {
+        	SimMain.makeOwnZeppSim(map, rabbit, false);
+        }
+        
+        //TODO kp,kd,ki values
+        
         
 		LocationLocator locator = new LocationLocator(map,xpos,ypos,gui.getGuic());
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
@@ -75,16 +101,18 @@ public class InitialiseClient {
 		Dispatch.receiveTarget(50,50);
 		
 		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
+	        Thread.sleep(5000);
+	    }
+	    catch(Exception exc) {
+	    }
+
+		if(rabbit) {
+			sender.sendTransfer("0", "indigo.lcommand.motor1");
+			sender.sendTransfer("0", "indigo.lcommand.motor1");
 		}
-		
-		// Hier de andere threads starten die op de client moeten runnen(image recognition)
-		// Ook mss iets op de gui tonen terwijl er connectie met de server wordt gemaakt???
-		//sender.sendTransfer("0", "indigo.lcommand.motor1");
-		simConnClient.sendTransfer("0", "indigo.lcommand.motor2");
-		simConnClient.sendTransfer("0", "indigo.lcommand.motor1");
+		if(!rabbit) {
+			simConnClient.sendTransfer("0", "indigo.lcommand.motor2");
+			simConnClient.sendTransfer("0", "indigo.lcommand.motor1");
+		}
 	}
 }
