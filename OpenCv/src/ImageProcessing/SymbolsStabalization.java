@@ -37,7 +37,9 @@ public class SymbolsStabalization {
 	
 	
 	public synchronized Symbol getPossibleSymbol(Symbol S){
-
+		System.out.println("Deteceted Symbol: "+ S.toString());
+		System.out.println("Class timestamp: "+getCurrentTimestamp());
+		System.out.println("Symbol Timestamp: "+S.getTimestamp());
 		addSymbol(S);
 		int heart = 0,circle=0,rectangle=0,star=0,unrecognised=0;
 		Point2D symbolCoordinate = new Point2D.Double(S.getX(), S.getY());
@@ -69,7 +71,8 @@ public class SymbolsStabalization {
 			returningSymbol =new Symbol(S.getColour(),Symbol.Shape.STAR, getCurrentTimestamp(),S.getX(),S.getY());
 		else 
 			returningSymbol = new Symbol(S.getColour(),Symbol.Shape.UNRECOGNISED,getCurrentTimestamp(),S.getX(),S.getY());
-		
+		System.out.println("Possible Symbol: "+S.toString());
+		System.out.println("*****************");
 		return returningSymbol;
 	}
 		

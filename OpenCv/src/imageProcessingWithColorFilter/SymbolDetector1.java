@@ -28,18 +28,16 @@ import ImageProcessing.ColorWithCalibration;
 import ImageProcessing.Symbol;
 import ImageProcessing.SymbolsStabalization;
 
-
 class SymbolDetector1 {
-	Mat image = new Mat();
-	ArrayList<Symbol> symbolList;
-	SymbolsStabalization symbolS;
+	private Mat image = new Mat();
+	private ArrayList<Symbol> detectedSymbols;
+	private SymbolsStabalization symbolS;
 	int timestamp;
 	String Color;
 	Mat binImageMat;
 
-	public SymbolDetector1(ArrayList<Symbol> symbols2, ColorWithCalibration cc,
+	public SymbolDetector1(ColorWithCalibration cc,
 			SymbolsStabalization symbolS3, Integer timestamp2) {
-		this.symbolList = symbols2;
 		this.cc = cc;
 		this.timestamp = timestamp2;
 		this.symbolS = symbolS3;
@@ -53,21 +51,14 @@ class SymbolDetector1 {
 	private Integer dilateTimes;
 	private Integer erodesize;
 	private Integer dilatesize;
-	private Integer heartThreshold;
-	private Integer minArea;
-	private Integer epsilonApprox;
 
 	public void initializeToolbarVariables(Integer erodeTimes,
-			Integer dilateTimes, Integer erodesize,
-			Integer dilatesize, Integer minArea, Integer epsilonApprox,
-			Integer heartThreshold) {
+			Integer dilateTimes, Integer erodesize, Integer dilatesize,
+			Integer minArea, Integer epsilonApprox, Integer heartThreshold) {
 		this.erodeTimes = erodeTimes;
 		this.dilateTimes = dilateTimes;
 		this.erodesize = erodesize;
 		this.dilatesize = dilatesize;
-		this.minArea = minArea;
-		this.heartThreshold = heartThreshold;
-		this.epsilonApprox = epsilonApprox;
 	}
 
 	public void setTimeStamp(int timestamp) {
@@ -94,10 +85,10 @@ class SymbolDetector1 {
 	 * @throws InterruptedException
 	 */
 	public void processImage() throws InterruptedException {
-		
+		detectedSymbols = new ArrayList<Symbol>();
 		Mat blurImage = image;
 		// Blurring the image
-		//Imgproc.blur(image, blurImage, new Size(blur, blur));
+		// Imgproc.blur(image, blurImage, new Size(blur, blur));
 		Mat contourMat = new Mat(image.size(), CvType.CV_8UC1);
 		Mat blueBinImage = new Mat(image.size(), CvType.CV_8UC1);
 		Core.inRange(blurImage, cc.getBlueMinScalar(), cc.getBlueMaxScalar(),
@@ -132,23 +123,26 @@ class SymbolDetector1 {
 		}
 		// dilating to make the image clear
 		Mat dilatedImage = erodedImage.clone();
-		 for (int i = 0; i < dilateTimes; i++) {
-		 Imgproc.dilate(dilatedImage, dilatedImage, Imgproc
-		 .getStructuringElement(Imgproc.MORPH_RECT, new Size(
-		 dilatesize, dilatesize)));
-		 }
+		for (int i = 0; i < dilateTimes; i++) {
+			Imgproc.dilate(dilatedImage, dilatedImage, Imgproc
+					.getStructuringElement(Imgproc.MORPH_RECT, new Size(
+							dilatesize, dilatesize)));
+		}
 		this.binImageMat = dilatedImage.clone();
 		findContours(dilatedImage, image, new Mat(image.size(),
 				Core.DEPTH_MASK_8U, new Scalar(0, 0, 0)));
 
-	}	
+	}
+
 	int namer = 0;
+
 	private void findContours(Mat dilatedImage, Mat image1, Mat emptyImage)
 			throws InterruptedException {
+		ArrayList<Symbol> detectedSymbols = new ArrayList<Symbol>();
 		Mat image = image1.clone();
 		// Making some list to put the points.
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-		
+
 		// Finding the contours.
 		Imgproc.findContours(dilatedImage, contours, new Mat(),
 				Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -183,7 +177,7 @@ class SymbolDetector1 {
 
 		Imgproc.drawContours(contourMat, ApproxContours, -1, new Scalar(255, 0,
 				0), 2);
-		
+
 		for (int i = 0; i < ApproxContours.size(); i++) {
 			MatOfPoint contour1 = ApproxContours.get(i);
 			if (Imgproc.contourArea(contour1) >= 400) {
@@ -210,43 +204,44 @@ class SymbolDetector1 {
 				}
 
 				Mat subImage = contourMat.submat(rec);
-			
-			
+
 				Color = getColor(NotProcessedImage, contourCenter);
 
-			 	/*
+				/*
 				 * Works if used on deletedcontours. And not on an
 				 * approximation.
 				 */
 				boolean isConvex = Imgproc.isContourConvex(contour1);
-				
-				
-				
-				
-//				MatOfKeyPoint matOfKeyPoints = new MatOfKeyPoint();
-//
-//		        FeatureDetector blobDetector = FeatureDetector.create(FeatureDetector.HARRIS);
-//		        blobDetector.detect(subImage, matOfKeyPoints);
-//
-//		        System.out.println("Detected " + matOfKeyPoints.size()+ " blobs in the image");
-//		        Mat keypointmat = NotProcessedImage.submat(rec).clone();
-//		        List<KeyPoint> keyPoints = matOfKeyPoints.toList();
-//				Features2d.drawKeypoints(subImage, matOfKeyPoints, keypointmat);
-//				frame.matToBufferedImage(keypointmat);
-//				frame.repaint();
-//				Thread.sleep(1000);
-				
-				//isCircleDetection
-				
+
+				// MatOfKeyPoint matOfKeyPoints = new MatOfKeyPoint();
+				//
+				// FeatureDetector blobDetector =
+				// FeatureDetector.create(FeatureDetector.HARRIS);
+				// blobDetector.detect(subImage, matOfKeyPoints);
+				//
+				// System.out.println("Detected " + matOfKeyPoints.size()+
+				// " blobs in the image");
+				// Mat keypointmat = NotProcessedImage.submat(rec).clone();
+				// List<KeyPoint> keyPoints = matOfKeyPoints.toList();
+				// Features2d.drawKeypoints(subImage, matOfKeyPoints,
+				// keypointmat);
+				// frame.matToBufferedImage(keypointmat);
+				// frame.repaint();
+				// Thread.sleep(1000);
+
+				// isCircleDetection
+
 				Mat circles = new Mat();
-				Core.putText(result, ""+timestamp, new Point(20,20),
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(
-								200, 200, 250), 1);
-				
-				double rationArea = getSmallestToBiggestCircleRatio(contour1.toList(), contourCenter);
-				Core.putText(result, ""+(isRectangle(contour1)), new Point(contourCenter.x+20,contourCenter.y+20),
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-								200, 200, 250), 3);
+				Core.putText(result, "" + timestamp, new Point(20, 20),
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+								200, 250), 1);
+
+				double rationArea = getSmallestToBiggestCircleRatio(
+						contour1.toList(), contourCenter);
+//				Core.putText(result, "" + (isRectangle(contour1)), new Point(
+//						contourCenter.x + 20, contourCenter.y + 20),
+//						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+//								200, 250), 3);
 				Imgproc.HoughCircles(subImage, circles,
 						Imgproc.CV_HOUGH_GRADIENT, 1, rec.height, 25, 17,
 						(int) (rec.height / 2.5), 500);
@@ -254,9 +249,10 @@ class SymbolDetector1 {
 					Symbol S = new Symbol(Color + "C", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
+					detectedSymbols.add(S);
 					Core.putText(result, S.toString(), contourCenter,
-							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(
-									200, 200, 250), 3);
+							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+									200, 250), 3);
 					// //zoomedContourFrame.matToBufferedImage(subImage);
 					// //zoomedContourFrame.repaint();
 					//
@@ -264,44 +260,48 @@ class SymbolDetector1 {
 				}
 
 				// Checking for rectangles
-				else if (isRectangle(subImage, rec, contourCenter, contour1) && isConvex) {
+				else if (isRectangle(subImage, rec, contourCenter, contour1)
+						&& isConvex) {
 					System.out.println("Creating Rectangle");
 					Symbol S = new Symbol(Color + "R", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
-					System.out.println("possible symbol:"+
-					S.toString());
+					detectedSymbols.add(S);
+					System.out.println("possible symbol:" + S.toString());
 					Core.putText(result, S.toString(), contourCenter,
 							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 									200, 250), 3);
 
 				}
 				// Heart Detection
-//				else if (isRectangle(contours.get(i)) > 0.4
-//						&& isRectangle(contours.get(i)) < 0.7 && !isConvex) {
-//					System.out.println("Creating Heart:" + Color +"H");
-//					Symbol S = new Symbol(Color + "H", timestamp,
-//							contourCenter.x, contourCenter.y);
-//					S = symbolS.getPossibleSymbol(S);
-//					Core.putText(result, S.toString(), contourCenter,
-//							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
-//									200, 250), 3);
-//				} 
-				
-				else if (rationArea<4.5 && !isConvex && !isCircle(contour1, contourCenter,rec)) {
-					System.out.println("Creating Heart:" + Color +"H");
+				// else if (isRectangle(contours.get(i)) > 0.4
+				// && isRectangle(contours.get(i)) < 0.7 && !isConvex) {
+				// System.out.println("Creating Heart:" + Color +"H");
+				// Symbol S = new Symbol(Color + "H", timestamp,
+				// contourCenter.x, contourCenter.y);
+				// S = symbolS.getPossibleSymbol(S);detectedSymbols.add(S);
+				// Core.putText(result, S.toString(), contourCenter,
+				// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+				// 200, 250), 3);
+				// }
+
+				else if (rationArea < 4.5 && !isConvex
+						&& !isCircle(contour1, contourCenter, rec)) {
+					//System.out.println("Creating Heart:" + Color + "H");
 					Symbol S = new Symbol(Color + "H", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
+					detectedSymbols.add(S);
 					Core.putText(result, S.toString(), contourCenter,
 							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 									200, 250), 3);
-				} 
-				//Star Detection
-				else if (!isConvex && rationArea >=4.5) {
+				}
+				// Star Detection
+				else if (!isConvex && rationArea >= 4.5) {
 					Symbol S = new Symbol(Color + "S", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
+					detectedSymbols.add(S);
 					Core.putText(result, S.toString(), contourCenter,
 							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 									200, 250), 3);
@@ -310,26 +310,120 @@ class SymbolDetector1 {
 				// Symbol S = new Symbol(Color + "UNKNOWN",
 				// timestamp,
 				// contourCenter.x, contourCenter.y);
-				// S = symbolS.getPossibleSymbol(S);
+				// S = symbolS.getPossibleSymbol(S);detectedSymbols.add(S);
 				else {
 					Symbol S = new Symbol(Color + "U", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
+					detectedSymbols.add(S);
 					Core.putText(result, S.toString(), contourCenter,
 							Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
 									200, 250), 3);
 				}
 
 			}
+
 		}
-		// first area close
+		this.detectedSymbols = detectedSymbols;
+		checkForTriangle();
 
 	}
 
+	public void checkForTriangle() {
+		boolean triangleFound = false;
+		if (detectedSymbols.size() >= 3) {
+			for (int i = 0; i < detectedSymbols.size(); i++) {
+				Symbol symbol1 = detectedSymbols.get(i);
+				for (int p = i + 1; p < detectedSymbols.size(); p++) {
+					Symbol symbol2 = detectedSymbols.get(p);
+					double distance1 = symbol2.getDistanceTo(symbol1);
+					for (int q = p + 1; q < detectedSymbols.size(); q++) {
+						Symbol symbol3 = detectedSymbols.get(q);
+						double distance2 = symbol3.getDistanceTo(symbol1);
+						double distance3 = symbol3.getDistanceTo(symbol2);
+						if (fuzzyEquals(distance1, distance2, 20)
+								&& fuzzyEquals(distance1, distance3, 20)
+								&& fuzzyEquals(distance2, distance3, 20)) {
+							Core.line(result,
+									new Point(symbol1.getX(), symbol1.getY()),
+									new Point(symbol2.getX(), symbol2.getY()),
+									new Scalar(50*i, 50*i, 0));
+							Core.line(result,
+									new Point(symbol1.getX(), symbol1.getY()),
+									new Point(symbol3.getX(), symbol3.getY()),
+									new Scalar(50*i, 50*i, 0));
+							Core.line(result,
+									new Point(symbol3.getX(), symbol3.getY()),
+									new Point(symbol2.getX(), symbol2.getY()),
+									new Scalar(50*i, 50*i, 0));
+							triangleFound = true;
+						}
+
+					}
+				}
+			}
+		}
+		if(!triangleFound && detectedSymbols.size()>=2) {
+			Symbol middleSymbol = getMiddleSymbol();
+			Symbol nearestSymbol = getNearestSymbol(middleSymbol);
+			double distance = middleSymbol.getDistanceTo(nearestSymbol);
+			for(MatOfPoint contourPoints: edgeContours){
+				Point contourCenter = getCenter(contourPoints);
+				double distanceToNearestSymbol=  nearestSymbol.getDistanceTo(contourCenter);
+				double distanceToMiddleSymbol = middleSymbol.getDistanceTo(contourCenter);
+				if(fuzzyEquals(distance, distanceToNearestSymbol, 50) && fuzzyEquals(distance, distanceToMiddleSymbol, 50)){
+					String color = getColor(NotProcessedImage, contourCenter);
+					Core.line(result,
+							new Point(middleSymbol.getX(), middleSymbol.getY()),
+							new Point(nearestSymbol.getX(), nearestSymbol.getY()),
+							new Scalar(0, 255, 255));
+					Core.line(result,
+							new Point(nearestSymbol.getX(), nearestSymbol.getY()),
+							contourCenter,
+							new Scalar(0, 255, 255));
+					Core.line(result,
+							new Point(middleSymbol.getX(), middleSymbol.getY()),
+							contourCenter,
+							new Scalar(0, 255, 255));
+				}
+			}
+		}
+
+	}
+	private Symbol getNearestSymbol(Symbol middleSymbol) {
+		Symbol toReturnSymbol = null;
+		double distanceToSymbol = Double.MAX_VALUE;
+		for(Symbol s : detectedSymbols){
+			double distance = s.getDistanceTo(middleSymbol);
+			if(distance != 0 && distance < distanceToSymbol){
+				toReturnSymbol = s;
+				distanceToSymbol = distance;
+			}
+		}
+		return toReturnSymbol;
+	}
+
+	private Symbol getMiddleSymbol(){
+		double distanceToMiddleSymbol = Double.MAX_VALUE;
+		Symbol toReturnSymbol = null;
+		double x1 = image.size().width/2;
+		double y1 = image.size().height/2;
+		for(Symbol s: detectedSymbols){
+			
+			double distance = Math.sqrt((x1-s.getX())*(x1-s.getX())+(y1-s.getY())*(y1-s.getY()));
+			if(distance < distanceToMiddleSymbol){
+				toReturnSymbol = s;
+				distanceToMiddleSymbol = distance;
+			}
+			
+		}
+		return toReturnSymbol;
+	}
 	public void setResult(Mat result) {
 		this.result = result;
 	}
-
+	
+	ArrayList<MatOfPoint> edgeContours;
 	/**
 	 * Filters out the edges
 	 * 
@@ -339,6 +433,7 @@ class SymbolDetector1 {
 	 */
 	private List<MatOfPoint> filterOutEdges(List<MatOfPoint> contours,
 			Size imageSize) {
+		edgeContours =new ArrayList<MatOfPoint>();
 		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
 
 		for (int i = 0; i < contours.size(); i++) {
@@ -359,7 +454,9 @@ class SymbolDetector1 {
 		}
 
 		for (MatOfPoint p : toRemove) {
+			edgeContours.add(p);
 			contours.remove(p);
+			
 		}
 
 		return contours;
@@ -375,29 +472,30 @@ class SymbolDetector1 {
 			MatOfPoint contour1) throws InterruptedException {
 		Mat lines = new Mat();
 		Mat canny_output = subImage;
-//		 frame.matToBufferedImage(subImage);
-//		 frame.repaint();
-//		
-//		 Thread.sleep(5000);
-//		Mat canny_output = new Mat(subImage.size(), Core.DEPTH_MASK_8U);
-//		Imgproc.Canny(image.submat(rec), canny_output, 8, 2 * 27);
+		// frame.matToBufferedImage(subImage);
+		// frame.repaint();
+		//
+		// Thread.sleep(5000);
+		// Mat canny_output = new Mat(subImage.size(), Core.DEPTH_MASK_8U);
+		// Imgproc.Canny(image.submat(rec), canny_output, 8, 2 * 27);
 
-//		for (int i = 0; i < 2; i++) {
-//			Imgproc.dilate(canny_output, canny_output, Imgproc
-//					.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
-//		}
-//		 Imgproc.HoughLines(subImage, lines, rho, theta, threshold, srn, stn)
-		
-//		 frame.matToBufferedImage(canny_output);
-//		 frame.repaint();
-//		 Thread.sleep(5000);
-		// Imgproc.HoughLinesP(subImage, lines, rho, theta, threshold, minLineLength, maxLineGap)
-		 //Imgproc.HoughLinesP(subImage, lines, rho, theta, threshold, minLineLength, maxLineGap);
+		// for (int i = 0; i < 2; i++) {
+		// Imgproc.dilate(canny_output, canny_output, Imgproc
+		// .getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
+		// }
+		// Imgproc.HoughLines(subImage, lines, rho, theta, threshold, srn, stn)
+
+		// frame.matToBufferedImage(canny_output);
+		// frame.repaint();
+		// Thread.sleep(5000);
+		// Imgproc.HoughLinesP(subImage, lines, rho, theta, threshold,
+		// minLineLength, maxLineGap)
+		// Imgproc.HoughLinesP(subImage, lines, rho, theta, threshold,
+		// minLineLength, maxLineGap);
 		// Imgproc.HoughLinesP(subImage, lines, 1, Math.PI/180, 1);
 		Imgproc.HoughLinesP(canny_output, lines, 1, Math.PI / 180, 1,
-				Math.max(rec.height, rec.width)*0.3,
-				2);
-		 System.out.println("Total Lines:" + lines.cols());
+				Math.max(rec.height, rec.width) * 0.3, 2);
+		//System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
 		for (int x = 0; x < lines.cols(); x++) {
 			double[] vec = lines.get(0, x);
@@ -406,20 +504,19 @@ class SymbolDetector1 {
 			double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
 			Point start = new Point(x1, y1);
 			Point end = new Point(x2, y2);
-			
-			 Core.line(result.submat(rec), start, end, new Scalar(255, 0,
-			 255), 2);
-//			 frame.matToBufferedImage(this.image);
-//			 frame.repaint();
-//			
-//			 Thread.sleep(1000);
 
+			Core.line(result.submat(rec), start, end, new Scalar(255, 0, 255),
+					2);
+			// frame.matToBufferedImage(this.image);
+			// frame.repaint();
+			//
+			// Thread.sleep(1000);
 		}
-		
+
 		boolean containsParallel = false;
-		Line2D pline1 = null, pline2 = null;
+		boolean containsRighAngle = false;
 		if (lines.cols() > 1 && Imgproc.isContourConvex(contour1)) {
-			for (int i = 0; (i < lineList.size() - 1) && !containsParallel; i++) {
+			for (int i = 0; (i < lineList.size() - 1) && (!containsParallel || !containsRighAngle) ; i++) {
 				Line2D line1 = lineList.get(0);
 				double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
 						line1.getX1() - line1.getX2());
@@ -428,26 +525,33 @@ class SymbolDetector1 {
 					double angle2 = Math.atan2(line2.getY1() - line2.getY2(),
 							line2.getX1() - line2.getX2());
 					// System.out.println("angle between lines : "+(angle1-angle2));
+
+					double distanceToPoint1 = line1.ptLineDist(line2.getP1());
+					double distanceToPoint2 = line1.ptLineDist(line2.getP2());
+					//System.out.println("Angle Between Lines :"+ Math.toDegrees(Math.abs(angle1-angle2)));
 					if (Math.abs(angle1 - angle2) <= 0.174532925) {
-						double distanceToPoint1 = line1.ptLineDist(line2
-								.getP1());
-						double distanceToPoint2 = line1.ptLineDist(line2
-								.getP2());
 						double constraint = Math.min(rec.width, rec.height) / 3;
 						if (distanceToPoint1 > constraint
 								&& distanceToPoint2 > constraint) {
 							containsParallel = true;
-							pline1 = line1;
-							pline2 = line2;
 							break;
 						}
 					}
+					if(fuzzyEquals(Math.abs(Math.toDegrees((angle1-angle2))),90,10)|| fuzzyEquals(Math.abs(Math.toDegrees((angle1-angle2))),270,15)){
+						System.out.println("Checking rightAngle");
+						double constraint = 5;
+						if (distanceToPoint1 < constraint
+								|| distanceToPoint2 < constraint) {
+							containsRighAngle = true;
+							break;
+						}
+					} 
 				}
 
 			}
 
 		}
-		return containsParallel;
+		return containsParallel||containsRighAngle;
 	}
 
 	/**
@@ -457,7 +561,7 @@ class SymbolDetector1 {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	private Point getCenter(MatOfPoint contour1) throws InterruptedException {
+	private Point getCenter(MatOfPoint contour1){
 		Moments p = Imgproc.moments(contour1, false);
 		int x = (int) (p.get_m10() / p.get_m00());
 		int y = (int) (p.get_m01() / p.get_m00());
@@ -467,44 +571,43 @@ class SymbolDetector1 {
 
 	double averageRadius = 0;
 
-//	/*
-//	 * If all points of the contour are on an equal distance to the center
-//	 * point. This is a circle. Works if you don't add the inner and outer
-//	 * contours and don't work on approximations.
-//	 */
-//	public boolean isCircle(MatOfPoint contour, Point center) {
-//		List<Point> approx = contour.toList();
-//		double radiussum = 0;
-//		double x;
-//		double y;
-//		for (int i = 0; i < approx.size(); i++) {
-//			x = approx.get(i).x;
-//			y = approx.get(i).y;
-//			radiussum += Math.sqrt((x - center.x) * (x - center.x)
-//					+ (y - center.y) * (y - center.y));
-//		}
-//
-//		averageRadius = radiussum / approx.size();
-//		double difference = 0;
-//		for (int j = 0; j < approx.size(); j++) {
-//			x = approx.get(j).x;
-//			y = approx.get(j).y;
-//			double radius = Math.sqrt((x - center.x) * (x - center.x)
-//					+ (y - center.y) * (y - center.y));
-//			difference += (averageRadius - radius) * (averageRadius - radius);
-//		}
-//		double treshold = 7;
-//		if (Imgproc.contourArea(contour) < 1150)
-//			treshold = 3;
-//		// System.out.println("Center:x:" +center.x + "y:" + center.y +
-//		// "diff/approx:"+ difference/approx.size());
-//		if (difference / approx.size() < treshold)
-//			return true;
-//		return false;
-//	}
-	
-	
-	private boolean isCircle(MatOfPoint contour, Point center,Rect rec) {
+	// /*
+	// * If all points of the contour are on an equal distance to the center
+	// * point. This is a circle. Works if you don't add the inner and outer
+	// * contours and don't work on approximations.
+	// */
+	// public boolean isCircle(MatOfPoint contour, Point center) {
+	// List<Point> approx = contour.toList();
+	// double radiussum = 0;
+	// double x;
+	// double y;
+	// for (int i = 0; i < approx.size(); i++) {
+	// x = approx.get(i).x;
+	// y = approx.get(i).y;
+	// radiussum += Math.sqrt((x - center.x) * (x - center.x)
+	// + (y - center.y) * (y - center.y));
+	// }
+	//
+	// averageRadius = radiussum / approx.size();
+	// double difference = 0;
+	// for (int j = 0; j < approx.size(); j++) {
+	// x = approx.get(j).x;
+	// y = approx.get(j).y;
+	// double radius = Math.sqrt((x - center.x) * (x - center.x)
+	// + (y - center.y) * (y - center.y));
+	// difference += (averageRadius - radius) * (averageRadius - radius);
+	// }
+	// double treshold = 7;
+	// if (Imgproc.contourArea(contour) < 1150)
+	// treshold = 3;
+	// // System.out.println("Center:x:" +center.x + "y:" + center.y +
+	// // "diff/approx:"+ difference/approx.size());
+	// if (difference / approx.size() < treshold)
+	// return true;
+	// return false;
+	// }
+
+	private boolean isCircle(MatOfPoint contour, Point center, Rect rec) {
 		List<Point> approx = contour.toList();
 		double x;
 		double y;
@@ -512,16 +615,16 @@ class SymbolDetector1 {
 		for (int i = 0; i < approx.size(); i++) {
 			x = approx.get(i).x;
 			y = approx.get(i).y;
-			double radius= Math.sqrt((x - center.x) * (x - center.x)
+			double radius = Math.sqrt((x - center.x) * (x - center.x)
 					+ (y - center.y) * (y - center.y));
-			if(radius<(Math.max(rec.height,rec.width)*0.5)*0.75){
+			if (radius < (Math.max(rec.height, rec.width) * 0.5) * 0.75) {
 				isCircle = false;
 				break;
 			}
-				
+
 		}
 		return isCircle;
-	
+
 	}
 
 	private String getColor(Mat image, Point contourCenter) {
@@ -577,23 +680,15 @@ class SymbolDetector1 {
 	}
 
 	ColorWithCalibration cc;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/*
 	 * Determines if the contour is a rectangle. Returns the ratio of angles
 	 * that are 180 degrees(epsilon 10 degrees) on the amount of angles that are
 	 * examined.
 	 */
 	public double isRectangle(MatOfPoint contour) {
-		List<Point> sortedList = sortPolar(new ArrayList<Point>(contour.toList()));
+		List<Point> sortedList = sortPolar(new ArrayList<Point>(
+				contour.toList()));
 		double a = 0;
 		double b = 0;
 		if (sortedList.size() < 60) {
@@ -615,12 +710,13 @@ class SymbolDetector1 {
 		}
 		return a / (b);
 	}
-	
+
 	private boolean fuzzyEquals(double a, double b, double epsilon) {
 		if (Math.abs(a - b) > epsilon)
 			return false;
 		return true;
 	}
+
 	/**
 	 * Returns the center of the given contour.
 	 * 
@@ -637,8 +733,7 @@ class SymbolDetector1 {
 		}
 		return new Point(x / points.size(), y / points.size());
 	}
-	
-	
+
 	/*
 	 * Sorts the points in the given list counter clockwise.
 	 */
@@ -699,24 +794,26 @@ class SymbolDetector1 {
 			return -1;
 		}
 	}
-	
-	private double getSmallestToBiggestCircleRatio(List<Point> list,Point center){
+
+	private double getSmallestToBiggestCircleRatio(List<Point> list,
+			Point center) {
 		double smallestRadius = Double.MAX_VALUE;
 		double biggestRadius = 0;
-		for(Point p: list){
+		for (Point p : list) {
 			double x = p.x;
 			double y = p.y;
 			double radius = Math.sqrt((x - center.x) * (x - center.x)
 					+ (y - center.y) * (y - center.y));
-			if(radius<smallestRadius){
+			if (radius < smallestRadius) {
 				smallestRadius = radius;
 			}
-			if(radius > biggestRadius){
+			if (radius > biggestRadius) {
 				biggestRadius = radius;
 			}
 		}
-		return biggestRadius*biggestRadius/(smallestRadius*smallestRadius);
-		
+		return biggestRadius * biggestRadius
+				/ (smallestRadius * smallestRadius);
+
 	}
 
 }

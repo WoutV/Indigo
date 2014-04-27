@@ -293,7 +293,7 @@ public class ImageProcessorWithColorFiltering1 {
 
 	public void startSymbolDetectorThreads() {
 		Symbols = new ArrayList<>();
-		symbolDetector = new SymbolDetector1(Symbols,cc, symbolS,timestamp);
+		symbolDetector = new SymbolDetector1(cc, symbolS,timestamp);
 		symbolDetector.setFrame(erodedoutput);
 		symbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
 				 erodesize, dilatesize, minArea, epsilonApprox,

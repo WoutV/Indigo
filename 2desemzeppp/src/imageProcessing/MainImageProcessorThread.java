@@ -89,8 +89,7 @@ public class MainImageProcessorThread implements Runnable{
 	boolean threadInitialized = false;
 
 	private void startSymbolDetector() {
-		Symbols = new ArrayList<>();
-		symbolDetector = new SymbolDetector(Symbols,cc, symbolS,timestamp);
+		symbolDetector = new SymbolDetector(cc, symbolS,timestamp);
 		symbolDetector.setFrame(foundContours);
 		symbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
 				 erodesize, dilatesize, minArea, epsilonApprox,
@@ -145,6 +144,9 @@ public class MainImageProcessorThread implements Runnable{
 			}
 		}
 		
+	}
+	public ArrayList<Symbol> getDetectedSymbols(){
+		return symbolDetector.getDetectedSymbols();
 	}
 	public void stop(){
 		//		System.out.println("Method stop has been called");

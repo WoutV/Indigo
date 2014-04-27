@@ -1,5 +1,7 @@
 package map;
 
+import org.opencv.core.Point;
+
 /**
  * Class representing a Symbol on the map.
  * Symbol is defined by a colour and a shape (see enums).
@@ -210,5 +212,12 @@ public class Symbol {
 		return color+shape;
 	
 	
+	}
+	
+	public double getDistanceTo(Symbol s1){
+		return Math.sqrt((s1.x-this.x)*(s1.x-this.x)+(s1.y-this.y)*(s1.y-this.y));
+	}
+	public double getDistanceTo(Point point){
+		return Math.sqrt((point.x-this.x)*(point.x-this.x)+(point.y-this.y)*(point.y-this.y));
 	}
 }
