@@ -41,9 +41,11 @@ public class SimEnemy {
 	//boardsize in cm
 	private int boardSize = 400;
 
+	private boolean running;
 	
 	//all in cm!!
 	private double xPos=200,yPos=200;
+	private double xTarget,yTarget;
 	
 	private Random random = new Random();
 
@@ -78,7 +80,7 @@ public class SimEnemy {
 	}
 		
 	/**
-	 * Creates a random wind effect: between -2 cm and 2 cm, alpha between -10 and 10.
+	 * Creates a random wind effect: between -2 cm and 2 cm.
 	 */
 	private void wind() {
 		//-2cm -> 2cm
@@ -90,6 +92,58 @@ public class SimEnemy {
 		yPos = yPos + yExtra/100.0;
 	}
 	
+	/**
+	 * Sends a target to the SimEnemy (in cm) and makes it run.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void receiveTarget(int x, int y) {
+		xTarget = x;
+		yTarget = y;
+		running = true;
+		run();
+	}
+	
+	public void run() {
+		System.out.println("running now");
+		while(running) {
+			try {
+				Thread.sleep(wait);
+			}
+			catch (Exception exc) {
+				
+			}
+			
+			if(xPos < xTarget-10) {
+				xPos = xPos + Constant;
+			}
+			if(xPos > xTarget+10) {
+				xPos = xPos - Constant;
+			}
+			if(yPos < yTarget-10) {
+				yPos = yPos + Constant;
+			}
+			if(yPos > yTarget+10) {
+				yPos = yPos + Constant;
+			}
+			
+			if(Math.abs(xPos-xTarget) < 10 && Math.abs(yPos-yTarget) < 10) {
+				running = false;
+			}
+			
+			sendLoc();
+		}
+	}
+	
+	private void sendLoc() {
+		String key = "enemy.loc.loc";
+		String info = (int) (xPos*10) + "," + (int) (yPos*10); 
+		if(simconn != null)
+			simconn.sendTransfer(info, key);
+		if(simconn2 != null)
+			simconn2.sendTransfer(info, key);
+	}
 	
 }
 
