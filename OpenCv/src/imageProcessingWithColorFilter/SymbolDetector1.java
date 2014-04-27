@@ -10,6 +10,7 @@ import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
@@ -213,22 +214,37 @@ class SymbolDetector1 {
 				 */
 				boolean isConvex = Imgproc.isContourConvex(contour1);
 
-				// MatOfKeyPoint matOfKeyPoints = new MatOfKeyPoint();
-				//
-				// FeatureDetector blobDetector =
-				// FeatureDetector.create(FeatureDetector.HARRIS);
-				// blobDetector.detect(subImage, matOfKeyPoints);
-				//
-				// System.out.println("Detected " + matOfKeyPoints.size()+
-				// " blobs in the image");
-				// Mat keypointmat = NotProcessedImage.submat(rec).clone();
-				// List<KeyPoint> keyPoints = matOfKeyPoints.toList();
-				// Features2d.drawKeypoints(subImage, matOfKeyPoints,
-				// keypointmat);
-				// frame.matToBufferedImage(keypointmat);
-				// frame.repaint();
-				// Thread.sleep(1000);
+				// HULL POINTS
+				// interesting if you would like to know the convex hull
+				// MatOfInt
+				MatOfInt hullInt = new MatOfInt();
+				List<MatOfPoint> hullPoints = new ArrayList<MatOfPoint>();
+				
+					List<Point> hullPointList = new ArrayList<Point>(
+							contours.size());
+					MatOfPoint hullPointMat = new MatOfPoint();
+					Imgproc.convexHull(contour1, hullInt);
 
+					for (int j = 0; j < hullInt.toList().size(); j++) {
+						hullPointList.add(contour1.toList()
+								.get(hullInt.toList().get(j)));
+						Core.circle(result, hullPointList.get(j), 2,
+								new Scalar(0, 255, 255));
+					}
+					hullPointMat.fromList(hullPointList);
+					hullPoints.add(hullPointMat);
+
+				if(timestamp == 6){
+					Thread.sleep(10000);
+					}
+
+				Imgproc.drawContours(result, hullPoints, -1, new Scalar(255, 0,
+						0, 255), 1);
+				double ratioAreaHullContour = Imgproc.contourArea(hullPointMat)/Imgproc.contourArea(contour1);
+				
+				Core.putText(result, "" + ratioAreaHullContour, new Point(contourCenter.x+20,contourCenter.y+20),
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+								200, 250), 1);
 				// isCircleDetection
 
 				Mat circles = new Mat();
@@ -238,10 +254,10 @@ class SymbolDetector1 {
 
 				double rationArea = getSmallestToBiggestCircleRatio(
 						contour1.toList(), contourCenter);
-//				Core.putText(result, "" + (isRectangle(contour1)), new Point(
-//						contourCenter.x + 20, contourCenter.y + 20),
-//						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
-//								200, 250), 3);
+				// Core.putText(result, "" + (isRectangle(contour1)), new Point(
+				// contourCenter.x + 20, contourCenter.y + 20),
+				// Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+				// 200, 250), 3);
 				Imgproc.HoughCircles(subImage, circles,
 						Imgproc.CV_HOUGH_GRADIENT, 1, rec.height, 25, 17,
 						(int) (rec.height / 2.5), 500);
@@ -260,8 +276,7 @@ class SymbolDetector1 {
 				}
 
 				// Checking for rectangles
-				else if (isRectangle(subImage, rec, contourCenter, contour1)
-						&& isConvex) {
+				else if (isRectangle(subImage, rec, contourCenter, contour1)) {
 					System.out.println("Creating Rectangle");
 					Symbol S = new Symbol(Color + "R", timestamp,
 							contourCenter.x, contourCenter.y);
@@ -286,8 +301,8 @@ class SymbolDetector1 {
 				// }
 
 				else if (rationArea < 4.5 && !isConvex
-						&& !isCircle(contour1, contourCenter, rec)) {
-					//System.out.println("Creating Heart:" + Color + "H");
+						&& !isCircle(contour1, contourCenter, rec) && ratioAreaHullContour>1.025 && ratioAreaHullContour <1.1) {
+					// System.out.println("Creating Heart:" + Color + "H");
 					Symbol S = new Symbol(Color + "H", timestamp,
 							contourCenter.x, contourCenter.y);
 					S = symbolS.getPossibleSymbol(S);
@@ -347,15 +362,15 @@ class SymbolDetector1 {
 							Core.line(result,
 									new Point(symbol1.getX(), symbol1.getY()),
 									new Point(symbol2.getX(), symbol2.getY()),
-									new Scalar(50*i, 50*i, 0));
+									new Scalar(50 * i, 50 * i, 0));
 							Core.line(result,
 									new Point(symbol1.getX(), symbol1.getY()),
 									new Point(symbol3.getX(), symbol3.getY()),
-									new Scalar(50*i, 50*i, 0));
+									new Scalar(50 * i, 50 * i, 0));
 							Core.line(result,
 									new Point(symbol3.getX(), symbol3.getY()),
 									new Point(symbol2.getX(), symbol2.getY()),
-									new Scalar(50*i, 50*i, 0));
+									new Scalar(50 * i, 50 * i, 0));
 							triangleFound = true;
 						}
 
@@ -363,39 +378,42 @@ class SymbolDetector1 {
 				}
 			}
 		}
-		if(!triangleFound && detectedSymbols.size()>=2) {
+		if (!triangleFound && detectedSymbols.size() >= 2) {
 			Symbol middleSymbol = getMiddleSymbol();
 			Symbol nearestSymbol = getNearestSymbol(middleSymbol);
 			double distance = middleSymbol.getDistanceTo(nearestSymbol);
-			for(MatOfPoint contourPoints: edgeContours){
+			for (MatOfPoint contourPoints : edgeContours) {
 				Point contourCenter = getCenter(contourPoints);
-				double distanceToNearestSymbol=  nearestSymbol.getDistanceTo(contourCenter);
-				double distanceToMiddleSymbol = middleSymbol.getDistanceTo(contourCenter);
-				if(fuzzyEquals(distance, distanceToNearestSymbol, 50) && fuzzyEquals(distance, distanceToMiddleSymbol, 50)){
+				double distanceToNearestSymbol = nearestSymbol
+						.getDistanceTo(contourCenter);
+				double distanceToMiddleSymbol = middleSymbol
+						.getDistanceTo(contourCenter);
+				if (fuzzyEquals(distance, distanceToNearestSymbol, 50)
+						&& fuzzyEquals(distance, distanceToMiddleSymbol, 50)) {
 					String color = getColor(NotProcessedImage, contourCenter);
-					Core.line(result,
+					Core.line(
+							result,
 							new Point(middleSymbol.getX(), middleSymbol.getY()),
-							new Point(nearestSymbol.getX(), nearestSymbol.getY()),
-							new Scalar(0, 255, 255));
-					Core.line(result,
-							new Point(nearestSymbol.getX(), nearestSymbol.getY()),
-							contourCenter,
-							new Scalar(0, 255, 255));
-					Core.line(result,
-							new Point(middleSymbol.getX(), middleSymbol.getY()),
-							contourCenter,
-							new Scalar(0, 255, 255));
+							new Point(nearestSymbol.getX(), nearestSymbol
+									.getY()), new Scalar(0, 255, 255));
+					Core.line(result, new Point(nearestSymbol.getX(),
+							nearestSymbol.getY()), contourCenter, new Scalar(0,
+							255, 255));
+					Core.line(result, new Point(middleSymbol.getX(),
+							middleSymbol.getY()), contourCenter, new Scalar(0,
+							255, 255));
 				}
 			}
 		}
 
 	}
+
 	private Symbol getNearestSymbol(Symbol middleSymbol) {
 		Symbol toReturnSymbol = null;
 		double distanceToSymbol = Double.MAX_VALUE;
-		for(Symbol s : detectedSymbols){
+		for (Symbol s : detectedSymbols) {
 			double distance = s.getDistanceTo(middleSymbol);
-			if(distance != 0 && distance < distanceToSymbol){
+			if (distance != 0 && distance < distanceToSymbol) {
 				toReturnSymbol = s;
 				distanceToSymbol = distance;
 			}
@@ -403,27 +421,30 @@ class SymbolDetector1 {
 		return toReturnSymbol;
 	}
 
-	private Symbol getMiddleSymbol(){
+	private Symbol getMiddleSymbol() {
 		double distanceToMiddleSymbol = Double.MAX_VALUE;
 		Symbol toReturnSymbol = null;
-		double x1 = image.size().width/2;
-		double y1 = image.size().height/2;
-		for(Symbol s: detectedSymbols){
-			
-			double distance = Math.sqrt((x1-s.getX())*(x1-s.getX())+(y1-s.getY())*(y1-s.getY()));
-			if(distance < distanceToMiddleSymbol){
+		double x1 = image.size().width / 2;
+		double y1 = image.size().height / 2;
+		for (Symbol s : detectedSymbols) {
+
+			double distance = Math.sqrt((x1 - s.getX()) * (x1 - s.getX())
+					+ (y1 - s.getY()) * (y1 - s.getY()));
+			if (distance < distanceToMiddleSymbol) {
 				toReturnSymbol = s;
 				distanceToMiddleSymbol = distance;
 			}
-			
+
 		}
 		return toReturnSymbol;
 	}
+
 	public void setResult(Mat result) {
 		this.result = result;
 	}
-	
+
 	ArrayList<MatOfPoint> edgeContours;
+
 	/**
 	 * Filters out the edges
 	 * 
@@ -433,7 +454,7 @@ class SymbolDetector1 {
 	 */
 	private List<MatOfPoint> filterOutEdges(List<MatOfPoint> contours,
 			Size imageSize) {
-		edgeContours =new ArrayList<MatOfPoint>();
+		edgeContours = new ArrayList<MatOfPoint>();
 		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
 
 		for (int i = 0; i < contours.size(); i++) {
@@ -456,7 +477,7 @@ class SymbolDetector1 {
 		for (MatOfPoint p : toRemove) {
 			edgeContours.add(p);
 			contours.remove(p);
-			
+
 		}
 
 		return contours;
@@ -495,7 +516,7 @@ class SymbolDetector1 {
 		// Imgproc.HoughLinesP(subImage, lines, 1, Math.PI/180, 1);
 		Imgproc.HoughLinesP(canny_output, lines, 1, Math.PI / 180, 1,
 				Math.max(rec.height, rec.width) * 0.3, 2);
-		//System.out.println("Total Lines:" + lines.cols());
+		// System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
 		for (int x = 0; x < lines.cols(); x++) {
 			double[] vec = lines.get(0, x);
@@ -516,7 +537,8 @@ class SymbolDetector1 {
 		boolean containsParallel = false;
 		boolean containsRighAngle = false;
 		if (lines.cols() > 1 && Imgproc.isContourConvex(contour1)) {
-			for (int i = 0; (i < lineList.size() - 1) && (!containsParallel || !containsRighAngle) ; i++) {
+			for (int i = 0; (i < lineList.size() - 1)
+					&& (!containsParallel || !containsRighAngle); i++) {
 				Line2D line1 = lineList.get(0);
 				double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
 						line1.getX1() - line1.getX2());
@@ -528,8 +550,9 @@ class SymbolDetector1 {
 
 					double distanceToPoint1 = line1.ptLineDist(line2.getP1());
 					double distanceToPoint2 = line1.ptLineDist(line2.getP2());
-					//System.out.println("Angle Between Lines :"+ Math.toDegrees(Math.abs(angle1-angle2)));
-					if (Math.abs(angle1 - angle2) <= 0.174532925) {
+					// System.out.println("Angle Between Lines :"+
+					// Math.toDegrees(Math.abs(angle1-angle2)));
+					if (Math.toDegrees(Math.abs(angle1 - angle2)) <= 20) {
 						double constraint = Math.min(rec.width, rec.height) / 3;
 						if (distanceToPoint1 > constraint
 								&& distanceToPoint2 > constraint) {
@@ -537,7 +560,11 @@ class SymbolDetector1 {
 							break;
 						}
 					}
-					if(fuzzyEquals(Math.abs(Math.toDegrees((angle1-angle2))),90,10)|| fuzzyEquals(Math.abs(Math.toDegrees((angle1-angle2))),270,15)){
+					if (fuzzyEquals(
+							Math.abs(Math.toDegrees((angle1 - angle2))), 90, 10)
+							|| fuzzyEquals(
+									Math.abs(Math.toDegrees((angle1 - angle2))),
+									270, 15)) {
 						System.out.println("Checking rightAngle");
 						double constraint = 5;
 						if (distanceToPoint1 < constraint
@@ -545,13 +572,13 @@ class SymbolDetector1 {
 							containsRighAngle = true;
 							break;
 						}
-					} 
+					}
 				}
 
 			}
 
 		}
-		return containsParallel||containsRighAngle;
+		return containsParallel || containsRighAngle;
 	}
 
 	/**
@@ -561,7 +588,7 @@ class SymbolDetector1 {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	private Point getCenter(MatOfPoint contour1){
+	private Point getCenter(MatOfPoint contour1) {
 		Moments p = Imgproc.moments(contour1, false);
 		int x = (int) (p.get_m10() / p.get_m00());
 		int y = (int) (p.get_m01() / p.get_m00());
