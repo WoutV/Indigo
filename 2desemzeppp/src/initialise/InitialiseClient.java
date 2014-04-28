@@ -1,5 +1,6 @@
 package initialise;
 
+import imageProcessing.MainImageProcessorThread;
 import map.*;
 import navigation.*;
 
@@ -116,5 +117,8 @@ public class InitialiseClient {
 			simConnClient.sendTransfer("0", "indigo.lcommand.motor2");
 			simConnClient.sendTransfer("0", "indigo.lcommand.motor1");
 		}
+		MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
+		Thread imageProcessorThread = new Thread(imageProcessor);
+		imageProcessorThread.start();
 	}
 }

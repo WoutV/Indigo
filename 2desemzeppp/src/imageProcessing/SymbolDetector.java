@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import map.Symbol;
+import navigation.Dispatch;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -319,6 +320,8 @@ class SymbolDetector {
 		}
 		this.detectedSymbols = detectedSymbols;
 		checkForTriangle();
+		//TODO: andere methode oproepen als er een driehoek wordt gevonden
+		Dispatch.processSymbols(detectedSymbols);
 
 	}
 
