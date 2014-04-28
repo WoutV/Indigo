@@ -2,17 +2,15 @@ package simulator;
 
 import java.util.Random;
 
-import map.Map;
-
 /**
  * The SimEnemy: Sim for an enemy zeppelin.
  * The Sim needs a Map and target. It moves slowly towards this target.
  */
-public class SimEnemy {
+public class SimEnemy implements Runnable {
 	private double Constant;
 	
 	private SimConnection simconn;
-	private SimConnNoRabbit simconn2;
+	private SimEnemyConnNoRabbit simconn2;
 
 	/**
 	 * Set this SimEnemy to use a SimConnection using a Rabbit server.
@@ -26,7 +24,7 @@ public class SimEnemy {
 	 * Set this SimEnemy to use a connection not using a Rabbit server.
 	 * @param conn
 	 */
-	public void setSimConnNoRabbit(SimConnNoRabbit conn) {
+	public void setSimConnNoRabbit(SimEnemyConnNoRabbit conn) {
 		simconn2 = conn;
 	}
 	/**
@@ -35,11 +33,6 @@ public class SimEnemy {
 	private long wait = 500;
 	
 	private boolean wind;
-	
-	private Map map;
-
-	//boardsize in cm
-	private int boardSize = 400;
 
 	private boolean running;
 	
@@ -47,22 +40,29 @@ public class SimEnemy {
 	private double xPos=200,yPos=200;
 	private double xTarget,yTarget;
 	
+	private Thread thread;
+	
 	private Random random = new Random();
 
 	/**
-	 * Creates a new SimEnemy using the given map, speed constant and wait duration (in ms).
+	 * Creates a new SimEnemy using the given speed constant, wait duration (in ms),
+	 * and x and y starting coordinates (in cm).
 	 */
-	public SimEnemy(Map map, double constant, int wait){
-		this.map = map;
+	public SimEnemy(double constant, int wait, double xPos, double yPos){
 		Constant = constant;
 		this.wait = wait;
+		this.xPos = xPos;
+		this.yPos = yPos;
+		
+		thread = new Thread(this);
 	}
 
 	/**
-	 * Creates a new SimEnemy using the given map, default speed constant and default wait duration.
+	 * Creates a new SimEnemy using default speed constant and default wait duration and
+	 * default starting coordinates.
 	 */
-	public SimEnemy(Map map){
-		this(map,40,500);
+	public SimEnemy(){
+		this(40,500,200,200);
 	}
 
 	/**
@@ -102,11 +102,10 @@ public class SimEnemy {
 		xTarget = x;
 		yTarget = y;
 		running = true;
-		run();
+		thread.start();
 	}
 	
 	public void run() {
-		System.out.println("running now");
 		while(running) {
 			try {
 				Thread.sleep(wait);
@@ -125,10 +124,13 @@ public class SimEnemy {
 				yPos = yPos + Constant;
 			}
 			if(yPos > yTarget+10) {
-				yPos = yPos + Constant;
+				yPos = yPos - Constant;
 			}
 			
-			if(Math.abs(xPos-xTarget) < 10 && Math.abs(yPos-yTarget) < 10) {
+			if(wind)
+				wind();
+			
+			if(Math.abs(xPos-xTarget) <= 10 && Math.abs(yPos-yTarget) <= 10) {
 				running = false;
 			}
 			

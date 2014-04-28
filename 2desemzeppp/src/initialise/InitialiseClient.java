@@ -11,6 +11,7 @@ import connection.SenderClient;
 
 import simulator.SimConnNoRabbitClient;
 import simulator.SimEnemy;
+import simulator.SimEnemyConnNoRabbitClient;
 import simulator.SimMain;
 import simulator.Simulator;
 
@@ -57,11 +58,22 @@ public class InitialiseClient {
         
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit
-        int mode = 2;
+        int mode = 3;
         boolean rabbit = false;
         
         SenderClient sender = null;
         SimConnNoRabbitClient simConnClient = null;
+        
+        SimEnemy simEnemy = null;
+        //sim enemy
+        if(mode == 2 || mode == 3) {
+        	simEnemy = SimMain.makeSimEnemy(rabbit, 0, 0, -1, -1);
+        }
+        
+        //sim own
+        if(mode == 2) {
+        	SimMain.makeOwnZeppSim(map, rabbit, false);
+        }
         
         //set up conn
         if(rabbit) {
@@ -74,28 +86,21 @@ public class InitialiseClient {
     		ypos.setSender(sender);
     		Dispatch.setSender(sender);
         }
-        if(!rabbit) {
+        if(mode == 2 && !rabbit) {
         	 simConnClient = new SimConnNoRabbitClient();
         	 Thread t = new Thread(simConnClient);
              t.start();
              xpos.setSenderNoRabbit(simConnClient);
              ypos.setSenderNoRabbit(simConnClient);
         }
-        
-        SimEnemy simEnemy = null;
-        //sim enemy
-        if(mode == 2 || mode == 3) {
-        	//!!!!
-        }
-        
-        //sim own
-        if(mode == 2) {
-        	SimMain.makeOwnZeppSim(map, rabbit, false);
+        if((mode == 2 || mode == 3) && !rabbit) {
+       	 	SimEnemyConnNoRabbitClient simEnemyConnClient = new SimEnemyConnNoRabbitClient();
+       	 	Thread t = new Thread(simEnemyConnClient);
+            t.start();
         }
         
         //TODO kp,kd,ki values
-        
-        
+              
 		LocationLocator locator = new LocationLocator(map,xpos,ypos,gui.getGuic());
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
 		Dispatch.setLoc(locator);
@@ -113,12 +118,15 @@ public class InitialiseClient {
 			sender.sendTransfer("0", "indigo.lcommand.motor1");
 			sender.sendTransfer("0", "indigo.lcommand.motor1");
 		}
-		if(!rabbit) {
+		if(!rabbit && mode == 2) {
 			simConnClient.sendTransfer("0", "indigo.lcommand.motor2");
 			simConnClient.sendTransfer("0", "indigo.lcommand.motor1");
 		}
-		MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
-		Thread imageProcessorThread = new Thread(imageProcessor);
-		imageProcessorThread.start();
+		
+		if(mode!=2) {
+			MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
+			Thread imageProcessorThread = new Thread(imageProcessor);
+			imageProcessorThread.start();
+		}
 	}
 }

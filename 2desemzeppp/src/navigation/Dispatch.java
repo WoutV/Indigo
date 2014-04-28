@@ -56,6 +56,18 @@ public class Dispatch {
 	}
 	
 	/**
+	 * Receives the enemy loc.
+	 * 
+	 * @param 	x
+	 * 			x coord in mm
+	 * @param 	y
+	 * 			y coord in mm
+	 */
+	public static void receiveEnemyLoc(int x, int y) {
+		guimain.setEnemyLocation((int) (x/10),(int) (y/10));
+	}
+	
+	/**
 	 * When a tablet has been found, sends a message to request the command.
 	 * @param no
 	 */
