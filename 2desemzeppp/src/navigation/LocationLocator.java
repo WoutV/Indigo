@@ -29,7 +29,7 @@ public class LocationLocator {
 	private PositionController xpos;
 	private GuiCommands guic;
 	private PositionController ypos;
-	
+
 	private double recentX,recentY;
 
 	/**
@@ -54,6 +54,49 @@ public class LocationLocator {
 	 */
 	public void locateAndMove(List<Symbol> symbols){
 		double[] loc = locate(symbols);
+		locAndMove(loc);	
+	}
+	
+	/**
+	 * Find the location, send it to gui and notify positioncontrollers.
+	 * This should be used whenever a triangle has been found.
+	 * s1 should be the one closest to the center
+	 * @param symbols
+	 */
+	public void locAndMoveWithTriangle(Symbol s1, Symbol s2, Symbol s3) {
+		List<Symbol> s = new LinkedList<>();
+		s.add(s2);
+		s.add(s1);
+		s = sortImageSymbolPolar(s, s1);
+		List<double[]> possibleLocs = find3(s.get(0),s.get(1),s1);
+		double[] l;
+		try{
+			double[] nearest = possibleLocs.get(0);
+			double nearestDist = euclideanDistance(recentX,recentY,nearest[0],nearest[1]);
+			for(double[] loc:possibleLocs) {
+				double dist = euclideanDistance(recentX,recentY,loc[0],loc[1]);
+				if(dist < nearestDist) {
+					nearest = loc;
+					nearestDist = dist;
+				}
+			}
+
+			recentX = nearest[0];
+			recentY = nearest[1];
+			l = nearest;
+		}catch(Exception e){
+			double[] l1 = {200,200,0};
+			l = l1;
+		}
+		locAndMove(l);
+	}
+
+	/**
+	 * Should be called after the loc has been found. Sends it to gui, searches for tablets,
+	 * checks whether it should land, and notifies positioncontrollers.
+	 * @param loc
+	 */
+	private void locAndMove(double[] loc) {
 		//check if near tablet
 		for(int tablet=0;tablet<map.getNoOfTablets();tablet++) {
 			double[] tabletCoord = map.getTablet(tablet+1);
@@ -61,12 +104,12 @@ public class LocationLocator {
 				Dispatch.foundTablet(tablet+1);
 			}
 		}
-		
+
 		guic.receiveOwnLocation(loc[0], loc[1], loc[2]);
 		xpos.run(loc);
 		//doing y now
 		//System.out.println("going to y");
-		ypos.run(loc);	
+		ypos.run(loc);
 	}
 
 	/**
@@ -81,7 +124,7 @@ public class LocationLocator {
 		symbols.remove(middle);
 		return locate(symbols,middle);
 	}
-	
+
 	/**
 	 * For a given list of symbols and the middle symbol,
 	 * gives the x-coordinate, y-coordinate and alpha.
@@ -102,7 +145,7 @@ public class LocationLocator {
 		//find a set of 3 symbols
 		//in addition to the middle, 2 more are needed
 		List<List<Symbol>> possibleSymbolLists = new LinkedList<>();
-		
+
 		for(int i = 0;i<neighbours.size();i++) {
 			Symbol s1 = neighbours.get(i);
 			Symbol s2 = neighbours.get((i+1)%neighbours.size());
@@ -120,7 +163,7 @@ public class LocationLocator {
 				possibleSymbolLists.add(list);
 			}
 		}
-		
+
 		List<double[]> possibleLocs = new LinkedList<>();
 		for(List<Symbol> possibleSymbolList : possibleSymbolLists) {
 			List<double[]> loc = find3(possibleSymbolList.get(0),possibleSymbolList.get(1),middle);
@@ -146,7 +189,7 @@ public class LocationLocator {
 					nearestDist = dist;
 				}
 			}
-			
+
 			recentX = nearest[0];
 			recentY = nearest[1];
 			return nearest;
@@ -155,7 +198,7 @@ public class LocationLocator {
 			return l;
 		}
 	}
-	
+
 	/**
 	 * Calculates alpha, by matching symbols and finding the two that should
 	 * be on one line.
@@ -182,7 +225,7 @@ public class LocationLocator {
 			return alphaOtherWay(s2.getX(),s2.getY(),center.getX(),center.getY());
 		return alphaOtherWay(center.getX(),center.getY(),s2.getX(),s2.getY());
 	}
-	
+
 	/**
 	 * Given the coordinates of the points that should be horizontally on the same line,
 	 * calculates alpha.
@@ -244,7 +287,7 @@ public class LocationLocator {
 
 	private List<double[]> find3(Symbol symbol1,Symbol symbol2,Symbol center) {
 		List<double[]> locs = new LinkedList<>();
-		
+
 		//for now, linear search
 		//might use priority queue instead
 		int symbolsPerRow = map.getSymbolsOnRow();
@@ -284,15 +327,15 @@ public class LocationLocator {
 							//coordinates of zeppelin
 							double x = map.getSymbol(j, i).getX();
 							double y = map.getSymbol(j, i).getY();
-							
+
 							double alpha = alphaOtherWay(center,symbol1,symbol2,map.getSymbol(j, i),
 									symbols.get(k),symbols.get((k+1)%6));
-//							
-//							double alpha = 120+k*60; //120=>480
-//							if(alpha > 180)
-//								alpha = alpha - 360; //-180 => 180
-							
-							
+							//							
+							//							double alpha = 120+k*60; //120=>480
+							//							if(alpha > 180)
+							//								alpha = alpha - 360; //-180 => 180
+
+
 							double[] r = {x,y,alpha};
 							locs.add(r);
 						}
@@ -441,7 +484,7 @@ public class LocationLocator {
 			return -1;
 		}
 	}
-	
+
 	/**
 	 * Comparator for comparing symbols with polar coordinates.
 	 * Assumes x points right and y points up.
@@ -450,11 +493,11 @@ public class LocationLocator {
 	 */
 	private static class ImageSymbolComparatorNoChangeCoord implements Comparator<Symbol> {
 		private Symbol center;
-		
+
 		public ImageSymbolComparatorNoChangeCoord(Symbol center) {
 			this.center = center;
 		}
-		
+
 		@Override
 		public int compare(Symbol s1, Symbol s2) {
 			if(s1 == null)
@@ -524,10 +567,10 @@ public class LocationLocator {
 		for(Symbol s : list) {
 			Symbol copy = s.copy();
 			//coordinate transformation
-//			double x0 = copy.getX() - center.getX();
-//			double y0 = copy.getY() - center.getY();
-//			copy.setX(x0);
-//			copy.setY(y0);
+			//			double x0 = copy.getX() - center.getX();
+			//			double y0 = copy.getY() - center.getY();
+			//			copy.setX(x0);
+			//			copy.setY(y0);
 			sorted.add(copy);
 		}
 		Collections.sort(sorted,new ImageSymbolComparatorNoChangeCoord(center));
@@ -561,12 +604,12 @@ public class LocationLocator {
 
 		List<Symbol> sort = sortPolar(list,center);
 		sort = sortImageSymbolPolar(list,center);
-//		JOptionPane.showMessageDialog(null,sort.get(0).getX() + "," + sort.get(0).getY() + "\n" + 
-//				sort.get(1).getX() + "," + sort.get(1).getY() + "\n" + 
-//				sort.get(2).getX() + "," + sort.get(2).getY() + "\n" + 
-//				sort.get(3).getX() + "," + sort.get(3).getY() + "\n" + 
-//				sort.get(4).getX() + "," + sort.get(4).getY() + "\n" + 
-//				sort.get(5).getX() + "," + sort.get(5).getY() + "\n");
+		//		JOptionPane.showMessageDialog(null,sort.get(0).getX() + "," + sort.get(0).getY() + "\n" + 
+		//				sort.get(1).getX() + "," + sort.get(1).getY() + "\n" + 
+		//				sort.get(2).getX() + "," + sort.get(2).getY() + "\n" + 
+		//				sort.get(3).getX() + "," + sort.get(3).getY() + "\n" + 
+		//				sort.get(4).getX() + "," + sort.get(4).getY() + "\n" + 
+		//				sort.get(5).getX() + "," + sort.get(5).getY() + "\n");
 
 		//find location
 		List<Symbol> list2 = new LinkedList<>();
@@ -591,7 +634,7 @@ public class LocationLocator {
 		Symbol s24 = new Symbol("BR");
 		s24.setX(30);s24.setY(50);
 		list2.add(s24);
-		
+
 		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
 		double[] loc0 = locator.locate(list2,center0);
 		//JOptionPane.showMessageDialog(null,loc0[0] + "," + loc0[1] + "|" + loc0[2]);
