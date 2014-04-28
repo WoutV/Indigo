@@ -26,9 +26,6 @@ import map.*;
 public class LocationLocator {
 
 	private Map map;
-	private PositionController xpos;
-	private GuiCommands guic;
-	private PositionController ypos;
 
 	private double recentX,recentY;
 
@@ -40,11 +37,8 @@ public class LocationLocator {
 	 * @param ypos
 	 * @param guic
 	 */
-	public LocationLocator(Map map, PositionController xpos, PositionController ypos, GuiCommands guic) {
+	public LocationLocator(Map map) {
 		this.map = map;
-		this.xpos = xpos;
-		this.ypos = ypos;
-		this.guic = guic;
 	}
 
 	/**
@@ -92,24 +86,11 @@ public class LocationLocator {
 	}
 
 	/**
-	 * Should be called after the loc has been found. Sends it to gui, searches for tablets,
-	 * checks whether it should land, and notifies positioncontrollers.
+	 * Should be called after the loc has been found. Notifies the Dispatch of the new loc.
 	 * @param loc
 	 */
 	private void locAndMove(double[] loc) {
-		//check if near tablet
-		for(int tablet=0;tablet<map.getNoOfTablets();tablet++) {
-			double[] tabletCoord = map.getTablet(tablet+1);
-			if(euclideanDistance(loc[0],loc[1],tabletCoord[0],tabletCoord[1]) < 20) {
-				Dispatch.foundTablet(tablet+1);
-			}
-		}
-
-		guic.receiveOwnLocation(loc[0], loc[1], loc[2]);
-		xpos.run(loc);
-		//doing y now
-		//System.out.println("going to y");
-		ypos.run(loc);
+		Dispatch.nowAtLoc(loc);
 	}
 
 	/**
@@ -576,6 +557,21 @@ public class LocationLocator {
 		Collections.sort(sorted,new ImageSymbolComparatorNoChangeCoord(center));
 		return sorted;
 	}
+	
+	/**
+	 * Checks whether or not: distance between point 1 and 2 <= threshold
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @param threshold
+	 */
+	public boolean nearLoc(double x1, double y1, double x2, double y2, double threshold) {
+		return euclideanDistance(x1,y1,x2,y2) <= threshold;
+	}
+	
+	
 
 	public static void main(String[] args) {
 		//test polar sort
@@ -635,7 +631,7 @@ public class LocationLocator {
 		s24.setX(30);s24.setY(50);
 		list2.add(s24);
 
-		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"),null,null,null);
+		LocationLocator locator = new LocationLocator(new Map("/shapesDemo.csv"));
 		double[] loc0 = locator.locate(list2,center0);
 		//JOptionPane.showMessageDialog(null,loc0[0] + "," + loc0[1] + "|" + loc0[2]);
 	}

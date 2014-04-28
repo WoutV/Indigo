@@ -99,10 +99,13 @@ public class SimEnemy implements Runnable {
 	 * @param y
 	 */
 	public void receiveTarget(int x, int y) {
-		xTarget = x;
-		yTarget = y;
-		running = true;
-		thread.start();
+		if(!running) {
+			xTarget = x;
+			yTarget = y;
+			running = true;
+			thread = new Thread(this);
+			thread.start();
+		}
 	}
 	
 	public void run() {

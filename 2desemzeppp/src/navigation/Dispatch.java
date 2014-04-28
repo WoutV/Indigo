@@ -9,6 +9,7 @@ import simulator.SimEnemy;
 
 import connection.SenderClient;
 
+import map.Map;
 import map.Symbol;
 
 public class Dispatch {
@@ -18,6 +19,12 @@ public class Dispatch {
 	private static SenderClient sender;
 	private static SimEnemy simEnemy;
 	private static GuiCommands guic;
+	private static Map map;
+	private static PositionController xPos,yPos;
+	
+	private static boolean landTarget;
+	private static double targetX,targetY;
+	private static int targetTablet;
 	
 	public static void setLoc(LocationLocator locc){
 		loc= locc;
@@ -36,8 +43,39 @@ public class Dispatch {
 		simEnemy = enemySim;
 	}
 	
+	public static void setMap(Map Map) {
+		map = Map;
+	}
+	
+	public static void setPositionControllers(PositionController xController, PositionController yController) {
+		xPos = xController;
+		yPos = yController;
+	}
+	
+	/**
+	 * Whenever a bunch of symbols is found, this can be used to find the position and move.
+	 * >= 3 symbols are needed
+	 * If the list consists of 3 symbols forming a triangle, it is better to use processTriangeOfSymbols(...).
+	 * 
+	 * @param symbols
+	 */
 	public static void processSymbols(List<Symbol> symbols){
 		loc.locateAndMove(symbols);
+	}
+	
+	/**
+	 * Whenever a triangle of symbols is found, this can be used to send find the position and move.
+	 * The center symbol should be the one closest to the center of the image.
+	 * The order of the other symbols is irrelevant.
+	 * All symbols should have their x- and y- cooordinates set to x- and y- pixel value.
+	 * 
+	 * @param 	center
+	 * 			Symbol cloest to center of the image.
+	 * @param 	s1
+	 * @param 	s2
+	 */
+	public static void processTriangleOfSymbols(Symbol center, Symbol s1, Symbol s2) {
+		loc.locAndMoveWithTriangle(center,s1,s2);
 	}
 	
 	/**
@@ -48,6 +86,8 @@ public class Dispatch {
 	 * @param y
 	 */
 	public static void receiveTarget(int x, int y) {
+		targetX = x;
+		targetY = y;
 		double[] dest = {x,y};
 		PositionController.setDestination(dest);
 		guimain.setTargetLocation(x, y);
@@ -68,12 +108,61 @@ public class Dispatch {
 	}
 	
 	/**
+	 * Whenever the current loc is found:
+	 * - searches if near tablet
+	 * - searches if ready to land
+	 * - updates gui
+	 * - notifies positioncontrollers
+	 * 
+	 * @param 	lo
+	 * 			x-coord (cm), y-coord (cm), alpha
+	 */
+	public static void nowAtLoc(double[] lo) {
+		//check if near tablet
+		if(targetTablet > 0) {
+			double[] tabletCoord = map.getTablet(targetTablet);
+			if(loc.nearLoc(lo[0],lo[1],tabletCoord[0],tabletCoord[1],20)) {
+				foundTablet(targetTablet);
+			}
+		}
+		
+//		for(int tablet=0;tablet<map.getNoOfTablets();tablet++) {
+//			double[] tabletCoord = map.getTablet(tablet+1);
+//			if(loc.nearLoc(lo[0],lo[1],tabletCoord[0],tabletCoord[1],20)) {
+//				foundTablet(tablet+1);
+//			}
+//		}
+		
+		
+		//check if needs to land
+		if(landTarget && loc.nearLoc(lo[0],lo[1],targetX,targetY,20)) {
+			land();
+		}
+		
+
+		guic.receiveOwnLocation(lo[0], lo[1], lo[2]);
+		xPos.run(lo);
+		//doing y now
+		//System.out.println("going to y");
+		yPos.run(lo);
+	}
+	
+	/**
 	 * When a tablet has been found, sends a message to request the command.
 	 * @param no
 	 */
-	public static void foundTablet(int no) {
+	private static void foundTablet(int no) {
 		if(sender!=null) {
 			//send message
+		}
+	}
+	
+	/**
+	 * When the zeppelin is near the target, send a message commanding it to land.
+	 */
+	private static void land() {
+		if(sender!=null) {
+			//send message to go to 0 cm
 		}
 	}
 }

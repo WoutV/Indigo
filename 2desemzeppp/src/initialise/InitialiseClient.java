@@ -13,7 +13,6 @@ import simulator.SimConnNoRabbitClient;
 import simulator.SimEnemy;
 import simulator.SimEnemyConnNoRabbitClient;
 import simulator.SimMain;
-import simulator.Simulator;
 
 import gui.GuiMain;
 
@@ -101,11 +100,13 @@ public class InitialiseClient {
         
         //TODO kp,kd,ki values
               
-		LocationLocator locator = new LocationLocator(map,xpos,ypos,gui.getGuic());
+		LocationLocator locator = new LocationLocator(map);
 		//camera => ImageProcessor => pureColourLocator (locateAndMove) => positioncontrollers
 		Dispatch.setLoc(locator);
 		Dispatch.setGUIMain(gui);
 		Dispatch.setSimEnemy(simEnemy);
+		Dispatch.setMap(map);
+		Dispatch.setPositionControllers(xpos,ypos);
 		Dispatch.receiveTarget(50,50);
 		
 		try {
