@@ -307,7 +307,7 @@ De client bevat naast de hierboven beschreven software ook de GUI. Een controler
 %Klassendiagram Bewegingen
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=\textwidth]{XYNavigation.png}
+\includegraphics[width=\textwidth]{classdiagrampeno.png}
 \end{center}
 \caption{UML-schema horizontale bewegingen}
 \label{navigation}
@@ -320,22 +320,30 @@ Deze opdracht verplicht ons gebruik te maken van een RabbitMQ-server\footnote{ww
 Over de RabbitMQ server kunnen naar de zeppelin high-level en low-level commands worden gestuurd. High-level commands zeggen bijvoorbeeld dat de zeppelin naar een bepaalde plaats moet gaan, terwijl low-level commands naar een specifieke motor een pwm-waarde sturen. Aangezien bij ons de navigatie op de client wordt geregeld, zijn de high-level commando's voor locatie enkel belangrijk voor de client die de zeppelin aanstuurt. Low-level commands daarentegen zijn relevant voor de zeppelin, alsook high-level commando's voor hoogte (bijvoorbeeld om te landen). \\
 
 %is dit nog correct of gaat de afb weg????  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-levelopdracht voor het aanschakelen van de motoren aan een bepaalde snelheid wordt doorgegeven vanaf een client naar de Pi. Vanuit de GUI wordt er steeds via de klasse GUICommands gegaan, die een abstractie geeft naar buiten toe. Klasses voor communicatie versturen en ontvangen de boodschap (met toevoeging van correcte sleutel) via RabbitMQ. De MotorController gaat uiteindelijk bepalen dat de x-motor aan een bepaalde SoftPwm-value moet draaien.
+Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-levelopdracht voor het aanschakelen van de motoren aan een bepaalde snelheid wordt doorgegeven vanaf een client naar de Pi. Vanuit een PositionController wordt een commando gestuurd naar de zeppelin. Klasses voor communicatie versturen en ontvangen de boodschap (met toevoeging van correcte sleutel) via RabbitMQ. De Main-klasse op de zeppelin geeft het commande door aan de MotorController. Die zal uiteindelijk bepalen dat de x-motor aan een bepaalde SoftPwm-value moet draaien.
 \\
 
 %Sequentiediagram communication Pi Client
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=1\textwidth]{PiToClientCommunication.png}
+\includegraphics[width=1\textwidth]{SequenceDiagram1.png}
 \end{center}
 \caption{Sequentiediagram van de communicatie}
 \label{Sequence}
 \end{figure} 
 
 \subsection{Zeppelin}
-Er is nog maar een klein deel van de software dat draait op de zeppelin (Pi). Het belangrijkste deel hiervan is de motorcontroller, die de motoren aanstuurt op basis van low-level commando's. Die commando's komen van de client, in combinatie met gegevens van de hoogtecontroller die ook op de Pi draait. Verder is er een thread die constant de hoogte meet en een thread die afbeeldingen neemt met de camera en deze opslaat. \\
+Er is nog maar een klein deel van de software dat draait op de zeppelin (Pi). Het belangrijkste deel hiervan is de motorcontroller, die de motoren aanstuurt op basis van low-level commando's. Die commando's komen van de client, in combinatie met gegevens van de hoogtecontroller die ook op de Pi draait. Verder is er een thread die constant de hoogte meet en een thread die afbeeldingen neemt met de camera en deze opslaat. Voor een overzicht van de klassen die op de Pi draaien, zie figuur \ref{softwareZeppelin}.\\
 
 De afbeeldingen die worden gemaakt worden opgeslagen in het geheugen, en kunnen via een webserver worden opgevraagd. De reden dat dit via een webserver gebeurt is om snelheidsredenen. Op deze manier kan een afbeelding worden doorgestuurd in minder dan 0.1 s. We hebben geprobeerd dit te doen via de RabbitMQ server, maar dit zorgde voor een te grote vertraging (ongeveer 7 s, zelfs op een lage resolutie). \\
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\textwidth]{classdiagrampeno2.png}
+\end{center}
+\caption{UML-schema software zeppelin}
+\label{softwareZeppelin}
+\end{figure}
 
 \subsection{Simulator}
 Er is een simulator beschikbaar, die de toestand van het spel simuleert. Dit stelt ons in staat om algoritmes (bijvoorbeeld om een tegenstander te ontwijken) uit te testen zonder dat we echt met twee zeppelins op het speelveld moeten zitten.\\

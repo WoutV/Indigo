@@ -176,7 +176,7 @@ De output wordt berekend op basis van deze formule:
  \label{PID}
 \end{equation}
 
-Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij.In het tweede semest, aangezien er nieuwe volle ballonnen gegeven waren en we een ander frame gebruiken. \\
+Hierin zijn Kp, Ki en Kd constanten die we hebben moeten bepalen. Eerst hadden we enkel rekening gehouden met de huidige error (Ki = Kd = 0), maar dit bleek er voor te zorgen dat de zeppelin veel te snel naar een bepaalde hoogte gaat en er dan ver boven of onder gaat. We hebben dit opgelost door Kd te verhogen. Door deze groot te maken, gaat de zeppelin veel rustiger naar de opgegeven hoogte en gaat hij er niet voorbij.In het tweede semester tuneden we de waarden van deze constanten opnieuw, aangezien er nieuwe volle ballonnen gegeven waren en we een ander frame gebruiken. \\
 
 Er is een HeightController die vergelijking \eqref{PID} implementeert, en die er voor gaat zorgen dat de zeppelin zijn hoogte behoudt of naar een gevraagde hoogte gaat. Deze gaat om de 0.1 s de hoogte controleren en de PWM-waarde bijsturen. \\
 
@@ -245,11 +245,12 @@ Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld 
 	\ENDFOR
 \end{algorithmic}
 
-Vervolgens moet de hoek nog bepaald worden. We weten al met welke drie punten op het veld de gevonden punten overeenkomen. Nu gaan we kijken welke van de drie figuren horizontaal liggen op het raster. Zo zijn er telkens twee te vinden voor elke driehoek. Dan kijken we met welke twee punten van de gevonden punten deze twee overeenkomen. Nu kunnen we door gebruik te maken van het verschil in x- en y-co\"{o}rdinaat in de afbeelding en van de tangens, berekenen wat de hoek is ten opzichte van de werkelijke hoek die 0 zou moeten zijn.
+Het algoritme bepaalt vervolgens de hoek. De locatie geeft de positie van de drie gevonden figuren weer. Twee van deze fiugren liggen horizontaal op het raster. De rotatiehoek van de lijn waarop deze twee figuren liggen op de foto ten opzichte van de horizontale lijn op het raster wordt bepaald aan de hand van wiskundige berekeningen (verschil tussen x- en y-co\"rdinaat in de afbeelding en de tangens).\\
+
 Hiervoor wordt een onderscheid gemaakt op basis van de groottes van de coördinaten (x1 \textless  x2?, y1 \textless  y2?), om aan de hand daarvan een bepaalde transformatie te doen op de hoek gevonden van de tangens (omdat de positiecontroller de hoek in een bepaald formaat verwacht en om alle hoeken tussen $–\pi$ en $\pi$ te vinden). Voor dit algoritme geven we geen pseudocode, aangezien het grotendeels uit een aantal if-tests bestaat. Door de manier van werken is deze hoek volledig nauwkeurig.
 
 \subsection{Horizontale bewegingen}
-Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebaseerde algoritmes. We gebruiken twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). Telkens wanneer een nieuwe foto genomen wordt, kunnen we hieruit de positie binnen het veld en draaiing ten opzichte van het veld afleiden (zie het algoritme voor locatiebepaling). Dan kunnen we de af te leggen afstand ontbinden in twee loodrechte bewegingen (x- en y-richting ten opzichte van het veld). De zeppelin wordt in het middelpunt geplaatst van het nieuwe co\"{o}rdinatenstelsel. De co\"{o}rdinaten van de bestemming in het geroteerde en verschoven assenstelsel bepalen dus exact hoeveel we in x- en y-richting (tov zeppelin) moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:
+Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebaseerde algoritmes. We gebruiken twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). De locatiebepaling bepaalt voor elke nieuwe foto de positie binnen en de draaiing ten opzichte van het veld. De af te leggen afstand wordt ontbonden twee loodrechte bewegingen(x en y ten opzichte van het veld). De zeppelin bevindt zich in het middelpunt van het nieuwe co\"ordinatenstelsel. De co\"{o}rdinaten van de bestemming in het geroteerde en verschoven assenstelsel bepalen dus exact hoeveel we in x- en y-richting (tov zeppelin) moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:
 \begin{equation}
  \begin{cases}
   x_{shifted} = x_{destination} – x_{zeppelin}\\
@@ -259,7 +260,7 @@ Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebase
 
 
 
-Vervolgens doen we een draaiing volgens de hoek $\alpha$ waarmee de zeppelin gedraaid staat ten opzichte van het rooster (rekening houdend met de richting van het frame):
+Hierna vindt een rotatie plaats volgens de hoek $\alpha$ waaronder de zeppelin gedraaid staat ten opzichte van het rooster (rekening houdend met de richting van het frame):
 \begin{equation}
  \begin{cases}
  x_{new} = x_{shifted}*cos(\alpha) + y_{shifted}*sin(\alpha)\\
@@ -290,23 +291,23 @@ De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de Ra
 \label{GUI}
 \end{figure}
 
-De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. De kaart wordt uitgelezen (zoals al beschreven bij het algoritme voor plaatsbepaling) en omgezet naar een afbeelding. Op de afbeelding verschijnen ook de posities van de eigen zeppelin en de vijandige zeppelin, en de bestemming. Naast de kaart toont de GUI de hoogte van de zeppelins en staat er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. Er is ook ruimte voorzien om de meest recent herkende afbeelding weer te geven op het scherm. \\
+De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. De kaart wordt ingelezen en omgezet naar een afbeelding. Op de afbeelding verschijnen ook de posities van de eigen zeppelin en de vijandige zeppelin, en de bestemming. Naast de kaart toont de GUI de hoogte van de zeppelins en staat er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. Er is ook ruimte voorzien om de meest recent herkende afbeelding weer te geven op het scherm. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen server, GUI en zeppelin, met een tijdsindicatie. Er is de mogelijkheid om berichten te filteren op type. \\
 
 De derde tab ('credits') geeft wat versie-informatie en auteursrechterlijke informatie over het programma.
 
 \subsection{Client pc: pattern recognition, locatiebepaling en horizontale beweging}
- Oorspronkelijk was het plan om het grootste deel van de programma's (waaronder image regcognition) op de Pi te laten draaien. We hebben echter veel problemen ondervonden om OpenCV werkend te krijgen op de Pi, waardoor we uiteindelijk hebben besloten image recognition op de client pc uit te voeren. In dit geval is het ook logisch de locatiebepaling en locatiecontrole op deze pc te zetten, aangezien dit de volgende stappen zijn nadat de figuren herkend zijn. Dit zorgt ervoor dat enkel de locatie moet worden doorgestuurd en niet de afbeelding.\\
+ Oorspronkelijk was het plan om het grootste deel van de programma's (waaronder image regcognition) op de Pi te laten draaien. We ondervonden echter veel problemen om openCV werkend te krijgen op de Pi en belsoten om image recognition op de client pc uit te voeren. In dit geval is het ook logisch de locatiebepaling en locatiecontrole op deze pc te zetten, aangezien dit de volgende stappen zijn nadat de figuren herkend zijn. Dit zorgt ervoor dat enkel de locatie moet worden doorgestuurd en niet de afbeelding.\\
 
-De zeppelin biedt via een webserver afbeeldingen aan (zie verder). De client gaat de recentste afbeelding om de 0.5 s opvragen. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. Deze pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. cDe LocationLocator kan hieruit de huidige positie van de zeppelin bepalen. Nu gaat de PositionController de af te leggen afstand in x- en y-richting bepalen. Beide richtingen hebben een PositionController, die met een PID-algoritme de pwm-waarde bepaalt. Deze worden als low-level commands naar de zeppelin gestuurd.\\
+De zeppelin biedt via een webserver afbeeldingen aan (zie verder).De slient vraagt om de 0.5 s de recentste afbeelding. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. Deze pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. De LocationLocator bepaalt hieruit de huidige postie van de zeppelin. Hierna bepaalt de positionController de af te leggen afstand in x en y. Beide richtingen hebben een PositionController, die met een PID-algoritme de pwm-waarde bepaalt. Deze worden als low-level commands naar de zeppelin gestuurd.\\
 
 De client bevat naast de hierboven beschreven software ook de GUI. Een controlerende klasse stuurt relevante informatie door naar de GUI. Daarnaast kijkt hij of de zeppelin zich bij een tablet waar hij naartoe moet bevindt (want dan moet deze worden gevraagd de QR-code te tonen en moet uit de afbeelding een opdracht worden gelezen) en of de zeppelin bij de bestemming is (want dan moet er worden geland).\\
 
 %Klassendiagram Bewegingen
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=\textwidth]{XYNavigation.png}
+\includegraphics[width=\textwidth]{classdiagrampeno.png}
 \end{center}
 \caption{UML-schema horizontale bewegingen}
 \label{navigation}
@@ -325,7 +326,7 @@ Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-level
 %Sequentiediagram communication Pi Client
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=1\textwidth]{PiToClientCommunication.png}
+\includegraphics[width=1\textwidth]{SequenceDiagram1.png}
 \end{center}
 \caption{Sequentiediagram van de communicatie}
 \label{Sequence}
