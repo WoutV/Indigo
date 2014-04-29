@@ -184,14 +184,54 @@ Er is een HeightController die vergelijking \eqref{PID} implementeert, en die er
 
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
+
+Als eerste gaat de software een kleurfiltratie toepassen op de foto. Dit gebeurt door de foto naar een HSV-digitale voorstelling te converteren. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur. Hierdoor worden er voor elke kleur een binary foto gemaakt, waarop enkel de geselecteerde kleur zichtbaar is. Door dit proces toe te passen wordt alles dat niet de juiste kleur heeft gefilterd. Daarna worden de vijf binary foto's samengevoegd in \'e\'en foto. 
+De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen uit deze samengevoegde afbeelding en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking op de vormen.\\
+
+Om verschillende vormen te herkennen worden de eigenschappen van de vormen gebruikt. Deze eigenschappen hangen af van de oppervlaktes.
+Om een rechthoek te onderscheiden van andere vormen wordt er via een methode van opencv een bouding rectangle berekend. De verhouding van de oppervlakte van deze verkregen rechthoek en de oppervlakte van de gevonden contour is ongeveer gelijk aan 1. Dit geldt alleen voor een rechthoek. \\
+Gelijkaardig om een cirkel te onderscheiden wordt er van de gevonden contouren een bounding circle berekend. De verhouding van de oppervlakte van de bounding circle en de oppervlakte van de contour zelf is ongeveer gelijk aan 1.\\
+Om een ster te herkennen wordt er gebruikt gemaakt van een convexe omhullende. De verhouding van de oppervlakte van deze convexe omhullende en de contour is ongeveer gelijk aan 1,5. Om nog nauwkeurig te werken wordt bij alle symbolen de oppervlakte van hun contouren vergeleken met de bounding rectangle, bounding circle en convex hull. Voor gedetailleerde cijfers, zie tabel \ref{recognitionTable}.\\
+
+Table + afbeelding
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{r||c|c|c}
+
+Vorm		&	bounding Rectangle	&	Hull Contour	&	enclosing cirlce\\
+						
+Rectangle	&	\textless1,1		&	\textless1.05		&	1,5-1,9\\
+Circle		&	1,2-1,3			&	\textless1.05		&	\textless1,3\\
+Heart		&	1,2-1,4			&	\textless1.05		&	1,4-1,6\\
+Star		&	\textgreater1,9		&	\textgreater1.4		&	\textgreater1.9\\
+
+\end{tabular}
+\caption{Verhoudingen van contour en een aantal omhullende figuren}
+\label{recognitionTable}
+
+\end{center}
+\end{table}
+
+
+Hierdoor vinden we de symbolen die aanwezig zijn op deze afbeelding. Om een foutdetectie tegen te werken wordt er aan symbol stabalizer gevraagd of het mogelijk is om een bepaalde symbool in een bepaalde positie te zijn. Symbol stabalizer houdt rekening met de voor gedetecteerde symbolen. Bv als er bij voorgaande twee afbeeldingen een ster wordt herkend op een bepaalde positie en dit keer een rechthoek herkend wordt zal symbol stabalizer toch ster terug geven.  
+
+Eens de symbolen herkend zijn wordt er geprobeerd om een gelijkzijdige driehoek te bepalen. Als er geen driehoek wordt gevonden of als er maar twee symbolen gevonden worden dan wordt van de randcontouren die eerst genegeerd werden, omdat er ze niet volledig waren, toch een kleur van te bepalen. 
+
+Om de kleur te bepalen wordt er van origineel afbeelding de deel genomen waar er countouren staan en omgezet naar HSV digitale voorstelling. Door rekening te houden met de H, S, en V waarden kunnen worden de kleur vast gelegd.
+
+Eerst gaat de kleur bepaald worden. Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling.  binnen de contour van de gedetecteerde vorm. \\
+
+
+
 Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart). Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. \\
 
 Eerst gaat de kleur bepaald worden. Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. \\
 eerst kleuren 
 hoe vormen herkennen
-meerdere driehoeken herkend -> dichtste bij middelpunt
+meerdere driehoeken herkend -\textgreater dichtste bij middelpunt
 ten opzichte van vorige positie
-indien geen driehoek -> unkown met enkel kleur.
+indien geen driehoek -\textgreater unkown met enkel kleur.
 tablet
 
 %TODO zie hierboven
@@ -314,13 +354,13 @@ De client bevat naast de hierboven beschreven software ook de GUI. Een controler
 \end{figure}
 
 \subsection{Connectie}
-De verbinding tussen Pi en laptop is volledig veranderd ten opzichte van het eerste semester. Voordien werd informatie uitgewisseld door middel van sockets, op een virtueel netwerk gehost vanuit een laptop. Communicatie verliep via sockets over dit netwerk. De Pi werd toen de server genoemd omdat deze de sockets initialiseerde.\\
-Deze opdracht verplicht ons gebruik te maken van een RabbitMQ-server\footnote{www.rabbitmq.com}. Voor de eerste tussentijdse demo werd de server op een eigen laptop worden gestart. Voor de tweede demo is een server voorzien. We hebben nu dus de server (de exchange) die losstaat van de rest van het programma, en twee clients: de zeppelin (Pi) en de client-pc. Zowel pc als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap die wordt uitgewisseld krijgt een bepaalde sleutel toegewezen, die aangeeft wat de boodschap bevat en voor wie ze bestemd is. Een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen. Zowel de client als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van RabbitMQ in onze code moesten er enkele libraries\footnote{http://www.rabbitmq.com/java-client.html} toegevoegd worden. \\
+De verbinding tussen Pi en laptop is volledig veranderd ten opzichte van het eerste semester. Voordien wisselden sockets informatie uit, op een virtueel netwerk gehost vanuit een laptop. Communicatie verliep via sockets over dit netwerk. De Pi was de server omdat deze de sockets initialiseerde.\\
+Deze opdracht verplicht ons een RabbitMQ-server\footnote{www.rabbitmq.com} te gebruiken. Voor de eerste tussentijdse demo startte de server op een eigen laptop. Voor de tweede demo is een server voorzien. We hebben nu dus de server (de exchange) die losstaat van de rest van het programma en de twee clients: de zeppelin (Pi) en de client-pc. Zowel pc als Pi connecteren dan op een exchange genaamd ‘server’. Elke boodschap die wordt uitgewisseld krijgt een bepaalde sleutel toegewezen, die de inhoud en de bestemming aangeeft. Een boodschap wordt dan naar de exchange verstuurd. De exchange weet dankzij de sleutel naar welke queue hij de boodschappen moet versturen. Zowel de client als de Pi abonneren zich op queues met een bepaalde sleutel, afhangende van welke gesleutelde boodschappen ze willen ontvangen. Om gebruik te maken van RabbitMQ in onze code moesten er enkele libraries\footnote{http://www.rabbitmq.com/java-client.html} toegevoegd worden. \\
 
-Over de RabbitMQ server kunnen naar de zeppelin high-level en low-level commands worden gestuurd. High-level commands zeggen bijvoorbeeld dat de zeppelin naar een bepaalde plaats moet gaan, terwijl low-level commands naar een specifieke motor een pwm-waarde sturen. Aangezien bij ons de navigatie op de client wordt geregeld, zijn de high-level commando's voor locatie enkel belangrijk voor de client die de zeppelin aanstuurt. Low-level commands daarentegen zijn relevant voor de zeppelin, alsook high-level commando's voor hoogte (bijvoorbeeld om te landen). \\
+Over de RabbitMQ server kunnen naar de zeppelin high-level en low-level commands worden gestuurd. High-level commands zeggen bijvoorbeeld dat de zeppelin naar een bepaalde plaats moet gaan, terwijl low-level commands naar een specifieke motor een pwm-waarde sturen. Aangezien bij ons de client de navigatie regelt, zijn de high-level commando's voor locatie enkel belangrijk voor de client die de zeppelin aanstuurt. Low-level commands daarentegen zijn relevant voor de zeppelin, alsook high-level commando's voor hoogte (bijvoorbeeld om te landen). \\
 
-%is dit nog correct of gaat de afb weg????  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-levelopdracht voor het aanschakelen van de motoren aan een bepaalde snelheid wordt doorgegeven vanaf een client naar de Pi. Vanuit de GUI wordt er steeds via de klasse GUICommands gegaan, die een abstractie geeft naar buiten toe. Klasses voor communicatie versturen en ontvangen de boodschap (met toevoeging van correcte sleutel) via RabbitMQ. De MotorController gaat uiteindelijk bepalen dat de x-motor aan een bepaalde SoftPwm-value moet draaien.
+
+Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe de client een low-level commando voor het aanschakelen van de motoren aan een bepaalde snelheid doorgeeft naar de Pi. De PositionController stuurt een commando naar de zeppelin. Klasses voor communicatie versturen en ontvangen de boodschap (met toevoeging van correcte sleutel) via RabbitMQ. De Main-klasse op de zeppelin geeft het commande door aan de MotorController. Die zal uiteindelijk bepalen dat de x-motor aan een bepaalde SoftPwm-value moet draaien.
 \\
 
 %Sequentiediagram communication Pi Client
@@ -333,14 +373,22 @@ Op het sequentiediagram (zie figuur \ref{Sequence}) is te zien hoe een low-level
 \end{figure} 
 
 \subsection{Zeppelin}
-Er is nog maar een klein deel van de software dat draait op de zeppelin (Pi). Het belangrijkste deel hiervan is de motorcontroller, die de motoren aanstuurt op basis van low-level commando's. Die commando's komen van de client, in combinatie met gegevens van de hoogtecontroller die ook op de Pi draait. Verder is er een thread die constant de hoogte meet en een thread die afbeeldingen neemt met de camera en deze opslaat. \\
+Er is nog maar een klein deel van de software dat draait op de zeppelin (Pi). Het belangrijkste deel hiervan is de motorcontroller, die de motoren aanstuurt op basis van low-level commando's. Die commando's komen van de client, in combinatie met gegevens van de hoogtecontroller die ook op de Pi draait. Verder is er een thread die constant de hoogte meet en een thread die afbeeldingen neemt met de camera en deze opslaat. Voor een overzicht van de klassen die op de Pi draaien, zie figuur \ref{softwareZeppelin}.\\
 
-De afbeeldingen die worden gemaakt worden opgeslagen in het geheugen, en kunnen via een webserver worden opgevraagd. De reden dat dit via een webserver gebeurt is om snelheidsredenen. Op deze manier kan een afbeelding worden doorgestuurd in minder dan 0.1 s. We hebben geprobeerd dit te doen via de RabbitMQ server, maar dit zorgde voor een te grote vertraging (ongeveer 7 s, zelfs op een lage resolutie). \\
+De Pi slaat de gemaakte afbeeldingen op in het gehuegen. Dezen kunnen dan via een webserver opgehaald worden. De reden dat dit via een webserver gebeurd, is om snelheidsredenen. Op deze manier kan een afbeelding worden doorgestuurd in minder dan 0.1 s. We hebben geprobeerd dit te doen via de RabbitMQ server, maar dit zorgde voor een te grote vertraging (ongeveer 7 s, zelfs op een lage resolutie). \\
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\textwidth]{classdiagrampeno2.png}
+\end{center}
+\caption{UML-schema software zeppelin}
+\label{softwareZeppelin}
+\end{figure}
 
 \subsection{Simulator}
 Er is een simulator beschikbaar, die de toestand van het spel simuleert. Dit stelt ons in staat om algoritmes (bijvoorbeeld om een tegenstander te ontwijken) uit te testen zonder dat we echt met twee zeppelins op het speelveld moeten zitten.\\
 In principe wordt gebruik gemaakt van 2 simulators: eentje voor de eigen zeppelin en eentje voor de vijand. De eerste is nuttig om de locatiebepaling en locatiecontrole na te bootsen en te testen. De tweede is nuttig om een wedstrijd na te spelen zonder aanwezigheid van een andere zeppelin. \\
-Beide simulatoren houden een kaart bij. De simulator voor de eigen zeppelin krijgt de low-level commando's voor de motoren binnen, en maakt gebruik van formules uit de mechanica om hieruit de huidige locatie te bepalen. Deze locatie wordt doorgestuurd als een reeks symbolen (de driehoek van symbolen die in realiteit of die plaats en bij die hoek zou worden gezien). Voor de client wordt dus de image processing uitgeschakeld, en de client zal een reeks symbolen krijgen die normaal door de image processing herkend zouden zijn. Voor de rest gaat de zeppelin zich gedragen zoals ook in realiteit het geval is: de informatie over de symbolen binnenkrijgen, hieruit zijn plaats bepalen, en zijn positie bijsturen. De simulator gedraagt zich dus exact zoals een zeppelin, en is geabonneerd op de queue voor low-level commando's. Er is ook een optie beschikbaar die, indien aangezet, op geregelde tijdstippen een afwijking op de beweging zet, omdat dit iets is wat in realiteit ook onvermijdelijk zal gebeuren.\\
+Beide simulatoren houden een kaart bij. De simulator voor de eigen zeppelin krijgt de low-level commando's voor de motoren binnen, en maakt gebruik van formules uit de mechanica om hieruit de huidige locatie te bepalen. Deze locatie wordt doorgestuurd als een reeks symbolen (de driehoek van symbolen die in realiteit of die plaats en bij die hoek zou worden gezien). OP de client vindt dus geen image processing plaats en hij krijgt dus een reeks symbolen die de image recognition normaal zou herkennen. Voor de rest gedraagt de zeppelin zich zoals ook in realiteit het geval is: de informatie over de symbolen binnenkrijgen, hieruit zijn plaats bepalen, en zijn positie bijsturen. De simulator gedraagt zich dus exact zoals een zeppelin, en is geabonneerd op de queue voor low-level commando's. Er is ook een optie beschikbaar die, indien aangezet, op geregelde tijdstippen een afwijking op de beweging zet, omdat dit iets is wat in realiteit ook onvermijdelijk zal gebeuren.\\
 De simulator voor de zeppelin van de vijand heeft naast de kaart ook de bestemming nodig. Hij maakt geen gebruik van formules uit de mechanica, maar zal op geregelde tijdstippen de zeppelin dichter naar de bestemming bewegen. Hij stuurt dan de exacte locatie door naar de server. \\
 
 
