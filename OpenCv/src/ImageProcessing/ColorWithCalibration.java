@@ -5,11 +5,15 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +23,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
@@ -26,17 +31,44 @@ import org.opencv.highgui.VideoCapture;
 
 public class ColorWithCalibration implements ActionListener {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws Exception {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
-		Mat webcam_image =Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\colorcali.jpg");
+		
+		boolean pi = false;
+		if(pi){
+			BufferedImage buffered = ImageIO.read(new URL(
+					"http://raspberrypi.mshome.net/cam_pic.php?time="
+							+ System.currentTimeMillis()));
+			byte[] pixels = ((DataBufferByte) buffered.getRaster()
+					.getDataBuffer()).getData();
+			
+			Mat originalImage = new Mat(buffered.getHeight(),
+					buffered.getWidth(), CvType.CV_8UC3);
+			originalImage.put(0, 0, pixels);
+				while (true) {
+					buffered = ImageIO.read(new URL(
+							"http://raspberrypi.mshome.net/cam_pic.php?time="
+									+ System.currentTimeMillis()));
+					pixels = ((DataBufferByte) buffered.getRaster()
+							.getDataBuffer()).getData();
+					originalImage.put(0, 0, pixels);
+					Thread.sleep(500);
+					
+						c.calibrateColors(originalImage);
+			
+				}
+		
+		
+		}
+		Mat webcam_image =Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\green.png");
+		while (true) {
+			Thread.sleep(500);
+			
+				c.calibrateColors(webcam_image);
+	
+		}
+	
 		//VideoCapture webCam = new VideoCapture("C:/Users/Study/Dropbox/grid.h264");
-		
-			while (true) {
-				Thread.sleep(500);
-				
-					c.calibrateColors(webcam_image);
-		
-			}
 	
 		
 

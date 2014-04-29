@@ -21,8 +21,6 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
-
-
 class SymbolDetector {
 	private Mat image = new Mat();
 	private ArrayList<Symbol> detectedSymbols;
@@ -31,8 +29,8 @@ class SymbolDetector {
 	String Color;
 	Mat binImageMat;
 
-	public SymbolDetector(Color cc,
-			SymbolsStabalization symbolS3, Integer timestamp2) {
+	public SymbolDetector(Color cc, SymbolsStabalization symbolS3,
+			Integer timestamp2) {
 		this.cc = cc;
 		this.timestamp = timestamp2;
 		this.symbolS = symbolS3;
@@ -177,49 +175,56 @@ class SymbolDetector {
 			MatOfPoint contour1 = ApproxContours.get(i);
 			if (Imgproc.contourArea(contour1) >= 400) {
 				Thread.sleep(10);
-				new ArrayList<Point>(
-						contour1.toList());
+				new ArrayList<Point>(contour1.toList());
 
 				Point contourCenter = getCenter(contour1);
 				Core.circle(result, contourCenter, 4, new Scalar(255, 49, 0,
 						255));
-			//Bounding Rect
+				// Bounding Rect
 				Rect rec = Imgproc.boundingRect(contour1);
-		
-				
-				//Min enclosing circle;
+
+				// Min enclosing circle;
 				Point center = new Point();
 				float[] radius = new float[5];
 				contour1.convertTo(MatOfPointTo2f, CvType.CV_32FC2);
 				Imgproc.minEnclosingCircle(MatOfPointTo2f, center, radius);
-				Core.circle(result, center, (int) radius[0], new Scalar(255, 0, 0),
-						1);
-				double ratioEnclosingCircleWithContourArea = (Math.PI*radius[0]*radius[0])/Imgproc.contourArea(contour1);
-				Core.putText(result, "EC/CA:" + ratioEnclosingCircleWithContourArea, new Point(contourCenter.x+20,contourCenter.y+60),
+				Core.circle(result, center, (int) radius[0], new Scalar(255, 0,
+						0), 1);
+				double ratioEnclosingCircleWithContourArea = (Math.PI
+						* radius[0] * radius[0])
+						/ Imgproc.contourArea(contour1);
+				Core.putText(result, "EC/CA:"
+						+ ratioEnclosingCircleWithContourArea, new Point(
+						contourCenter.x + 20, contourCenter.y + 60),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
-				//Min Enclosing Rectangle
+				// Min Enclosing Rectangle
 				RotatedRect minAreaRect = Imgproc.minAreaRect(MatOfPointTo2f);
 				Point[] pt = new Point[4];
 				minAreaRect.points(pt);
 				MatOfPoint matofpoint = new MatOfPoint(pt);
 				List<MatOfPoint> matofpointlist = new ArrayList<MatOfPoint>();
-				double ratioMinEnclosingAreaWithContourArea = Imgproc.contourArea(matofpoint)/Imgproc.contourArea(contour1);
-				Core.putText(result, "RA/CA:" + ratioMinEnclosingAreaWithContourArea, new Point(contourCenter.x+20,contourCenter.y+40),
+				double ratioMinEnclosingAreaWithContourArea = Imgproc
+						.contourArea(matofpoint)
+						/ Imgproc.contourArea(contour1);
+				Core.putText(result, "RA/CA:"
+						+ ratioMinEnclosingAreaWithContourArea, new Point(
+						contourCenter.x + 20, contourCenter.y + 40),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
-				
+
 				matofpointlist.add(matofpoint);
-				
-				Imgproc.drawContours(result, matofpointlist, -1, new Scalar(255,255,255));
-//				Core.rectangle(result, rec.tl(), rec.br(),
-//						new Scalar(255, 0, 0));
-				
-//				for (int index = 0; index < contoursPoint.size(); index++) {
-//					Point p = contoursPoint.get(index);
-//					Core.circle(result, p, 1, new Scalar(255, 0, 0), 3);
-//
-//				}
+
+				Imgproc.drawContours(result, matofpointlist, -1, new Scalar(
+						255, 255, 255));
+				// Core.rectangle(result, rec.tl(), rec.br(),
+				// new Scalar(255, 0, 0));
+
+				// for (int index = 0; index < contoursPoint.size(); index++) {
+				// Point p = contoursPoint.get(index);
+				// Core.circle(result, p, 1, new Scalar(255, 0, 0), 3);
+				//
+				// }
 
 				contourMat.submat(rec);
 
@@ -232,27 +237,28 @@ class SymbolDetector {
 				// MatOfInt
 				MatOfInt hullInt = new MatOfInt();
 				List<MatOfPoint> hullPoints = new ArrayList<MatOfPoint>();
-				
-					List<Point> hullPointList = new ArrayList<Point>(
-							contours.size());
-					MatOfPoint hullPointMat = new MatOfPoint();
-					Imgproc.convexHull(contour1, hullInt);
 
-					for (int j = 0; j < hullInt.toList().size(); j++) {
-						hullPointList.add(contour1.toList()
-								.get(hullInt.toList().get(j)));
-						Core.circle(result, hullPointList.get(j), 2,
-								new Scalar(0, 255, 255));
-					}
-					hullPointMat.fromList(hullPointList);
-					hullPoints.add(hullPointMat);
+				List<Point> hullPointList = new ArrayList<Point>(
+						contours.size());
+				MatOfPoint hullPointMat = new MatOfPoint();
+				Imgproc.convexHull(contour1, hullInt);
 
+				for (int j = 0; j < hullInt.toList().size(); j++) {
+					hullPointList.add(contour1.toList().get(
+							hullInt.toList().get(j)));
+					Core.circle(result, hullPointList.get(j), 2, new Scalar(0,
+							255, 255));
+				}
+				hullPointMat.fromList(hullPointList);
+				hullPoints.add(hullPointMat);
 
 				Imgproc.drawContours(result, hullPoints, -1, new Scalar(255, 0,
 						0, 255), 1);
-				double ratioAreaHullContour = Imgproc.contourArea(hullPointMat)/Imgproc.contourArea(contour1);
-				
-				Core.putText(result, "HA/CA:" + ratioAreaHullContour, new Point(contourCenter.x+20,contourCenter.y+20),
+				double ratioAreaHullContour = Imgproc.contourArea(hullPointMat)
+						/ Imgproc.contourArea(contour1);
+
+				Core.putText(result, "HA/CA:" + ratioAreaHullContour,
+						new Point(contourCenter.x + 20, contourCenter.y + 20),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 				// isCircleDetection
@@ -261,17 +267,19 @@ class SymbolDetector {
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 
-				getSmallestToBiggestCircleRatio(
-						contour1.toList(), contourCenter);
-				map.Symbol.Shape shape = getShape(ratioMinEnclosingAreaWithContourArea, ratioEnclosingCircleWithContourArea, ratioAreaHullContour);
+				getSmallestToBiggestCircleRatio(contour1.toList(),
+						contourCenter);
+				map.Symbol.Shape shape = getShape(
+						ratioMinEnclosingAreaWithContourArea,
+						ratioEnclosingCircleWithContourArea,
+						ratioAreaHullContour);
 				Symbol S = new Symbol(Color + shape.toString(), timestamp,
-							contourCenter.x, contourCenter.y);
+						contourCenter.x, contourCenter.y);
 				S = symbolS.getPossibleSymbol(S);
 				detectedSymbols.add(S);
 				Core.putText(result, S.toString(), contourCenter,
-				Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
-									200, 250), 3);
-				
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar(200,
+								200, 250), 3);
 
 			}
 
@@ -299,15 +307,15 @@ class SymbolDetector {
 							Core.line(result,
 									new Point(symbol1.getX(), symbol1.getY()),
 									new Point(symbol2.getX(), symbol2.getY()),
-									new Scalar(50*i, 50*i, 0));
+									new Scalar(50 * i, 50 * i, 0));
 							Core.line(result,
 									new Point(symbol1.getX(), symbol1.getY()),
 									new Point(symbol3.getX(), symbol3.getY()),
-									new Scalar(50*i, 50*i, 0));
+									new Scalar(50 * i, 50 * i, 0));
 							Core.line(result,
 									new Point(symbol3.getX(), symbol3.getY()),
 									new Point(symbol2.getX(), symbol2.getY()),
-									new Scalar(50*i, 50*i, 0));
+									new Scalar(50 * i, 50 * i, 0));
 							triangleFound = true;
 						}
 
@@ -315,39 +323,42 @@ class SymbolDetector {
 				}
 			}
 		}
-		if(!triangleFound && detectedSymbols.size()>=2) {
+		if (!triangleFound && detectedSymbols.size() >= 2) {
 			Symbol middleSymbol = getMiddleSymbol();
 			Symbol nearestSymbol = getNearestSymbol(middleSymbol);
 			double distance = middleSymbol.getDistanceTo(nearestSymbol);
-			for(MatOfPoint contourPoints: edgeContours){
+			for (MatOfPoint contourPoints : edgeContours) {
 				Point contourCenter = getCenter(contourPoints);
-				double distanceToNearestSymbol=  nearestSymbol.getDistanceTo(contourCenter);
-				double distanceToMiddleSymbol = middleSymbol.getDistanceTo(contourCenter);
-				if(fuzzyEquals(distance, distanceToNearestSymbol, 50) && fuzzyEquals(distance, distanceToMiddleSymbol, 50)){
+				double distanceToNearestSymbol = nearestSymbol
+						.getDistanceTo(contourCenter);
+				double distanceToMiddleSymbol = middleSymbol
+						.getDistanceTo(contourCenter);
+				if (fuzzyEquals(distance, distanceToNearestSymbol, 50)
+						&& fuzzyEquals(distance, distanceToMiddleSymbol, 50)) {
 					getColor(NotProcessedImage, contourCenter);
-					Core.line(result,
+					Core.line(
+							result,
 							new Point(middleSymbol.getX(), middleSymbol.getY()),
-							new Point(nearestSymbol.getX(), nearestSymbol.getY()),
-							new Scalar(0, 255, 255));
-					Core.line(result,
-							new Point(nearestSymbol.getX(), nearestSymbol.getY()),
-							contourCenter,
-							new Scalar(0, 255, 255));
-					Core.line(result,
-							new Point(middleSymbol.getX(), middleSymbol.getY()),
-							contourCenter,
-							new Scalar(0, 255, 255));
+							new Point(nearestSymbol.getX(), nearestSymbol
+									.getY()), new Scalar(0, 255, 255));
+					Core.line(result, new Point(nearestSymbol.getX(),
+							nearestSymbol.getY()), contourCenter, new Scalar(0,
+							255, 255));
+					Core.line(result, new Point(middleSymbol.getX(),
+							middleSymbol.getY()), contourCenter, new Scalar(0,
+							255, 255));
 				}
 			}
 		}
 
 	}
+
 	private Symbol getNearestSymbol(Symbol middleSymbol) {
 		Symbol toReturnSymbol = null;
 		double distanceToSymbol = Double.MAX_VALUE;
-		for(Symbol s : detectedSymbols){
+		for (Symbol s : detectedSymbols) {
 			double distance = s.getDistanceTo(middleSymbol);
-			if(distance != 0 && distance < distanceToSymbol){
+			if (distance != 0 && distance < distanceToSymbol) {
 				toReturnSymbol = s;
 				distanceToSymbol = distance;
 			}
@@ -355,27 +366,30 @@ class SymbolDetector {
 		return toReturnSymbol;
 	}
 
-	private Symbol getMiddleSymbol(){
+	private Symbol getMiddleSymbol() {
 		double distanceToMiddleSymbol = Double.MAX_VALUE;
 		Symbol toReturnSymbol = null;
-		double x1 = image.size().width/2;
-		double y1 = image.size().height/2;
-		for(Symbol s: detectedSymbols){
-			
-			double distance = Math.sqrt((x1-s.getX())*(x1-s.getX())+(y1-s.getY())*(y1-s.getY()));
-			if(distance < distanceToMiddleSymbol){
+		double x1 = image.size().width / 2;
+		double y1 = image.size().height / 2;
+		for (Symbol s : detectedSymbols) {
+
+			double distance = Math.sqrt((x1 - s.getX()) * (x1 - s.getX())
+					+ (y1 - s.getY()) * (y1 - s.getY()));
+			if (distance < distanceToMiddleSymbol) {
 				toReturnSymbol = s;
 				distanceToMiddleSymbol = distance;
 			}
-			
+
 		}
 		return toReturnSymbol;
 	}
+
 	public void setResult(Mat result) {
 		this.result = result;
 	}
-	
+
 	ArrayList<MatOfPoint> edgeContours;
+
 	/**
 	 * Filters out the edges
 	 * 
@@ -385,7 +399,7 @@ class SymbolDetector {
 	 */
 	private List<MatOfPoint> filterOutEdges(List<MatOfPoint> contours,
 			Size imageSize) {
-		edgeContours =new ArrayList<MatOfPoint>();
+		edgeContours = new ArrayList<MatOfPoint>();
 		ArrayList<MatOfPoint> toRemove = new ArrayList<>();
 
 		for (int i = 0; i < contours.size(); i++) {
@@ -408,7 +422,7 @@ class SymbolDetector {
 		for (MatOfPoint p : toRemove) {
 			edgeContours.add(p);
 			contours.remove(p);
-			
+
 		}
 
 		return contours;
@@ -420,8 +434,6 @@ class SymbolDetector {
 		this.frame = frame;
 	}
 
-	
-
 	/**
 	 * Returns the center of a contour using moments(see opencv moments)
 	 * 
@@ -429,7 +441,7 @@ class SymbolDetector {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	private Point getCenter(MatOfPoint contour1){
+	private Point getCenter(MatOfPoint contour1) {
 		Moments p = Imgproc.moments(contour1, false);
 		int x = (int) (p.get_m10() / p.get_m00());
 		int y = (int) (p.get_m01() / p.get_m00());
@@ -438,7 +450,6 @@ class SymbolDetector {
 	}
 
 	double averageRadius = 0;
-
 
 	private String getColor(Mat image, Point contourCenter) {
 		try {
@@ -494,119 +505,12 @@ class SymbolDetector {
 
 	Color cc;
 
-	/*
-	 * Determines if the contour is a rectangle. Returns the ratio of angles
-	 * that are 180 degrees(epsilon 10 degrees) on the amount of angles that are
-	 * examined.
-	 */
-	public double isRectangle(MatOfPoint contour) {
-		List<Point> sortedList = sortPolar(new ArrayList<Point>(
-				contour.toList()));
-		double a = 0;
-		double b = 0;
-		if (sortedList.size() < 60) {
-			for (int p = 0; p < (sortedList.size() - 3); p = p + 4) {
-				double angle = angleBetweenVectors(sortedList.get(p),
-						sortedList.get(p + 1), sortedList.get(p + 3));
-				b++;
-				if (fuzzyEquals(angle, 0, 10))
-					a++;
-			}
-		} else {
-			for (int p = 0; p < (sortedList.size() - 4); p = p + 5) {
-				double angle = angleBetweenVectors(sortedList.get(p),
-						sortedList.get(p + 2), sortedList.get(p + 4));
-				b++;
-				if (fuzzyEquals(angle, 0, 10))
-					a++;
-			}
-		}
-		return a / (b);
-	}
-
 	private boolean fuzzyEquals(double a, double b, double epsilon) {
 		if (Math.abs(a - b) > epsilon)
 			return false;
 		return true;
 	}
 
-	/**
-	 * Returns the center of the given contour.
-	 * 
-	 * @param points
-	 * @return The center of the list.
-	 */
-	private Point findCenter(List<Point> points) {
-		double x = 0;
-		double y = 0;
-		for (int i = 0; i < points.size(); i++) {
-			x += points.get(i).x;
-			y += points.get(i).y;
-
-		}
-		return new Point(x / points.size(), y / points.size());
-	}
-
-	/*
-	 * Sorts the points in the given list counter clockwise.
-	 */
-	private List<Point> sortPolar(List<Point> list) {
-		Point center = findCenter(list);
-		List<Point> sorted = new LinkedList<>();
-		if (list.contains(center)) {
-			list.remove(center);
-		}
-		for (Point s : list) {
-			Point copy = new Point(s.x, s.y);
-			// coordinate transformation
-			double x0 = copy.x - center.x;
-			double y0 = copy.y - center.y;
-			copy.x = (x0);
-			copy.y = (y0);
-			sorted.add(copy);
-		}
-		Collections.sort(sorted, new AngleComparator());
-		for (int p = 0; p < sorted.size(); p++) {
-			sorted.get(p).x += center.x;
-			sorted.get(p).y += center.y;
-		}
-		return sorted;
-	}
-
-	/*
-	 * Return the angle between three points. Point 2 is the center point.
-	 */
-	private double angleBetweenVectors(Point p1, Point p2, Point p3) {
-		Point vector1 = new Point(p2.x - p1.x, p2.y - p1.y);
-		Point vector2 = new Point(p3.x - p2.x, p3.y - p2.y);
-		double prod = vector1.x * vector2.x + vector1.y * vector2.y;
-		double sum = (Math.sqrt(vector1.x * vector1.x + vector1.y * vector1.y) * Math
-				.sqrt(vector2.x * vector2.x + vector2.y * vector2.y));
-		return Math.acos(prod / sum) * 180 / Math.PI;
-	}
-
-	private static class AngleComparator implements Comparator<Point> {
-		@Override
-		public int compare(Point s1, Point s2) {
-			if (s1 == null)
-				return -1;
-			if (s2 == null)
-				return 1;
-			if (s1.y == 0 && s1.x > 0)
-				return -1;
-			if (s2.y == 0 && s2.x > 0)
-				return 1;
-			if (s1.y > 0 && s2.y < 0)
-				// !!because y-frame points in opposite direction
-				return 1;
-			if (s2.y > 0 && s1.y < 0)
-				// !! because y-frame points in opposite direction
-				return -1;
-			if (1 * s1.x * s2.y - s1.y * s2.x > 0)
-				return 1;
-			return -1;
-		}
-	}
 
 	private double getSmallestToBiggestCircleRatio(List<Point> list,
 			Point center) {
@@ -632,21 +536,24 @@ class SymbolDetector {
 	public ArrayList<Symbol> getDetectedSymbols() {
 		return detectedSymbols;
 	}
-	
-	private map.Symbol.Shape getShape(double ratioMinRectContour, double ratioEnclosingCirlceContour, double ratioHullContour){
-		if(ratioMinRectContour < 1.1 && ratioHullContour<1.05 && ratioEnclosingCirlceContour >1.5 && ratioEnclosingCirlceContour <1.9){
+
+	private map.Symbol.Shape getShape(double ratioMinRectContour,
+			double ratioEnclosingCirlceContour, double ratioHullContour) {
+		if (ratioMinRectContour < 1.1 && ratioHullContour < 1.05
+				&& ratioEnclosingCirlceContour > 1.5
+				&& ratioEnclosingCirlceContour < 1.9) {
 			return map.Symbol.Shape.RECTANGLE;
-		}
-		else if(ratioMinRectContour > 1.2 && ratioMinRectContour < 1.4 && ratioHullContour<1.05 && ratioEnclosingCirlceContour >1.4 && ratioEnclosingCirlceContour <1.6){
+		} else if (ratioMinRectContour > 1.2 && ratioMinRectContour < 1.4
+				&& ratioHullContour < 1.05 && ratioEnclosingCirlceContour > 1.4
+				&& ratioEnclosingCirlceContour < 1.6) {
 			return map.Symbol.Shape.HEART;
-		}
-		else if(ratioMinRectContour > 1.2 && ratioMinRectContour <  1.3 && ratioHullContour<1.05 && ratioEnclosingCirlceContour <1.3){
+		} else if (ratioMinRectContour > 1.2 && ratioMinRectContour < 1.3
+				&& ratioHullContour < 1.05 && ratioEnclosingCirlceContour < 1.3) {
 			return map.Symbol.Shape.CIRCLE;
-		}
-		else if(ratioMinRectContour > 1.9 && ratioHullContour>1.4 && ratioEnclosingCirlceContour >1.9){
+		} else if (ratioMinRectContour > 1.9 && ratioHullContour > 1.4
+				&& ratioEnclosingCirlceContour > 1.9) {
 			return map.Symbol.Shape.STAR;
-		}
-		else
-		return map.Symbol.Shape.UNRECOGNISED;	
+		} else
+			return map.Symbol.Shape.UNRECOGNISED;
 	}
 }

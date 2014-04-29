@@ -16,6 +16,7 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.features2d.FeatureDetector;
@@ -189,15 +190,37 @@ class SymbolDetector1 {
 				Point contourCenter = getCenter(contour1);
 				Core.circle(result, contourCenter, 4, new Scalar(255, 49, 0,
 						255));
-
+			//Bounding Rect
 				Rect rec = Imgproc.boundingRect(contour1);
+			//Min enclosing circle;
 				Point center = new Point();
 				float[] radius = new float[5];
 				contour1.convertTo(MatOfPointTo2f, CvType.CV_32FC2);
 				Imgproc.minEnclosingCircle(MatOfPointTo2f, center, radius);
+				Core.circle(result, center, (int) radius[0], new Scalar(255, 0, 0),
+						1);
+				RotatedRect minAreaRect = Imgproc.minAreaRect(MatOfPointTo2f);
+				Point[] pt = new Point[4];
+				minAreaRect.points(pt);
+				
+				MatOfPoint matofpoint = new MatOfPoint(pt);
+				List<MatOfPoint> matofpointlist = new ArrayList<MatOfPoint>();
+				double ratioMinEnclosingAreaWithContourArea = Imgproc.contourArea(matofpoint)/Imgproc.contourArea(contour1);
+				Core.putText(result, "RA/CA:" + ratioMinEnclosingAreaWithContourArea, new Point(contourCenter.x+20,contourCenter.y+40),
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+								200, 250), 1);
+				
+				
+				double ratioEnclosingCircleWithContourArea = (Math.PI*radius[0]*radius[0])/Imgproc.contourArea(contour1);
+				Core.putText(result, "EC/CA:" + ratioEnclosingCircleWithContourArea, new Point(contourCenter.x+20,contourCenter.y+60),
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+								200, 250), 1);
+				matofpointlist.add(matofpoint);
+				
+				Imgproc.drawContours(result, matofpointlist, -1, new Scalar(255,255,255));
 				Core.rectangle(result, rec.tl(), rec.br(),
 						new Scalar(255, 0, 0));
-
+				
 				for (int index = 0; index < contoursPoint.size(); index++) {
 					Point p = contoursPoint.get(index);
 					Core.circle(result, p, 1, new Scalar(255, 0, 0), 3);
@@ -242,7 +265,7 @@ class SymbolDetector1 {
 						0, 255), 1);
 				double ratioAreaHullContour = Imgproc.contourArea(hullPointMat)/Imgproc.contourArea(contour1);
 				
-				Core.putText(result, "" + ratioAreaHullContour, new Point(contourCenter.x+20,contourCenter.y+20),
+				Core.putText(result, "HA/CA:" + ratioAreaHullContour, new Point(contourCenter.x+20,contourCenter.y+20),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 				// isCircleDetection
@@ -493,45 +516,19 @@ class SymbolDetector1 {
 			MatOfPoint contour1) throws InterruptedException {
 		Mat lines = new Mat();
 		Mat canny_output = subImage;
-		// frame.matToBufferedImage(subImage);
-		// frame.repaint();
-		//
-		// Thread.sleep(5000);
-		// Mat canny_output = new Mat(subImage.size(), Core.DEPTH_MASK_8U);
-		// Imgproc.Canny(image.submat(rec), canny_output, 8, 2 * 27);
-
-		// for (int i = 0; i < 2; i++) {
-		// Imgproc.dilate(canny_output, canny_output, Imgproc
-		// .getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
-		// }
-		// Imgproc.HoughLines(subImage, lines, rho, theta, threshold, srn, stn)
-
-		// frame.matToBufferedImage(canny_output);
-		// frame.repaint();
-		// Thread.sleep(5000);
-		// Imgproc.HoughLinesP(subImage, lines, rho, theta, threshold,
-		// minLineLength, maxLineGap)
-		// Imgproc.HoughLinesP(subImage, lines, rho, theta, threshold,
-		// minLineLength, maxLineGap);
-		// Imgproc.HoughLinesP(subImage, lines, 1, Math.PI/180, 1);
 		Imgproc.HoughLinesP(canny_output, lines, 1, Math.PI / 180, 1,
 				Math.max(rec.height, rec.width) * 0.3, 2);
-		// System.out.println("Total Lines:" + lines.cols());
 		ArrayList<Line2D> lineList = new ArrayList<>();
 		for (int x = 0; x < lines.cols(); x++) {
 			double[] vec = lines.get(0, x);
 			lineList.add(new Line2D.Double(vec[0], vec[1], vec[2], vec[3]));
 
 			double x1 = vec[0], y1 = vec[1], x2 = vec[2], y2 = vec[3];
-			Point start = new Point(x1, y1);
-			Point end = new Point(x2, y2);
+			//Point start = new Point(x1, y1);
+			//Point end = new Point(x2, y2);
 
-			Core.line(result.submat(rec), start, end, new Scalar(255, 0, 255),
-					2);
-			// frame.matToBufferedImage(this.image);
-			// frame.repaint();
-			//
-			// Thread.sleep(1000);
+			//Core.line(result.submat(rec), start, end, new Scalar(255, 0, 255),
+			//			2);
 		}
 
 		boolean containsParallel = false;
