@@ -142,7 +142,7 @@ public class SimEnemy implements Runnable {
 	}
 	
 	private void sendLoc() {
-		String key = "enemy.loc.loc";
+		String key = "enemy.info.location";
 		String info = (int) (xPos*10) + "," + (int) (yPos*10); 
 		if(simconn != null)
 			simconn.sendTransfer(info, key);
