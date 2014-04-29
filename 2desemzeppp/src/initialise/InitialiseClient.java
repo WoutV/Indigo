@@ -20,7 +20,7 @@ public class InitialiseClient {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		String fileName = "/shapesDemo.csv";
+		String fileName = "/groot.csv";
 		
 		Map map = new Map(fileName);
 		 

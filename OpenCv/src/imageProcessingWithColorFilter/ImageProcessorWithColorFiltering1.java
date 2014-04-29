@@ -75,7 +75,7 @@ public class ImageProcessorWithColorFiltering1 {
 		while (true) {
 			lip.startThreadProcessing();
 			try {
-				Thread.sleep(500);
+				Thread.sleep(300);
 				System.out
 						.println("-----------------------------------------------------------");
 			} catch (Exception e) {
@@ -288,12 +288,12 @@ public class ImageProcessorWithColorFiltering1 {
 	}
 
 	ArrayList<Symbol> Symbols;
-	SymbolDetector1 symbolDetector;
+	SymbolDetectorArea symbolDetector;
 	boolean threadInitialized = false;
 
 	public void startSymbolDetectorThreads() {
 		Symbols = new ArrayList<>();
-		symbolDetector = new SymbolDetector1(cc, symbolS,timestamp);
+		symbolDetector = new SymbolDetectorArea(cc, symbolS,timestamp);
 		symbolDetector.setFrame(erodedoutput);
 		symbolDetector.initializeToolbarVariables(erodeTimes, dilateTimes,
 				 erodesize, dilatesize, minArea, epsilonApprox,
@@ -342,7 +342,7 @@ public class ImageProcessorWithColorFiltering1 {
 				originalImage = new Mat(buffered.getHeight(),
 						buffered.getWidth(), CvType.CV_8UC3);
 				originalImage.put(0, 0, pixels);
-				Highgui.imwrite("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\"+"foto"+timestamp+".jpg", originalImage);
+			//	Highgui.imwrite("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\"+"foto"+timestamp+".jpg", originalImage);
 				timestamp++;
 				symbolS.increaseTimestamp();
 			} else if (typeInput == 1) {
