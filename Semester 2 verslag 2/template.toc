@@ -14,17 +14,17 @@
 \contentsline {subsection}{\numberline {3.3}Motoren}{6}{subsection.3.3}
 \contentsline {section}{\numberline {4}Algoritmes}{6}{section.4}
 \contentsline {subsection}{\numberline {4.1}Verticale bewegingen}{6}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Horizontale bewegingen}{6}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Pattern recognition}{7}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Locatiebepaling}{8}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.2}Pattern recognition}{6}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Locatiebepaling}{7}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Horizontale bewegingen}{8}{subsection.4.4}
 \contentsline {section}{\numberline {5}Software}{9}{section.5}
 \contentsline {subsection}{\numberline {5.1}GUI}{9}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Client pc: pattern recognition, locatiebepaling en horizontale beweging}{9}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Connectie}{10}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Zeppelin}{11}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.2}Client pc: pattern recognition, locatiebepaling en horizontale beweging}{10}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Connectie}{11}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Zeppelin}{12}{subsection.5.4}
 \contentsline {subsection}{\numberline {5.5}Simulator}{12}{subsection.5.5}
-\contentsline {section}{\numberline {6}Besluit}{12}{section.6}
+\contentsline {section}{\numberline {6}Besluit}{13}{section.6}
 \setcounter {tocdepth}{1}
-\contentsline {section}{\numberline {A}Beschrijving van het proces}{13}{appendix.A}
-\contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{13}{appendix.B}
-\contentsline {section}{\numberline {C}Kritische analyse}{13}{appendix.C}
+\contentsline {section}{\numberline {A}Beschrijving van het proces}{14}{appendix.A}
+\contentsline {section}{\numberline {B}Beschrijving van de werkverdeling}{14}{appendix.B}
+\contentsline {section}{\numberline {C}Kritische analyse}{14}{appendix.C}
