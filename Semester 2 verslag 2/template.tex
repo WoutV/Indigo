@@ -185,15 +185,14 @@ Er is een HeightController die vergelijking \eqref{PID} implementeert, en die er
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
 
-Als eerste gaat de software een kleurfiltratie toepassen op de foto. Dit gebeurt door de foto naar een HSV-digitale voorstelling te converteren. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur. Hierdoor worden er voor elke kleur een binary foto gemaakt, waarop enkel de geselecteerde kleur zichtbaar is. Door dit proces toe te passen wordt alles dat niet de juiste kleur heeft gefilterd. Daarna worden de vijf binary foto's samengevoegd in \'e\'en foto. 
+Als eerste gaat de software een kleurfiltratie toepassen op de foto. Dit gebeurt door de foto naar een HSV-digitale voorstelling te converteren. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur. Hierdoor bekomt men voor elke kleur een binaire foto waarop alleen de geslecteerde kleur zichtbaar is. Enkel de kleuren uit de opgave blijven hierdoor over. Daarna worden de vijf binary foto's samengevoegd in \'e\'en foto. 
 De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen uit deze samengevoegde afbeelding en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking op de vormen.\\
 
-Om verschillende vormen te herkennen worden de eigenschappen van de vormen gebruikt. Deze eigenschappen hangen af van de oppervlaktes.
-Om een rechthoek te onderscheiden van andere vormen wordt er via een methode van opencv een bouding rectangle berekend. De verhouding van de oppervlakte van deze verkregen rechthoek en de oppervlakte van de gevonden contour is ongeveer gelijk aan 1. Dit geldt alleen voor een rechthoek. \\
-Gelijkaardig om een cirkel te onderscheiden wordt er van de gevonden contouren een bounding circle berekend. De verhouding van de oppervlakte van de bounding circle en de oppervlakte van de contour zelf is ongeveer gelijk aan 1.\\
-Om een ster te herkennen wordt er gebruikt gemaakt van een convexe omhullende. De verhouding van de oppervlakte van deze convexe omhullende en de contour is ongeveer gelijk aan 1,5. Om nog nauwkeurig te werken wordt bij alle symbolen de oppervlakte van hun contouren vergeleken met de bounding rectangle, bounding circle en convex hull. Voor gedetailleerde cijfers, zie tabel \ref{recognitionTable}.\\
+De herkenning van vormen gebeurt op basis van de eigenschappen van de vormen. Deze eigenschappen hangen af van de oppervlaktes.
+Om een rechthoek te onderscheiden van andere vormen berekent een mehtode van opencv de omhullende rechthoek. De verhouding van de oppervlakte van deze verkregen rechthoek en de oppervlakte van de gevonden contour is ongeveer gelijk aan 1. Dit geldt alleen voor een rechthoek. \\
+Gelijkaardig om een cirkel te onderscheiden berekent een andere methode een omhullende cirkel. De verhouding van de oppervlakte van de bounding circle en de oppervlakte van de contour zelf is ongeveer gelijk aan 1.\\
+Om een ster te herkennen wordt er gebruikt gemaakt van een convexe omhullende contour. De verhouding van de oppervlakte van deze convexe omhullende en de contour is ongeveer gelijk aan 1,5. Om de verschillende vormen beter te onderscheiden worden bij alle symbolen de oppervlakte van hun contouren vergeleken met de bounding rectangle, bounding circle en convex hull. Voor gedetailleerde cijfers, zie tabel \ref{recognitionTable}.\\
 
-Table + afbeelding
 
 \begin{table}[h]
 \begin{center}
@@ -215,11 +214,11 @@ Ster		&	\textgreater1,9		&	\textgreater1.4		&	\textgreater1.9\\
 \end{table}
 
 
-Hierdoor vinden we de symbolen die aanwezig zijn op deze afbeelding. Om fouten te detecteren wordt er aan symbolStabilizer gevraagd of het mogelijk is dat de gevonden symbolen in die positie staan. SymbolStabilizer houdt rekening met de eerder gedetecteerde symbolen. Bv als er bij voorgaande twee afbeeldingen een ster wordt herkend op een bepaalde positie en dit keer een rechthoek herkend wordt zal symbol stabalizer toch ster terug geven. \\ 
+Hierdoor vinden we de symbolen die aanwezig zijn op deze afbeelding. De symbolStabilizer zorgt voor een extra foutreductie door te verifieren of een gevonden symbool op een bepaalde positie kan staan. Bijvoorbeeld als er bij voorgaande twee afbeeldingen een ster wordt herkend op een bepaalde positie en dit keer een rechthoek herkend wordt zal symbol stabalizer toch een ster terug geven. \\ 
 
-Eens de symbolen herkend zijn wordt er geprobeerd om een gelijkzijdige driehoek te bepalen. Als er geen driehoek wordt gevonden of als er maar twee symbolen gevonden worden dan wordt er van de eerder genegeerde contouren toch een kleur bepaald om zo alsnog een driehoek te vinden. Als er meerdere driehoeken gevonden worden, selecteert het algoritme diegenen die het dichtste bij het middelpunt van de foto staat.\\
+Na de herkenning van de bymbolen probeert de software een gelijkzijdige driehoek te bepalen. Indien er minder dan drie symbolen volledig herkend wordne, maar van een andere figuur toch de kleur is bepaald, zal er indien mogelijk toch een gelijkzijdige driehoek gevormd worden. Als er meerdere driehoeken gevonden worden, selecteert het algoritme diegenen die het dichtste bij het middelpunt van de foto staat.\\
 
-Om de kleur te bepalen wordt de afbeelding met de contouren omgezet naar HSV digitale voorstelling. Door rekening te houden met de H, S, en V waarden kan de kleur dan worden vastgelegd.\\
+Om de kleur te bepalen wordt de afbeelding met de contouren omgezet naar HSV digitale voorstelling. De HSV-waarden leggen de kleur eenduidig vast.\\
 
 
 \begin{figure}[H]

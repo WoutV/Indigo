@@ -193,18 +193,18 @@ Om een rechthoek te onderscheiden van andere vormen wordt er via een methode van
 Gelijkaardig om een cirkel te onderscheiden wordt er van de gevonden contouren een bounding circle berekend. De verhouding van de oppervlakte van de bounding circle en de oppervlakte van de contour zelf is ongeveer gelijk aan 1.\\
 Om een ster te herkennen wordt er gebruikt gemaakt van een convexe omhullende. De verhouding van de oppervlakte van deze convexe omhullende en de contour is ongeveer gelijk aan 1,5. Om nog nauwkeurig te werken wordt bij alle symbolen de oppervlakte van hun contouren vergeleken met de bounding rectangle, bounding circle en convex hull. Voor gedetailleerde cijfers, zie tabel \ref{recognitionTable}.\\
 
-Table + afbeelding
 
 \begin{table}[h]
 \begin{center}
-\begin{tabular}{r||c|c|c}
+\begin{tabular}{r|c|c|c}
 
-Vorm		&	bounding Rectangle	&	Hull Contour	&	enclosing cirlce\\
+Vorm		&	omhullende rechthoek	&	convex omhullende	&	omhullende cirkel\\
+\hline
 						
-Rectangle	&	\textless1,1		&	\textless1.05		&	1,5-1,9\\
-Circle		&	1,2-1,3			&	\textless1.05		&	\textless1,3\\
-Heart		&	1,2-1,4			&	\textless1.05		&	1,4-1,6\\
-Star		&	\textgreater1,9		&	\textgreater1.4		&	\textgreater1.9\\
+Rechthoek	&	\textless1,1		&	\textless1.05		&	1,5-1,9\\
+Cirkel		&	1,2-1,3			&	\textless1.05		&	\textless1,3\\
+Hart		&	1,2-1,4			&	\textless1.05		&	1,4-1,6\\
+Ster		&	\textgreater1,9		&	\textgreater1.4		&	\textgreater1.9\\
 
 \end{tabular}
 \caption{Verhoudingen van contour en een aantal omhullende figuren}
@@ -214,28 +214,13 @@ Star		&	\textgreater1,9		&	\textgreater1.4		&	\textgreater1.9\\
 \end{table}
 
 
-Hierdoor vinden we de symbolen die aanwezig zijn op deze afbeelding. Om een foutdetectie tegen te werken wordt er aan symbol stabalizer gevraagd of het mogelijk is om een bepaalde symbool in een bepaalde positie te zijn. Symbol stabalizer houdt rekening met de voor gedetecteerde symbolen. Bv als er bij voorgaande twee afbeeldingen een ster wordt herkend op een bepaalde positie en dit keer een rechthoek herkend wordt zal symbol stabalizer toch ster terug geven.  
+Hierdoor vinden we de symbolen die aanwezig zijn op deze afbeelding. Om fouten te detecteren wordt er aan symbolStabilizer gevraagd of het mogelijk is dat de gevonden symbolen in die positie staan. SymbolStabilizer houdt rekening met de eerder gedetecteerde symbolen. Bv als er bij voorgaande twee afbeeldingen een ster wordt herkend op een bepaalde positie en dit keer een rechthoek herkend wordt zal symbol stabalizer toch ster terug geven. \\ 
 
-Eens de symbolen herkend zijn wordt er geprobeerd om een gelijkzijdige driehoek te bepalen. Als er geen driehoek wordt gevonden of als er maar twee symbolen gevonden worden dan wordt van de randcontouren die eerst genegeerd werden, omdat er ze niet volledig waren, toch een kleur van te bepalen. 
+Eens de symbolen herkend zijn wordt er geprobeerd om een gelijkzijdige driehoek te bepalen. Als er geen driehoek wordt gevonden of als er maar twee symbolen gevonden worden dan wordt er van de eerder genegeerde contouren toch een kleur bepaald om zo alsnog een driehoek te vinden. Als er meerdere driehoeken gevonden worden, selecteert het algoritme diegenen die het dichtste bij het middelpunt van de foto staat.\\
 
-Om de kleur te bepalen wordt er van origineel afbeelding de deel genomen waar er countouren staan en omgezet naar HSV digitale voorstelling. Door rekening te houden met de H, S, en V waarden kunnen worden de kleur vast gelegd.
-
-Eerst gaat de kleur bepaald worden. Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling.  binnen de contour van de gedetecteerde vorm. \\
+Om de kleur te bepalen wordt de afbeelding met de contouren omgezet naar HSV digitale voorstelling. Door rekening te houden met de H, S, en V waarden kan de kleur dan worden vastgelegd.\\
 
 
-
-Als eerste herkent de software de simpele vormen. De functionaliteit van het programma beperkt zich tot de mogelijke vormen meegedeeld in de probleemstelling (cirkel, rechthoek, vijfpuntige ster, hart). Een omvorming naar zwart-wit vergemakkelijkt dit. De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking hebben tot de vormen. \\
-
-Eerst gaat de kleur bepaald worden. Het programma converteert hiervoor de foto naar een HSV-digitale voorstelling. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur binnen de contour van de gedetecteerde vorm. \\
-eerst kleuren 
-hoe vormen herkennen
-meerdere driehoeken herkend -\textgreater dichtste bij middelpunt
-ten opzichte van vorige positie
-indien geen driehoek -\textgreater unkown met enkel kleur.
-tablet
-
-%TODO zie hierboven
-%TODO figuur image recognition
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{patternrecognition.png}
