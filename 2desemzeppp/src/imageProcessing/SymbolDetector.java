@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import map.Symbol;
+import navigation.Dispatch;
+
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -285,11 +287,23 @@ class SymbolDetector {
 
 		}
 		this.detectedSymbols = detectedSymbols;
+		this.center = null;this.s1 =null ; this.s2 = null;
 		checkForTriangle();
+		if(center != null && s1 != null && s2 !=null){
+			center = changeYAxis(center);
+			s1 = changeYAxis(s1); s2 =changeYAxis(s2);
+			Dispatch.processTriangleOfSymbols(center, s1, s2);
+		}
+		
+		
 
 	}
-
-	public void checkForTriangle() {
+	private Symbol changeYAxis(Symbol symbol){
+		symbol.setY(NotProcessedImage.size().height - symbol.getY());
+		return symbol;
+	} 
+	Symbol center,s1,s2;
+	private void checkForTriangle() {
 		boolean triangleFound = false;
 		if (detectedSymbols.size() >= 3) {
 			for (int i = 0; i < detectedSymbols.size(); i++) {
@@ -316,10 +330,33 @@ class SymbolDetector {
 									new Point(symbol3.getX(), symbol3.getY()),
 									new Point(symbol2.getX(), symbol2.getY()),
 									new Scalar(50 * i, 50 * i, 0));
+							double s1d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
+							double s2d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
+							double s3d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
+							if(s1d < s2d && s1d < s3d){
+								this.center = symbol1;
+								this.s1 = symbol2;
+								this.s2 = symbol3;
+							}
+							else if(s2d < s1d && s2d < s3d){
+								this.center = symbol2;
+								this.s1 = symbol1;
+								this.s2 = symbol3;
+							}
+							
+							else{
+								this.center = symbol3;
+								this.s1 = symbol2;
+								this.s2 = symbol1;
+							}
 							triangleFound = true;
 						}
+						if(triangleFound)
+							break;
 
 					}
+					if(triangleFound)
+						break;
 				}
 			}
 		}
@@ -347,8 +384,16 @@ class SymbolDetector {
 					Core.line(result, new Point(middleSymbol.getX(),
 							middleSymbol.getY()), contourCenter, new Scalar(0,
 							255, 255));
+					center = middleSymbol;
+					s1 = nearestSymbol;
+					s2 = new Symbol(getColor(NotProcessedImage, contourCenter) + map.Symbol.Shape.UNRECOGNISED.toString(), timestamp,
+							contourCenter.x, contourCenter.y);
+					triangleFound = true;
 				}
+				if(triangleFound)
+					break;
 			}
+			
 		}
 
 	}

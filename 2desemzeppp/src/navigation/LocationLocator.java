@@ -58,7 +58,7 @@ public class LocationLocator {
 	public void locAndMoveWithTriangle(Symbol s1, Symbol s2, Symbol s3) {
 		List<Symbol> s = new LinkedList<>();
 		s.add(s2);
-		s.add(s1);
+		s.add(s3);
 		s = sortImageSymbolPolar(s, s1);
 		List<double[]> possibleLocs = find3(s.get(0),s.get(1),s1);
 		double[] l;

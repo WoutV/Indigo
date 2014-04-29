@@ -8,7 +8,9 @@ import map.Symbol;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
+import org.opencv.imgproc.Imgproc;
 
 public class MainImageProcessorThread implements Runnable{
 	private Integer erodeTimes = 0;
@@ -45,8 +47,8 @@ public class MainImageProcessorThread implements Runnable{
 		cc = new Color("colors.txt");
 		this.filepath = colorText;
 		imgUpdtr = new ImageUpdater();
-		Thread imgUpdtrThread = new Thread(imgUpdtr);
-		imgUpdtrThread.start();
+		//Thread imgUpdtrThread = new Thread(imgUpdtr);
+		//imgUpdtrThread.start();
 		
 	}
 	ImageUpdater imgUpdtr;
@@ -105,7 +107,9 @@ public class MainImageProcessorThread implements Runnable{
 
 	private void updateOriginalImage() {
 		try {
-			this.originalImage = imgUpdtr.getLatestImage();
+			//this.originalImage = imgUpdtr.getLatestImage();
+			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
+					Imgproc.COLOR_BGR2GRAY);
 			timestamp++;
 			symbolS.increaseTimestamp();
 			symbolDetector.updateImage(originalImage);
@@ -138,6 +142,9 @@ public class MainImageProcessorThread implements Runnable{
 			foundContours.repaint();
 			resultFrame.matToBufferedImage(originalImage);
 			resultFrame.repaint();	
+			updateOriginalImage();
+			if(timestamp>30){
+			Thread.sleep(2000);}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
