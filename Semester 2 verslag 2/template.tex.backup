@@ -267,19 +267,18 @@ y_{new} = -x_{shifted}*sin(\alpha) + y_{shifted}*cos(\alpha)
  \end{cases}
 \end{equation}
 
-Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat de PID-regelaar de juiste motor bijstuurt. Zie verder voor het UML-schema met de klassen die gebruikt worden voor horizontale navigatie (figuur \ref{navigation}).
+Nu geven we deze nieuwe x- en y-waarden als bestemming door aan de bijbehorende PositionController, zodat de PID-regelaar de juiste motor bijstuurt. Zie verder voor het UML-schema met de klassen die de horizontale navigatie gebruikt. (figuur \ref{navigation}).
 
 % == SOFTWARE == %
 \section{Software}
 
-Alle software voor dit project is in Java geschreven. Deze keuze is in het eerste semester al gemaakt omdat dit voor het hele team de meest gebruikte programmeertaal was, en omdat er voldoende voorbeeldcode te vinden was om te programmeren op de Pi. We hebben in het eerste semester ook geen problemen gehad met het implementeren van functionaliteit in Java (aansturen motoren, QR-codes). \\
-Een andere oplossing, door veel concurrenten gekozen, is Python. Een nadeel hiervan is dat iedereen dan een nieuwe taal zou moeten leren, wat het ontwerpproces enorm vertraagt. Voor Python is wel meer voorbeeldcode te vinden voor de Raspberry Pi. Om de redenen hierboven beschreven hebben we echter voor Java gekozen. \\ 
-Dit semester zijn we wel op veel moeilijkheden gestoten bij het implementeren van image recognition in Java.
+Alle software voor dit project is in Java geschreven. Deze keuze is in het eerste semester al gemaakt omdat dit voor het hele team de meest gebruikte programmeertaal was en omdat er voldoende voorbeeldcode te vinden was om te programmeren op de Pi. We hebben in het eerste semester ook geen problemen gehad met het implementeren van functionaliteit in Java (aansturen motoren, QR-codes). \\
+Een andere oplossing, door veel concurrenten gekozen, is Python. Een nadeel hiervan is dat iedereen dan een nieuwe taal zou moeten leren, wat het ontwerpproces enorm vertraagt. Voor Python is wel meer voorbeeldcode te vinden voor de Raspberry Pi. Om de redenen hierboven beschreven hebben we echter voor Java gekozen. Dit semester zijn we wel op veel moeilijkheden gestoten bij het implementeren van image recognition in Java.
 
-Een gedeelte van de code is overgenomen van ons project van vorig semester. Deze is echter volledig opgefrist, waardoor de code veel overzichtelijker is geworden. Stukken software die toen door tijdsgebrek zomaar ergens werden bijgezet, zijn verplaatst naar waar ze echt thuishoren. Enkele basiselementen zoals het aansturen van de motoren zijn echter hetzelfde gebleven.\\
+Een gedeelte van de code is overgenomen van ons project van vorig semester. Deze is echter volledig opgefrist, waardoor de code veel overzichtelijker is geworden. Stukken software die toen door tijdsgebrek zomaar ergens werden bijgezet, zijn verplaatst naar waar ze echt thuishoren. Enkele basiselementen zoals het aansturen van de motoren blijven echter hetzelfde.
 
 \subsection{GUI}
-De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins, en de bestemming. \\
+De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de RabbitMQ-server die het speelveld en de zeppelins controleert. De GUI geeft dan informatie weer over het speelveld, de co\"{o}rdinaten van de zeppelins en de bestemming. \\
 
 %TODO AFBEELDING VAN DE GUI 
 %GUI afbeelding %
@@ -291,16 +290,16 @@ De GUI stelt de gebruiker in staat om vanaf een pc verbinding te maken met de Ra
 \label{GUI}
 \end{figure}
 
-De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. De kaart wordt uitgelezen (zoals al beschreven bij het algoritme voor plaatsbepaling) en omgezet naar een afbeelding. Op de afbeelding verschijnen ook de posities van de eigen zeppelin en de vijandige zeppelin, en de bestemming. Naast de kaart wordt de opdracht van de zeppelins getoond en is er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. \\
+De eerste tab (`overview') toont de hoogte van beide zeppelins, alsook de toestand van de eigen propellers. Een kaart geeft de locaties van de zeppelins weer. De kaart wordt uitgelezen (zoals al beschreven bij het algoritme voor plaatsbepaling) en omgezet naar een afbeelding. Op de afbeelding verschijnen ook de posities van de eigen zeppelin en de vijandige zeppelin, en de bestemming. Naast de kaart toont de GUI de hoogte van de zeppelins en staat er een overzicht van de laatste berichten die zijn uitgewisseld tussen de pc en de zeppelin. Er is ook ruimte voorzien om de meest recent herkende afbeelding weer te geven op het scherm. \\
 
 De tweede tab geeft een uitgebreider overzicht van alle informatie die wordt uitgewisseld tussen server, GUI en zeppelin, met een tijdsindicatie. Er is de mogelijkheid om berichten te filteren op type. \\
 
 De derde tab ('credits') geeft wat versie-informatie en auteursrechterlijke informatie over het programma.
 
 \subsection{Client pc: pattern recognition, locatiebepaling en horizontale beweging}
-De eerder vermelde pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. Oorspronkelijk was het plan om het grootste deel van de programma's (waaronder image regcognition) op de Pi te laten draaien. We hebben echter veel problemen ondervonden om OpenCV werkend te krijgen op de Pi, waardoor we uiteindelijk hebben besloten image recognition op de client pc uit te voeren. In dit geval is het ook logisch de locatiebepaling en locatiecontrole op deze pc te zetten, aangezien dit de volgende stappen zijn nadat de figuren herkend zijn. Dit zorgt ervoor dat enkel de locatie moet worden doorgestuurd en niet de afbeelding.\\
+ Oorspronkelijk was het plan om het grootste deel van de programma's (waaronder image regcognition) op de Pi te laten draaien. We hebben echter veel problemen ondervonden om OpenCV werkend te krijgen op de Pi, waardoor we uiteindelijk hebben besloten image recognition op de client pc uit te voeren. In dit geval is het ook logisch de locatiebepaling en locatiecontrole op deze pc te zetten, aangezien dit de volgende stappen zijn nadat de figuren herkend zijn. Dit zorgt ervoor dat enkel de locatie moet worden doorgestuurd en niet de afbeelding.\\
 
-De zeppelin biedt via een webserver afbeeldingen aan (zie verder). De client gaat de recentste afbeelding om de 0.5 s opvragen. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. De LocationLocator kan hieruit de huidige positie van de zeppelin bepalen. Nu gaat de PositionController de af te leggen afstand in x- en y-richting bepalen. Beide richtingen hebben een PositionController, die met een PID-algoritme de pwm-waarde bepaalt. Deze worden als low-level commands naar de zeppeling gestuurd.\\
+De zeppelin biedt via een webserver afbeeldingen aan (zie verder). De client gaat de recentste afbeelding om de 0.5 s opvragen. Deze wordt dan omgezet naar een lijst van figuren door de ImageProcessor. Deze pattern recognition is gemaakt met behulp van de Java-library OpenCV\footnote{http://opencv.org/}. Hiermee kan detectie van vormen en kleuren worden ge\"{i}mplementeerd. cDe LocationLocator kan hieruit de huidige positie van de zeppelin bepalen. Nu gaat de PositionController de af te leggen afstand in x- en y-richting bepalen. Beide richtingen hebben een PositionController, die met een PID-algoritme de pwm-waarde bepaalt. Deze worden als low-level commands naar de zeppelin gestuurd.\\
 
 De client bevat naast de hierboven beschreven software ook de GUI. Een controlerende klasse stuurt relevante informatie door naar de GUI. Daarnaast kijkt hij of de zeppelin zich bij een tablet waar hij naartoe moet bevindt (want dan moet deze worden gevraagd de QR-code te tonen en moet uit de afbeelding een opdracht worden gelezen) en of de zeppelin bij de bestemming is (want dan moet er worden geland).\\
 
