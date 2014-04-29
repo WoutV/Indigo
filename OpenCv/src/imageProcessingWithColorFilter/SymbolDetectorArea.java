@@ -198,7 +198,7 @@ class SymbolDetectorArea {
 				Core.circle(result, center, (int) radius[0], new Scalar(255, 0, 0),
 						1);
 				double ratioEnclosingCircleWithContourArea = (Math.PI*radius[0]*radius[0])/Imgproc.contourArea(contour1);
-				Core.putText(result, "EC/CA:" + ratioEnclosingCircleWithContourArea, new Point(contourCenter.x+20,contourCenter.y+60),
+				Core.putText(result, "EC/CA:" + Math.round(ratioEnclosingCircleWithContourArea*100), new Point(contourCenter.x+20,contourCenter.y+60),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 				//Min Enclosing Rectangle
@@ -208,13 +208,20 @@ class SymbolDetectorArea {
 				MatOfPoint matofpoint = new MatOfPoint(pt);
 				List<MatOfPoint> matofpointlist = new ArrayList<MatOfPoint>();
 				double ratioMinEnclosingAreaWithContourArea = Imgproc.contourArea(matofpoint)/Imgproc.contourArea(contour1);
-				Core.putText(result, "RA/CA:" + ratioMinEnclosingAreaWithContourArea, new Point(contourCenter.x+20,contourCenter.y+40),
+				Core.putText(result, "RA/CA:" + Math.round(ratioMinEnclosingAreaWithContourArea*100), new Point(contourCenter.x+20,contourCenter.y+40),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 				
 				matofpointlist.add(matofpoint);
 				
 				Imgproc.drawContours(result, matofpointlist, -1, new Scalar(255,255,255));
+				
+				double ratioArea = getSmallestToBiggestCircleRatio(
+						contour1.toList(), contourCenter);
+				
+				Core.putText(result, "BPC/SPC:" + Math.round(ratioArea*100), new Point(contourCenter.x+20,contourCenter.y+80),
+						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+								200, 250), 1);
 //				Core.rectangle(result, rec.tl(), rec.br(),
 //						new Scalar(255, 0, 0));
 				
@@ -259,7 +266,7 @@ class SymbolDetectorArea {
 						0, 255), 1);
 				double ratioAreaHullContour = Imgproc.contourArea(hullPointMat)/Imgproc.contourArea(contour1);
 				
-				Core.putText(result, "HA/CA:" + ratioAreaHullContour, new Point(contourCenter.x+20,contourCenter.y+20),
+				Core.putText(result, "HA/CA:" + Math.round(ratioAreaHullContour*100), new Point(contourCenter.x+20,contourCenter.y+20),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 				// isCircleDetection
@@ -268,8 +275,7 @@ class SymbolDetectorArea {
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
 
-				double rationArea = getSmallestToBiggestCircleRatio(
-						contour1.toList(), contourCenter);
+				
 				Shape shape = getShape(ratioMinEnclosingAreaWithContourArea, ratioEnclosingCircleWithContourArea, ratioAreaHullContour);
 				Symbol S = new Symbol(Color + shape.toString(), timestamp,
 							contourCenter.x, contourCenter.y);
@@ -291,12 +297,12 @@ class SymbolDetectorArea {
 	public void checkForTriangle() {
 		boolean triangleFound = false;
 		if (detectedSymbols.size() >= 3) {
-			for (int i = 0; i < detectedSymbols.size(); i++) {
+			for (int i = 0; i < detectedSymbols.size()&& !triangleFound; i++) {
 				Symbol symbol1 = detectedSymbols.get(i);
-				for (int p = i + 1; p < detectedSymbols.size(); p++) {
+				for (int p = i + 1; p < detectedSymbols.size() && !triangleFound; p++) {
 					Symbol symbol2 = detectedSymbols.get(p);
 					double distance1 = symbol2.getDistanceTo(symbol1);
-					for (int q = p + 1; q < detectedSymbols.size(); q++) {
+					for (int q = p + 1; q < detectedSymbols.size() && !triangleFound; q++) {
 						Symbol symbol3 = detectedSymbols.get(q);
 						double distance2 = symbol3.getDistanceTo(symbol1);
 						double distance3 = symbol3.getDistanceTo(symbol2);
@@ -347,6 +353,8 @@ class SymbolDetectorArea {
 							middleSymbol.getY()), contourCenter, new Scalar(0,
 							255, 255));
 				}
+				if(triangleFound)
+					break;
 			}
 		}
 

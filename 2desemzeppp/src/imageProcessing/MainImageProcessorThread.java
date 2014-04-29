@@ -47,8 +47,8 @@ public class MainImageProcessorThread implements Runnable{
 		cc = new Color("colors.txt");
 		this.filepath = colorText;
 		imgUpdtr = new ImageUpdater();
-		//Thread imgUpdtrThread = new Thread(imgUpdtr);
-		//imgUpdtrThread.start();
+		Thread imgUpdtrThread = new Thread(imgUpdtr);
+		imgUpdtrThread.start();
 		
 	}
 	ImageUpdater imgUpdtr;
@@ -107,9 +107,13 @@ public class MainImageProcessorThread implements Runnable{
 
 	private void updateOriginalImage() {
 		try {
-			//this.originalImage = imgUpdtr.getLatestImage();
-			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
-					Imgproc.COLOR_BGR2GRAY);
+			this.originalImage = imgUpdtr.getLatestImage();
+			while(this.originalImage == null){
+				this.originalImage = imgUpdtr.getLatestImage();
+				System.out.println("Got null");
+			}
+//			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
+//					Imgproc.COLOR_BGR2GRAY);
 			timestamp++;
 			symbolS.increaseTimestamp();
 			symbolDetector.updateImage(originalImage);
@@ -140,11 +144,11 @@ public class MainImageProcessorThread implements Runnable{
 			Mat contourMat = symbolDetector.getBinaryMat();
 			foundContours.matToBufferedImage(contourMat);
 			foundContours.repaint();
-			resultFrame.matToBufferedImage(originalImage);
+			resultFrame.matToBufferedImage(symbolDetector.getResultImage());
 			resultFrame.repaint();	
 			updateOriginalImage();
-			if(timestamp>30){
-			Thread.sleep(2000);}
+//			if(timestamp>30){
+//			Thread.sleep(300);}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

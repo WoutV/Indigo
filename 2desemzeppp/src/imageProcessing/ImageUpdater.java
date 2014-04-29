@@ -38,6 +38,7 @@ public class ImageUpdater implements Runnable{
 			
 			BufferedImage buffered;
 			try {
+				Thread.sleep(100);
 				buffered = ImageIO.read(new URL(
 						"http://raspberrypi.mshome.net/cam_pic.php?time="
 								+ System.currentTimeMillis()));
@@ -48,6 +49,9 @@ public class ImageUpdater implements Runnable{
 						buffered.getWidth(), CvType.CV_8UC3);
 				piImage.put(0, 0, pixels);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

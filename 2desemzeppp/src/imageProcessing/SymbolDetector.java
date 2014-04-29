@@ -63,10 +63,13 @@ class SymbolDetector {
 	public void updateImage(Mat image) {
 		timestamp++;
 		this.image = image.clone();
-		result = image;
+		result = image.clone();
 		NotProcessedImage = image.clone();
 	}
-
+	
+	public Mat getResultImage(){
+		return result;
+	}
 	Mat NotProcessedImage;
 	Mat result;
 
@@ -175,7 +178,7 @@ class SymbolDetector {
 
 		for (int i = 0; i < ApproxContours.size(); i++) {
 			MatOfPoint contour1 = ApproxContours.get(i);
-			if (Imgproc.contourArea(contour1) >= 400) {
+			if (Imgproc.contourArea(contour1) >= 200) {
 				Thread.sleep(10);
 				new ArrayList<Point>(contour1.toList());
 
