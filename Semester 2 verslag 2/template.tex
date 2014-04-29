@@ -185,8 +185,16 @@ Er is een HeightController die vergelijking \eqref{PID} implementeert, en die er
 \subsection{Pattern recognition}
 De camera neemt foto’s van de patronen op het veld onder de zeppelin. De Raspberry Pi bewerkt deze foto’s met behulp van zelfgeschreven software. Op elk geregistreerd beeld wordt dezelfde sequentie van operaties uitgevoerd. \\
 
-Als eerste gaat de software een kleurfiltratie toepassen op de foto. Dit gebeurt door de foto naar een HSV-digitale voorstelling te converteren. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur. Hierdoor bekomt men voor elke kleur een binaire foto waarop alleen de geslecteerde kleur zichtbaar is. Enkel de kleuren uit de opgave blijven hierdoor over. Daarna worden de vijf binary foto's samengevoegd in \'e\'en foto. 
+Als eerste gaat de software een kleurfiltratie toepassen op de foto. Dit gebeurt door de foto naar een HSV-digitale voorstelling te converteren. De minimale en maximale waarden voor respectievelijk H,S en V, die karakteristiek zijn voor de mogelijke kleuren, bepalen de aanwezige kleur. Hierdoor bekomt men voor elke kleur een binaire foto waarop alleen de geslecteerde kleur zichtbaar is. Enkel de kleuren uit de opgave blijven hierdoor over. Daarna worden de vijf binary foto's samengevoegd in \'e\'en foto. Voor een visualisering van dit proces, zie figuur \ref{imageReco}.\\
 De vormherkenningalgoritmes (pattern recognition) registreren de contouren van de vormen uit deze samengevoegde afbeelding en halen de nuttige contouren uit het waargenomen beeld. Operaties in het algoritme verwijderen contouren die geen betrekking op de vormen.\\
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{imagerecognition.jpg}
+\end{center}
+\caption{Visualisering van kleurfiltratie}
+\label{imageReco}
+\end{figure}
 
 De herkenning van vormen gebeurt op basis van de eigenschappen van de vormen. Deze eigenschappen hangen af van de oppervlaktes.
 Om een rechthoek te onderscheiden van andere vormen berekent een mehtode van opencv de omhullende rechthoek. De verhouding van de oppervlakte van deze verkregen rechthoek en de oppervlakte van de gevonden contour is ongeveer gelijk aan 1. Dit geldt alleen voor een rechthoek. \\
