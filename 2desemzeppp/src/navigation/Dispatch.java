@@ -153,7 +153,7 @@ public class Dispatch {
 	 */
 	private static void foundTablet(int no) {
 		if(sender!=null) {
-			//send message
+			sender.sendTransfer(RSA, "indigo.tablet.tablet"+ no);
 		}
 	}
 	
@@ -162,7 +162,7 @@ public class Dispatch {
 	 */
 	private static void land() {
 		if(sender!=null) {
-			//send message to go to 0 cm
+			sender.sendTransfer("0", "indigo.elevate");
 		}
 	}
 }

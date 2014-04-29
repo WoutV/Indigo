@@ -26,7 +26,7 @@ public class ReceiverClient implements Runnable{
 	private final GuiCommands gc;
 	private final String EXCHANGE_NAME = "server";
 	private ArrayList<String> keys;
-	private String enemyTeam = "";
+	private String enemyTeam = "enemy";
 	public ReceiverClient(GuiMain gui){
 		
 		gc = gui.getGuic();
@@ -46,7 +46,8 @@ public class ReceiverClient implements Runnable{
 		if(key.equals("indigo.info.height")){
 			height(information, true);
 		}else if(key.equals(enemyTeam+".info.location")){
-			
+			String[] parts = information.split(",");
+			Dispatch.receiveEnemyLoc(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 		}else if(key.equals(enemyTeam+".info.height")){
 			height(information, false);
 		}else if(key.equals("indigo.private.motor1")){
