@@ -82,8 +82,10 @@ public class Dispatch {
 	 * Receives a target location and sends it to PositionControllers, gui and possibly
 	 * SimEnemy.
 	 * 
-	 * @param x
-	 * @param y
+	 * @param 	x
+	 * 			x coordinate (in cm)
+	 * @param 	y
+	 * 			y-coordinate (in cm)
 	 */
 	public static void receiveTarget(int x, int y) {
 		targetX = x;
@@ -93,6 +95,18 @@ public class Dispatch {
 		guimain.setTargetLocation(x, y);
 		if(simEnemy != null)
 			simEnemy.receiveTarget(x,y);
+	}
+	
+	/**
+	 * Receives an enemy target and sends it to gui.
+	 * 
+	 * @param 	x
+	 * 			x coordinate (in cm).
+	 * @param 	y
+	 * 			y-coordinate (in cm).
+	 */
+	public static void receiveEnemyTarget(int x, int y) {
+		guimain.setEnemyTarget(x,y);
 	}
 	
 	/**

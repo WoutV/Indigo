@@ -9,14 +9,14 @@ import java.util.Random;
 public class SimEnemy implements Runnable {
 	private double Constant;
 	
-	private SimConnection simconn;
+	private SimEnemyConn simconn;
 	private SimEnemyConnNoRabbit simconn2;
 
 	/**
-	 * Set this SimEnemy to use a SimConnection using a Rabbit server.
+	 * Set this SimEnemy to use a SimEnemyConn using a Rabbit server.
 	 * @param sims
 	 */
-	public void setSimConn(SimConnection sims){
+	public void setSimConn(SimEnemyConn sims){
 		simconn = sims;
 	}
 	
@@ -104,9 +104,37 @@ public class SimEnemy implements Runnable {
 		if(!running) {
 			xTarget = x;
 			yTarget = y;
+			sendTarget();
 			running = true;
 			thread = new Thread(this);
 			thread.start();
+		}
+	}
+	
+	private void sendTarget() {
+		String key = "enemy.info.target";
+		String info = (int) (xTarget*10) + "," + (int) (yTarget*10); 
+		if(simconn != null)
+			simconn.sendTransfer(info, key);
+		if(simconn2 != null)
+			simconn2.sendTransfer(info, key);
+	}
+	
+	/**
+	 * Receives a new command. Only available when the Sim is at a target (not running).
+	 * It makes the Sim move towards the new target.
+	 * 
+	 * @param 	x
+	 * 			X-coordinate of the new target (in cm)
+	 * @param 	y
+	 * 			Y-coordinate of the new target (in cm)
+	 * @param 	tablet
+	 * 			No. of the tablet at the new target. 0 if land-target without tablet.
+	 */
+	public void receiveCommand(int x, int y, int tablet) {
+		if(!running) {
+			tabletTarget = tablet;
+			receiveTarget(x,y);
 		}
 	}
 	
