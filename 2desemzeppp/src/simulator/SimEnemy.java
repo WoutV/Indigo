@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * The SimEnemy: Sim for an enemy zeppelin.
- * The Sim needs a Map and target. It moves slowly towards this target.
+ * The Sim needs a target. It moves slowly towards this target.
  */
 public class SimEnemy implements Runnable {
 	private double Constant;
@@ -39,6 +39,8 @@ public class SimEnemy implements Runnable {
 	//all in cm!!
 	private double xPos=200,yPos=200;
 	private double xTarget,yTarget;
+	
+	private int tabletTarget;
 	
 	private Thread thread;
 	
@@ -138,6 +140,16 @@ public class SimEnemy implements Runnable {
 			}
 			
 			sendLoc();
+			
+			if(tabletTarget != 0) {
+				String key = "enemy.tablet.tablet" + tabletTarget;
+				String info = "ss";
+				if(simconn != null)
+					simconn.sendTransfer(info, key);
+				if(simconn2 != null)
+					simconn2.sendTransfer(info, key);
+			}
+			
 		}
 	}
 	
