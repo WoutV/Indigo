@@ -23,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
 import map.Map;
@@ -120,6 +119,7 @@ public class GuiMain extends javax.swing.JFrame {
         tab1LabelDisplay = new javax.swing.JLabel();
         mapPanel = new javax.swing.JPanel();
         mapDisplay = new javax.swing.JLabel();
+        mapDisplayEnemy = new javax.swing.JLabel();
         commandlistTab = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         shownGUIEventList = new javax.swing.JTextArea();
@@ -291,6 +291,14 @@ public class GuiMain extends javax.swing.JFrame {
         mapDisplay.setOpaque(true);
         overviewTab.add(mapDisplay);
         mapDisplay.setBounds(10, 500, 500, 28);
+
+        mapDisplayEnemy.setBackground(new java.awt.Color(204, 0, 0));
+        mapDisplayEnemy.setForeground(new java.awt.Color(255, 255, 255));
+        mapDisplayEnemy.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mapDisplayEnemy.setText("map display enemy");
+        mapDisplayEnemy.setOpaque(true);
+        overviewTab.add(mapDisplayEnemy);
+        mapDisplayEnemy.setBounds(10, 530, 500, 28);
 
         jTabbedPane1.addTab("overview", overviewTab);
 
@@ -498,6 +506,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JLabel leftPropDisplay;
     private javax.swing.JLabel leftPropTxt;
     private javax.swing.JLabel mapDisplay;
+    private javax.swing.JLabel mapDisplayEnemy;
     private javax.swing.JPanel mapPanel;
     private javax.swing.JLayeredPane overviewTab;
     private javax.swing.JLabel ownHeightDisplay;
@@ -526,6 +535,7 @@ public class GuiMain extends javax.swing.JFrame {
 	private double[] own;
 	private double[] enemy;
 	private double[] target;
+	private double[] enemyTarget;
 	
     public void setEigenHoogte(double hoogte) {
     	DecimalFormat df = new DecimalFormat("#.##");
@@ -556,7 +566,7 @@ public class GuiMain extends javax.swing.JFrame {
     public void setOwnLocation(double x, double y, double alpha) {
     	double[] loc = {x,y,alpha};
     	own = loc;
-    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target, enemyTarget));
     	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location own zeppelin received.");
     	updateMapDisplay();
     }
@@ -588,7 +598,7 @@ public class GuiMain extends javax.swing.JFrame {
     public void setEnemyLocation(double x, double y) {
     	double[] loc = {x,y};
     	enemy = loc;
-    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target, enemyTarget));
     	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location enemy zeppelin received.");
     	updateMapDisplay();
     }
@@ -606,8 +616,26 @@ public class GuiMain extends javax.swing.JFrame {
     public void setTargetLocation(double x, double y) {
     	double[] loc = {x,y};
     	target = loc;
-    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target));
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target, enemyTarget));
     	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location target received.");
+    	updateMapDisplay();
+    }
+    
+    /**
+     * Geeft de bestemming van de vijand weer op de kaart.
+     * Deze wordt gegeven door x- en y-coordinaat in cm.
+     * Coordinaten volgens de richting van de kaart.
+     * 
+     * @param 	x
+     * 			x in cm. X loopt van links naar rechts.
+     * @param 	y
+     * 			y in cm. Y loopt van boven naar beneden.
+     */
+    public void setEnemyTarget(double x, double y) {
+    	double[] loc = {x,y};
+    	enemyTarget = loc;
+    	mapofplayingfield.setIcon(mapmaker.getLocations(own, enemy, target, enemyTarget));
+    	addToGUIEventList(GUIEvent.EventType.ReceivedLocation," - Location target enemy received.");
     	updateMapDisplay();
     }
     
@@ -655,6 +683,19 @@ public class GuiMain extends javax.swing.JFrame {
     	else
     		s = s + "(_,_)";
     	mapDisplay.setText(s);
+    	
+    	s = "Enemy: " ;
+    	if(enemy != null)
+    		s = s + "(" + df.format(enemy[0]) + " ; " + df.format(enemy[1]) + ")";
+    	else
+    		s = s + "(_,_)";
+    	s = s + "  |  Target: ";
+    	if(enemyTarget != null)
+    		s = s + "(" + df.format(enemyTarget[0]) + "," + df.format(enemyTarget[1]) + ")";
+    	else
+    		s = s + "(_,_)";
+    	mapDisplayEnemy.setText(s);
+    	
     }
     
 	/**

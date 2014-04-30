@@ -42,8 +42,10 @@ public class MapMaker {
 	 * 			enemy[0]: x, enemy[1]: y
 	 * @param dest
 	 * 			coordinates of the target, in cm on the map
+	 * @param destEnemy
+	 * 			coordinates of the target of the enemy, in cm on the map
 	 */
-	public ImageIcon getLocations(double[] own, double[] enemy, double[] dest) {
+	public ImageIcon getLocations(double[] own, double[] enemy, double[] dest, double[] destEnemy) {
 		ColorModel colormodel =  image.getColorModel();
 		boolean isAlpha = colormodel.isAlphaPremultiplied();	
 		WritableRaster raster = image.copyData(null);
@@ -75,12 +77,31 @@ public class MapMaker {
 			map0.setColor(Color.RED);
 			map0.fillOval(enemyZeppdata[0],enemyZeppdata[1],enemyZeppdata[2],enemyZeppdata[3]);
 		}
+		
+		boolean sameDest = false;
+		if(dest!=null && destEnemy !=null && dest[0] == destEnemy[0] && dest[1] == destEnemy[1])
+			sameDest = true;
 
 		//target
 		if(dest != null) {
 			int[] target = boardlayout.getPx(dest);
 			int[] targetdata = Shapes.getShiftedTargetData(target[0], target[1]);
+			map0.setColor(Color.MAGENTA);
+			map0.drawRect(targetdata[0],targetdata[1],targetdata[2],targetdata[3]);
+		}
+		
+		//target
+		if(destEnemy != null) {
+			int[] target = boardlayout.getPx(destEnemy);
+			int[] targetdata = Shapes.getShiftedTargetData(target[0], target[1]);
 			map0.setColor(Color.RED);
+			map0.drawRect(targetdata[0],targetdata[1],targetdata[2],targetdata[3]);
+		}
+				
+		if(sameDest) {
+			int[] target = boardlayout.getPx(dest);
+			int[] targetdata = Shapes.getShiftedTargetData(target[0], target[1]);
+			map0.setColor(Color.BLACK);
 			map0.drawRect(targetdata[0],targetdata[1],targetdata[2],targetdata[3]);
 		}
 
