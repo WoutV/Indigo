@@ -21,7 +21,7 @@
 \contentsline {subsection}{\numberline {5.1}GUI}{10}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}Client pc: pattern recognition, locatiebepaling en horizontale beweging}{11}{subsection.5.2}
 \contentsline {subsection}{\numberline {5.3}Connectie}{12}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Zeppelin}{13}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.4}Zeppelin}{12}{subsection.5.4}
 \contentsline {subsection}{\numberline {5.5}Simulator}{13}{subsection.5.5}
 \contentsline {section}{\numberline {6}Besluit}{14}{section.6}
 \setcounter {tocdepth}{1}
