@@ -197,7 +197,7 @@ De vormherkenningalgoritmes (pattern recognition) registreren de contouren van d
 \end{figure}
 
 De herkenning van vormen gebeurt op basis van de eigenschappen van de vormen. Deze eigenschappen hangen af van de oppervlaktes.
-Om een rechthoek te onderscheiden van andere vormen berekent een mehtode van opencv de omhullende rechthoek. De verhouding van de oppervlakte van deze verkregen rechthoek en de oppervlakte van de gevonden contour is ongeveer gelijk aan 1. Dit geldt alleen voor een rechthoek. \\
+Om een rechthoek te onderscheiden van andere vormen berekent een methode van opencv de omhullende rechthoek. De verhouding van de oppervlakte van deze verkregen rechthoek en de oppervlakte van de gevonden contour is ongeveer gelijk aan 1. Dit geldt alleen voor een rechthoek. \\
 Gelijkaardig om een cirkel te onderscheiden berekent een andere methode een omhullende cirkel. De verhouding van de oppervlakte van de bounding circle en de oppervlakte van de contour zelf is ongeveer gelijk aan 1.\\
 Om een ster te herkennen wordt er gebruikt gemaakt van een convexe omhullende contour. De verhouding van de oppervlakte van deze convexe omhullende en de contour is ongeveer gelijk aan 1,5. Om de verschillende vormen beter te onderscheiden worden bij alle symbolen de oppervlakte van hun contouren vergeleken met de bounding rectangle, bounding circle en convex hull. Voor gedetailleerde cijfers, zie tabel \ref{recognitionTable}.\\
 
@@ -224,10 +224,7 @@ Ster		&	\textgreater1,9		&	\textgreater1.4		&	\textgreater1.9\\
 
 Hierdoor vinden we de symbolen die aanwezig zijn op deze afbeelding. De symbolStabilizer zorgt voor een extra foutreductie door te verifieren of een gevonden symbool op een bepaalde positie kan staan. Bijvoorbeeld als er bij voorgaande twee afbeeldingen een ster wordt herkend op een bepaalde positie en dit keer een rechthoek herkend wordt zal symbol stabalizer toch een ster terug geven. \\ 
 
-Na de herkenning van de bymbolen probeert de software een gelijkzijdige driehoek te bepalen. Indien er minder dan drie symbolen volledig herkend wordne, maar van een andere figuur toch de kleur is bepaald, zal er indien mogelijk toch een gelijkzijdige driehoek gevormd worden. Als er meerdere driehoeken gevonden worden, selecteert het algoritme diegenen die het dichtste bij het middelpunt van de foto staat.\\
-
-Om de kleur te bepalen wordt de afbeelding met de contouren omgezet naar HSV digitale voorstelling. De HSV-waarden leggen de kleur eenduidig vast.\\
-
+Na de herkenning van de bymbolen probeert de software een gelijkzijdige driehoek te bepalen. Indien er minder dan drie symbolen volledig herkend worden, maar van een andere figuur toch de kleur is bepaald, zal er indien mogelijk toch een gelijkzijdige driehoek gevormd worden. Als er meerdere driehoeken gevonden worden, selecteert het algoritme diegenen die het dichtste bij het middelpunt van de foto staat.\\
 
 \begin{figure}[H]
 \begin{center}
@@ -238,13 +235,17 @@ Om de kleur te bepalen wordt de afbeelding met de contouren omgezet naar HSV dig
 \end{figure}
 
 \subsection{Locatiebepaling}
-Om de locatie te bepalen wordt er gebruik gemaakt van een set van symbolen. Deze zijn in het ideale geval herkend door het pattern recognition algorithm. Elk symbool heeft een kleur en vorm en een x- en y-coördinaat binnen de afbeelding. Eerst bepaalt het algoritme (zie verder) welk van de gegeven symbolen het meest centraal ligt ten opzichte van de andere symbolen. Dit symbool wordt het middelpunt.\\
+Om de locatie te bepalen wordt er gebruik gemaakt van een set van symbolen. Deze zijn in het ideale geval herkend door het pattern recognition algorithm. Elk symbool heeft een kleur en vorm en een x- en y-coördinaat binnen de afbeelding. Een driehoek symbolen bepaalt eenduidig de locatie van de zeppelin omdat elke driehoek maar \'e\'en keer mag voorkomen.
 
-Vervolgens zoekt het algoritme driehoeken. Een driehoek bestaat uit het middelpunt en twee punten die op de kortst mogelijke afstand van elkaar liggen. Een driehoek bepaalt eenduidig de locatie van de zeppelin omdat elke driehoek maar \'e\'en keer mag voorkomen. Om driehoeken te detecteren kijken we welke punt er het dichtst bij het middelpunt ligt, en filteren we de andere punten zodat we enkel punten overhouden waarvoor de afstand tot het middelpunt binnen een bepaalde marge ligt (1.2x kortste afstand). Deze punten worden gesorteerd op poolcoördinaten. Vervolgens selecteren we twee punten die samen met het middelpunt een driehoek vormen. Deze twee punten mogen wel maximum 1,2x de kortste afstand uit elkaar liggen (voor het geval er symbolen ontbreken) en het tweede punt moet in wijzerzin van het eerste punt liggen.\\
+Een eerste mogelijkheid (de eenvoudigste) is dat het er reeds een driehoek van symbolen werd gevonden. De image processing heeft al bepaald welk van deze drie punten het dichtst ligt bij het middelpunt. Nu worden de overige twee punten gesorteerd op poolco\"ordinaat. Dan kan het matchen met het veld beginnen (zie verder). \\
 
-Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld worden afgegaan. Indien het middelpunt overeen komt met een punt uit het raster, worden alle buren van dit punt opgevraagd. Indien de andere twee punten van de gevonden overeen komen met twee buren, die ook naast elkaar liggen en in dezelfde volgorde staan, hebben we een match en hebben we de locatie gevonden. De locatie die wordt teruggegeven is de locatie van het middelpunt.\\
+Een andere mogelijkheid is dat er geen driehoek werd gevonden, maar wel een aantal symbolen. Eerst bepaalt het algoritme (voor pseudocode: zie verder) welk van de gegeven symbolen het meest centraal ligt ten opzichte van de andere symbolen. Dit symbool wordt het middelpunt. Vervolgens zoekt het algoritme driehoeken. Een driehoek bestaat uit het middelpunt en twee punten die op de kortst mogelijke afstand van elkaar liggen. Hiervoor kijken we welke punt er het dichtst bij het middelpunt ligt, en filteren we de andere punten zodat we enkel punten overhouden waarvoor de afstand tot het middelpunt binnen een bepaalde marge ligt (1.2x kortste afstand). Deze punten worden gesorteerd op poolco\"ordinaten. Vervolgens nemen we de punten per twee samen met het middelpunt. Deze twee punten mogen wel maximum 1,2x de kortste afstand uit elkaar liggen (voor het geval er symbolen ontbreken) en het tweede punt moet in wijzerzin van het eerste punt liggen. \\
 
-\textbf{Locate: }
+In elk van beide gevallen hebben we nu een driehoek of meerdere driehoeken. Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld worden afgegaan. Indien het middelpunt overeen komt met een punt uit het raster, worden alle buren van dit punt opgevraagd. Indien de andere twee punten van de gevonden overeen komen met twee buren, die ook naast elkaar liggen en in dezelfde volgorde staan, hebben we een match en hebben we de locatie gevonden. De locatie die wordt teruggegeven is de locatie van het middelpunt.\\
+
+Opdat een symbool overeenkomt met een symbool uit het veld, moeten ze dezelfde kleur en vorm hebben. Echter ook wanneer de vorm niet herkend is ('unrecognised') wordt dit als een match gerekend. Dit kan bijvoorbeeld het geval zijn indien een onvolledige figuur aan de rand van de afbeelding werd genomen om een driehoek te vormen, zodat enkel de kleur bekend is. \\
+
+\textbf{Locate (No triangle): }
 \begin{algorithmic}
 
 	\STATE in: Symbols; out: location
@@ -278,9 +279,11 @@ Dan kan het echte vergelijken met het raster gebeuren: alle punten van het veld 
 	\ENDFOR
 \end{algorithmic}
 
-Het algoritme bepaalt vervolgens de hoek. De locatie geeft de positie van de drie gevonden figuren weer. Twee van deze fiugren liggen horizontaal op het raster. De rotatiehoek van de lijn waarop deze twee figuren liggen op de foto ten opzichte van de horizontale lijn op het raster wordt bepaald aan de hand van wiskundige berekeningen (verschil tussen x- en y-co\"rdinaat in de afbeelding en de tangens).\\
+Het algoritme bepaalt vervolgens de hoek. De locatie geeft de positie van de drie gevonden figuren weer. Twee van deze fiugren liggen horizontaal op het raster. De rotatiehoek van de lijn waarop deze twee figuren liggen op de foto ten opzichte van de horizontale lijn op het raster wordt bepaald aan de hand van wiskundige berekeningen (verschil tussen x- en y-co\"ordinaat in de afbeelding en de tangens).\\
 
-Hiervoor wordt een onderscheid gemaakt op basis van de groottes van de coördinaten (x1 \textless  x2?, y1 \textless  y2?), om aan de hand daarvan een bepaalde transformatie te doen op de hoek gevonden van de tangens (omdat de positiecontroller de hoek in een bepaald formaat verwacht en om alle hoeken tussen $–\pi$ en $\pi$ te vinden). Voor dit algoritme geven we geen pseudocode, aangezien het grotendeels uit een aantal if-tests bestaat. Door de manier van werken is deze hoek volledig nauwkeurig.
+Hiervoor wordt een onderscheid gemaakt op basis van de groottes van de co\"ordinaten (x1 \textless  x2?, y1 \textless  y2?), om aan de hand daarvan een bepaalde transformatie te doen op de hoek gevonden van de tangens (omdat de positiecontroller de hoek in een bepaald formaat verwacht en om alle hoeken tussen $–\pi$ en $\pi$ te vinden). Voor dit algoritme geven we geen pseudocode, aangezien het grotendeels uit een aantal if-tests bestaat. Door de manier van werken is deze hoek volledig nauwkeurig. \\
+
+Nu zijn er dus \'e\'en of meerdere mogelijke posities en hoeken bepaald. Indien er meerdere zijn bepaald (bijvoorbeeld doordat een vorm niet herkend was waardoor deze driehoek met meerdere driehoeken overeenkomt of doordat meerdere driehoeken uit een set van symbolen werden gehaald), kiest het algoritme degene het dichtst bij de vorige positie.
 
 \subsection{Horizontale bewegingen}
 Voor bewegingen in het horizontale vlak maken we eveneens gebruik van PID-gebaseerde algoritmes. We gebruiken twee afzonderlijke algoritmes die tegelijk lopen (voor de x- en y-richting). De locatiebepaling bepaalt voor elke nieuwe foto de positie binnen en de draaiing ten opzichte van het veld. De af te leggen afstand wordt ontbonden twee loodrechte bewegingen(x en y ten opzichte van het veld). De zeppelin bevindt zich in het middelpunt van het nieuwe co\"ordinatenstelsel. De co\"{o}rdinaten van de bestemming in het geroteerde en verschoven assenstelsel bepalen dus exact hoeveel we in x- en y-richting (tov zeppelin) moeten bewegen. De omzetting gebeurt in 2 stappen, met eerst een verschuiving:
@@ -403,11 +406,11 @@ Dit onderdeel is niet aangevuld sinds de versie van de eerste demo. Aangevulde v
 
 Een overzicht van de taken van de groepsleden: \\
 \begin{itemize}
-\item Wander Bavin: Vervulde de rol van co\"ordinator en van vertegenwoordiger in de scheidsrechtercommissie. Hiervoor heeft hij zich beziggehouden met onderzoek van RabbitMQ, met het schrijven van een deel van de software voor de server, en met voorstellen voor een protocol voor de voorstelling van commando's. Hij heeft ook het gedeelte van de communicatie verzorgt, en in het begin even meegewerkt aan de nieuwe GUI. Heeft zich ook beziggehouden met het opruimen van code van het eerste semester en het maken van UML-diagrammen.
-\item Dimitri Jonckers: Heeft de GUI herschreven en zich beziggehouden met het opruimen van code van het eerste semester. Heeft gewerkt aan het verslag en de UML-diagrammen. Heeft een deel van de nieuwe code voor de zeppelin geschreven (positiecontrole, bewegingsalgoritme). Verder heeft hij het uitlezen van de map verzorgt.
-\item Sunil Tandan: Heeft zich grotendeels beziggehouden met onderzoek naar pattern recognition en hier software voor geschreven. Verder heeft hij gewerkt aan een algoritme voor het bepalen van de plaats op basis van de figuren.
-\item Wout Vekemans: Vervulde de rol van secretaris. Heeft zich voor een groot stuk beziggehouden met het verslag. Heeft een deel van de nieuwe code voor de zeppelin geschreven (positiecontrole). Hij ligt ook mee aan de basis van de nieuwe GUI. In het tweede deel van het semester heeft hij het nieuwe frame ontworpen en gemonteerd. 
-\item Vince Goossens: Heeft zich grotendeels beziggehouden met onderzoek naar pattern recognition en hier software voor geschreven. Verder heeft hij gewerkt aan een algoritme voor het bepalen van de plaats op basis van de figuren.
+\item Wander Bavin: Vervulde de rol van co\"ordinator en van vertegenwoordiger in de scheidsrechtercommissie. Hiervoor heeft hij zich beziggehouden met onderzoek van RabbitMQ, met het schrijven van een deel van de software voor de server, en met voorstellen voor een protocol voor de voorstelling van commando's. Hij heeft ook het gedeelte van de communicatie en versleuteling verzorgt, en in het begin even meegewerkt aan de nieuwe GUI. Heeft zich ook beziggehouden met het opruimen van code van het eerste semester, bijgedragen aan het verslag, en het grootste gedeelte van het maken van UML-diagrammen op zich genomen.
+\item Dimitri Jonckers: Heeft de GUI herschreven en zich beziggehouden met het opruimen van code van het eerste semester. Heeft gewerkt aan het verslag en een gedeelte van de UML-diagrammen. Heeft een deel van de nieuwe code voor de client geschreven (positiebepaling, horizontale beweging, controller, simulator). Verder heeft hij het uitlezen van de map verzorgt.
+\item Sunil Tandan: Heeft zich grotendeels beziggehouden met onderzoek naar pattern recognition en hier software voor geschreven. Heeft voor dit gedeelte tests uitgevoerd, en bijgedragen aan het verslag. Heeft eerder in het semester meegewerkt aan een eerste versie van het algoritme voor het bepalen van de positie.
+\item Wout Vekemans: Vervulde de rol van secretaris. Heeft zich voor een groot stuk beziggehouden met het verslag. Heeft een deel van de nieuwe code voor de zeppelin geschreven. Heeft meegewerkt aan een eerste versie van de positiecontrole. Hij ligt ook mee aan de basis van de nieuwe GUI. In het tweede deel van het semester heeft hij het nieuwe frame ontworpen en gemonteerd.
+\item Vince Goossens: Heeft zich grotendeels beziggehouden met onderzoek naar pattern recognition en hier software voor geschreven. Heeft meegewerkt aan een eerste versie voor het bepalen voor de positie. Heeft tests uitgevoerd voor pattern recognition en hierover bijgedragen aan het verslag.
 \end{itemize}
 
 Hieronder is een tabel te vinden met de gewerkte uren binnen en buiten de sessies: \\
@@ -418,7 +421,14 @@ Overzicht: & Dimitri Jonckers & Wander Bavin & Wout Vekemans & Sunil Tandan & Vi
 10/02 - 16/02 & 9 & 12.5 & 7 & 11 & 9 \\
 17/02 - 23/02 & 17.5 & 16.5 & 7.5 & 7.5 & 11 \\
 24/02 - 02/03 & 15 & 6 & 9.5 & 18.5 & 9.25 \\
-03/02 - 05/02 & 6 & 5 & 8 & 9 & 9 \\
+03/03 - 09/03 & 6 & 5 & 8 & 9 & 9 \\
+10/03 - 16/03 &  &  &  &  &  \\
+17/03 - 23/03 &  &  &  &  &  \\
+24/03 - 30/03 &  &  &  &  &  \\
+31/03 - 20/04 &  &  &  &  &  \\
+21/04 - 27/04 &  &  &  &  &  \\
+28/04 - 04/05 &  &  &  &  &  \\
+05/05 - 07/05 &  &  &  &  &  \\
 \hline \hline
 Totaal & 47.5 & 40 & 32 & 46 & 38.25 \\
 \end{tabular}
