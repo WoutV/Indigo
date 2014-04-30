@@ -76,11 +76,12 @@ public class LocationLocator {
 			recentX = nearest[0];
 			recentY = nearest[1];
 			l = nearest;
+			locAndMove(l);
 		}catch(Exception e){
-			double[] l1 = {200,200,0};
-			l = l1;
+//			double[] l1 = {200,200,0};
+//			l = l1;
 		}
-		locAndMove(l);
+		
 	}
 
 	/**
