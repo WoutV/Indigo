@@ -23,6 +23,8 @@ public class SenderPi {
 	      ConnectionFactory factory = new ConnectionFactory();
 	      factory.setHost(serverIP);
 	  
+	      factory.setUsername("indigo");
+		factory.setPassword("indigo");
 	      connection = factory.newConnection();
 	      channel = connection.createChannel();
 

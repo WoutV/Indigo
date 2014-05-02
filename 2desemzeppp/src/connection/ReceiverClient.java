@@ -78,6 +78,8 @@ public class ReceiverClient implements Runnable{
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost("localhost");
 
+			factory.setUsername("indigo");
+			factory.setPassword("indigo");
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 
