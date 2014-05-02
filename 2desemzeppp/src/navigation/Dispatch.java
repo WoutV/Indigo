@@ -167,7 +167,7 @@ public class Dispatch {
 	 */
 	private static void foundTablet(int no) {
 		if(sender!=null) {
-			sender.sendTransfer(RSA, "indigo.tablet.tablet"+ no);
+			//sender.sendTransfer(RSA, "indigo.tablet.tablet"+ no);
 		}
 	}
 	

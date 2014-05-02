@@ -39,6 +39,7 @@ public class ReceiverClient implements Runnable{
 		keys.add("indigo.private.motor2");
 		keys.add("indigo.private.motor3");
 		keys.add("indigo.private.symbollist");
+		keys.add("test.test");
 		
 	}
 
@@ -68,6 +69,9 @@ public class ReceiverClient implements Runnable{
 		}else if(key.equals("indigo.private.symbollist")){
 			Dispatch.processSymbols(Simulator.StringToSymbolList(information));
 		}
+		else if(key.equals("test.test")){
+			System.out.println(information);
+		}
 	}
 	public void run(){
 		//hier komt connectie+ontvangst
@@ -80,6 +84,7 @@ public class ReceiverClient implements Runnable{
 
 			factory.setUsername("indigo");
 			factory.setPassword("indigo");
+			factory.setPort(5673);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 

@@ -19,6 +19,7 @@ public class SenderClient {
 
 			factory.setUsername("indigo");
 			factory.setPassword("indigo");
+			factory.setPort(5673);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 
