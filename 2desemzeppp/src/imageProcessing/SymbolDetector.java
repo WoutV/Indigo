@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import map.Symbol;
+import map.Symbol.Shape;
 import navigation.Dispatch;
 
 import org.opencv.core.Core;
@@ -307,7 +308,8 @@ class SymbolDetector {
 	} 
 	Symbol center,s1,s2;
 	private void checkForTriangle() {
-		boolean triangleFound = false;
+		ArrayList<SymbolTriangle> triangles = new ArrayList<SymbolTriangle>();
+		addEdgeSymbolsToDetectedContours();
 		if (detectedSymbols.size() >= 3) {
 			for (int i = 0; i < detectedSymbols.size(); i++) {
 				Symbol symbol1 = detectedSymbols.get(i);
@@ -321,6 +323,7 @@ class SymbolDetector {
 						if (fuzzyEquals(distance1, distance2, 20)
 								&& fuzzyEquals(distance1, distance3, 20)
 								&& fuzzyEquals(distance2, distance3, 20)) {
+							SymbolTriangle st;
 							Core.line(result,
 									new Point(symbol1.getX(), symbol1.getY()),
 									new Point(symbol2.getX(), symbol2.getY()),
@@ -337,68 +340,52 @@ class SymbolDetector {
 							double s2d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
 							double s3d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
 							if(s1d < s2d && s1d < s3d){
-								this.center = symbol1;
-								this.s1 = symbol2;
-								this.s2 = symbol3;
+								st = new SymbolTriangle(symbol1, symbol2, symbol3,s1d);
 							}
 							else if(s2d < s1d && s2d < s3d){
-								this.center = symbol2;
-								this.s1 = symbol1;
-								this.s2 = symbol3;
+								st = new SymbolTriangle(symbol2, symbol1, symbol3,s2d);
 							}
-							
 							else{
-								this.center = symbol3;
-								this.s1 = symbol2;
-								this.s2 = symbol1;
+								st = new SymbolTriangle(symbol3, symbol2, symbol1,s3d);
 							}
-							triangleFound = true;
+							if(st.containsAtLeastTwoKnown())
+								triangles.add(st);
 						}
-						if(triangleFound)
-							break;
-
 					}
-					if(triangleFound)
-						break;
 				}
 			}
 		}
-		if (!triangleFound && detectedSymbols.size() >= 2) {
-			Symbol middleSymbol = getMiddleSymbol();
-			Symbol nearestSymbol = getNearestSymbol(middleSymbol);
-			double distance = middleSymbol.getDistanceTo(nearestSymbol);
-			for (MatOfPoint contourPoints : edgeContours) {
-				Point contourCenter = getCenter(contourPoints);
-				double distanceToNearestSymbol = nearestSymbol
-						.getDistanceTo(contourCenter);
-				double distanceToMiddleSymbol = middleSymbol
-						.getDistanceTo(contourCenter);
-				if (fuzzyEquals(distance, distanceToNearestSymbol, 50)
-						&& fuzzyEquals(distance, distanceToMiddleSymbol, 50)) {
-					getColor(NotProcessedImage, contourCenter);
-					Core.line(
-							result,
-							new Point(middleSymbol.getX(), middleSymbol.getY()),
-							new Point(nearestSymbol.getX(), nearestSymbol
-									.getY()), new Scalar(0, 255, 255));
-					Core.line(result, new Point(nearestSymbol.getX(),
-							nearestSymbol.getY()), contourCenter, new Scalar(0,
-							255, 255));
-					Core.line(result, new Point(middleSymbol.getX(),
-							middleSymbol.getY()), contourCenter, new Scalar(0,
-							255, 255));
-					center = middleSymbol;
-					s1 = nearestSymbol;
-					s2 = new Symbol(getColor(NotProcessedImage, contourCenter) + map.Symbol.Shape.UNRECOGNISED.toString(), timestamp,
-							contourCenter.x, contourCenter.y);
-					triangleFound = true;
-				}
-				if(triangleFound)
-					break;
+		double distancetoMiddel = Double.MAX_VALUE;
+		SymbolTriangle toReturn = null;
+		for(SymbolTriangle st: triangles){
+			if(st.getDistanceToMiddle()< distancetoMiddel && st.containsAtLeastTwoKnown()){
+				toReturn = st;
+				distancetoMiddel = st.getDistanceToMiddle();
 			}
+		}
+		if(toReturn!=null){
+			this.center = toReturn.getCenter();
+			this.s1 = toReturn.s1;
+			this.s2 = toReturn.s2;
+		}
+		else{
+			this.center = null;
+			this.s1 = null;
+			this.s2 = null;
 			
 		}
+			
+			
+		
 
+	}
+
+	private void addEdgeSymbolsToDetectedContours() {
+		for (MatOfPoint contourPoints : edgeContours) {
+			Point contourCenter = getCenter(contourPoints);
+			s2 = new Symbol(getColor(NotProcessedImage, contourCenter) + map.Symbol.Shape.UNRECOGNISED.toString(), timestamp,
+					contourCenter.x, contourCenter.y);
+		}
 	}
 
 	private Symbol getNearestSymbol(Symbol middleSymbol) {
@@ -603,5 +590,43 @@ class SymbolDetector {
 			return map.Symbol.Shape.STAR;
 		} else
 			return map.Symbol.Shape.UNRECOGNISED;
+	}
+	
+	private class SymbolTriangle{
+		private Symbol center,s1,s2;
+		private double distance;
+		SymbolTriangle(Symbol center , Symbol s1, Symbol s2,double distance){
+			this.s1=s1;
+			this.center = center;
+			this.s2 = s2;
+			this.distance = distance;
+		}
+		public Symbol getCenter(){
+			return center;
+		}
+		public Symbol getS1(){
+			return s1;
+		}
+		public Symbol getS2(){
+			return s2;
+		}
+		public double getDistanceToMiddle(){
+			return distance;
+		}
+		public boolean containsAtLeastTwoKnown(){
+			if(center.getShape()==Shape.UNRECOGNISED && s1.getShape()==Shape.UNRECOGNISED){
+				return false;
+			}
+			if(center.getShape()==Shape.UNRECOGNISED && s2.getShape()==Shape.UNRECOGNISED){
+				return false;
+			}
+			if(s2.getShape()==Shape.UNRECOGNISED && s1.getShape()==Shape.UNRECOGNISED){
+				return false;
+			}
+			return true;
+		}
+		
+		
+		
 	}
 }

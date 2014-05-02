@@ -40,7 +40,7 @@ public class ImageUpdater implements Runnable{
 			try {
 				Thread.sleep(100);
 				buffered = ImageIO.read(new URL(
-						"http://raspberrypi.mshome.net/cam_pic.php?time="
+						"http://indigopi.mshome.net/cam_pic.php?time="
 								+ System.currentTimeMillis()));
 				byte[] pixels = ((DataBufferByte) buffered.getRaster()
 						.getDataBuffer()).getData();

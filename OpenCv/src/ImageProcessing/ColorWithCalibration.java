@@ -34,10 +34,10 @@ public class ColorWithCalibration implements ActionListener {
 	public static void main(String[] args) throws Exception {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
 		
-		boolean pi = false;
+		boolean pi = true;
 		if(pi){
 			BufferedImage buffered = ImageIO.read(new URL(
-					"http://raspberrypi.mshome.net/cam_pic.php?time="
+					"http://indigopi.mshome.net/cam_pic.php?time="
 							+ System.currentTimeMillis()));
 			byte[] pixels = ((DataBufferByte) buffered.getRaster()
 					.getDataBuffer()).getData();
@@ -47,7 +47,7 @@ public class ColorWithCalibration implements ActionListener {
 			originalImage.put(0, 0, pixels);
 				while (true) {
 					buffered = ImageIO.read(new URL(
-							"http://raspberrypi.mshome.net/cam_pic.php?time="
+							"http://indigopi.mshome.net/cam_pic.php?time="
 									+ System.currentTimeMillis()));
 					pixels = ((DataBufferByte) buffered.getRaster()
 							.getDataBuffer()).getData();

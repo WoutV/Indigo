@@ -11,8 +11,8 @@ public class CameraThreadForPi implements Runnable{
 	
 	public CameraThreadForPi(){
 	}
-	private double  height = 400;
-	private double  width = 600;
+	private double  height = 480;
+	private double  width = 640;
 	
 	/**
 	 * Gets a new image every second and sends it to the client.
@@ -21,9 +21,13 @@ public class CameraThreadForPi implements Runnable{
 	public void run(){
 		//while(true){
 		try {
-			Process p = Runtime.getRuntime().exec("sudo raspistill -t 30000 -tl 40 -n -rot 270 -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
+			Process p =Runtime.getRuntime().exec("./RPi_Cam_Browser_Control_Installer.sh start");
+			p.waitFor(); 
+			p = Runtime.getRuntime().exec("./RPi_Cam_Browser_Control_Installer.sh stop");
+			 p.waitFor();
+			 p = Runtime.getRuntime().exec("sudo raspistill -t 600000 -tl 40 -n -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
 			p.waitFor();
-		} catch (InterruptedException | IOException e) {
+		} catch ( IOException | InterruptedException e) {
 			e.printStackTrace();
 		//}
 		}
