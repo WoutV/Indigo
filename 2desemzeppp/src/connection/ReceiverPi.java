@@ -29,14 +29,14 @@ public class ReceiverPi implements Runnable{
 		keys.add("test.test");
 	}
 	
-	
+	Main main= Main.getInstance();
 	private void handleReceived(String information, String key){
 		if(key.equals("indigo.lcommand.motor1")){
-//			main.activateMotor1(Integer.parseInt(information));
+			main.activateMotor1(Integer.parseInt(information));
 		}else if(key.equals("indigo.lcommand.motor2")){
-//			main.activateMotor2(Integer.parseInt(information));
+			main.activateMotor2(Integer.parseInt(information));
 		}else if(key.equals("indigo.lcommand.motor3")){
-//			main.activateMotor3(Integer.parseInt(information));
+			main.activateMotor3(Integer.parseInt(information));
 		}else if(key.equals("test.test")){
 			System.out.println(information);
 		}
