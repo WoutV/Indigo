@@ -58,7 +58,7 @@ public class InitialiseClient {
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit
         int mode = 3;
-        boolean rabbit = true;
+        boolean rabbit = false;
         
         SenderClient sender = null;
         SimConnNoRabbitClient simConnClient = null;
@@ -109,11 +109,11 @@ public class InitialiseClient {
 		Dispatch.setPositionControllers(xpos,ypos);
 		Dispatch.receiveTarget(50,50);
 		
-		try {
-	        Thread.sleep(5000);
-	    }
-	    catch(Exception exc) {
-	    }
+//		try {
+//	        Thread.sleep(5000);
+//	    }
+//	    catch(Exception exc) {
+//	    }
 
 		if(rabbit) {
 			sender.sendTransfer("0", "indigo.lcommand.motor1");
