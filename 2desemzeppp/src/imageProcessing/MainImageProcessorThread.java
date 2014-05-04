@@ -46,9 +46,9 @@ public class MainImageProcessorThread implements Runnable{
 		symbolS = new SymbolsStabalization(3, 50);
 		cc = new Color("colors.txt");
 		this.filepath = colorText;
-//		imgUpdtr = new ImageUpdater();
-//		Thread imgUpdtrThread = new Thread(imgUpdtr);
-//		imgUpdtrThread.start();
+		imgUpdtr = new ImageUpdater();
+		Thread imgUpdtrThread = new Thread(imgUpdtr);
+		imgUpdtrThread.start();
 		
 	}
 	ImageUpdater imgUpdtr;
@@ -107,13 +107,13 @@ public class MainImageProcessorThread implements Runnable{
 
 	private void updateOriginalImage() {
 		try {
-//			this.originalImage = imgUpdtr.getLatestImage();
-//			while(this.originalImage == null){
-//				this.originalImage = imgUpdtr.getLatestImage();
-//				System.out.println("Got null");
-//			}
-			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
-					Imgproc.COLOR_BGR2GRAY);
+			this.originalImage = imgUpdtr.getLatestImage();
+			while(this.originalImage == null){
+				this.originalImage = imgUpdtr.getLatestImage();
+				System.out.println("Got null");
+			}
+//			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
+//					Imgproc.COLOR_BGR2GRAY);
 			timestamp++;
 			symbolS.increaseTimestamp();
 			symbolDetector.updateImage(originalImage);

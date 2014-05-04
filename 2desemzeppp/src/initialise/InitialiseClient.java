@@ -58,7 +58,7 @@ public class InitialiseClient {
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit
         int mode = 3;
-        boolean rabbit = false;
+        boolean rabbit = true;
         
         SenderClient sender = null;
         SimConnNoRabbitClient simConnClient = null;

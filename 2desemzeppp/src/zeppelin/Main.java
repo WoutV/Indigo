@@ -32,12 +32,12 @@ public class Main{
 	 */
 	public void init(SenderPi sender) {
 		this.sender = sender;
-			
 		distanceSensor = new DistanceSensor(sender);
 		distanceSensorThread = new Thread(distanceSensor);
 		distanceSensorThread.start();
-			
 		motorController.init(gpio,distanceSensor,sender);
+		
+		
 	}
 	
 	public MotorController getMotorController() {

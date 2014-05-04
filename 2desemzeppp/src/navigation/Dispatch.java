@@ -3,7 +3,17 @@ package navigation;
 import gui.GuiCommands;
 import gui.GuiMain;
 
+import imageProcessing.QRCodeReader;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import com.google.zxing.NotFoundException;
 
 import simulator.SimEnemy;
 
@@ -168,15 +178,92 @@ public class Dispatch {
 	private static void foundTablet(int no) {
 		if(sender!=null) {
 			//sender.sendTransfer(RSA, "indigo.tablet.tablet"+ no);
+			String command = sendRSAKeyToTablet(no);
+			parseTabletString(command);
 		}
 	}
-	
+
+	private static void parseTabletString(String tabletString){
+		if(tabletString.contains("position")){
+			String[] array = tabletString.split(":");
+			String[] position = array[1].split(",");
+			receiveTarget(Integer.parseInt(position[0]), Integer.parseInt(position[0]));
+		}
+		else if(tabletString.contains("tablet")){
+			String[] array = tabletString.split(":");
+			double[] tabletLoc = map.getTablet(Integer.parseInt(array[1]));
+			receiveTarget((int)tabletLoc[0], (int)tabletLoc[1]);
+		}
+	}
 	/**
 	 * When the zeppelin is near the target, send a message commanding it to land.
 	 */
 	private static void land() {
 		if(sender!=null) {
 			sender.sendTransfer("0", "indigo.elevate");
+		}
+	}
+	
+	static int numberOfTries = 0;
+	private static String sendRSAKeyToTablet(int tabletnumber){
+		try{
+		Process p =Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\keys.py");
+		p.waitFor();
+		String key = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\public");
+		sender.sendTransfer(key, "indigo.tablets.tablet"+tabletnumber);
+		System.out.println(key);
+		String text ="";
+		numberOfTries =0;
+		while(numberOfTries < 10){
+			try{
+			text = QRCodeReader.readQRCode();
+			break;
+			}
+			catch(IOException|NotFoundException exception){
+				numberOfTries++;
+			}
+		}
+		write("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\encrypted", text);
+		p = Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\decription.py");
+		p.waitFor();
+		String output = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\result");
+		System.out.println(output);
+		return output;
+		}catch(Exception e){
+			//doe niks
+		}
+		return "Oops";
+	
+		
+	}
+	
+	
+	public static String read(String fileName){
+		String result = "";
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);
+				sb.append(System.lineSeparator());
+				line = br.readLine();
+			}
+			result = sb.toString();
+			br.close();
+		} catch(IOException e) {
+		}
+		return result;
+	}
+	
+	public static void write(String fileName, String text){
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(fileName, "UTF-8");
+			writer.println(text);
+			writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 		}
 	}
 }

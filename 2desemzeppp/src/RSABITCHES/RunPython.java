@@ -1,6 +1,4 @@
-package test.grid;
-
-import imagedetection.QR_Decoder;
+package RSABITCHES;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,31 +8,62 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 public class RunPython {
+	public static void main(String[] args){
+		RunPython rp = new RunPython();
+	
+			try {
+				rp.run();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	}
 
 	
-	public void run(){
+	public void run() throws InterruptedException{
 		try {
-			Runtime.getRuntime().exec("cmd /c python keys.py");
+			Process p =Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\keys.py");
+			p.waitFor();
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		
-		String key = read("public");
+	
+		String key = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\public");
+		System.out.println(key);
 		//SEND KEY TO RABBITMQ
 		
 		//READ QR CODE
-		String text = QR_Decoder.decodeQR("image.jpg");
-		write("encrypted", text);
+	//	String text=read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\result.txt");
+//		try {
+//			text = QRCodeReader.readQRCode();
+//		} catch (NotFoundException | IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		try {
+			Process p =Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\encrypt.py");
+			p.waitFor();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		System.out.println("Encrypted");
+		
+		//write("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\encrypted.txt", text);
 		
 		try {
-			Runtime.getRuntime().exec("cmd /c python decryption.py");
+			Process p = Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\decription.py");
+			p.waitFor();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		read("result");
+	
+		String output = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\result");
+		System.out.println(output);
 		
 	}
 	
@@ -42,7 +71,7 @@ public class RunPython {
 	public String read(String fileName){
 		String result = "";
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("result"));
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 
@@ -61,7 +90,7 @@ public class RunPython {
 	public void write(String fileName, String text){
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter("encrypted", "UTF-8");
+			writer = new PrintWriter(fileName, "UTF-8");
 			writer.println(text);
 			writer.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {

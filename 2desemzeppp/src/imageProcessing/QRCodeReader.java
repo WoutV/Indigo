@@ -28,7 +28,7 @@ public abstract class QRCodeReader {
 	 * 			if it cant find any qr codes
 	 */
 	public static String readQRCode()
-			throws FileNotFoundException, IOException, NotFoundException {
+			throws IOException, NotFoundException {
 		
 		BufferedImage bi= ImageIO.read(new URL(
 				"http://raspberrypi.mshome.net/cam_pic.php?time="

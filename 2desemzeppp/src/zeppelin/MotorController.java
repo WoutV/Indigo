@@ -70,18 +70,23 @@ public class MotorController {
 
 			GpioPinPwmOutput pwm = gpiocontroller.provisionPwmOutputPin(RaspiPin.GPIO_01,"pwm");
 			//init Motors
+			System.out.println("Inialising Motor X");
 			xMotor = new Motor(xfw,xrv,gpiocontroller,Propellor.X,pwm,sender);
 			xMotor.setOff();
 			xMotor.PwmOn();
+			System.out.println("Inialized Motor X");
+			System.out.println("Inialising Motor Y");
 			yMotor = new Motor(yfw,yrv,gpiocontroller,Propellor.Y, pwm, sender);
 			yMotor.setOff();
 			yMotor.PwmOn();
+			yMotor.setOff();
+			System.out.println("Inialised Motor Y");
 			up = new Motor(upfw,uprv,gpiocontroller,Propellor.UP, pwm, sender);
 			up.setOff();
 			up.PwmOn();
-			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);
-			Thread heightcontrollerthread = new Thread(hc);
-			heightcontrollerthread.start();
+//			hc = new HeightController(Kpup, Kiup, Kdup, distanceSensor, up);
+//			Thread heightcontrollerthread = new Thread(hc);
+//			heightcontrollerthread.start();
 		
 //			xController = new PositionController(Kpx, Kix, Kdx, xMotor, true);
 //			yController = new PositionController(Kpy, Kiy, Kdy, yMotor, false);		

@@ -57,12 +57,12 @@ public class Motor {
 		//TODO nummers omgekeerd?
 		if(id != Propellor.UP) {
 			if(id == Propellor.X){
-				this.fwPin=7;
-				this.revPin=9;
+				this.fwPin=11;
+				this.revPin=13;
 			}
 			else{
-				this.fwPin=4;
-				this.revPin=24;
+				this.fwPin=07;
+				this.revPin=05;
 			}
 			SoftPwm.softPwmCreate(this.fwPin, 0, 100);
 			SoftPwm.softPwmCreate(this.revPin, 0, 100);
@@ -299,18 +299,35 @@ public class Motor {
 	 */
 	public void setSoftPwmValue(int value) {
 		if(pwmEnabled) {
+			if(value == 0){
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(1024);
+				} else {
+					SoftPwm.softPwmWrite(this.fwPin, 100);
+					SoftPwm.softPwmWrite(this.revPin, 100);
+				}
+				fw();
+				off();
+				if(id==Propellor.UP) {
+					pwmPin.setPwm(0);
+				} else {
+					SoftPwm.softPwmWrite(this.fwPin, 0);
+					SoftPwm.softPwmWrite(this.revPin, 0);
+				}
+				fw();
+			}
 			if(value > 0){
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
 				} else {
-					SoftPwm.softPwmWrite(softPwmPin, 100);
+					SoftPwm.softPwmWrite(this.fwPin, 100);
 				}
 				fw();
 				off();
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(value*1024/100);
 				} else {
-					SoftPwm.softPwmWrite(softPwmPin, value);
+					SoftPwm.softPwmWrite(this.fwPin, value);
 				}
 				fw();
 			}
@@ -318,14 +335,14 @@ public class Motor {
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(1024);
 				} else {
-					SoftPwm.softPwmWrite(softPwmPin, 100);
+					SoftPwm.softPwmWrite(this.revPin, 100);
 				}
 				rv();
 				off();
 				if(id==Propellor.UP) {
 					pwmPin.setPwm(-value*1024/100);
 				} else {
-					SoftPwm.softPwmWrite(softPwmPin, -value);
+					SoftPwm.softPwmWrite(this.revPin, -value);
 				}
 				rv();
 			}
