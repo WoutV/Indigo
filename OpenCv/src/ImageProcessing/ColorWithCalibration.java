@@ -34,7 +34,7 @@ public class ColorWithCalibration implements ActionListener {
 	public static void main(String[] args) throws Exception {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
 		
-		boolean pi = true;
+		boolean pi = false;
 		if(pi){
 			BufferedImage buffered = ImageIO.read(new URL(
 					"http://indigopi.mshome.net/cam_pic.php?time="

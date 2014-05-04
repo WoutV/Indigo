@@ -199,11 +199,11 @@ class SymbolDetector {
 				double ratioEnclosingCircleWithContourArea = (Math.PI
 						* radius[0] * radius[0])
 						/ Imgproc.contourArea(contour1);
-				Core.putText(result, "EC/CA:"
-						+ ratioEnclosingCircleWithContourArea, new Point(
-						contourCenter.x + 20, contourCenter.y + 60),
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
-								200, 250), 1);
+//				Core.putText(result, "EC/CA:"
+//						+ ratioEnclosingCircleWithContourArea, new Point(
+//						contourCenter.x + 20, contourCenter.y + 60),
+//						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+//								200, 250), 1);
 				// Min Enclosing Rectangle
 				RotatedRect minAreaRect = Imgproc.minAreaRect(MatOfPointTo2f);
 				Point[] pt = new Point[4];
@@ -213,11 +213,11 @@ class SymbolDetector {
 				double ratioMinEnclosingAreaWithContourArea = Imgproc
 						.contourArea(matofpoint)
 						/ Imgproc.contourArea(contour1);
-				Core.putText(result, "RA/CA:"
-						+ ratioMinEnclosingAreaWithContourArea, new Point(
-						contourCenter.x + 20, contourCenter.y + 40),
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
-								200, 250), 1);
+//				Core.putText(result, "RA/CA:"
+//						+ ratioMinEnclosingAreaWithContourArea, new Point(
+//						contourCenter.x + 20, contourCenter.y + 40),
+//						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+//								200, 250), 1);
 
 				matofpointlist.add(matofpoint);
 
@@ -263,10 +263,10 @@ class SymbolDetector {
 				double ratioAreaHullContour = Imgproc.contourArea(hullPointMat)
 						/ Imgproc.contourArea(contour1);
 
-				Core.putText(result, "HA/CA:" + ratioAreaHullContour,
-						new Point(contourCenter.x + 20, contourCenter.y + 20),
-						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
-								200, 250), 1);
+//				Core.putText(result, "HA/CA:" + ratioAreaHullContour,
+//						new Point(contourCenter.x + 20, contourCenter.y + 20),
+//						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
+//								200, 250), 1);
 				// isCircleDetection
 
 				Core.putText(result, "" + timestamp, new Point(20, 20),
@@ -324,18 +324,6 @@ class SymbolDetector {
 								&& fuzzyEquals(distance1, distance3, 20)
 								&& fuzzyEquals(distance2, distance3, 20)) {
 							SymbolTriangle st;
-							Core.line(result,
-									new Point(symbol1.getX(), symbol1.getY()),
-									new Point(symbol2.getX(), symbol2.getY()),
-									new Scalar(50 * i, 50 * i, 0));
-							Core.line(result,
-									new Point(symbol1.getX(), symbol1.getY()),
-									new Point(symbol3.getX(), symbol3.getY()),
-									new Scalar(50 * i, 50 * i, 0));
-							Core.line(result,
-									new Point(symbol3.getX(), symbol3.getY()),
-									new Point(symbol2.getX(), symbol2.getY()),
-									new Scalar(50 * i, 50 * i, 0));
 							double s1d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
 							double s2d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
 							double s3d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
@@ -367,6 +355,18 @@ class SymbolDetector {
 			this.center = toReturn.getCenter();
 			this.s1 = toReturn.s1;
 			this.s2 = toReturn.s2;
+			Core.line(result,
+					new Point(center.getX(), center.getY()),
+					new Point(s1.getX(), s1.getY()),
+					new Scalar(254, 254, 0));
+			Core.line(result,
+					new Point(center.getX(), center.getY()),
+					new Point(s2.getX(), s2.getY()),
+					new Scalar(254, 254, 0));
+			Core.line(result,
+					new Point(s2.getX(), s2.getY()),
+					new Point(s1.getX(), s1.getY()),
+					new Scalar(254, 254, 0));
 		}
 		else{
 			this.center = null;
