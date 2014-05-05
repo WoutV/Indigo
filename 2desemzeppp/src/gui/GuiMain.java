@@ -425,9 +425,7 @@ public class GuiMain extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void setTargetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTargetActionPerformed
-
-
-
+    	 
     	 JLabel lbl = new JLabel("<html>Set a new target location for the zeppelin (in cm): <br> " + 
     			"Values between 0 and 400. <br> (left,up) is (0,0). <br> " +
     			"Input format: ---- x , y ---- OR  ---- ( x , y ) ---- <br><br>OR ----tablet:no----</html>");
@@ -449,8 +447,6 @@ public class GuiMain extends javax.swing.JFrame {
         		   x = Integer.parseInt(x0);
         		   y = Integer.parseInt(y0);
         		   guic.sendTarget(x,y);
-        		  
-        		   noinput = false;
         	   }
         	   catch (NumberFormatException exc){
         	   }
