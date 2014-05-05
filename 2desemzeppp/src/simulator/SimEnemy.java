@@ -116,7 +116,7 @@ public class SimEnemy implements Runnable {
 	
 	private void sendTarget() {
 		String key = "enemy.info.target";
-		String info = (int) (xTarget*10) + "," + (int) (yTarget*10); 
+		String info = (int) (xTarget) + "," + (int) (yTarget); 
 		if(simconn != null)
 			simconn.sendTransfer(info, key);
 		if(simconn2 != null)
