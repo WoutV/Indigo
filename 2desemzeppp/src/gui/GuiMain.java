@@ -425,36 +425,40 @@ public class GuiMain extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void setTargetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTargetActionPerformed
-//    	JLabel lbl = new JLabel("<html>Set a new target location for the zeppelin (in cm): <br> " + 
-//    			"Values between 0 and 400. <br> (left,up) is (0,0). <br> " +
-//    			"Input format: ---- x , y ---- OR  ---- ( x , y ) ---- </html>");
-//    	
-//        String a = JOptionPane.showInputDialog(lbl);
-//        boolean noinput = true;
-//        if(a != null) {
-//           if(coord.length == 2) {
-//        	   String x0 = coord[0].trim();
-//        	   if(x0.charAt(0) == '(') 
-//        		   x0 = x0.substring(1,x0.length()).trim();
-//        	   String y0 = coord[1].trim();
-//        	   if(y0.charAt(y0.length()-1) == ')') 
-//        		   y0 = y0.substring(0,y0.length()-1).trim();
-//        	   int x = 0;
-//        	   int y = 0;
-//        	   try {
-//        		   x = Integer.parseInt(x0);
-//        		   y = Integer.parseInt(y0);
-//        		   guic.sendTarget(x,y);
-//        		   this.setTargetLocation(x, y);
-//        		   noinput = false;
-//        	   }
-//        	   catch (NumberFormatException exc){
-//        	   }
-//           }
-//        }
-//        if(noinput) {
-//        	JOptionPane.showMessageDialog(this, "No new target sent.");
-//        }
+
+
+
+    	 JLabel lbl = new JLabel("<html>Set a new target location for the zeppelin (in cm): <br> " + 
+    			"Values between 0 and 400. <br> (left,up) is (0,0). <br> " +
+    			"Input format: ---- x , y ---- OR  ---- ( x , y ) ---- <br><br>OR ----tablet:no----</html>");
+    	
+        String input = JOptionPane.showInputDialog(lbl);
+        boolean noinput = true;
+        if(input != null && !input.contains("tablet")) {
+        	String[] coord = input.split(",");
+           if(coord.length == 2) {
+        	   String x0 = coord[0].trim();
+        	   if(x0.charAt(0) == '(') 
+        		   x0 = x0.substring(1,x0.length()).trim();
+        	   String y0 = coord[1].trim();
+        	   if(y0.charAt(y0.length()-1) == ')') 
+        		   y0 = y0.substring(0,y0.length()-1).trim();
+        	   int x = 0;
+        	   int y = 0;
+        	   try {
+        		   x = Integer.parseInt(x0);
+        		   y = Integer.parseInt(y0);
+        		   guic.sendTarget(x,y);
+        		  
+        		   noinput = false;
+        	   }
+        	   catch (NumberFormatException exc){
+        	   }
+           }
+        }
+        if(noinput) {
+        	JOptionPane.showMessageDialog(this, "No new target sent.");
+        }
         
     	
     	JLabel lbl = new JLabel("<html> Give tableto numbero</html>");
