@@ -40,6 +40,7 @@ public class ReceiverClient implements Runnable{
 		keys.add("indigo.private.motor3");
 		keys.add("indigo.private.symbollist");
 		keys.add("test.test");
+		keys.add("enemy.info.target");
 		
 	}
 
@@ -71,6 +72,10 @@ public class ReceiverClient implements Runnable{
 		}
 		else if(key.equals("test.test")){
 			System.out.println(information);
+		}else if(key.equals("enemy.info.target")){
+			String[] deel = information.split(",");
+			
+			Dispatch.receiveEnemyTarget(Integer.parseInt(deel[0]),Integer.parseInt(deel[1]) );
 		}
 	}
 	public void run(){
