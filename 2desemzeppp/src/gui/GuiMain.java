@@ -452,17 +452,10 @@ public class GuiMain extends javax.swing.JFrame {
         	   }
            }
         }
-        if(noinput) {
-        	JOptionPane.showMessageDialog(this, "No new target sent.");
-        }
         
-    	
-    	JLabel lbl = new JLabel("<html> Give tableto numbero</html>");
-
-    	String a = JOptionPane.showInputDialog(lbl);
-    	boolean noinput = true;
-    	if(a != null) {
-    		int tabletnumbero = Integer.parseInt(a);
+        if(input != null && !input.contains("tablet")) {
+        	input = input.substring(7);
+    		int tabletnumbero = Integer.parseInt(input);
     		double[] coord = map.getTablet(tabletnumbero);
     		guic.sendTarget((int) coord[0],(int) coord[1]); 
     		
