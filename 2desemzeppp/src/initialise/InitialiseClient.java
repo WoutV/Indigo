@@ -66,7 +66,7 @@ public class InitialiseClient {
         SimEnemy simEnemy = null;
         //sim enemy
         if(mode == 2 || mode == 3) {
-        	simEnemy = SimMain.makeSimEnemy(rabbit, 0, 0, -1, -1);
+        	simEnemy = SimMain.makeSimEnemy(rabbit, 0, 0, -1, -1,map);
         }
         
         //sim own

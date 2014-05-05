@@ -3,6 +3,8 @@ package gui;
 import zeppelin.Propellor;
 import javax.swing.ImageIcon;
 
+import navigation.Dispatch;
+
 import connection.SenderClient;
 
 /**
@@ -117,7 +119,7 @@ public class GuiCommands {
 	 * @param y
 	 */
 	public void sendTarget(int x,int y) {
-		
+		Dispatch.receiveTarget(x, y);
 	}
 	
 	public void setSender(SenderClient sender) {

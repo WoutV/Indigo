@@ -2,6 +2,8 @@ package simulator;
 
 import java.util.Random;
 
+import map.Map;
+
 /**
  * The SimEnemy: Sim for an enemy zeppelin.
  * The Sim needs a target. It moves slowly towards this target.
@@ -34,6 +36,7 @@ public class SimEnemy implements Runnable {
 	
 	private boolean wind;
 
+	private Map map;
 	private boolean running;
 	
 	//all in cm!!
@@ -50,12 +53,12 @@ public class SimEnemy implements Runnable {
 	 * Creates a new SimEnemy using the given speed constant, wait duration (in ms),
 	 * and x and y starting coordinates (in cm).
 	 */
-	public SimEnemy(double constant, int wait, double xPos, double yPos){
+	public SimEnemy(double constant, int wait, double xPos, double yPos, Map map){
 		Constant = constant;
 		this.wait = wait;
 		this.xPos = xPos;
 		this.yPos = yPos;
-		
+		this.map = map;
 		thread = new Thread(this);
 	}
 
@@ -63,8 +66,8 @@ public class SimEnemy implements Runnable {
 	 * Creates a new SimEnemy using default speed constant and default wait duration and
 	 * default starting coordinates.
 	 */
-	public SimEnemy(){
-		this(40,500,200,200);
+	public SimEnemy(Map map){
+		this(40,500,200,200,map);
 	}
 
 	/**
@@ -170,17 +173,27 @@ public class SimEnemy implements Runnable {
 			sendLoc();
 			
 			if(tabletTarget != 0) {
-				String key = "enemy.tablet.tablet" + tabletTarget;
-				String info = "ss";
-				if(simconn != null)
-					simconn.sendTransfer(info, key);
-				if(simconn2 != null)
-					simconn2.sendTransfer(info, key);
+				String command = SImQR.decodeQR(tabletTarget);
+				
 			}
 			
 		}
 	}
 	
+
+	private void parseTabletString(String tabletString){
+		if(tabletString.contains("position")){
+			String[] array = tabletString.split(":");
+			String[] position = array[1].split(",");
+			receiveTarget(Integer.parseInt(position[0]), Integer.parseInt(position[0]));
+		}
+		else if(tabletString.contains("tablet")){
+			String[] array = tabletString.split(":");
+			double[] tabletLoc = map.getTablet(Integer.parseInt(array[1]));
+			tabletTarget = Integer.parseInt(array[1]);
+			receiveTarget((int)tabletLoc[0], (int)tabletLoc[1]);
+		}
+	}
 	private void sendLoc() {
 		String key = "enemy.info.location";
 		String info = (int) (xPos*10) + "," + (int) (yPos*10); 

@@ -47,7 +47,7 @@ public class SimMain {
 	 * @param 	y
 	 * 			Starting y-coordinate (in cm). <0 for default
 	 */
-	public static SimEnemy makeSimEnemy(boolean rabbit, double constant, int wait, double x, double y) {
+	public static SimEnemy makeSimEnemy(boolean rabbit, double constant, int wait, double x, double y,Map map) {
 		if(constant == 0)
 			constant = 2;
 		if(wait == 0)
@@ -56,7 +56,7 @@ public class SimMain {
 			x = 200;
 		if(y < 0)
 			y = 200;
-		SimEnemy simenemy = new SimEnemy(constant,wait,x,y);
+		SimEnemy simenemy = new SimEnemy(constant,wait,x,y,map);
 		
 		if(rabbit) {
 			
