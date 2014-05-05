@@ -33,6 +33,7 @@ public class SimEnemyConnNoRabbitClient implements Runnable {
 				String transferRecieved = null;
 				while((transferRecieved = (String) input.readObject())!= null){
 					handleReceived(transferRecieved);
+					System.out.println("Something received");
 				}
 			}
 			catch (Exception exc) {
@@ -44,10 +45,15 @@ public class SimEnemyConnNoRabbitClient implements Runnable {
 	
 	private void handleReceived(String s) {
 		String[] p = s.split("#");
-		//System.out.println(s);
-		if(p[0].equals("enemy.loc.loc")) {
+//		System.out.println(s);
+		if(p[0].equals("enemy.info.location")) {
 			String[] loc = p[1].split(",");
-			Dispatch.receiveEnemyLoc(Integer.parseInt(loc[0]),Integer.parseInt(loc[1]));
+//			System.out.println("sS "+(int)Integer.parseInt(loc[0]) +""+ (int)Integer.parseInt(loc[1]));
+			Dispatch.receiveEnemyLoc((int)Integer.parseInt(loc[0]),(int)Integer.parseInt(loc[1]));
+		}
+		else if(p[0].equals("enemy.info.target")){
+			String[] deel = p[1].split(",");
+			Dispatch.receiveEnemyTarget(Integer.parseInt(deel[0]),Integer.parseInt(deel[1]) );
 		}
 
 	}

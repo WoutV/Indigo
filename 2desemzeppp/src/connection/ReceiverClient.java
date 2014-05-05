@@ -74,7 +74,6 @@ public class ReceiverClient implements Runnable{
 			System.out.println(information);
 		}else if(key.equals("enemy.info.target")){
 			String[] deel = information.split(",");
-			
 			Dispatch.receiveEnemyTarget(Integer.parseInt(deel[0]),Integer.parseInt(deel[1]) );
 		}
 	}

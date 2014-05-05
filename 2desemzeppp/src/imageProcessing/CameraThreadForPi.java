@@ -21,6 +21,7 @@ public class CameraThreadForPi implements Runnable{
 	public void run(){
 		//while(true){
 		try {
+			System.out.println("Camera Inializing");
 			 Process p = Runtime.getRuntime().exec("sudo raspistill -t 600000 -tl 40 -rot 90 -n -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
 			p.waitFor();
 		} catch ( IOException | InterruptedException e) {

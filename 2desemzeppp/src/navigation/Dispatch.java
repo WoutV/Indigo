@@ -5,6 +5,7 @@ import gui.GuiMain;
 
 import imageProcessing.QRCodeReader;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -38,6 +39,9 @@ public class Dispatch {
 	
 	public static void setLoc(LocationLocator locc){
 		loc= locc;
+	}
+	public static void receiveImage(BufferedImage image){
+		guimain.setImage(image);
 	}
 	
 	public static void setGUIMain(GuiMain g) {
@@ -103,8 +107,11 @@ public class Dispatch {
 		double[] dest = {x,y};
 		PositionController.setDestination(dest);
 		guimain.setTargetLocation(x, y);
-		if(simEnemy != null)
+		System.out.println("lelelelele");
+		if(simEnemy != null){
 			simEnemy.receiveTarget(x,y);
+			System.out.println("dedededed");
+		}
 	}
 	
 	/**

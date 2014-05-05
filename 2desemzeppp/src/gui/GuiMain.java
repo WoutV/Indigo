@@ -453,7 +453,7 @@ public class GuiMain extends javax.swing.JFrame {
            }
         }
         
-        if(input != null && !input.contains("tablet")) {
+        if(input != null && input.contains("tablet")) {
         	input = input.substring(7);
     		int tabletnumbero = Integer.parseInt(input);
     		double[] coord = map.getTablet(tabletnumbero);

@@ -34,7 +34,7 @@ public class SimEnemyConnNoRabbit {
 	public synchronized void sendTransfer(String message,String key){
 		try {
 			String transfer = key + "#" + message;
-			//ystem.out.println("sending:" + transfer);
+			System.out.println("sending:" + transfer);
 			output.writeObject(transfer);
 			output.flush();
 		} catch (IOException e) {

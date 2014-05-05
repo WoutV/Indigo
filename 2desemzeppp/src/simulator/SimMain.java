@@ -57,9 +57,10 @@ public class SimMain {
 		if(y < 0)
 			y = 200;
 		SimEnemy simenemy = new SimEnemy(constant,wait,x,y,map);
-		
+		simenemy.windOn();
 		if(rabbit) {
-			
+			SimEnemyConn simencon = new SimEnemyConn(simenemy);
+			simenemy.setSimConn(simencon);
 		}
 		if(!rabbit) {
 			simEnemyNoRabbitMaker simnorabbitmaker = new simEnemyNoRabbitMaker(simenemy);

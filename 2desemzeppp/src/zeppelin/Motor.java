@@ -57,12 +57,12 @@ public class Motor {
 		//TODO nummers omgekeerd?
 		if(id != Propellor.UP) {
 			if(id == Propellor.X){
-				this.fwPin=11;
-				this.revPin=13;
+				this.fwPin=13;
+				this.revPin=11;
 			}
 			else{
-				this.fwPin=07;
-				this.revPin=05;
+				this.fwPin=05;
+				this.revPin=07;
 			}
 			SoftPwm.softPwmCreate(this.fwPin, 0, 100);
 			SoftPwm.softPwmCreate(this.revPin, 0, 100);

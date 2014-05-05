@@ -43,8 +43,8 @@ public class MotorController {
 	public double Kdy=90;
 	public double Kiy=2;
 	
-	private double zDestination=130;
-	private double[] horizontalDestination = {100,100};
+	private double zDestination=150;
+	//private double[] horizontalDestination = {100,100};
 	
 	private MotorController() {
 	}
@@ -128,13 +128,13 @@ public class MotorController {
 	 * 		dest[0] = x coordinate (in cm)
 	 * 		dest[1] = y coordinate (in cm)
 	 */
-	public void moveToHorizontalLocation(double[] dest) {
-		horizontalDestination=dest;
-	}
-	
-	public double[] getHorizontalDestination(){
-		return horizontalDestination;
-	}
+//	public void moveToHorizontalLocation(double[] dest) {
+//		horizontalDestination=dest;
+//	}
+//	
+//	public double[] getHorizontalDestination(){
+//		return horizontalDestination;
+//	}
 	
 	/**
 	 * Stop all horizontal movement (left, right, forward, backward).

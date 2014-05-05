@@ -107,6 +107,7 @@ public class SimEnemy implements Runnable {
 		if(!running) {
 			xTarget = x;
 			yTarget = y;
+			System.out.println("le not running");
 			sendTarget();
 			running = true;
 			thread = new Thread(this);
@@ -117,10 +118,14 @@ public class SimEnemy implements Runnable {
 	private void sendTarget() {
 		String key = "enemy.info.target";
 		String info = (int) (xTarget) + "," + (int) (yTarget); 
-		if(simconn != null)
+		if(simconn != null){
 			simconn.sendTransfer(info, key);
-		if(simconn2 != null)
+		System.out.println("Sending transfer");
+		}
+		if(simconn2 != null){
 			simconn2.sendTransfer(info, key);
+			System.out.println("Simcon 2");
+		}
 	}
 	
 	/**

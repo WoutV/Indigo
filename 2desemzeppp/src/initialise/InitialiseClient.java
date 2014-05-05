@@ -128,9 +128,9 @@ public class InitialiseClient {
 		}
 		
 		if(mode!=2) {
-//			MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
-//			Thread imageProcessorThread = new Thread(imageProcessor);
-//			imageProcessorThread.start();
+			MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
+			Thread imageProcessorThread = new Thread(imageProcessor);
+			imageProcessorThread.start();
 		}
 	}
 }

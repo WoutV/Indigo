@@ -1,12 +1,17 @@
 package imageProcessing;
 
 import java.awt.BorderLayout;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import map.Symbol;
+import navigation.Dispatch;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
@@ -110,7 +115,8 @@ public class MainImageProcessorThread implements Runnable{
 			this.originalImage = imgUpdtr.getLatestImage();
 			while(this.originalImage == null){
 				this.originalImage = imgUpdtr.getLatestImage();
-			//	System.out.println("Got null");
+				Thread.sleep(1000);
+//				System.out.println("Got null");
 			}
 //			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
 //					Imgproc.COLOR_BGR2GRAY);
@@ -141,11 +147,20 @@ public class MainImageProcessorThread implements Runnable{
 			}
 			try {
 			symbolDetector.processImage();
+//			System.out.println("Processing image");
 			Mat contourMat = symbolDetector.getBinaryMat();
-			foundContours.matToBufferedImage(contourMat);
-			foundContours.repaint();
-			resultFrame.matToBufferedImage(symbolDetector.getResultImage());
-			resultFrame.repaint();	
+//			foundContours.matToBufferedImage(contourMat);
+//			foundContours.repaint();
+//			resultFrame.matToBufferedImage(symbolDetector.getResultImage());
+//			resultFrame.repaint();	
+			MatOfByte mb=new MatOfByte();  
+	          Highgui.imencode(".jpg", symbolDetector.getResultImage(), mb);  
+	      try{
+	    	  Dispatch.receiveImage(ImageIO.read(new ByteArrayInputStream(mb.toArray())));
+	      }
+	      catch(Exception e){
+	    	  e.printStackTrace();
+	      }
 			updateOriginalImage();
 //			if(timestamp>30){
 //			Thread.sleep(300);}
