@@ -352,7 +352,7 @@ public class Motor {
 		//OR is not running now and was running before
 		Propellor.Mode mode;
 		boolean bool;
-		if(pwmLargeEnoughForMovement(value*100/1024)){
+		if(value>15){
 			mode = Propellor.Mode.ON;
 			bool=true;
 		}

@@ -110,7 +110,7 @@ public class MainImageProcessorThread implements Runnable{
 			this.originalImage = imgUpdtr.getLatestImage();
 			while(this.originalImage == null){
 				this.originalImage = imgUpdtr.getLatestImage();
-				System.out.println("Got null");
+			//	System.out.println("Got null");
 			}
 //			this.originalImage = Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto"+timestamp+".jpg",
 //					Imgproc.COLOR_BGR2GRAY);

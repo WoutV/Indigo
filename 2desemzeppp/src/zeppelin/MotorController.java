@@ -43,7 +43,7 @@ public class MotorController {
 	public double Kdy=90;
 	public double Kiy=2;
 	
-	private double zDestination=100;
+	private double zDestination=130;
 	private double[] horizontalDestination = {100,100};
 	
 	private MotorController() {

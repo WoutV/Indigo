@@ -76,10 +76,13 @@ public class InitialiseClient {
         
         //set up conn
         if(rabbit) {
+        	System.out.println("Initializing sender");
         	sender = new SenderClient();
+        	System.out.println("Sender initialized, Initializing receiver");
         	ReceiverClient receiver = new ReceiverClient(gui);
             Thread receiverclientthread = new Thread(receiver);
             receiverclientthread.start();
+            System.out.println("Receiver Initialised");
             gui.getGuic().setSender(sender);
             xpos.setSender(sender);
     		ypos.setSender(sender);
@@ -125,9 +128,9 @@ public class InitialiseClient {
 		}
 		
 		if(mode!=2) {
-			MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
-			Thread imageProcessorThread = new Thread(imageProcessor);
-			imageProcessorThread.start();
+//			MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
+//			Thread imageProcessorThread = new Thread(imageProcessor);
+//			imageProcessorThread.start();
 		}
 	}
 }

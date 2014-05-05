@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.image.BufferedImage;
+
 import zeppelin.Propellor;
 import javax.swing.ImageIcon;
 
@@ -75,8 +77,8 @@ public class GuiCommands {
 	 * Geeft de ontvangen afbeelding weer in tab 1 van de GUI.
 	 * @param image
 	 */
-	public void receiveImage(ImageIcon image) {
-		gui.setImageDisplay(image);
+	public void receiveImage(BufferedImage image) {
+		gui.setImage(image);
 	}
 	
 	/**

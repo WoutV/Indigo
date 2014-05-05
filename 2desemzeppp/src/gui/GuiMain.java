@@ -7,6 +7,8 @@ package gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.highgui.Highgui;
 
 import map.Map;
 
@@ -426,7 +432,6 @@ public class GuiMain extends javax.swing.JFrame {
 //        String a = JOptionPane.showInputDialog(lbl);
 //        boolean noinput = true;
 //        if(a != null) {
-//           String[] coord = a.split(",");
 //           if(coord.length == 2) {
 //        	   String x0 = coord[0].trim();
 //        	   if(x0.charAt(0) == '(') 
@@ -507,6 +512,14 @@ public class GuiMain extends javax.swing.JFrame {
         		gui.setTargetLocation(210, 210);
         		
         	
+         
+                try {  
+                     BufferedImage image = ImageIO.read(new File("C:\\Users\\Study\\Desktop\\test.png"));
+                     gui.setImage(image);
+                } catch (IOException e) {  
+                     e.printStackTrace();  
+                 
+                }  
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;
@@ -688,11 +701,6 @@ public class GuiMain extends javax.swing.JFrame {
     		s = s + "(" + df.format(own[0]) + " ; " + df.format(own[1]) + ")";
     	else
     		s = s + "(_,_)";
-    	s = s + "  |  Enemy: " ;
-    	if(enemy != null)
-    		s = s + "(" + df.format(enemy[0]) + " ; " + df.format(enemy[1]) + ")";
-    	else
-    		s = s + "(_,_)";
     	s = s + "  |  Target: ";
     	if(target != null)
     		s = s + "(" + df.format(target[0]) + "," + df.format(target[1]) + ")";
@@ -770,12 +778,12 @@ public class GuiMain extends javax.swing.JFrame {
 	 * Geeft een image weer in het label display van tab 1.
 	 * @param image
 	 */
-	public void setImageDisplay(ImageIcon image){
-		if(image.getIconHeight()>245 || image.getIconWidth()>265) {
-			Image resizedImg = image.getImage().getScaledInstance(265, 245, Image.SCALE_DEFAULT);
-			image = new ImageIcon(resizedImg);
+	public void setImage(BufferedImage image){ImageIcon img = new ImageIcon(image);
+		if(img.getIconHeight()>(260/1.33) || img.getIconWidth()>260) {
+			Image resizedImg = img.getImage().getScaledInstance(260, (int) (260/1.33), Image.SCALE_DEFAULT);
+			img = new ImageIcon(resizedImg);
 		}
-		tab1LabelDisplay.setIcon(image);
+		tab1LabelDisplay.setIcon(img);
 		addToGUIEventList(GUIEvent.EventType.ReceivedOther," - New image received.");
 	}
 

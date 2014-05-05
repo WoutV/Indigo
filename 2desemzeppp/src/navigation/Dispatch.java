@@ -200,7 +200,7 @@ public class Dispatch {
 	 */
 	private static void land() {
 		if(sender!=null) {
-			sender.sendTransfer("0", "indigo.elevate");
+			sender.sendTransfer("10", "indigo.elevate");
 		}
 	}
 	
