@@ -1,0 +1,18 @@
+﻿Demo:
+
+Nieuw frame: (x en y richtingen (draaien was onaccuraat)). Bewegingen via PID in x en y. Werkt.
+simulatie van onze eigen zeppelin.
+image recognition (erorm robust): kleuren altijd correct, vormen grotendeels correct. Op basis van vorige herkenningen. Indien minder dan drie vormen, maar toch 2 vormen en 1 kleur.
+positiebepaling: kiest driehoek met als middelpunt het dichtst bij het middelpunt van de foto (indien max 1 unknow). Indien meer dan 1 unknown -> de driehoek met de minste unknowns.
+communicatie via terbank werkt.
+(hoogte PID werkt)
+
+
+
+
+
+TODO (nog checken):
+RSA via webserver
+tablet nog geen foto van QR-codes genomen.
+communicatie met de simulator
+ hoe simulator laten omgaan met QR-codes?
