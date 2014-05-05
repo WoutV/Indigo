@@ -21,11 +21,7 @@ public class CameraThreadForPi implements Runnable{
 	public void run(){
 		//while(true){
 		try {
-			Process p =Runtime.getRuntime().exec("./RPi_Cam_Browser_Control_Installer.sh start");
-			p.waitFor(); 
-			p = Runtime.getRuntime().exec("./RPi_Cam_Browser_Control_Installer.sh stop");
-			 p.waitFor();
-			 p = Runtime.getRuntime().exec("sudo raspistill -t 600000 -tl 40 -n -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
+			 Process p = Runtime.getRuntime().exec("sudo raspistill -t 600000 -tl 40 -rot 90 -n -h "+height+" -w "+width+" -o /dev/shm/mjpeg/cam.jpg");
 			p.waitFor();
 		} catch ( IOException | InterruptedException e) {
 			e.printStackTrace();
