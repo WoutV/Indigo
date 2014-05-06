@@ -345,11 +345,18 @@ class SymbolDetector {
 		}
 		double distancetoMiddel = Double.MAX_VALUE;
 		SymbolTriangle toReturn = null;
-		for(SymbolTriangle st: triangles){
-			if(st.getDistanceToMiddle()< distancetoMiddel && st.containsAtLeastTwoKnown()){
-				toReturn = st;
-				distancetoMiddel = st.getDistanceToMiddle();
+		boolean foundWithKnown = false;
+		for(int i=0; i< triangles.size();i++){
+			SymbolTriangle  st = triangles.get(i);
+			if(st.getDistanceToMiddle()<distancetoMiddel){
+				if(st.containsAtLeastTwoKnown()){
+					foundWithKnown = true;
+					toReturn = st;
+				}else if(!st.containsAtLeastTwoKnown()&& !foundWithKnown){
+					toReturn = st;
+				}
 			}
+			
 		}
 		if(toReturn!=null){
 			this.center = toReturn.getCenter();
