@@ -110,7 +110,8 @@ public class Dispatch {
 		System.out.println("lelelelele");
 		if(simEnemy != null){
 			simEnemy.receiveTarget(x,y);
-			System.out.println("dedededed");
+			receiveEnemyTarget(x, y);
+			System.out.println("dedededed"+x+"iets"+y);
 		}
 	}
 	
@@ -124,6 +125,7 @@ public class Dispatch {
 	 */
 	public static void receiveEnemyTarget(int x, int y) {
 		guimain.setEnemyTarget(x,y);
+		System.out.println("received"+x+"iets"+y);
 	}
 	
 	/**

@@ -43,6 +43,9 @@ public class SimConnection implements Runnable{
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(serverIP);
 
+			factory.setUsername("indigo");
+			factory.setPassword("indigo");
+			factory.setPort(5673);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 

@@ -153,7 +153,7 @@ public class Simulator {
 		//System.out.println("Loc: ( " + xPos + "," + yPos + " )");
 		if(wind)
 			wind();
-		//sendSymbols();
+		sendSymbols();
 	}
 	
 	/**
@@ -335,6 +335,7 @@ public class Simulator {
 		String key = "indigo.private.symbollist";
 		String info = SymbolListToString(list);
 		if(simconn != null)
+			System.out.println("simconn nit null sssssooo we wiiiinnn");
 			simconn.sendTransfer(info, key);
 		if(simconn2 != null)
 			simconn2.sendTransfer(info, key);
