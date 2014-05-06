@@ -37,7 +37,7 @@ public class PositionController {
 	private double Kp,Ki,Kd;
 	public static boolean xrunning = false;
 	//TODO
-	private int dt = 500;
+	private int dt = 333;
 	
 	private boolean x;
 

@@ -182,7 +182,7 @@ public class SimEnemy implements Runnable {
 			if(Math.abs(xPos-xTarget) <= 10 && Math.abs(yPos-yTarget) <= 10) {
 				running = false;
 				if(tabletTarget != 0) {
-					String command = SImQR.decodeQR(tabletTarget);
+					String command = SImQR.decodeQR(tabletTarget,this.simconn);
 					parseTabletString(command);
 				}
 				

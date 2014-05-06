@@ -48,12 +48,12 @@ public class InitialiseClient {
         
         PositionController xpos = PositionController.getXController();
         PositionController ypos = PositionController.getYController();
-        xpos.setKd(0);
-        xpos.setKp(5);
-        xpos.setKi(0);
-        ypos.setKd(0);
-        ypos.setKp(5);
-        ypos.setKi(0);
+        xpos.setKd(110);
+        xpos.setKp(30);
+        xpos.setKi(2);
+        ypos.setKd(110);
+        ypos.setKp(30);
+        ypos.setKi(2);
         
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit

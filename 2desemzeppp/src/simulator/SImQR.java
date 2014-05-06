@@ -29,7 +29,7 @@ public class SImQR {
 
 	static Boolean encryptedLocked = false;
 
-	public static String decodeQR(int tablet) {
+	public static String decodeQR(int tablet, SimEnemyConn sender) {
 		try {
 			if (encryptedLocked) {
 				synchronized (encryptedLocked) {
@@ -37,19 +37,30 @@ public class SImQR {
 				}
 			}
 			encryptedLocked=true;
-			String encryptedString = readQRCode(tablet);
-			write("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\encrypted",
-					encryptedString);
-			Process p = Runtime
-					.getRuntime()
-					.exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\decription.py");
+			
+			Process p =Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\keys.py");
+			p.waitFor();
+			String key = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\public");
+			sender.sendTransfer(key, "indigo.tablets.tablet"+tablet);
+			//System.out.println(key);
+			String text ="";
+			int numberOfTries =0;
+			Thread.sleep(2000);
+			while(numberOfTries < 10){
+				try{
+				text = QRCodeReader.readQRCode("http://192.168.2.134:5000/static/indigo"+tablet+".png");
+				break;
+				}
+				catch(IOException|NotFoundException exception){
+					numberOfTries++;
+				}
+			}
+			write("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\encrypted", text);
+			p = Runtime.getRuntime().exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\decription.py");
 			p.waitFor();
 			String output = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\result");
 			System.out.println(output);
-			encryptedLocked=false;
-			encryptedLocked.notify();
-			return output;
-			
+			return output;			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,80 +70,6 @@ public class SImQR {
 			}
 
 	}
-
-	public static String readQRCode(int no) throws IOException,
-			NotFoundException {
-
-		String path = "/qrcodes/tablet" + no + ".png";
-		BufferedImage bi = ImageIO.read(new File(path));
-		BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
-				new BufferedImageLuminanceSource(bi)));
-		System.out.println("Loading image completed. Reading QR Code");
-		@SuppressWarnings("unchecked")
-		Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,
-				getMap());
-		System.out.println("QR read:" + qrCodeResult.getText());
-		return qrCodeResult.getText();
-	}
-
-	/***
-	 * For the things that i do not understand.
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	private static Map getMap() {
-		Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
-		hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-		return hintMap;
-	}
-
-	static int numberOfTries = 0;
-
-	private static String sendRSAKeyToTablet() {
-		try {
-			if (encryptedLocked) {
-				synchronized (encryptedLocked) {
-					encryptedLocked.wait();
-				}
-			}
-			encryptedLocked=true;
-			Process p = Runtime
-					.getRuntime()
-					.exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\keys.py");
-			p.waitFor();
-
-			String text = "";
-			numberOfTries = 0;
-			while (numberOfTries < 10) {
-				try {
-					text = QRCodeReader.readQRCode();
-					break;
-				} catch (IOException | NotFoundException exception) {
-					numberOfTries++;
-				}
-			}
-			write("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\encrypted",
-					text);
-			p = Runtime
-					.getRuntime()
-					.exec("cmd /c C:\\Python27\\python C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\resources\\decription.py");
-			p.waitFor();
-			String output = read("C:\\Users\\Study\\Documents\\GitHub\\Indigo\\2desemzeppp\\keys\\result");
-			System.out.println(output);
-			encryptedLocked=false;
-			encryptedLocked.notify();
-			return output;
-			
-		} catch (Exception e) {
-			// doe niks
-			encryptedLocked=false;
-			encryptedLocked.notify();
-		}
-		return "Oops";
-
-	}
-
 	public static String read(String fileName) {
 		String result = "";
 		try {
