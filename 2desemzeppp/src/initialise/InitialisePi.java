@@ -17,12 +17,13 @@ public class InitialisePi {
 		CameraThreadForPi cp = new CameraThreadForPi();
 		Thread thread= new Thread(cp);
 		thread.start();
-		ReceiverPi receiverPi = new ReceiverPi();
+		ReceiverPi receiverPi = new ReceiverPi("localhost",5672);
 		Thread ReceiverPiThread = new Thread(receiverPi);
 		ReceiverPiThread.start();
 
 		System.out.println("Sender Starting");
-		SenderPi sender = new SenderPi();
+		SenderPi sender = new SenderPi("localhost",5672);
+		Thread.sleep(2000);
 		sender.sendTransfer("rabbitmqtesterdetest", "test.test");
 		// System.out.println("Sender Initalized, making new transfer");
 		// Transfer transfer = new Transfer();

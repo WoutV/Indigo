@@ -7,12 +7,12 @@ import connection.SenderClient;
 
 public class test {
 	public static void main(String[] args) {
-		ReceiverPi pi = new ReceiverPi();
+		ReceiverPi pi = new ReceiverPi("localhost",5672);
 		System.out.println("deded");
 		Thread dr = new Thread(pi);
 		dr.start();
 		System.out.println("lelaunched");
-		SenderClient sender = new SenderClient();
+		SenderClient sender = new SenderClient("localhost",5672);
 		System.out.println("victory");
 		try {
 			Thread.sleep(5000);

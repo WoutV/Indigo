@@ -10,16 +10,19 @@ public class SenderClient {
 	
 	private Channel channel;
 	private Connection connection;
-	public SenderClient(){
+	private String ipAddress;
+	private int port;
+	public SenderClient(String ipAddress, int port ){
+		this.ipAddress = ipAddress;
+		this.port = port;
 		connection = null;
 		channel = null;
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost("localhost");
-
+			factory.setHost(this.ipAddress);
 			factory.setUsername("indigo");
 			factory.setPassword("indigo");
-			factory.setPort(5673);
+			factory.setPort(this.port);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 

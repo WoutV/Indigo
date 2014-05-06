@@ -77,9 +77,9 @@ public class InitialiseClient {
         //set up conn
         if(rabbit) {
         	System.out.println("Initializing sender");
-        	sender = new SenderClient();
+        	sender = new SenderClient("localhost", 5673);
         	System.out.println("Sender initialized, Initializing receiver");
-        	ReceiverClient receiver = new ReceiverClient(gui);
+        	ReceiverClient receiver = new ReceiverClient(gui,"localhost",5673);
             Thread receiverclientthread = new Thread(receiver);
             receiverclientthread.start();
             System.out.println("Receiver Initialised");

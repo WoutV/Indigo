@@ -42,8 +42,8 @@ public class computer {
 		
 		
 		
-		SenderClient sender = new SenderClient();
-    	ReceiverClient receiver = new ReceiverClient(gui);
+		SenderClient sender = new SenderClient("localhost",5673);
+    	ReceiverClient receiver = new ReceiverClient(gui,"localhost",5673);
         Thread receiverclientthread = new Thread(receiver);
         receiverclientthread.start();
         try {

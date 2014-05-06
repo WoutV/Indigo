@@ -27,8 +27,11 @@ public class ReceiverClient implements Runnable{
 	private final String EXCHANGE_NAME = "server";
 	private ArrayList<String> keys;
 	private String enemyTeam = "enemy";
-	public ReceiverClient(GuiMain gui){
-		
+	private String ipAddress;
+	private int port;
+	public ReceiverClient(GuiMain gui, String ipAddress, int port){
+		this.ipAddress = ipAddress;
+		this.port = port;
 		gc = gui.getGuic();
 		keys = new ArrayList<String>();
 		// MOET NOG AANGEPAST WORDEN.
@@ -84,11 +87,11 @@ public class ReceiverClient implements Runnable{
 		Channel channel = null;
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost("localhost");
+			factory.setHost(ipAddress);
 
 			factory.setUsername("indigo");
 			factory.setPassword("indigo");
-			factory.setPort(5673);
+			factory.setPort(port);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 

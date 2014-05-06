@@ -20,9 +20,12 @@ public class ReceiverPi implements Runnable{
 	
 	private final String EXCHANGE_NAME = "server";
 	private ArrayList<String> keys;
-	
-	public ReceiverPi(){
+	private String ipAddress;
+	private int port;
+	public ReceiverPi(String ipAdrress, int Port){
 		keys = new ArrayList<String>();
+		this.ipAddress=ipAdrress;
+		this.port= Port;
 		keys.add("indigo.lcommand.motor1");
 		keys.add("indigo.lcommand.motor2");
 		keys.add("indigo.lcommand.motor3");
@@ -52,11 +55,10 @@ public class ReceiverPi implements Runnable{
 	    Channel channel = null;
 	    try {
 	      ConnectionFactory factory = new ConnectionFactory();
-	      factory.setHost(SenderPi.serverIP);
-	  
+	      factory.setHost(ipAddress);
 	      factory.setUsername("indigo");
 			factory.setPassword("indigo");
-			factory.setPort(5672);
+			factory.setPort(port);
 	      connection = factory.newConnection();
 	      channel = connection.createChannel();
 

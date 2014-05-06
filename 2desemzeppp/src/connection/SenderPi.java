@@ -6,7 +6,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class SenderPi {
-	public static String serverIP = "localhost";
+	private String serverIP;
+	private int port;
 	private final String EXCHANGE_NAME = "server";
 
 	private Channel channel;
@@ -15,8 +16,9 @@ public class SenderPi {
 	/*
 	 * Initialiseert de connection.
 	 */
-	public SenderPi() {
-
+	public SenderPi(String ipAddress, int port) {
+		this.serverIP= ipAddress;
+		this.port = port;
 		connection = null;
 		channel = null;
 		try {
