@@ -115,6 +115,14 @@ public class SimEnemy implements Runnable {
 		}
 	}
 	
+	public void receiveTargetTablet(int no){
+		if(!running){
+			double[] parts = map.getTablet(no);
+			tabletTarget = no;
+			receiveTarget((int) parts[0],(int) parts[1]);
+		}
+	}
+	
 	private void sendTarget() {
 		String key = "enemy.info.target";
 		String info = (int) (xTarget) + "," + (int) (yTarget); 
@@ -173,14 +181,16 @@ public class SimEnemy implements Runnable {
 			
 			if(Math.abs(xPos-xTarget) <= 10 && Math.abs(yPos-yTarget) <= 10) {
 				running = false;
+				if(tabletTarget != 0) {
+					String command = SImQR.decodeQR(tabletTarget);
+					parseTabletString(command);
+				}
+				
 			}
 			
 			sendLoc();
 			
-			if(tabletTarget != 0) {
-				String command = SImQR.decodeQR(tabletTarget);
-				
-			}
+			
 			
 		}
 	}
