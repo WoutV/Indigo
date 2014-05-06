@@ -13,7 +13,8 @@ import com.rabbitmq.client.QueueingConsumer;
  *
  */
 public class SimEnemyConn implements Runnable{
-	private static String serverIP="localhost";
+	private static String serverIP;
+	private static int port;
 	private static String exchangeName = "server";
 
 	private Channel channel;
@@ -25,9 +26,10 @@ public class SimEnemyConn implements Runnable{
 	
 	private SimEnemy sim;
 
-	public SimEnemyConn(SimEnemy sim) {
+	public SimEnemyConn(SimEnemy sim,String ipAddress, int port) {
 		this.sim = sim;
-		
+		this.serverIP = ipAddress;
+		this.port = port;
 		keys.add("");
 
 		initConn();
@@ -42,7 +44,7 @@ public class SimEnemyConn implements Runnable{
 			factory.setHost(serverIP);
 			factory.setUsername("indigo");
 			factory.setPassword("indigo");
-			factory.setPort(5673);
+			factory.setPort(port);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 

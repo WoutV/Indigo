@@ -149,10 +149,10 @@ public class MainImageProcessorThread implements Runnable{
 			symbolDetector.processImage();
 //			System.out.println("Processing image");
 			Mat contourMat = symbolDetector.getBinaryMat();
-//			foundContours.matToBufferedImage(contourMat);
-//			foundContours.repaint();
-//			resultFrame.matToBufferedImage(symbolDetector.getResultImage());
-//			resultFrame.repaint();	
+			foundContours.matToBufferedImage(contourMat);
+			foundContours.repaint();
+			resultFrame.matToBufferedImage(symbolDetector.getResultImage());
+			resultFrame.repaint();	
 			MatOfByte mb=new MatOfByte();  
 	          Highgui.imencode(".jpg", symbolDetector.getResultImage(), mb);  
 	      try{

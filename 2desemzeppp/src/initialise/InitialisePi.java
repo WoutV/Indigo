@@ -14,15 +14,17 @@ import connection.*;
 public class InitialisePi {
 	public static void main(String[] args) throws NumberFormatException,
 			IOException, InterruptedException {
+		String ipAddress = args[0];
+		int port = Integer.parseInt(args[1]);
 		CameraThreadForPi cp = new CameraThreadForPi();
 		Thread thread= new Thread(cp);
 		thread.start();
-		ReceiverPi receiverPi = new ReceiverPi("localhost",5672);
+		ReceiverPi receiverPi = new ReceiverPi(ipAddress,port);
 		Thread ReceiverPiThread = new Thread(receiverPi);
 		ReceiverPiThread.start();
 
 		System.out.println("Sender Starting");
-		SenderPi sender = new SenderPi("localhost",5672);
+		SenderPi sender = new SenderPi(ipAddress,port);
 		Thread.sleep(2000);
 		sender.sendTransfer("rabbitmqtesterdetest", "test.test");
 		// System.out.println("Sender Initalized, making new transfer");

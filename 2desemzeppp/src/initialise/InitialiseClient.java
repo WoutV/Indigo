@@ -18,9 +18,10 @@ import gui.GuiMain;
 
 public class InitialiseClient {
 	public static void main(String[] args) {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		
-		String fileName = "/field.csv";
+		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		String ipAddress = "192.168.2.100";
+		int port = 5672;
+		String fileName = "/finalgrid.csv";
 		
 		Map map = new Map(fileName);
 		 
@@ -50,14 +51,14 @@ public class InitialiseClient {
         PositionController ypos = PositionController.getYController();
         xpos.setKd(110);
         xpos.setKp(30);
-        xpos.setKi(2);
+        xpos.setKi(0);
         ypos.setKd(110);
         ypos.setKp(30);
-        ypos.setKi(2);
+        ypos.setKi(0);
         
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit
-        int mode = 2;
+        int mode = 1;
         boolean rabbit = true;
         
         SenderClient sender = null;
@@ -66,20 +67,20 @@ public class InitialiseClient {
         SimEnemy simEnemy = null;
         //sim enemy
         if(mode == 2 || mode == 3) {
-        	simEnemy = SimMain.makeSimEnemy(rabbit, 0, 0, -1, -1,map);
+        	simEnemy = SimMain.makeSimEnemy(rabbit, 0, 0, 400, 400,map,ipAddress,port);
         }
         
         //sim own
         if(mode == 2) {
-        	SimMain.makeOwnZeppSim(map, rabbit, false);
+        	SimMain.makeOwnZeppSim(map, rabbit, false,ipAddress,port);
         }
         
         //set up conn
         if(rabbit) {
         	System.out.println("Initializing sender");
-        	sender = new SenderClient("localhost", 5673);
+        	sender = new SenderClient(ipAddress, port);
         	System.out.println("Sender initialized, Initializing receiver");
-        	ReceiverClient receiver = new ReceiverClient(gui,"localhost",5673);
+        	ReceiverClient receiver = new ReceiverClient(gui,ipAddress,port);
             Thread receiverclientthread = new Thread(receiver);
             receiverclientthread.start();
             System.out.println("Receiver Initialised");

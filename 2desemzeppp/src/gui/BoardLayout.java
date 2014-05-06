@@ -20,7 +20,7 @@ public class BoardLayout {
 	private int rows;
 	
 	//size of the map (in cm)
-	private int size = 400;
+	private int size = 500;
 	
 	//size of the map (px)
 	private int sizemap = 495;

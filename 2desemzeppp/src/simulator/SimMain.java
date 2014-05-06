@@ -17,10 +17,10 @@ public class SimMain {
 	 * @param 	wind
 	 * 			True to put random wind on.
 	 */
-	public static Simulator makeOwnZeppSim(Map map,boolean rabbit,boolean wind) {
+	public static Simulator makeOwnZeppSim(Map map,boolean rabbit,boolean wind,String ipAddress, int port) {
 		Simulator sim = new Simulator(map);
 		if(rabbit) {
-			SimConnection conn = new SimConnection(sim);
+			SimConnection conn = new SimConnection(sim,ipAddress,port);
 			sim.setSimConn(conn);
 			Thread connThread = new Thread(conn);
 			connThread.start();
@@ -47,7 +47,7 @@ public class SimMain {
 	 * @param 	y
 	 * 			Starting y-coordinate (in cm). <0 for default
 	 */
-	public static SimEnemy makeSimEnemy(boolean rabbit, double constant, int wait, double x, double y,Map map) {
+	public static SimEnemy makeSimEnemy(boolean rabbit, double constant, int wait, double x, double y,Map map,String ipAddress,int port) {
 		if(constant == 0)
 			constant = 2;
 		if(wait == 0)
@@ -59,7 +59,7 @@ public class SimMain {
 		SimEnemy simenemy = new SimEnemy(constant,wait,x,y,map);
 		simenemy.windOn();
 		if(rabbit) {
-			SimEnemyConn simencon = new SimEnemyConn(simenemy);
+			SimEnemyConn simencon = new SimEnemyConn(simenemy,ipAddress,port);
 			simenemy.setSimConn(simencon);
 		}
 		if(!rabbit) {
@@ -71,10 +71,6 @@ public class SimMain {
 		return simenemy;
 	}
 	
-	public static void main(String[] args) {
-		makeOwnZeppSim(new Map("/shapesDemo.csv"),false,false);
-		
-	}
 	
 	public static class simNoRabbitMaker implements Runnable {
 		private Simulator sim;

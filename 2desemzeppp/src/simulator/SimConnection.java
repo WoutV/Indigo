@@ -13,9 +13,9 @@ import com.rabbitmq.client.QueueingConsumer;
  *
  */
 public class SimConnection implements Runnable{
-	private static String serverIP="localhost";
+	private static String serverIP;
 	private static String exchangeName = "server";
-
+	private int port;
 	private Channel channel;
 	private Connection connection;
 	
@@ -25,9 +25,10 @@ public class SimConnection implements Runnable{
 	
 	private Simulator sim;
 
-	public SimConnection(Simulator sim) {
+	public SimConnection(Simulator sim, String serverIP, int port) {
 		this.sim = sim;
-		
+		this.serverIP=serverIP;
+		this.port = port;
 		//x and y
 		keys.add("indigo.lcommand.motor1");
 		keys.add("indigo.lcommand.motor2");
@@ -45,7 +46,7 @@ public class SimConnection implements Runnable{
 
 			factory.setUsername("indigo");
 			factory.setPassword("indigo");
-			factory.setPort(5673);
+			factory.setPort(port);
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 

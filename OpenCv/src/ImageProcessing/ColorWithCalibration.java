@@ -34,7 +34,7 @@ public class ColorWithCalibration implements ActionListener {
 	public static void main(String[] args) throws Exception {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
 		
-		boolean pi = true;
+		boolean pi = false;
 		if(pi){
 			BufferedImage buffered = ImageIO.read(new URL(
 					"http://indigopi.mshome.net/cam_pic.php?time="
@@ -60,7 +60,7 @@ public class ColorWithCalibration implements ActionListener {
 		
 		
 		}
-		Mat webcam_image =Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\green.png");
+		Mat webcam_image =Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\ramentoe\\10.jpg");
 		while (true) {
 			Thread.sleep(500);
 			
