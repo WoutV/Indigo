@@ -108,11 +108,11 @@ public class Dispatch {
 		PositionController.setDestination(dest);
 		guimain.setTargetLocation(x, y);
 		System.out.println("lelelelele");
-		if(simEnemy != null){
-			simEnemy.receiveTarget(x,y);
-			receiveEnemyTarget(x, y);
-			System.out.println("dedededed"+x+"iets"+y);
-		}
+//		if(simEnemy != null){
+//			simEnemy.receiveTarget(x,y);
+//			receiveEnemyTarget(x, y);
+//			System.out.println("dedededed"+x+"iets"+y);
+//		}
 	}
 	
 	/**
@@ -196,6 +196,7 @@ public class Dispatch {
 		if(tabletString.contains("position")){
 			String[] array = tabletString.split(":");
 			String[] position = array[1].split(",");
+			landTarget=true;
 			receiveTarget(Integer.parseInt(position[0]), Integer.parseInt(position[0]));
 		}
 		else if(tabletString.contains("tablet")){

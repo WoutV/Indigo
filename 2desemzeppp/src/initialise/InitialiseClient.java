@@ -112,12 +112,16 @@ public class InitialiseClient {
 		Dispatch.setPositionControllers(xpos,ypos);
 		Dispatch.receiveTarget(50,50);
 		
-//		try {
-//	        Thread.sleep(5000);
-//	    }
-//	    catch(Exception exc) {
-//	    }
+		
+		try {
+	        Thread.sleep(2000);
+	    }
+	    catch(Exception exc) {
+	    }
 
+		if(mode!=1){
+			simEnemy.receiveTargetTablet(1);
+		}
 		if(rabbit) {
 			sender.sendTransfer("0", "indigo.lcommand.motor1");
 			sender.sendTransfer("0", "indigo.lcommand.motor1");
