@@ -33,9 +33,9 @@ public class PositionController {
 	//used because positioncontroller running on client
 	private SenderClient sender;
 	private SimConnNoRabbitClient sender2;
-
+	private static int i;
 	private double Kp,Ki,Kd;
-	
+	public static boolean xrunning = false;
 	//TODO
 	private int dt = 500;
 	
@@ -126,9 +126,17 @@ public class PositionController {
 		else
 			pid.setDestination(toGo[1]);
 		double output = pid.getOutput(0);
-		
+
+		if(!xrunning && x)
+			return;
+		if(xrunning && !x)
+			return;
 		//System.out.println(output);
-		
+
+		i++;
+		if(i==3) {
+			i=0;
+		xrunning = !xrunning;}
 		//output needs to be in range -100 -> 100
 		String message="";
 		String key;
