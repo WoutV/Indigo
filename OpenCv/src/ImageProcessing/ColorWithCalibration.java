@@ -30,7 +30,7 @@ import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 
 public class ColorWithCalibration implements ActionListener {
-
+static int i=0;
 	public static void main(String[] args) throws Exception {
 		ColorWithCalibration c = new ColorWithCalibration("colors.txt");
 		
@@ -52,7 +52,9 @@ public class ColorWithCalibration implements ActionListener {
 					pixels = ((DataBufferByte) buffered.getRaster()
 							.getDataBuffer()).getData();
 					originalImage.put(0, 0, pixels);
-					Thread.sleep(500);
+					Highgui.imwrite("C:/Users/Study/Desktop/OpenCv/for final/"+i+".png", originalImage);
+					Thread.sleep(100);
+					i++;
 					
 						c.calibrateColors(originalImage);
 			
@@ -60,9 +62,9 @@ public class ColorWithCalibration implements ActionListener {
 		
 		
 		}
-		Mat webcam_image =Highgui.imread("C:\\Users\\Study\\Desktop\\OpenCv\\ramentoe\\10.jpg");
+		Mat webcam_image =Highgui.imread("C:/Users/Study/Desktop/OpenCv/ramentoe/7.jpg");
 		while (true) {
-			Thread.sleep(500);
+			Thread.sleep(200);
 			
 				c.calibrateColors(webcam_image);
 	
@@ -157,7 +159,7 @@ public class ColorWithCalibration implements ActionListener {
 		Mat webcam_image = image;
 		facePanel.matToBufferedImage(webcam_image);
 		facePanel.repaint();
-		Mat reworked_image = new Mat();
+		 reworked_image = new Mat();
 
 		// frame.setSize(webcam_image.width()+40,webcam_image.height()+60);
 		// frame2.setSize(webcam_image.width()+40,webcam_image.height()+60);
@@ -168,7 +170,7 @@ public class ColorWithCalibration implements ActionListener {
 		facePanel2.repaint();
 
 	}
-
+	Mat reworked_image;
 	static int H_Min = 0;
 	static int H_Max = 360;
 	static int S_Min = 0;
@@ -336,6 +338,11 @@ public class ColorWithCalibration implements ActionListener {
 		loadBlue.setActionCommand("loadBlue");
 		loadBlue.addActionListener(this);
 		frame.add(loadBlue);
+		
+		saveBinFile = new JButton("Save Bin File");
+		saveBinFile.setActionCommand("saveBinFile");
+		saveBinFile.addActionListener(this);
+		frame.add(saveBinFile);
 
 		frame1.getContentPane().add(frame);
 		frame1.pack();
@@ -353,7 +360,7 @@ public class ColorWithCalibration implements ActionListener {
 	JButton loadGreen;
 	JButton saveBlue;
 	JButton loadBlue;
-
+	JButton saveBinFile;
 	public Scalar getYellowMinScalar() {
 		String[] s = yellow.split(" ");
 		return new Scalar(Integer.parseInt(s[1]), Integer.parseInt(s[2]),
@@ -519,11 +526,13 @@ public class ColorWithCalibration implements ActionListener {
 			V_Max = Integer.parseInt(s[6]);
 			V_MaxSlider.setValue(V_Max);
 			break;
-
+		case "saveBinFile":
+			Highgui.imwrite("C:/Users/Study/Desktop/OpenCv/ramentoe/b"+binint+".jpg", reworked_image);
+			binint++;
 		}
 
 	}
-
+	int binint = 0;
 	String filepath;
 
 	private void saveFile() {

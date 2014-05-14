@@ -90,6 +90,7 @@ class SymbolDetector {
 		// Imgproc.blur(image, blurImage, new Size(blur, blur));
 		Mat contourMat = new Mat(image.size(), CvType.CV_8UC1);
 		Mat blueBinImage = new Mat(image.size(), CvType.CV_8UC1);
+//		frame.matToBufferedImage(image);
 		Core.inRange(blurImage, cc.getBlueMinScalar(), cc.getBlueMaxScalar(),
 				blueBinImage);
 
@@ -272,7 +273,10 @@ class SymbolDetector {
 				Core.putText(result, "" + timestamp, new Point(20, 20),
 						Core.FONT_HERSHEY_COMPLEX_SMALL, 1, new Scalar(200,
 								200, 250), 1);
-
+				if(timestamp==75){
+					Thread.sleep(6000);
+					System.exit(0);
+				}
 				getSmallestToBiggestCircleRatio(contour1.toList(),
 						contourCenter);
 				map.Symbol.Shape shape = getShape(
@@ -325,8 +329,8 @@ class SymbolDetector {
 								&& fuzzyEquals(distance2, distance3, 20)) {
 							SymbolTriangle st;
 							double s1d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
-							double s2d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
-							double s3d =symbol1.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
+							double s2d =symbol2.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
+							double s3d =symbol3.getDistanceTo(new Point(NotProcessedImage.size().width/2,NotProcessedImage.size().height/2));
 							if(s1d < s2d && s1d < s3d){
 								st = new SymbolTriangle(symbol1, symbol2, symbol3,s1d);
 							}

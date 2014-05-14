@@ -66,9 +66,9 @@ public class CopyOfLiveImageProcessor {
 	public static void main(String[] args) {
 		CopyOfLiveImageProcessor lip = new CopyOfLiveImageProcessor();
 		// lip.start("../fotos/b (114)" + ".jpg");
-		//lip.startVideoProcessing("C:/Users/Study/Dropbox/grid1.h264");
+		lip.startVideoProcessing("C:/Users/Study/Desktop/OpenCv/for final/VID_20140512_161640.mp4");
 		// lip.startVideoProcessing("C:/Users/Study/Desktop/test.wmv");
-		lip.start();
+//		lip.start();
 	}
 
 	public CopyOfLiveImageProcessor() {

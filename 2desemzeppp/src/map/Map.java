@@ -36,7 +36,7 @@ public class Map {
 	private int height; 
 	
 	//map size in cm
-	private double boardSize = 400;
+	private double boardSize = 500;
 	
 	private double[][] tablets;
 	

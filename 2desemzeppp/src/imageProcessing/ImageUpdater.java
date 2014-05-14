@@ -9,6 +9,10 @@ import javax.imageio.ImageIO;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Size;
+import org.opencv.highgui.VideoCapture;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * Gets the latest image from the raspberry pi and saves.µ
@@ -17,8 +21,9 @@ import org.opencv.core.Mat;
  *
  */
 public class ImageUpdater implements Runnable{
+	VideoCapture vc;
 	protected ImageUpdater(){
-		
+		 vc = new VideoCapture("C:/Users/Study/Desktop/OpenCv/for final/VID_20140512_161640.mp4");
 	}
 	private Boolean stop = false;
 	@Override
@@ -39,27 +44,18 @@ public class ImageUpdater implements Runnable{
 			BufferedImage buffered;
 			try {
 				Thread.sleep(100);
-				buffered = ImageIO.read(new URL(
-						"http://indigopi.mshome.net/cam_pic.php?time="
-								+ System.currentTimeMillis()));
-				byte[] pixels = ((DataBufferByte) buffered.getRaster()
-						.getDataBuffer()).getData();
+				vc.read(piImage);
+			
 				
-				piImage = new Mat(buffered.getHeight(),
-						buffered.getWidth(), CvType.CV_8UC3);
-				piImage.put(0, 0, pixels);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 			
 		}
-		
+		}
 	}
-	Mat piImage;
+	Mat piImage = new Mat();
 	
 	public void stop(){
 		//		System.out.println("Method stop has been called");

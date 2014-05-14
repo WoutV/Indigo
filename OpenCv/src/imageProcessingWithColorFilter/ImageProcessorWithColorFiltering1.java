@@ -64,11 +64,11 @@ public class ImageProcessorWithColorFiltering1 {
 	 */
 	public static void main(String[] args) {
 		// type 0 -> pi Image ; 1 -> video ; 2-> image
-//		 ImageProcessorWithColorFiltering1 lip = new
-//		 ImageProcessorWithColorFiltering1(
-//		 1, "C:/Users/Study/Dropbox/grid.h264");
-		ImageProcessorWithColorFiltering1 lip = new ImageProcessorWithColorFiltering1(
-				2, "C:\\Users\\Study\\Desktop\\OpenCv\\latest fotos\\foto");
+		 ImageProcessorWithColorFiltering1 lip = new
+		 ImageProcessorWithColorFiltering1(
+		 1, "C:/Users/Study/Dropbox/grid.h264");
+//		ImageProcessorWithColorFiltering1 lip = new ImageProcessorWithColorFiltering1(
+//				1, "C:/Users/Study/Desktop/OpenCv/for final/VID_20140512_161640.mp4");
 //		
 		// ImageProcessorWithColorFiltering lip = new
 		// ImageProcessorWithColorFiltering(2,"../fotos/b (114)" + ".jpg");
@@ -359,10 +359,13 @@ public class ImageProcessorWithColorFiltering1 {
 						Imgproc.COLOR_BGR2GRAY);
 				// Thread.sleep(200);
 				timestamp++;
+				
 				symbolS.increaseTimestamp();
 
 			}
-
+			if(timestamp == 7){
+				Thread.sleep(6000);
+			}
 			symbolDetector.updateImage(originalImage);
 			System.out.println("Timestamp:"+timestamp);
 			

@@ -59,7 +59,7 @@ public class InitialiseClient {
         //mode: 1: normal zeppelin, 2: sim own and enemy, 3: sim enemy only
         //boolean rabbit
         int mode = 1;
-        boolean rabbit = true;
+        boolean rabbit = false;
         
         SenderClient sender = null;
         SimConnNoRabbitClient simConnClient = null;
@@ -134,6 +134,12 @@ public class InitialiseClient {
 		
 		if(mode!=2) {
 			MainImageProcessorThread imageProcessor = new MainImageProcessorThread(3, 50, "color.txt");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Thread imageProcessorThread = new Thread(imageProcessor);
 			imageProcessorThread.start();
 		}

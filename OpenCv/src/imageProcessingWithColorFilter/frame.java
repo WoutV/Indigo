@@ -45,10 +45,10 @@ public class frame extends JPanel{
           if (this.image==null) return;  
           Size frameSize= new Size();
 			if(image.getHeight()>=image.getWidth()){
-				frameSize = new Size(1000*image.getWidth()/image.getHeight(), 1000);
+				frameSize = new Size(800*image.getWidth()/image.getHeight(), 800);
 			}
 			else{
-				frameSize = new Size(1300,1300*image.getHeight()/image.getWidth());
+				frameSize = new Size(1000,1000*image.getHeight()/image.getWidth());
 			}
         
       
